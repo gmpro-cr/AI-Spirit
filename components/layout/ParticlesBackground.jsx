@@ -1,7 +1,7 @@
 export default function ParticlesBackground() {
-  // Generate 80 particles with simple, visible properties
-  const particles = Array.from({ length: 80 }, (_, i) => {
-    const size = Math.random() * 8 + 4 // 4-12px - MUCH larger
+  // Generate 60 particles with MAXIMUM visibility
+  const particles = Array.from({ length: 60 }, (_, i) => {
+    const size = Math.random() * 15 + 8 // 8-23px - VERY LARGE
     const drift = (Math.random() - 0.5) * 100 // -50px to 50px horizontal drift
 
     return {
@@ -24,7 +24,7 @@ export default function ParticlesBackground() {
         bottom: 0,
         overflow: 'hidden',
         pointerEvents: 'none',
-        zIndex: 1,
+        zIndex: 5,
       }}
     >
       {particles.map((particle) => (
@@ -39,7 +39,7 @@ export default function ParticlesBackground() {
             bottom: '-15px',
             borderRadius: '50%',
             backgroundColor: '#FFFFFF',
-            opacity: 0.85,
+            opacity: 1.0,
             boxShadow: `
               0 0 ${particle.size * 2}px rgba(255, 255, 255, 0.9),
               0 0 ${particle.size * 4}px rgba(255, 255, 255, 0.6),
