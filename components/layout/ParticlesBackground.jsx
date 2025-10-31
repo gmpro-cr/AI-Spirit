@@ -1,16 +1,19 @@
 export default function ParticlesBackground() {
-  // Generate 60 particles with MAXIMUM visibility
-  const particles = Array.from({ length: 60 }, (_, i) => {
-    const size = Math.random() * 15 + 8 // 8-23px - VERY LARGE
-    const drift = (Math.random() - 0.5) * 100 // -50px to 50px horizontal drift
+  // Generate 175 small floating dots with random directions
+  const dots = Array.from({ length: 175 }, (_, i) => {
+    const size = Math.random() * 2 + 2 // 2-4px - very small dots
+    const animations = ['float-up', 'float-down', 'float-left', 'float-right', 'float-diagonal-up', 'float-diagonal-down']
+    const randomAnimation = animations[Math.floor(Math.random() * animations.length)]
 
     return {
       id: i,
       size,
-      left: Math.random() * 100, // 0-100%
-      duration: Math.random() * 15 + 20, // 20-35s
-      delay: Math.random() * -25, // stagger start times
-      drift,
+      left: Math.random() * 100, // 0-100% across screen
+      top: Math.random() * 100, // 0-100% across screen
+      duration: Math.random() * 15 + 20, // 20-35s - slow, gentle movement
+      delay: Math.random() * -20, // stagger start times
+      opacity: Math.random() * 0.3 + 0.3, // 0.3-0.6 opacity - subtle but visible
+      animation: randomAnimation,
     }
   })
 
@@ -27,27 +30,25 @@ export default function ParticlesBackground() {
         zIndex: 5,
       }}
     >
-      {particles.map((particle) => (
+      {dots.map((dot) => (
         <div
-          key={particle.id}
-          className="particle-float"
+          key={dot.id}
+          className={`dot-${dot.animation}`}
           style={{
             position: 'absolute',
-            width: `${particle.size}px`,
-            height: `${particle.size}px`,
-            left: `${particle.left}%`,
-            bottom: '-15px',
+            width: `${dot.size}px`,
+            height: `${dot.size}px`,
+            left: `${dot.left}%`,
+            top: `${dot.top}%`,
             borderRadius: '50%',
             backgroundColor: '#FFFFFF',
-            opacity: 1.0,
+            opacity: dot.opacity,
             boxShadow: `
-              0 0 ${particle.size * 2}px rgba(255, 255, 255, 0.9),
-              0 0 ${particle.size * 4}px rgba(255, 255, 255, 0.6),
-              0 0 ${particle.size * 6}px rgba(255, 255, 255, 0.3)
+              0 0 ${dot.size * 2}px rgba(255, 255, 255, 0.4),
+              0 0 ${dot.size * 3}px rgba(255, 255, 255, 0.2)
             `,
-            animationDuration: `${particle.duration}s`,
-            animationDelay: `${particle.delay}s`,
-            '--drift': `${particle.drift}px`,
+            animationDuration: `${dot.duration}s`,
+            animationDelay: `${dot.delay}s`,
           }}
         />
       ))}
