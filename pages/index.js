@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import Link from 'next/link'
 import Navbar from '@/components/layout/Navbar'
+import ParticlesBackground from '@/components/layout/ParticlesBackground'
 
 export default function Home() {
   return (
@@ -11,15 +12,16 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
+      <ParticlesBackground />
       <Navbar />
 
-      <main className="min-h-screen bg-gradient-dark pt-24 pb-16 px-4">
+      <main className="relative min-h-screen bg-gradient-dark pt-24 pb-16 px-4 z-10">
         <div className="max-w-7xl mx-auto">
           {/* Hero Section */}
           <div className="text-center mb-16">
             <h1 className="text-5xl md:text-7xl font-bold mb-6">
               Chat with{' '}
-              <span className="bg-gradient-accent bg-clip-text text-transparent">
+              <span className="text-white">
                 Anyone
               </span>
               <br />

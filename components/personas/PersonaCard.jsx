@@ -4,7 +4,7 @@ import Image from 'next/image'
 export default function PersonaCard({ persona }) {
   return (
     <Link href={`/chat/${persona.slug}`}>
-      <div className="glass-panel p-6 hover:border-neon-cyan transition-all cursor-pointer group">
+      <div className="glass-panel p-6 hover:border-white transition-all cursor-pointer group">
         <div className="flex items-center space-x-4 mb-4">
           <div className="relative w-16 h-16 rounded-full overflow-hidden bg-black-tertiary">
             {persona.avatar_url ? (
@@ -21,7 +21,7 @@ export default function PersonaCard({ persona }) {
             )}
           </div>
           <div className="flex-1">
-            <h3 className="font-semibold text-lg group-hover:text-neon-cyan transition">
+            <h3 className="font-semibold text-lg group-hover:text-white transition">
               {persona.name}
             </h3>
             <p className="text-text-muted text-sm">{persona.category}</p>

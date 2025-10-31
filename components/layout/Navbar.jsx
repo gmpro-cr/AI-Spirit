@@ -17,7 +17,7 @@ export default function Navbar() {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2">
-            <span className="text-2xl font-bold bg-gradient-accent bg-clip-text text-transparent">
+            <span className="text-2xl font-bold text-white">
               Esperit.AI
             </span>
           </Link>

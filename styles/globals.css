@@ -24,10 +24,10 @@
   }
 
   .btn-gradient {
-    @apply bg-gradient-accent text-black font-semibold px-6 py-3 rounded-lg hover:opacity-90 transition-opacity;
+    @apply bg-white text-black font-semibold px-6 py-3 rounded-lg hover:bg-white-secondary transition-all;
   }
 
   .btn-outline {
-    @apply border-2 border-neon-cyan text-neon-cyan px-6 py-3 rounded-lg hover:bg-neon-cyan hover:text-black transition-all;
+    @apply border-2 border-white text-white px-6 py-3 rounded-lg hover:bg-white hover:text-black transition-all;
   }
 }

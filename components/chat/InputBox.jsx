@@ -40,7 +40,7 @@ export default function InputBox({ onSend, disabled }) {
           onKeyPress={handleKeyPress}
           disabled={disabled}
           placeholder="Type your message..."
-          className="flex-1 bg-black-tertiary border border-gray-800 rounded-lg px-4 py-3 text-text-primary focus:border-neon-cyan focus:outline-none disabled:opacity-50"
+          className="flex-1 bg-black-tertiary border border-gray-800 rounded-lg px-4 py-3 text-text-primary focus:border-white focus:outline-none disabled:opacity-50"
         />
         <button
           onClick={handleSend}

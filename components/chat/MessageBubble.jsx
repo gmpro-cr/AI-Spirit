@@ -7,7 +7,7 @@ export default function MessageBubble({ message, language }) {
         className={`max-w-[80%] px-4 py-3 rounded-2xl ${
           isUser
             ? 'bg-black-tertiary text-text-primary'
-            : 'bg-gradient-to-r from-neon-cyan/20 to-neon-purple/20 border border-neon-cyan/30 text-text-primary'
+            : 'bg-white/10 border border-white/30 text-text-primary'
         } ${language === 'hi' ? 'font-hindi' : ''}`}
       >
         <p className="whitespace-pre-wrap">{message.content}</p>
