@@ -1,40 +1,113 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Esperit.AI
 
-## Getting Started
+Conversational AI platform enabling users to engage with AI-driven personas - from business icons to historical figures, celebrities to fictional characters.
 
-First, run the development server:
+## Tech Stack
 
+- **Frontend + Backend**: Next.js 14 (Pages Router)
+- **Database + Auth**: Supabase
+- **AI**: Google Gemini 1.5 Flash
+- **Styling**: Tailwind CSS (Dark Theme)
+- **Deployment**: Vercel
+
+## Features
+
+- 10+ pre-built personas across 5 categories
+- Text-based chat with natural language AI
+- Google OAuth + Email/Password authentication
+- Guest mode (10 messages/chat limit)
+- Multilingual support (English, Hindi, Hinglish)
+- Content moderation with multiple safety layers
+- Dark theme with glassmorphism design
+
+## Setup
+
+### Prerequisites
+
+- Node.js 18+
+- Supabase account
+- Google Gemini API key
+
+### Installation
+
+1. Clone the repository
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone <repo-url>
+cd Esperit
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Install dependencies
+```bash
+npm install
+```
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+3. Set up environment variables
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+Copy `.env.example` to `.env.local`:
+```bash
+cp .env.example .env.local
+```
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+Fill in your credentials:
+- `NEXT_PUBLIC_SUPABASE_URL`: From Supabase project settings
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY`: From Supabase project settings
+- `SUPABASE_SERVICE_ROLE_KEY`: From Supabase project settings
+- `GEMINI_API_KEY`: From Google AI Studio
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+4. Set up Supabase database
 
-## Learn More
+Run the SQL scripts in Supabase SQL Editor:
+- `supabase/schema.sql` (creates tables and RLS policies)
+- `supabase/seed.sql` (adds initial personas)
 
-To learn more about Next.js, take a look at the following resources:
+5. Configure Supabase Auth
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+In Supabase dashboard:
+- Enable Google OAuth provider
+- Add redirect URL: `http://localhost:3000/auth/callback`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+6. Run development server
+```bash
+npm run dev
+```
 
-## Deploy on Vercel
+Visit http://localhost:3000
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Deployment
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+### Vercel
+
+1. Push code to GitHub
+2. Import project in Vercel
+3. Add environment variables
+4. Deploy
+
+### Supabase
+
+Already configured - just ensure schema and seed data are applied.
+
+## Project Structure
+
+```
+Esperit/
+├── components/       # React components
+│   ├── chat/        # Chat interface components
+│   ├── personas/    # Persona-related components
+│   ├── layout/      # Layout components (Navbar, etc.)
+│   └── auth/        # Auth components
+├── context/         # React Context providers
+├── data/            # Static data (personas)
+├── lib/             # Utilities (Supabase, Gemini, moderation)
+├── pages/           # Next.js pages
+│   ├── api/        # API routes
+│   ├── auth/       # Auth pages
+│   ├── chat/       # Chat pages
+│   └── personas/   # Persona library
+├── public/          # Static files
+├── styles/          # Global styles
+└── supabase/        # Database schema and seeds
+```
+
+## License
+
+MIT
