@@ -65,26 +65,6 @@ export default function ParticlesBackground() {
         ctx.fill()
       })
 
-      // Draw connecting lines
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          const dx = particles[i].x - particles[j].x
-          const dy = particles[i].y - particles[j].y
-          const distance = Math.sqrt(dx * dx + dy * dy)
-
-          // Draw line if particles are within 150px
-          if (distance < 150) {
-            const opacity = 1 - distance / 150
-            ctx.beginPath()
-            ctx.moveTo(particles[i].x, particles[i].y)
-            ctx.lineTo(particles[j].x, particles[j].y)
-            ctx.strokeStyle = `rgba(100, 150, 255, ${opacity * 0.5})`
-            ctx.lineWidth = 1
-            ctx.stroke()
-          }
-        }
-      }
-
       animationFrameRef.current = requestAnimationFrame(animate)
     }
 
