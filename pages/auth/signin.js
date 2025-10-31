@@ -6,6 +6,7 @@ import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { useAuth } from '@/context/AuthContext'
 import Navbar from '@/components/layout/Navbar'
+import ParticlesBackground from '@/components/layout/ParticlesBackground'
 
 export default function SignIn() {
   const router = useRouter()
@@ -23,9 +24,10 @@ export default function SignIn() {
         <title>Sign In - Esperit.AI</title>
       </Head>
 
+      <ParticlesBackground />
       <Navbar />
 
-      <main className="min-h-screen bg-black-primary pt-24 pb-16 px-4 flex items-center justify-center">
+      <main className="relative min-h-screen bg-black-primary pt-24 pb-16 px-4 flex items-center justify-center z-10">
         <div className="w-full max-w-md">
           <div className="glass-panel p-8">
             <h1 className="text-3xl font-bold mb-6 text-center">

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import Head from 'next/head'
 import Navbar from '@/components/layout/Navbar'
+import ParticlesBackground from '@/components/layout/ParticlesBackground'
 import PersonaCard from '@/components/personas/PersonaCard'
 import { INITIAL_PERSONAS } from '@/data/personas'
 
@@ -44,9 +45,10 @@ export default function Personas() {
         <title>Personas - Esperit.AI</title>
       </Head>
 
+      <ParticlesBackground />
       <Navbar />
 
-      <main className="min-h-screen bg-black-primary pt-24 pb-16 px-4">
+      <main className="relative min-h-screen bg-black-primary pt-24 pb-16 px-4 z-10">
         <div className="max-w-7xl mx-auto">
           <h1 className="text-4xl font-bold mb-8">Choose Your Persona</h1>
 

@@ -2,6 +2,7 @@ import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
 import Head from 'next/head'
 import Navbar from '@/components/layout/Navbar'
+import ParticlesBackground from '@/components/layout/ParticlesBackground'
 import ChatInterface from '@/components/chat/ChatInterface'
 import { useAuth } from '@/context/AuthContext'
 import { useChat } from '@/context/ChatContext'
@@ -98,8 +99,9 @@ export default function ChatPage() {
   if (!persona) {
     return (
       <>
+        <ParticlesBackground />
         <Navbar />
-        <div className="min-h-screen bg-black-primary flex items-center justify-center">
+        <div className="relative min-h-screen bg-black-primary flex items-center justify-center z-10">
           <p className="text-text-secondary">Loading persona...</p>
         </div>
       </>
@@ -112,6 +114,7 @@ export default function ChatPage() {
         <title>Chat with {persona.name} - Esperit.AI</title>
       </Head>
 
+      <ParticlesBackground />
       <Navbar />
 
       {/* Guest mode banner */}
@@ -129,7 +132,7 @@ export default function ChatPage() {
         </div>
       )}
 
-      <div className={user ? 'pt-16' : 'pt-24'}>
+      <div className={`relative z-10 ${user ? 'pt-16' : 'pt-24'}`}>
         <ChatInterface persona={persona} onSendMessage={handleSendMessage} />
       </div>
     </>

@@ -1,12 +1,12 @@
 export default function ParticlesBackground() {
-  // Generate 80 particles with random properties
-  const particles = Array.from({ length: 80 }, (_, i) => ({
+  // Generate 100 particles with random properties
+  const particles = Array.from({ length: 100 }, (_, i) => ({
     id: i,
-    size: Math.random() * 4 + 2, // 2-6px
+    size: Math.random() * 5 + 3, // 3-8px (increased from 2-6px)
     left: Math.random() * 100, // 0-100%
     animationDuration: Math.random() * 20 + 15, // 15-35s
     animationDelay: Math.random() * -20, // stagger start times
-    opacity: Math.random() * 0.4 + 0.2, // 0.2-0.6
+    opacity: Math.random() * 0.4 + 0.4, // 0.4-0.8 (increased from 0.2-0.6)
   }))
 
   return (
@@ -23,6 +23,8 @@ export default function ParticlesBackground() {
             opacity: particle.opacity,
             animation: `float ${particle.animationDuration}s linear infinite`,
             animationDelay: `${particle.animationDelay}s`,
+            boxShadow: '0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.5)',
+            backgroundColor: '#FFFFFF',
           }}
         />
       ))}
@@ -34,10 +36,10 @@ export default function ParticlesBackground() {
             opacity: 0;
           }
           10% {
-            opacity: ${Math.random() * 0.4 + 0.2};
+            opacity: ${Math.random() * 0.4 + 0.4};
           }
           90% {
-            opacity: ${Math.random() * 0.4 + 0.2};
+            opacity: ${Math.random() * 0.4 + 0.4};
           }
           100% {
             transform: translateY(-100vh) translateX(${Math.random() * 100 - 50}px);
