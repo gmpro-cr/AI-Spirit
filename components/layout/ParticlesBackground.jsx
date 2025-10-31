@@ -1,56 +1,56 @@
 export default function ParticlesBackground() {
-  // Generate 100 particles with random properties
-  const particles = Array.from({ length: 100 }, (_, i) => ({
-    id: i,
-    size: Math.random() * 5 + 3, // 3-8px (increased from 2-6px)
-    left: Math.random() * 100, // 0-100%
-    animationDuration: Math.random() * 20 + 15, // 15-35s
-    animationDelay: Math.random() * -20, // stagger start times
-    opacity: Math.random() * 0.4 + 0.4, // 0.4-0.8 (increased from 0.2-0.6)
-  }))
+  // Generate 80 particles with simple, visible properties
+  const particles = Array.from({ length: 80 }, (_, i) => {
+    const size = Math.random() * 8 + 4 // 4-12px - MUCH larger
+    const drift = (Math.random() - 0.5) * 100 // -50px to 50px horizontal drift
+
+    return {
+      id: i,
+      size,
+      left: Math.random() * 100, // 0-100%
+      duration: Math.random() * 15 + 20, // 20-35s
+      delay: Math.random() * -25, // stagger start times
+      drift,
+    }
+  })
 
   return (
-    <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
+    <div
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        overflow: 'hidden',
+        pointerEvents: 'none',
+        zIndex: 1,
+      }}
+    >
       {particles.map((particle) => (
         <div
           key={particle.id}
-          className="absolute rounded-full bg-white animate-float"
+          className="particle-float"
           style={{
+            position: 'absolute',
             width: `${particle.size}px`,
             height: `${particle.size}px`,
             left: `${particle.left}%`,
-            bottom: '-10px',
-            opacity: particle.opacity,
-            animation: `float ${particle.animationDuration}s linear infinite`,
-            animationDelay: `${particle.animationDelay}s`,
-            boxShadow: '0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.5)',
+            bottom: '-15px',
+            borderRadius: '50%',
             backgroundColor: '#FFFFFF',
+            opacity: 0.85,
+            boxShadow: `
+              0 0 ${particle.size * 2}px rgba(255, 255, 255, 0.9),
+              0 0 ${particle.size * 4}px rgba(255, 255, 255, 0.6),
+              0 0 ${particle.size * 6}px rgba(255, 255, 255, 0.3)
+            `,
+            animationDuration: `${particle.duration}s`,
+            animationDelay: `${particle.delay}s`,
+            '--drift': `${particle.drift}px`,
           }}
         />
       ))}
-
-      <style jsx>{`
-        @keyframes float {
-          0% {
-            transform: translateY(0) translateX(0);
-            opacity: 0;
-          }
-          10% {
-            opacity: ${Math.random() * 0.4 + 0.4};
-          }
-          90% {
-            opacity: ${Math.random() * 0.4 + 0.4};
-          }
-          100% {
-            transform: translateY(-100vh) translateX(${Math.random() * 100 - 50}px);
-            opacity: 0;
-          }
-        }
-
-        .animate-float {
-          will-change: transform, opacity;
-        }
-      `}</style>
     </div>
   )
 }
