@@ -1,57 +1,116 @@
-export default function ParticlesBackground() {
-  // Generate 175 small floating dots with random directions
-  const dots = Array.from({ length: 175 }, (_, i) => {
-    const size = Math.random() * 2 + 2 // 2-4px - very small dots
-    const animations = ['float-up', 'float-down', 'float-left', 'float-right', 'float-diagonal-up', 'float-diagonal-down']
-    const randomAnimation = animations[Math.floor(Math.random() * animations.length)]
+'use client'
 
-    return {
-      id: i,
-      size,
-      left: Math.random() * 100, // 0-100% across screen
-      top: Math.random() * 100, // 0-100% across screen
-      duration: Math.random() * 15 + 20, // 20-35s - slow, gentle movement
-      delay: Math.random() * -20, // stagger start times
-      opacity: Math.random() * 0.3 + 0.3, // 0.3-0.6 opacity - subtle but visible
-      animation: randomAnimation,
+import { useEffect, useRef } from 'react'
+
+export default function ParticlesBackground() {
+  const canvasRef = useRef(null)
+  const particlesRef = useRef([])
+  const animationFrameRef = useRef(null)
+
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+
+    const ctx = canvas.getContext('2d')
+
+    // Set canvas size to window size
+    const resizeCanvas = () => {
+      canvas.width = window.innerWidth
+      canvas.height = window.innerHeight
     }
-  })
+
+    resizeCanvas()
+    window.addEventListener('resize', resizeCanvas)
+
+    // Initialize particles
+    const initParticles = () => {
+      particlesRef.current = []
+      for (let i = 0; i < 100; i++) {
+        particlesRef.current.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          vx: (Math.random() - 0.5) * 0.5, // Random velocity X (-0.25 to 0.25)
+          vy: (Math.random() - 0.5) * 0.5, // Random velocity Y (-0.25 to 0.25)
+          size: Math.random() * 2 + 1, // 1-3px
+          opacity: Math.random() * 0.5 + 0.3, // 0.3-0.8
+        })
+      }
+    }
+
+    initParticles()
+
+    // Animation loop
+    const animate = () => {
+      // Clear canvas
+      ctx.clearRect(0, 0, canvas.width, canvas.height)
+
+      const particles = particlesRef.current
+
+      // Update and draw particles
+      particles.forEach((particle) => {
+        // Update position
+        particle.x += particle.vx
+        particle.y += particle.vy
+
+        // Wrap around screen edges
+        if (particle.x < 0) particle.x = canvas.width
+        if (particle.x > canvas.width) particle.x = 0
+        if (particle.y < 0) particle.y = canvas.height
+        if (particle.y > canvas.height) particle.y = 0
+
+        // Draw particle
+        ctx.beginPath()
+        ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2)
+        ctx.fillStyle = `rgba(230, 230, 230, ${particle.opacity})`
+        ctx.fill()
+      })
+
+      // Draw connecting lines
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x
+          const dy = particles[i].y - particles[j].y
+          const distance = Math.sqrt(dx * dx + dy * dy)
+
+          // Draw line if particles are within 150px
+          if (distance < 150) {
+            const opacity = 1 - distance / 150
+            ctx.beginPath()
+            ctx.moveTo(particles[i].x, particles[i].y)
+            ctx.lineTo(particles[j].x, particles[j].y)
+            ctx.strokeStyle = `rgba(100, 150, 255, ${opacity * 0.5})`
+            ctx.lineWidth = 1
+            ctx.stroke()
+          }
+        }
+      }
+
+      animationFrameRef.current = requestAnimationFrame(animate)
+    }
+
+    animate()
+
+    // Cleanup
+    return () => {
+      window.removeEventListener('resize', resizeCanvas)
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current)
+      }
+    }
+  }, [])
 
   return (
-    <div
+    <canvas
+      ref={canvasRef}
       style={{
         position: 'fixed',
         top: 0,
         left: 0,
-        right: 0,
-        bottom: 0,
-        overflow: 'hidden',
+        width: '100%',
+        height: '100%',
         pointerEvents: 'none',
         zIndex: 5,
       }}
-    >
-      {dots.map((dot) => (
-        <div
-          key={dot.id}
-          className={`dot-${dot.animation}`}
-          style={{
-            position: 'absolute',
-            width: `${dot.size}px`,
-            height: `${dot.size}px`,
-            left: `${dot.left}%`,
-            top: `${dot.top}%`,
-            borderRadius: '50%',
-            backgroundColor: '#FFFFFF',
-            opacity: dot.opacity,
-            boxShadow: `
-              0 0 ${dot.size * 2}px rgba(255, 255, 255, 0.4),
-              0 0 ${dot.size * 3}px rgba(255, 255, 255, 0.2)
-            `,
-            animationDuration: `${dot.duration}s`,
-            animationDelay: `${dot.delay}s`,
-          }}
-        />
-      ))}
-    </div>
+    />
   )
 }
