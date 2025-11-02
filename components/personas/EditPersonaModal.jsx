@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '@/context/AuthContext'
+import { supabase } from '@/lib/supabase'
 
 export default function EditPersonaModal({ isOpen, onClose, persona, onPersonaUpdated }) {
   const { user } = useAuth()
@@ -36,29 +37,55 @@ export default function EditPersonaModal({ isOpen, onClose, persona, onPersonaUp
     setLoading(true)
 
     try {
-      // Update in localStorage
-      const customPersonas = JSON.parse(localStorage.getItem('esperit_custom_personas') || '[]')
-      const index = customPersonas.findIndex(p => p.slug === persona.slug)
+      // Update in database if user is authenticated and persona has ID
+      if (user && persona.id) {
+        console.log('Updating persona in database')
 
-      if (index !== -1) {
-        // Update existing persona
-        customPersonas[index] = {
-          ...customPersonas[index],
-          name: formData.name,
-          description: formData.description,
-          avatar_url: formData.avatarUrl || null,
-          system_prompt: formData.systemPrompt
+        const { data, error } = await supabase
+          .from('personas')
+          .update({
+            name: formData.name,
+            description: formData.description,
+            avatar_url: formData.avatarUrl || null,
+            system_prompt: formData.systemPrompt
+          })
+          .eq('id', persona.id)
+          .eq('user_id', user.id) // Ensure user owns this persona
+          .select()
+          .single()
+
+        if (error) {
+          console.error('Database error:', error)
+          throw new Error(`Database error: ${error.message}`)
         }
 
-        localStorage.setItem('esperit_custom_personas', JSON.stringify(customPersonas))
-        console.log('Persona updated in localStorage:', customPersonas[index])
-
-        onPersonaUpdated(customPersonas[index])
-        alert('Persona updated successfully!')
-        onClose()
+        console.log('Persona updated in database:', data)
+        onPersonaUpdated(data)
       } else {
-        throw new Error('Persona not found in localStorage')
+        // Update in localStorage for guest users
+        const customPersonas = JSON.parse(localStorage.getItem('esperit_custom_personas') || '[]')
+        const index = customPersonas.findIndex(p => p.slug === persona.slug)
+
+        if (index !== -1) {
+          customPersonas[index] = {
+            ...customPersonas[index],
+            name: formData.name,
+            description: formData.description,
+            avatar_url: formData.avatarUrl || null,
+            system_prompt: formData.systemPrompt
+          }
+
+          localStorage.setItem('esperit_custom_personas', JSON.stringify(customPersonas))
+          console.log('Persona updated in localStorage:', customPersonas[index])
+
+          onPersonaUpdated(customPersonas[index])
+        } else {
+          throw new Error('Persona not found in localStorage')
+        }
       }
+
+      alert('Persona updated successfully!')
+      onClose()
     } catch (error) {
       console.error('Error updating persona:', error)
       alert(`Failed to update persona: ${error.message || 'Unknown error'}`)
@@ -75,12 +102,30 @@ export default function EditPersonaModal({ isOpen, onClose, persona, onPersonaUp
     setLoading(true)
 
     try {
-      // Delete from localStorage
-      const customPersonas = JSON.parse(localStorage.getItem('esperit_custom_personas') || '[]')
-      const filteredPersonas = customPersonas.filter(p => p.slug !== persona.slug)
+      // Delete from database if user is authenticated and persona has ID
+      if (user && persona.id) {
+        console.log('Deleting persona from database')
 
-      localStorage.setItem('esperit_custom_personas', JSON.stringify(filteredPersonas))
-      console.log('Persona deleted from localStorage')
+        const { error } = await supabase
+          .from('personas')
+          .delete()
+          .eq('id', persona.id)
+          .eq('user_id', user.id) // Ensure user owns this persona
+
+        if (error) {
+          console.error('Database error:', error)
+          throw new Error(`Database error: ${error.message}`)
+        }
+
+        console.log('Persona deleted from database')
+      } else {
+        // Delete from localStorage for guest users
+        const customPersonas = JSON.parse(localStorage.getItem('esperit_custom_personas') || '[]')
+        const filteredPersonas = customPersonas.filter(p => p.slug !== persona.slug)
+
+        localStorage.setItem('esperit_custom_personas', JSON.stringify(filteredPersonas))
+        console.log('Persona deleted from localStorage')
+      }
 
       alert('Persona deleted successfully!')
       onPersonaUpdated(null) // Signal deletion
