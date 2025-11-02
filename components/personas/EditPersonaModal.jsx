@@ -94,20 +94,20 @@ export default function EditPersonaModal({ isOpen, onClose, persona, onPersonaUp
   }
 
   return (
-    <div className="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center z-50 p-4">
-      <div className="relative bg-white/10 backdrop-blur-2xl border border-white/30 rounded-3xl shadow-2xl shadow-black/30 max-w-2xl w-full max-h-[90vh] overflow-y-auto before:absolute before:inset-0 before:rounded-3xl before:bg-gradient-to-br before:from-white/15 before:to-transparent before:opacity-50 before:pointer-events-none">
-        <div className="relative z-10 p-6">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-bold text-white drop-shadow-sm">Edit Persona</h2>
+    <div className="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center z-50 p-2 sm:p-4">
+      <div className="relative bg-white/10 backdrop-blur-2xl border border-white/30 rounded-2xl sm:rounded-3xl shadow-2xl shadow-black/30 max-w-2xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-y-auto before:absolute before:inset-0 before:rounded-2xl sm:before:rounded-3xl before:bg-gradient-to-br before:from-white/15 before:to-transparent before:opacity-50 before:pointer-events-none">
+        <div className="relative z-10 p-4 sm:p-6">
+          <div className="flex justify-between items-center mb-4 sm:mb-6">
+            <h2 className="text-xl sm:text-2xl font-bold text-white drop-shadow-sm">Edit Persona</h2>
             <button
               onClick={onClose}
-              className="text-white/70 hover:text-white transition-all duration-300 hover:scale-110"
+              className="text-white/70 hover:text-white transition-all duration-300 hover:scale-110 text-2xl sm:text-xl w-8 h-8 flex items-center justify-center"
             >
               ✕
             </button>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
             {/* Name Field */}
             <div>
               <label className="block text-sm font-medium text-white mb-2">

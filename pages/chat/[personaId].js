@@ -161,8 +161,8 @@ export default function ChatPage() {
         <ParticlesBackground />
         <Navbar />
         <SidePanel />
-        <div className="relative min-h-screen bg-black-primary flex items-center justify-center pl-72 z-10">
-          <p className="text-text-secondary">Loading persona...</p>
+        <div className="relative min-h-screen bg-black-primary flex items-center justify-center lg:pl-72 z-10">
+          <p className="text-text-secondary text-sm sm:text-base">Loading persona...</p>
         </div>
       </>
     )
@@ -178,7 +178,7 @@ export default function ChatPage() {
       <Navbar />
       <SidePanel />
 
-      <div className="relative z-10 pl-72 pt-16">
+      <div className="relative z-10 lg:pl-72 pt-14 sm:pt-16">
         <ChatInterface persona={persona} onSendMessage={handleSendMessage} />
       </div>
     </>
