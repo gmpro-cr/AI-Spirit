@@ -47,6 +47,11 @@ export default function CreatePersonaModal({ isOpen, onClose, onPersonaCreated }
         const avatarUrl = formData.avatarUrl ||
           `https://ui-avatars.com/api/?name=${encodeURIComponent(formData.name)}&size=400&background=4F46E5&color=fff&bold=true&format=png`
 
+        // Generate bio from system prompt (required field)
+        const bio = formData.systemPrompt.length > 200
+          ? formData.systemPrompt.substring(0, 200) + '...'
+          : formData.systemPrompt
+
         const { data, error } = await supabase
           .from('personas')
           .insert({
@@ -54,6 +59,7 @@ export default function CreatePersonaModal({ isOpen, onClose, onPersonaCreated }
             slug: newPersona.slug,
             category: newPersona.category,
             short_description: newPersona.description,
+            bio: bio,
             avatar_url: avatarUrl,
             system_prompt: newPersona.system_prompt,
             is_custom: true,

@@ -45,11 +45,17 @@ export default function EditPersonaModal({ isOpen, onClose, persona, onPersonaUp
         const avatarUrl = formData.avatarUrl ||
           `https://ui-avatars.com/api/?name=${encodeURIComponent(formData.name)}&size=400&background=4F46E5&color=fff&bold=true&format=png`
 
+        // Generate bio from system prompt (required field)
+        const bio = formData.systemPrompt.length > 200
+          ? formData.systemPrompt.substring(0, 200) + '...'
+          : formData.systemPrompt
+
         const { data, error } = await supabase
           .from('personas')
           .update({
             name: formData.name,
             short_description: formData.description,
+            bio: bio,
             avatar_url: avatarUrl,
             system_prompt: formData.systemPrompt
           })
