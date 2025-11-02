@@ -27,10 +27,6 @@ export default function CreatePersonaModal({ isOpen, onClose, onPersonaCreated }
     try {
       const slug = formData.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')
 
-      // For now, save to localStorage for both authenticated and guest users
-      // Database migration for custom personas needs to be run first
-      console.log('Saving to localStorage')
-
       const newPersona = {
         name: formData.name,
         slug: `custom-${slug}-${Date.now()}`,
@@ -43,12 +39,43 @@ export default function CreatePersonaModal({ isOpen, onClose, onPersonaCreated }
         created_at: new Date().toISOString()
       }
 
-      const customPersonas = JSON.parse(localStorage.getItem('esperit_custom_personas') || '[]')
-      customPersonas.push(newPersona)
-      localStorage.setItem('esperit_custom_personas', JSON.stringify(customPersonas))
-      console.log('Persona saved to localStorage:', newPersona)
+      // Save to database for authenticated users
+      if (user) {
+        console.log('Saving to database for authenticated user')
 
-      onPersonaCreated(newPersona)
+        const { data, error } = await supabase
+          .from('personas')
+          .insert({
+            name: newPersona.name,
+            slug: newPersona.slug,
+            category: newPersona.category,
+            short_description: newPersona.description,
+            avatar_url: newPersona.avatar_url,
+            system_prompt: newPersona.system_prompt,
+            is_custom: true,
+            user_id: user.id
+          })
+          .select()
+          .single()
+
+        if (error) {
+          console.error('Database error:', error)
+          throw new Error(`Database error: ${error.message}`)
+        }
+
+        console.log('Persona saved to database:', data)
+        onPersonaCreated(data)
+      } else {
+        // Save to localStorage for guest users
+        console.log('Saving to localStorage for guest user')
+
+        const customPersonas = JSON.parse(localStorage.getItem('esperit_custom_personas') || '[]')
+        customPersonas.push(newPersona)
+        localStorage.setItem('esperit_custom_personas', JSON.stringify(customPersonas))
+        console.log('Persona saved to localStorage:', newPersona)
+
+        onPersonaCreated(newPersona)
+      }
 
       // Reset form and close
       setFormData({ name: '', description: '', avatarUrl: '', systemPrompt: '' })

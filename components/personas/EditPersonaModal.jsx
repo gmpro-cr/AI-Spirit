@@ -45,7 +45,7 @@ export default function EditPersonaModal({ isOpen, onClose, persona, onPersonaUp
           .from('personas')
           .update({
             name: formData.name,
-            description: formData.description,
+            short_description: formData.description,
             avatar_url: formData.avatarUrl || null,
             system_prompt: formData.systemPrompt
           })
