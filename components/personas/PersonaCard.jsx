@@ -1,7 +1,9 @@
 import Link from 'next/link'
 import Image from 'next/image'
+import { useAuth } from '@/context/AuthContext'
 
 export default function PersonaCard({ persona, onEdit }) {
+  const { user } = useAuth()
   const handleEditClick = (e) => {
     e.preventDefault() // Prevent navigation to chat
     e.stopPropagation()
@@ -49,8 +51,8 @@ export default function PersonaCard({ persona, onEdit }) {
         </div>
       </Link>
 
-      {/* Edit Button - Only for custom personas */}
-      {persona.is_custom && onEdit && (
+      {/* Edit Button - Only for custom personas owned by current user */}
+      {persona.is_custom && onEdit && user && persona.user_id === user.id && (
         <button
           onClick={handleEditClick}
           className="absolute top-2 right-2 z-20 w-8 h-8 bg-white/20 backdrop-blur-xl border-2 border-white/50 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 hover:bg-white/30 hover:border-white/70 transition-all duration-300 shadow-lg"

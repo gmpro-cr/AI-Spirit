@@ -42,21 +42,20 @@ export default function Personas() {
     const localCustom = JSON.parse(localStorage.getItem('esperit_custom_personas') || '[]')
     allPersonas = [...allPersonas, ...localCustom]
 
-    // Load custom personas from database (for authenticated users)
-    if (user) {
-      try {
-        const { data, error } = await supabase
-          .from('personas')
-          .select('*')
-          .eq('user_id', user.id)
-          .eq('is_custom', true)
+    // Load ALL custom personas from database (visible to everyone)
+    try {
+      const { data, error } = await supabase
+        .from('personas')
+        .select('*')
+        .eq('is_custom', true)
+        .order('created_at', { ascending: false })
 
-        if (!error && data) {
-          allPersonas = [...allPersonas, ...data]
-        }
-      } catch (error) {
-        console.error('Error loading custom personas:', error)
+      if (!error && data) {
+        // Add all custom personas from database
+        allPersonas = [...allPersonas, ...data]
       }
+    } catch (error) {
+      console.error('Error loading custom personas:', error)
     }
 
     setPersonas(allPersonas)
