@@ -41,12 +41,16 @@ export default function EditPersonaModal({ isOpen, onClose, persona, onPersonaUp
       if (user && persona.id) {
         console.log('Updating persona in database')
 
+        // Generate default avatar URL if none provided
+        const avatarUrl = formData.avatarUrl ||
+          `https://ui-avatars.com/api/?name=${encodeURIComponent(formData.name)}&size=400&background=4F46E5&color=fff&bold=true&format=png`
+
         const { data, error } = await supabase
           .from('personas')
           .update({
             name: formData.name,
             short_description: formData.description,
-            avatar_url: formData.avatarUrl || null,
+            avatar_url: avatarUrl,
             system_prompt: formData.systemPrompt
           })
           .eq('id', persona.id)

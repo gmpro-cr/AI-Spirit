@@ -43,6 +43,10 @@ export default function CreatePersonaModal({ isOpen, onClose, onPersonaCreated }
       if (user) {
         console.log('Saving to database for authenticated user')
 
+        // Generate default avatar URL if none provided
+        const avatarUrl = formData.avatarUrl ||
+          `https://ui-avatars.com/api/?name=${encodeURIComponent(formData.name)}&size=400&background=4F46E5&color=fff&bold=true&format=png`
+
         const { data, error } = await supabase
           .from('personas')
           .insert({
@@ -50,7 +54,7 @@ export default function CreatePersonaModal({ isOpen, onClose, onPersonaCreated }
             slug: newPersona.slug,
             category: newPersona.category,
             short_description: newPersona.description,
-            avatar_url: newPersona.avatar_url,
+            avatar_url: avatarUrl,
             system_prompt: newPersona.system_prompt,
             is_custom: true,
             user_id: user.id
