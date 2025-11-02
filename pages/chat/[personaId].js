@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import Head from 'next/head'
 import Navbar from '@/components/layout/Navbar'
 import ParticlesBackground from '@/components/layout/ParticlesBackground'
+import SidePanel from '@/components/layout/SidePanel'
 import ChatInterface from '@/components/chat/ChatInterface'
 import { useAuth } from '@/context/AuthContext'
 import { useChat } from '@/context/ChatContext'
@@ -12,32 +13,88 @@ export default function ChatPage() {
   const router = useRouter()
   const { personaId } = router.query
   const { user } = useAuth()
-  const { messages, setMessages, setIsLoading, addMessage } = useChat()
+  const { messages, setMessages, setIsLoading, addMessage, clearMessages } = useChat()
   const [persona, setPersona] = useState(null)
   const [conversationId, setConversationId] = useState(null)
   const [guestMessageCount, setGuestMessageCount] = useState(0)
 
   useEffect(() => {
-    if (personaId) {
-      // Find persona from local data
-      const found = INITIAL_PERSONAS.find(p => p.slug === personaId)
+    const loadPersona = async () => {
+      if (!personaId) return
+
+      // 1. Check INITIAL_PERSONAS (hardcoded personas)
+      let found = INITIAL_PERSONAS.find(p => p.slug === personaId)
+
+      // 2. Check localStorage for guest custom personas
+      if (!found) {
+        const customPersonas = JSON.parse(localStorage.getItem('esperit_custom_personas') || '[]')
+        found = customPersonas.find(p => p.slug === personaId)
+      }
+
+      // 3. Check database for authenticated user custom personas
+      if (!found && user) {
+        try {
+          const { supabase } = await import('@/lib/supabase')
+          const { data, error } = await supabase
+            .from('personas')
+            .select('*')
+            .eq('slug', personaId)
+            .single()
+
+          if (!error && data) {
+            found = data
+          }
+        } catch (error) {
+          console.error('Error loading persona from database:', error)
+        }
+      }
+
       if (found) {
         setPersona(found)
+
+        // Track recent personas
+        const recentPersonas = JSON.parse(localStorage.getItem('esperit_recent_personas') || '[]')
+
+        // Remove if already exists (to move to front)
+        const filtered = recentPersonas.filter(p => p.slug !== found.slug)
+
+        // Add to beginning of array
+        const updated = [{
+          name: found.name,
+          slug: found.slug,
+          category: found.category
+        }, ...filtered].slice(0, 10) // Keep only last 10
+
+        localStorage.setItem('esperit_recent_personas', JSON.stringify(updated))
       }
     }
-  }, [personaId])
+
+    loadPersona()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [personaId, user])
 
   useEffect(() => {
-    // Load guest messages from localStorage
-    if (!user && persona) {
-      const guestData = localStorage.getItem(`esperit_guest_${persona.slug}`)
-      if (guestData) {
-        const { messages: savedMessages, count } = JSON.parse(guestData)
-        setMessages(savedMessages || [])
-        setGuestMessageCount(count || 0)
+    // Clear messages when persona changes
+    if (persona) {
+      clearMessages()
+      setGuestMessageCount(0)
+
+      // Load guest messages from localStorage
+      if (!user) {
+        const guestData = localStorage.getItem(`esperit_guest_${persona.slug}`)
+        if (guestData) {
+          try {
+            const { messages: savedMessages, count } = JSON.parse(guestData)
+            setMessages(savedMessages || [])
+            setGuestMessageCount(count || 0)
+          } catch (error) {
+            console.error('Error loading guest data:', error)
+          }
+        }
       }
     }
-  }, [persona, user])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [persona?.slug, user])
 
   const handleSendMessage = async (messageText) => {
     if (!persona) return
@@ -59,8 +116,10 @@ export default function ChatPage() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          personaId: persona.id || persona.slug,
+          persona: persona, // Send full persona object
+          personaId: persona.id || persona.slug, // Keep for backward compatibility
           message: messageText,
+          conversationHistory: messages, // Send conversation history for context
           conversationId: conversationId,
           isGuest: !user,
         }),
@@ -101,7 +160,8 @@ export default function ChatPage() {
       <>
         <ParticlesBackground />
         <Navbar />
-        <div className="relative min-h-screen bg-black-primary flex items-center justify-center z-10">
+        <SidePanel />
+        <div className="relative min-h-screen bg-black-primary flex items-center justify-center pl-72 z-10">
           <p className="text-text-secondary">Loading persona...</p>
         </div>
       </>
@@ -116,23 +176,9 @@ export default function ChatPage() {
 
       <ParticlesBackground />
       <Navbar />
+      <SidePanel />
 
-      {/* Guest mode banner */}
-      {!user && (
-        <div className="fixed top-16 left-0 right-0 bg-neon-purple/20 border-b border-neon-purple/50 py-2 px-4 text-center z-40">
-          <p className="text-sm">
-            Guest Mode - {10 - guestMessageCount} messages left |{' '}
-            <button
-              onClick={() => router.push('/auth/signin')}
-              className="underline hover:text-neon-cyan"
-            >
-              Sign up to continue
-            </button>
-          </p>
-        </div>
-      )}
-
-      <div className={`relative z-10 ${user ? 'pt-16' : 'pt-24'}`}>
+      <div className="relative z-10 pl-72 pt-16">
         <ChatInterface persona={persona} onSendMessage={handleSendMessage} />
       </div>
     </>

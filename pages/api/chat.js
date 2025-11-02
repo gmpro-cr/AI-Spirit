@@ -8,10 +8,10 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { conversationId, personaId, message, isGuest } = req.body
+    const { conversationId, personaId, persona: personaObj, message, conversationHistory, isGuest } = req.body
 
     // Validate input
-    if (!message || !personaId) {
+    if (!message || (!personaId && !personaObj)) {
       return res.status(400).json({ error: 'Missing required fields' })
     }
 
@@ -23,24 +23,38 @@ export default async function handler(req, res) {
       })
     }
 
-    // Get persona
-    const { data: persona, error: personaError } = await supabaseAdmin
-      .from('personas')
-      .select('*')
-      .eq('id', personaId)
-      .single()
+    // Get persona: either from request body OR query database
+    let persona
+    if (personaObj) {
+      // Use persona object directly (for INITIAL_PERSONAS)
+      persona = personaObj
+    } else {
+      // Query database (for custom personas)
+      const { data, error: personaError} = await supabaseAdmin
+        .from('personas')
+        .select('*')
+        .eq('slug', personaId)
+        .single()
 
-    if (personaError || !persona) {
-      return res.status(404).json({ error: 'Persona not found' })
+      if (personaError || !data) {
+        return res.status(404).json({ error: 'Persona not found in database' })
+      }
+      persona = data
     }
 
     let messageHistory = []
 
-    // Guest mode: no database, limited context
+    // Guest mode: use conversation history from frontend
     if (isGuest) {
-      messageHistory = [{ role: 'user', content: message }]
+      // Use the conversation history sent from frontend + current message
+      messageHistory = [
+        ...(conversationHistory || []),
+        { role: 'user', content: message }
+      ]
+      // Limit to last 20 messages for performance
+      messageHistory = messageHistory.slice(-20)
     } else {
-      // Load conversation history
+      // Load conversation history from database
       const { data: history } = await supabaseAdmin
         .from('messages')
         .select('role, content')

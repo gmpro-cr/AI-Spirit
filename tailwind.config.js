@@ -17,7 +17,7 @@ module.exports = {
         'text-primary': '#FFFFFF',
         'text-secondary': '#A0A0A0',
         'text-muted': '#666666',
-        'glass-bg': 'rgba(20, 20, 20, 0.6)',
+        'glass-bg': 'rgba(255, 255, 255, 0.1)',
       },
       backgroundImage: {
         'gradient-accent': 'linear-gradient(135deg, #FFFFFF 0%, #E5E5E5 50%, #CCCCCC 100%)',
@@ -29,6 +29,15 @@ module.exports = {
       fontFamily: {
         sans: ['Inter', 'sans-serif'],
         hindi: ['Noto Sans Devanagari', 'sans-serif'],
+      },
+      keyframes: {
+        fadeIn: {
+          '0%': { opacity: '0', transform: 'translateY(10px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+      },
+      animation: {
+        fadeIn: 'fadeIn 0.3s ease-out',
       },
     },
   },

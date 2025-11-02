@@ -44,15 +44,33 @@ export default function SignIn() {
                 variables: {
                   default: {
                     colors: {
-                      brand: '#00F5FF',
-                      brandAccent: '#B026FF',
-                      defaultButtonBackground: '#0A0A0A',
-                      defaultButtonBackgroundHover: '#141414',
+                      brand: '#FFFFFF',
+                      brandAccent: '#E5E5E5',
+                      brandButtonText: '#000000',
+                      defaultButtonBackground: '#FFFFFF',
+                      defaultButtonBackgroundHover: '#E5E5E5',
+                      defaultButtonBorder: '#FFFFFF',
+                      defaultButtonText: '#000000',
                       inputBackground: '#141414',
                       inputBorder: '#333333',
-                      inputBorderHover: '#00F5FF',
-                      inputBorderFocus: '#00F5FF',
+                      inputBorderHover: '#FFFFFF',
+                      inputBorderFocus: '#FFFFFF',
+                      inputText: '#FFFFFF',
+                      inputPlaceholder: '#666666',
                     },
+                  },
+                },
+                style: {
+                  button: {
+                    borderRadius: '0.5rem',
+                    fontWeight: '600',
+                  },
+                  anchor: {
+                    color: '#FFFFFF',
+                    textDecoration: 'underline',
+                  },
+                  message: {
+                    color: '#666666',
                   },
                 },
               }}
