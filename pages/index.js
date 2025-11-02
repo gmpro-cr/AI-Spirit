@@ -7,7 +7,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Esperit.AI - Chat with Anyone, Real or Imagined</title>
+        <title>eSperit.Ai - Chat with Anyone, Real or Imagined</title>
         <meta name="description" content="Conversational AI platform with 45+ personas" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>

@@ -100,7 +100,7 @@ export default function Personas() {
   return (
     <>
       <Head>
-        <title>Personas - Esperit.AI</title>
+        <title>Personas - eSperit.Ai</title>
       </Head>
 
       <ParticlesBackground />

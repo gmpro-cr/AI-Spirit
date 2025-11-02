@@ -21,7 +21,7 @@ export default function SignIn() {
   return (
     <>
       <Head>
-        <title>Sign In - Esperit.AI</title>
+        <title>Sign In - eSperit.Ai</title>
       </Head>
 
       <ParticlesBackground />
@@ -33,7 +33,7 @@ export default function SignIn() {
             <h1 className="text-3xl font-bold mb-6 text-center">
               Welcome to{' '}
               <span className="bg-gradient-accent bg-clip-text text-transparent">
-                Esperit.AI
+                eSperit.Ai
               </span>
             </h1>
 
