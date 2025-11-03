@@ -23,13 +23,13 @@ export default function Navbar() {
           {shouldLogoRedirect ? (
             <Link href="/" className="flex items-center space-x-2 group">
               <span className="text-xl sm:text-2xl font-bold text-white group-hover:scale-105 transition-transform duration-200">
-                Spirit-AI
+                AI-Spirit
               </span>
             </Link>
           ) : (
             <div className="flex items-center space-x-2">
               <span className="text-xl sm:text-2xl font-bold text-white">
-                eSperit.Ai
+                AI-Spirit
               </span>
             </div>
           )}
