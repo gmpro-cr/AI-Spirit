@@ -23,7 +23,7 @@ export default function Navbar() {
           {shouldLogoRedirect ? (
             <Link href="/" className="flex items-center space-x-2 group">
               <span className="text-xl sm:text-2xl font-bold text-white group-hover:scale-105 transition-transform duration-200">
-                eSperit.Ai
+                Spirit-AI
               </span>
             </Link>
           ) : (
