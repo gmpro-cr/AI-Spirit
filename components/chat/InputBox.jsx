@@ -42,7 +42,7 @@ export default function InputBox({ onSend, disabled }) {
           onKeyPress={handleKeyPress}
           disabled={disabled}
           placeholder="Type your message..."
-          className="flex-1 min-w-0 bg-gradient-to-br from-white/15 via-white/10 to-white/8 backdrop-blur-2xl border border-white/30 rounded-2xl sm:rounded-3xl px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-base text-white placeholder:text-white/50 focus:from-white/22 focus:via-white/16 focus:to-white/12 focus:border-white/40 focus:outline-none shadow-[0_4px_16px_-2px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.1)] focus:shadow-[0_6px_24px_-2px_rgba(0,0,0,0.4),0_2px_8px_rgba(255,255,255,0.1),inset_0_1px_0_rgba(255,255,255,0.15)] transition-all duration-400 ease-premium disabled:opacity-50 disabled:cursor-not-allowed font-light tracking-wide"
+          className="flex-1 min-w-0 bg-black border border-white/30 rounded-2xl sm:rounded-3xl px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-base text-white placeholder:text-white/50 focus:border-white/50 focus:outline-none shadow-[0_4px_16px_-2px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.05)] focus:shadow-[0_6px_24px_-2px_rgba(0,0,0,0.5),0_2px_8px_rgba(255,255,255,0.1),inset_0_1px_0_rgba(255,255,255,0.1)] transition-all duration-400 ease-premium disabled:opacity-50 disabled:cursor-not-allowed font-light tracking-wide"
         />
         <button
           onClick={handleSend}
