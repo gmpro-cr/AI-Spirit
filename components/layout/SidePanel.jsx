@@ -81,7 +81,7 @@ export default function SidePanel() {
       {/* Mobile Menu Button */}
       <button
         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        className="lg:hidden fixed left-4 top-20 z-50 w-10 h-10 bg-gradient-to-br from-white/25 via-white/20 to-white/15 backdrop-blur-xl border-2 border-white/60 rounded-2xl flex items-center justify-center shadow-[0_4px_16px_0_rgba(0,0,0,0.3)] hover:shadow-[0_4px_20px_0_rgba(255,255,255,0.3)] transition-all duration-300"
+        className="lg:hidden fixed left-4 bottom-6 z-50 w-12 h-12 bg-gradient-to-br from-white/25 via-white/20 to-white/15 backdrop-blur-xl border-2 border-white/60 rounded-2xl flex items-center justify-center shadow-[0_4px_16px_0_rgba(0,0,0,0.3)] hover:shadow-[0_4px_20px_0_rgba(255,255,255,0.3)] transition-all duration-300"
       >
         <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           {isMobileMenuOpen ? (
