@@ -16,19 +16,19 @@ export default function Navbar() {
   const shouldLogoRedirect = !user || isHomePage
 
   return (
-    <nav className="fixed top-0 w-full bg-black-secondary/90 backdrop-blur-lg border-b border-white/10 z-50 shadow-lg">
+    <nav className="fixed top-0 w-full bg-black-secondary/95 backdrop-blur-2xl border-b border-white/10 z-50 shadow-[0_4px_24px_-2px_rgba(0,0,0,0.4),0_2px_8px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.08)]">
       <div className="w-full px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-14 sm:h-16">
+        <div className="flex justify-between items-center h-16 sm:h-18">
           {/* Logo - Extreme Left */}
           {shouldLogoRedirect ? (
             <Link href="/" className="flex items-center space-x-2 group">
-              <span className="text-xl sm:text-2xl font-bold text-white group-hover:scale-105 transition-transform duration-200">
+              <span className="text-xl sm:text-2xl font-bold text-white tracking-tight group-hover:scale-[1.02] transition-all duration-300 ease-premium bg-gradient-to-br from-white to-white/90 bg-clip-text">
                 AI-Spirit
               </span>
             </Link>
           ) : (
             <div className="flex items-center space-x-2">
-              <span className="text-xl sm:text-2xl font-bold text-white">
+              <span className="text-xl sm:text-2xl font-bold text-white tracking-tight bg-gradient-to-br from-white to-white/90 bg-clip-text">
                 AI-Spirit
               </span>
             </div>
@@ -40,12 +40,13 @@ export default function Navbar() {
               {!user ? (
                 <Link
                   href="/auth/signin"
-                  className="relative bg-gradient-to-br from-white/20 via-white/15 to-white/10 backdrop-blur-xl border-2 border-white/50 text-white font-semibold px-4 sm:px-6 py-1.5 sm:py-2 text-sm sm:text-base rounded-3xl hover:from-white/30 hover:via-white/25 hover:to-white/15 hover:border-white/70 shadow-[0_4px_16px_0_rgba(0,0,0,0.3)] hover:shadow-[0_4px_20px_0_rgba(255,255,255,0.3)] transition-all duration-300 before:absolute before:inset-0 before:rounded-3xl before:bg-gradient-to-tr before:from-white/25 before:via-transparent before:to-transparent before:opacity-60 before:pointer-events-none after:absolute after:inset-[1px] after:rounded-3xl after:bg-gradient-to-br after:from-transparent after:via-white/5 after:to-white/10 after:pointer-events-none"
+                  className="group relative bg-gradient-to-br from-white/15 via-white/10 to-white/8 backdrop-blur-xl border border-white/30 text-white font-medium px-5 sm:px-7 py-2 sm:py-2.5 text-sm sm:text-base rounded-full hover:from-white/25 hover:via-white/18 hover:to-white/12 hover:border-white/50 transition-all duration-400 ease-premium hover:scale-[1.02] active:scale-[0.98] shadow-[0_4px_16px_-2px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.1)] hover:shadow-[0_6px_24px_-2px_rgba(0,0,0,0.4),0_2px_8px_rgba(255,255,255,0.1),inset_0_1px_0_rgba(255,255,255,0.15)] overflow-hidden"
                 >
-                  <span className="relative z-10 drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]">Sign In</span>
+                  <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-white/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400" />
+                  <span className="relative z-10 tracking-wide">Sign In</span>
                 </Link>
               ) : (
-                <div className="text-white text-xs sm:text-sm font-semibold truncate max-w-[150px] sm:max-w-none">
+                <div className="text-white/90 text-xs sm:text-sm font-medium truncate max-w-[150px] sm:max-w-none tracking-wide">
                   Welcome, {user.user_metadata?.full_name || user.email?.split('@')[0] || 'User'}
                 </div>
               )}

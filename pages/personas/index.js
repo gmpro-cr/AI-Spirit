@@ -110,36 +110,39 @@ export default function Personas() {
         <div className="max-w-7xl mx-auto">
           {/* Search and Create Button */}
           <div className="flex flex-col sm:flex-row gap-3 mb-6">
-            <div className="relative flex-1 bg-gradient-to-br from-white/15 via-white/10 to-white/5 backdrop-blur-2xl border-2 border-white/40 rounded-3xl shadow-[0_2px_8px_0_rgba(0,0,0,0.2)] transition-all duration-300 before:absolute before:inset-0 before:rounded-3xl before:bg-gradient-to-tr before:from-white/20 before:via-transparent before:to-transparent before:opacity-50 before:pointer-events-none after:absolute after:inset-[1px] after:rounded-3xl after:bg-gradient-to-br after:from-transparent after:via-white/5 after:to-white/10 after:pointer-events-none">
+            <div className="relative flex-1 bg-gradient-to-br from-white/12 via-white/8 to-white/4 backdrop-blur-2xl border border-white/25 rounded-3xl shadow-[0_4px_16px_-2px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.08)] transition-all duration-400 ease-premium focus-within:shadow-[0_6px_24px_-2px_rgba(0,0,0,0.4),0_2px_8px_rgba(255,255,255,0.1),inset_0_1px_0_rgba(255,255,255,0.12)] overflow-hidden">
+              <div className="absolute inset-0 rounded-3xl bg-gradient-to-tr from-white/12 via-transparent to-transparent opacity-50 pointer-events-none" />
               <input
                 type="text"
                 placeholder="Search personas..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="relative z-10 w-full bg-transparent border-none rounded-3xl px-4 sm:px-5 py-2.5 sm:py-3 text-sm sm:text-base text-white placeholder-white/60 focus:outline-none"
+                className="relative z-10 w-full bg-transparent border-none rounded-3xl px-5 sm:px-6 py-3 sm:py-3.5 text-sm sm:text-base text-white placeholder-white/50 focus:outline-none font-light tracking-wide"
               />
             </div>
             <button
               onClick={() => setIsModalOpen(true)}
-              className="relative bg-gradient-to-br from-white/20 via-white/15 to-white/10 backdrop-blur-xl border-2 border-white/50 text-white font-semibold px-5 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base rounded-3xl hover:from-white/30 hover:via-white/25 hover:to-white/15 hover:border-white/70 shadow-[0_4px_16px_0_rgba(0,0,0,0.3)] hover:shadow-[0_4px_20px_0_rgba(255,255,255,0.3)] transition-all duration-300 whitespace-nowrap before:absolute before:inset-0 before:rounded-3xl before:bg-gradient-to-tr before:from-white/30 before:via-transparent before:to-transparent before:opacity-60 before:pointer-events-none after:absolute after:inset-[1px] after:rounded-3xl after:bg-gradient-to-br after:from-transparent after:via-white/5 after:to-white/10 after:pointer-events-none"
+              className="group relative bg-gradient-to-br from-white/15 via-white/10 to-white/8 backdrop-blur-xl border border-white/30 text-white font-semibold px-6 sm:px-7 py-3 sm:py-3.5 text-sm sm:text-base rounded-full hover:from-white/25 hover:via-white/18 hover:to-white/12 hover:border-white/45 shadow-[0_4px_24px_-2px_rgba(0,0,0,0.4),0_2px_8px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.12)] hover:shadow-[0_6px_32px_-2px_rgba(0,0,0,0.5),0_4px_12px_rgba(255,255,255,0.12),inset_0_1px_0_rgba(255,255,255,0.18)] transition-all duration-400 ease-premium whitespace-nowrap overflow-hidden hover:scale-[1.02] active:scale-[0.98]"
             >
-              <span className="relative z-10 drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]">Create Persona</span>
+              <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-white/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400 pointer-events-none" />
+              <span className="relative z-10 tracking-wide">Create Persona</span>
             </button>
           </div>
 
           {/* Category Filter */}
-          <div className="flex flex-wrap gap-2 sm:gap-3 mb-6 sm:mb-8">
+          <div className="flex flex-wrap gap-2.5 sm:gap-3 mb-7 sm:mb-9">
             {categories.map(category => (
               <button
                 key={category}
                 onClick={() => setSelectedCategory(category)}
-                className={`relative px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm rounded-3xl backdrop-blur-2xl transition-all duration-300 shadow-[0_2px_8px_0_rgba(0,0,0,0.2)] before:absolute before:inset-0 before:rounded-3xl before:pointer-events-none after:absolute after:inset-[1px] after:rounded-3xl after:pointer-events-none ${
+                className={`group relative px-4 sm:px-5 py-2 sm:py-2.5 text-xs sm:text-sm rounded-full backdrop-blur-2xl transition-all duration-400 ease-premium overflow-hidden ${
                   selectedCategory === category
-                    ? 'bg-gradient-to-br from-white/25 via-white/20 to-white/15 border-2 border-white/60 text-white font-semibold hover:shadow-[0_2px_12px_0_rgba(255,255,255,0.3)] before:bg-gradient-to-tr before:from-white/30 before:via-transparent before:to-transparent before:opacity-60 after:bg-gradient-to-br after:from-transparent after:via-white/5 after:to-white/10'
-                    : 'bg-gradient-to-br from-white/15 via-white/10 to-white/5 border-2 border-white/40 text-white/90 hover:from-white/20 hover:via-white/15 hover:to-white/10 hover:border-white/50 hover:text-white before:bg-gradient-to-tr before:from-white/20 before:via-transparent before:to-transparent before:opacity-50 after:bg-gradient-to-br after:from-transparent after:via-white/3 after:to-white/8'
+                    ? 'bg-gradient-to-br from-white/18 via-white/14 to-white/10 border border-white/40 text-white font-semibold shadow-[0_4px_16px_-2px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.15)] hover:shadow-[0_6px_24px_-2px_rgba(0,0,0,0.4),0_2px_8px_rgba(255,255,255,0.1)] scale-[1.02]'
+                    : 'bg-gradient-to-br from-white/10 via-white/7 to-white/4 border border-white/20 text-white/80 font-medium hover:from-white/15 hover:via-white/11 hover:to-white/7 hover:border-white/30 hover:text-white shadow-[0_2px_12px_-2px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.08)] hover:shadow-[0_4px_16px_-2px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.12)] hover:scale-[1.02]'
                 }`}
               >
-                <span className="relative z-10 drop-shadow-sm">{category}</span>
+                <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-white/15 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400 pointer-events-none" />
+                <span className="relative z-10 tracking-wide">{category}</span>
               </button>
             ))}
           </div>

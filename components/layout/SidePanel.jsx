@@ -81,9 +81,10 @@ export default function SidePanel() {
       {/* Mobile Menu Button */}
       <button
         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        className="lg:hidden fixed left-4 bottom-6 z-50 w-12 h-12 bg-gradient-to-br from-white/25 via-white/20 to-white/15 backdrop-blur-xl border-2 border-white/60 rounded-2xl flex items-center justify-center shadow-[0_4px_16px_0_rgba(0,0,0,0.3)] hover:shadow-[0_4px_20px_0_rgba(255,255,255,0.3)] transition-all duration-300"
+        className="group lg:hidden fixed left-4 bottom-6 z-50 w-13 h-13 bg-gradient-to-br from-white/18 via-white/14 to-white/10 backdrop-blur-xl border border-white/35 rounded-2xl flex items-center justify-center shadow-[0_4px_24px_-2px_rgba(0,0,0,0.4),0_2px_8px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.15)] hover:shadow-[0_6px_32px_-2px_rgba(0,0,0,0.5),0_4px_12px_rgba(255,255,255,0.15)] transition-all duration-400 ease-premium hover:scale-105 active:scale-95 overflow-hidden"
       >
-        <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-white/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400 pointer-events-none" />
+        <svg className="w-5 h-5 text-white relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           {isMobileMenuOpen ? (
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
           ) : (
@@ -101,52 +102,55 @@ export default function SidePanel() {
       )}
 
       {/* Side Panel */}
-      <div className={`fixed left-0 top-14 sm:top-16 h-[calc(100vh-3.5rem)] sm:h-[calc(100vh-4rem)] w-64 bg-black border-r border-white/30 z-40 flex flex-col transition-transform duration-300 ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}>
+      <div className={`fixed left-0 top-14 sm:top-16 h-[calc(100vh-3.5rem)] sm:h-[calc(100vh-4rem)] w-64 bg-black-secondary/98 backdrop-blur-xl border-r border-white/15 z-40 flex flex-col transition-transform duration-400 ease-premium ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'} shadow-[4px_0_24px_-2px_rgba(0,0,0,0.5)]`}>
       {/* Action Buttons */}
-      <div className="p-4 border-b border-white/20 space-y-3">
+      <div className="p-4 border-b border-white/10 space-y-3">
         {/* Explore Button */}
         <Link
           href="/personas"
-          className="relative block w-full bg-gradient-to-br from-white/20 via-white/15 to-white/10 backdrop-blur-xl border-2 border-white/50 text-white text-sm font-semibold px-4 py-3 rounded-3xl hover:from-white/30 hover:via-white/25 hover:to-white/15 hover:border-white/70 shadow-[0_4px_16px_0_rgba(0,0,0,0.3)] hover:shadow-[0_4px_20px_0_rgba(255,255,255,0.3)] transition-all duration-300 before:absolute before:inset-0 before:rounded-3xl before:bg-gradient-to-tr before:from-white/25 before:via-transparent before:to-transparent before:opacity-60 before:pointer-events-none after:absolute after:inset-[1px] after:rounded-3xl after:bg-gradient-to-br after:from-transparent after:via-white/5 after:to-white/10 after:pointer-events-none text-center"
+          className="group relative block w-full bg-gradient-to-br from-white/15 via-white/10 to-white/8 backdrop-blur-xl border border-white/30 text-white text-sm font-semibold px-4 py-3 rounded-full hover:from-white/25 hover:via-white/18 hover:to-white/12 hover:border-white/45 shadow-[0_4px_24px_-2px_rgba(0,0,0,0.4),0_2px_8px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.12)] hover:shadow-[0_6px_32px_-2px_rgba(0,0,0,0.5),0_4px_12px_rgba(255,255,255,0.12)] transition-all duration-400 ease-premium text-center overflow-hidden hover:scale-[1.02] active:scale-[0.98]"
         >
-          <span className="relative z-10 drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]">Explore</span>
+          <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-white/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400 pointer-events-none" />
+          <span className="relative z-10 tracking-wide">Explore</span>
         </Link>
 
         {/* Create Persona Button */}
         <button
           onClick={handleCreatePersona}
-          className="relative w-full bg-gradient-to-br from-white/20 via-white/15 to-white/10 backdrop-blur-xl border-2 border-white/50 text-white text-sm font-semibold px-4 py-3 rounded-3xl hover:from-white/30 hover:via-white/25 hover:to-white/15 hover:border-white/70 shadow-[0_4px_16px_0_rgba(0,0,0,0.3)] hover:shadow-[0_4px_20px_0_rgba(255,255,255,0.3)] transition-all duration-300 before:absolute before:inset-0 before:rounded-3xl before:bg-gradient-to-tr before:from-white/25 before:via-transparent before:to-transparent before:opacity-60 before:pointer-events-none after:absolute after:inset-[1px] after:rounded-3xl after:bg-gradient-to-br after:from-transparent after:via-white/5 after:to-white/10 after:pointer-events-none"
+          className="group relative w-full bg-gradient-to-br from-white/15 via-white/10 to-white/8 backdrop-blur-xl border border-white/30 text-white text-sm font-semibold px-4 py-3 rounded-full hover:from-white/25 hover:via-white/18 hover:to-white/12 hover:border-white/45 shadow-[0_4px_24px_-2px_rgba(0,0,0,0.4),0_2px_8px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.12)] hover:shadow-[0_6px_32px_-2px_rgba(0,0,0,0.5),0_4px_12px_rgba(255,255,255,0.12)] transition-all duration-400 ease-premium overflow-hidden hover:scale-[1.02] active:scale-[0.98]"
         >
-          <span className="relative z-10 drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]">Create Persona</span>
+          <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-white/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400 pointer-events-none" />
+          <span className="relative z-10 tracking-wide">Create Persona</span>
         </button>
       </div>
 
       {/* Recent Chat History */}
       <div className="flex-1 overflow-y-auto p-4">
-        <h3 className="text-sm font-bold text-white mb-3">Recent Chats</h3>
+        <h3 className="text-sm font-bold text-white mb-4 tracking-tight">Recent Chats</h3>
 
         {recentPersonas.length > 0 ? (
-          <div className="space-y-2">
+          <div className="space-y-2.5">
             {recentPersonas.map((persona) => (
               <Link
                 key={persona.slug}
                 href={`/chat/${persona.slug}`}
-                className="relative block p-3 bg-gradient-to-br from-white/15 via-white/10 to-white/5 backdrop-blur-2xl border-2 border-white/40 rounded-3xl hover:from-white/25 hover:via-white/20 hover:to-white/10 hover:border-white/60 shadow-[0_4px_16px_0_rgba(0,0,0,0.3)] hover:shadow-[0_4px_20px_0_rgba(255,255,255,0.2)] transition-all duration-300 group before:absolute before:inset-0 before:rounded-3xl before:bg-gradient-to-tr before:from-white/25 before:via-transparent before:to-transparent before:opacity-50 before:pointer-events-none after:absolute after:inset-[1px] after:rounded-3xl after:bg-gradient-to-br after:from-transparent after:via-white/5 after:to-white/10 after:pointer-events-none"
+                className="group relative block p-3 bg-gradient-to-br from-white/10 via-white/7 to-white/4 backdrop-blur-2xl border border-white/20 rounded-2xl hover:from-white/18 hover:via-white/12 hover:to-white/8 hover:border-white/35 shadow-[0_4px_16px_-2px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.08)] hover:shadow-[0_6px_24px_-2px_rgba(0,0,0,0.4),0_2px_8px_rgba(255,255,255,0.1)] transition-all duration-400 ease-premium hover:scale-[1.02] overflow-hidden"
               >
-                <div className="relative z-10 flex items-start space-x-2">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-white/30 via-white/20 to-white/10 backdrop-blur-md border-2 border-white/50 flex items-center justify-center text-xs font-bold text-white group-hover:border-white/80 group-hover:shadow-[0_0_15px_rgba(255,255,255,0.3)] shadow-[inset_0_1px_3px_rgba(255,255,255,0.2)] transition-all duration-300 flex-shrink-0">
+                <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-white/12 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400 pointer-events-none" />
+                <div className="relative z-10 flex items-start space-x-2.5">
+                  <div className="w-9 h-9 rounded-full bg-gradient-to-br from-white/20 via-white/12 to-white/8 backdrop-blur-md border border-white/30 flex items-center justify-center text-xs font-bold text-white group-hover:border-white/50 shadow-[0_4px_12px_-2px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.15)] transition-all duration-400 flex-shrink-0">
                     {persona.name[0]}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-xs font-semibold text-white truncate drop-shadow-[0_1px_4px_rgba(255,255,255,0.2)]">
+                    <p className="text-xs font-semibold text-white truncate tracking-wide">
                       {persona.name}
                     </p>
                     {persona.lastMessage ? (
-                      <p className="text-xs text-white/70 truncate leading-tight mt-0.5">
+                      <p className="text-xs text-white/60 truncate leading-tight mt-1 font-light tracking-wide">
                         {persona.lastMessage}
                       </p>
                     ) : (
-                      <p className="text-xs text-white/50 italic truncate leading-tight mt-0.5">
+                      <p className="text-xs text-white/40 italic truncate leading-tight mt-1 font-light tracking-wide">
                         New chat
                       </p>
                     )}
@@ -156,29 +160,29 @@ export default function SidePanel() {
             ))}
           </div>
         ) : (
-          <p className="text-xs text-text-secondary">
+          <p className="text-xs text-white/50 font-light tracking-wide">
             No recent chats yet. Start chatting with a persona!
           </p>
         )}
       </div>
 
       {/* Footer - User Menu */}
-      <div className="relative border-t border-white/20">
+      <div className="relative border-t border-white/10">
         {user ? (
           <>
             {/* Clickable User Section */}
             <button
               onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-              className="w-full p-4 hover:bg-black-secondary transition text-left flex items-center justify-between"
+              className="w-full p-4 hover:bg-white/5 transition-all duration-400 ease-premium text-left flex items-center justify-between"
             >
               <div className="flex-1 min-w-0">
-                <h3 className="text-sm font-bold text-white truncate">
+                <h3 className="text-sm font-bold text-white truncate tracking-tight">
                   {displayName}
                 </h3>
-                <p className="text-xs text-text-secondary truncate">{user.email}</p>
+                <p className="text-xs text-white/60 truncate font-light tracking-wide">{user.email}</p>
               </div>
               <svg
-                className={`w-4 h-4 text-text-secondary transition-transform ${isUserMenuOpen ? 'rotate-180' : ''}`}
+                className={`w-4 h-4 text-white/50 transition-all duration-400 ${isUserMenuOpen ? 'rotate-180' : ''}`}
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -189,10 +193,11 @@ export default function SidePanel() {
 
             {/* Dropdown Menu */}
             {isUserMenuOpen && (
-              <div className="absolute bottom-full left-0 w-full bg-gradient-to-br from-white/15 via-white/10 to-white/5 backdrop-blur-2xl border-2 border-white/40 shadow-[0_8px_32px_0_rgba(0,0,0,0.4)] rounded-t-3xl overflow-hidden before:absolute before:inset-0 before:bg-gradient-to-tr before:from-white/20 before:via-transparent before:to-transparent before:opacity-50 before:pointer-events-none after:absolute after:inset-[1px] after:rounded-t-3xl after:bg-gradient-to-br after:from-transparent after:via-white/5 after:to-white/10 after:pointer-events-none">
+              <div className="absolute bottom-full left-0 w-full bg-gradient-to-br from-white/12 via-white/8 to-white/4 backdrop-blur-2xl border border-white/25 shadow-[0_-4px_24px_-2px_rgba(0,0,0,0.5),0_-2px_12px_rgba(0,0,0,0.4)] rounded-t-2xl overflow-hidden">
+                <div className="absolute inset-0 rounded-t-2xl bg-gradient-to-tr from-white/12 to-transparent opacity-50 pointer-events-none" />
                 <Link
                   href="/profile"
-                  className="relative z-10 block px-4 py-3 hover:bg-white/15 transition-all duration-300 text-sm text-white border-b border-white/30 drop-shadow-sm"
+                  className="relative z-10 block px-4 py-3.5 hover:bg-white/10 transition-all duration-400 ease-premium text-sm text-white border-b border-white/15 font-medium tracking-wide"
                   onClick={() => setIsUserMenuOpen(false)}
                 >
                   Profile Details
@@ -202,7 +207,7 @@ export default function SidePanel() {
                     setIsUserMenuOpen(false)
                     handleSignOut()
                   }}
-                  className="relative z-10 w-full px-4 py-3 hover:bg-white/15 transition-all duration-300 text-sm text-white text-left drop-shadow-sm"
+                  className="relative z-10 w-full px-4 py-3.5 hover:bg-white/10 transition-all duration-400 ease-premium text-sm text-white text-left font-medium tracking-wide"
                 >
                   Sign Out
                 </button>
@@ -213,9 +218,10 @@ export default function SidePanel() {
           <div className="p-4">
             <Link
               href="/auth/signin"
-              className="relative block w-full bg-gradient-to-br from-white/20 via-white/15 to-white/10 backdrop-blur-xl border-2 border-white/50 text-white text-center text-sm font-semibold px-4 py-2 rounded-3xl hover:from-white/30 hover:via-white/25 hover:to-white/15 hover:border-white/70 shadow-[0_4px_16px_0_rgba(0,0,0,0.3)] hover:shadow-[0_4px_20px_0_rgba(255,255,255,0.3)] transition-all duration-300 before:absolute before:inset-0 before:rounded-3xl before:bg-gradient-to-tr before:from-white/25 before:via-transparent before:to-transparent before:opacity-60 before:pointer-events-none after:absolute after:inset-[1px] after:rounded-3xl after:bg-gradient-to-br after:from-transparent after:via-white/5 after:to-white/10 after:pointer-events-none"
+              className="group relative block w-full bg-gradient-to-br from-white/15 via-white/10 to-white/8 backdrop-blur-xl border border-white/30 text-white text-center text-sm font-semibold px-4 py-2.5 rounded-full hover:from-white/25 hover:via-white/18 hover:to-white/12 hover:border-white/45 shadow-[0_4px_24px_-2px_rgba(0,0,0,0.4),0_2px_8px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.12)] hover:shadow-[0_6px_32px_-2px_rgba(0,0,0,0.5),0_4px_12px_rgba(255,255,255,0.12)] transition-all duration-400 ease-premium overflow-hidden hover:scale-[1.02] active:scale-[0.98]"
             >
-              <span className="relative z-10 drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]">Sign In</span>
+              <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-white/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400 pointer-events-none" />
+              <span className="relative z-10 tracking-wide">Sign In</span>
             </Link>
           </div>
         )}
