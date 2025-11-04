@@ -20,7 +20,7 @@ export default function Home() {
           {/* Hero Section */}
           <div className="text-center animate-fadeIn">
             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-6xl font-bold mb-6 sm:mb-8 px-2 tracking-tight leading-[1.1] bg-gradient-to-b from-white via-white to-white/80 bg-clip-text text-transparent drop-shadow-[0_0_40px_rgba(255,255,255,0.15)]">
-              Chat with Anyone Real or Imagined
+              Enter the world of AI Personas
             </h1>
             <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/70 mb-12 sm:mb-24 md:mb-48 max-w-3xl mx-auto leading-relaxed px-4 font-light tracking-tight">
               Engage with AI-powered personas - from business icons to historical figures,
