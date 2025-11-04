@@ -21,7 +21,7 @@ export default function SignIn() {
   return (
     <>
       <Head>
-        <title>Sign In - eSperit.Ai</title>
+        <title>Sign In - AI-Spirit</title>
       </Head>
 
       <ParticlesBackground />

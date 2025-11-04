@@ -99,7 +99,7 @@ export default function Personas() {
   return (
     <>
       <Head>
-        <title>Personas - eSperit.Ai</title>
+        <title>Personas - AI-Spirit</title>
       </Head>
 
       <ParticlesBackground />

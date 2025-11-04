@@ -171,7 +171,7 @@ export default function ChatPage() {
   return (
     <>
       <Head>
-        <title>Chat with {persona.name} - eSperit.Ai</title>
+        <title>Chat with {persona.name} - AI-Spirit</title>
       </Head>
 
       <ParticlesBackground />

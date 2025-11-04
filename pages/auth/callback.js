@@ -39,7 +39,7 @@ export default function AuthCallback() {
   return (
     <>
       <Head>
-        <title>Authenticating - Esperit.AI</title>
+        <title>Authenticating - AI-Spirit</title>
       </Head>
 
       <ParticlesBackground />
