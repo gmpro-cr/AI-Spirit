@@ -174,7 +174,7 @@ export default function EditPersonaModal({ isOpen, onClose, persona, onPersonaUp
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 placeholder="e.g., Albert Einstein, My Life Coach, Tech Expert"
-                className="w-full bg-gradient-to-br from-white/15 via-white/10 to-white/8 backdrop-blur-xl border border-white/30 rounded-3xl px-5 py-3.5 text-white placeholder-white/50 focus:from-white/22 focus:via-white/16 focus:to-white/12 focus:border-white/40 focus:outline-none shadow-[0_4px_16px_-2px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.1)] focus:shadow-[0_6px_24px_-2px_rgba(0,0,0,0.4),0_2px_8px_rgba(255,255,255,0.1),inset_0_1px_0_rgba(255,255,255,0.15)] transition-all duration-400 ease-premium font-light tracking-wide"
+                className="w-full bg-black border border-white/30 rounded-3xl px-5 py-3.5 text-white placeholder-white/50 focus:border-white/50 focus:outline-none shadow-[0_4px_16px_-2px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.05)] focus:shadow-[0_6px_24px_-2px_rgba(0,0,0,0.5),0_2px_8px_rgba(255,255,255,0.1),inset_0_1px_0_rgba(255,255,255,0.1)] transition-all duration-400 ease-premium font-light tracking-wide"
               />
             </div>
 
@@ -193,7 +193,7 @@ export default function EditPersonaModal({ isOpen, onClose, persona, onPersonaUp
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                 placeholder="e.g., Physics Genius, Life Coach, Tech Expert"
                 maxLength={50}
-                className="w-full bg-gradient-to-br from-white/15 via-white/10 to-white/8 backdrop-blur-xl border border-white/30 rounded-3xl px-5 py-3.5 text-white placeholder-white/50 focus:from-white/22 focus:via-white/16 focus:to-white/12 focus:border-white/40 focus:outline-none shadow-[0_4px_16px_-2px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.1)] focus:shadow-[0_6px_24px_-2px_rgba(0,0,0,0.4),0_2px_8px_rgba(255,255,255,0.1),inset_0_1px_0_rgba(255,255,255,0.15)] transition-all duration-400 ease-premium font-light tracking-wide"
+                className="w-full bg-black border border-white/30 rounded-3xl px-5 py-3.5 text-white placeholder-white/50 focus:border-white/50 focus:outline-none shadow-[0_4px_16px_-2px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.05)] focus:shadow-[0_6px_24px_-2px_rgba(0,0,0,0.5),0_2px_8px_rgba(255,255,255,0.1),inset_0_1px_0_rgba(255,255,255,0.1)] transition-all duration-400 ease-premium font-light tracking-wide"
               />
             </div>
 
@@ -210,7 +210,7 @@ export default function EditPersonaModal({ isOpen, onClose, persona, onPersonaUp
                 value={formData.avatarUrl}
                 onChange={(e) => setFormData({ ...formData, avatarUrl: e.target.value })}
                 placeholder="https://example.com/image.jpg"
-                className="w-full bg-gradient-to-br from-white/15 via-white/10 to-white/8 backdrop-blur-xl border border-white/30 rounded-3xl px-5 py-3.5 text-white placeholder-white/50 focus:from-white/22 focus:via-white/16 focus:to-white/12 focus:border-white/40 focus:outline-none shadow-[0_4px_16px_-2px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.1)] focus:shadow-[0_6px_24px_-2px_rgba(0,0,0,0.4),0_2px_8px_rgba(255,255,255,0.1),inset_0_1px_0_rgba(255,255,255,0.15)] transition-all duration-400 ease-premium font-light tracking-wide"
+                className="w-full bg-black border border-white/30 rounded-3xl px-5 py-3.5 text-white placeholder-white/50 focus:border-white/50 focus:outline-none shadow-[0_4px_16px_-2px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.05)] focus:shadow-[0_6px_24px_-2px_rgba(0,0,0,0.5),0_2px_8px_rgba(255,255,255,0.1),inset_0_1px_0_rgba(255,255,255,0.1)] transition-all duration-400 ease-premium font-light tracking-wide"
               />
               <p className="text-xs text-white/50 mt-2.5 font-light tracking-wide">
                 Tip: Use a direct image URL (jpg, png, etc.). Leave blank to use initials.
@@ -231,7 +231,7 @@ export default function EditPersonaModal({ isOpen, onClose, persona, onPersonaUp
                 onChange={(e) => setFormData({ ...formData, systemPrompt: e.target.value })}
                 placeholder="Example: You are Albert Einstein. Respond with wisdom about physics, curiosity about the universe, and occasional humor. Keep responses thoughtful and encouraging. Reference relativity and scientific thinking when relevant."
                 rows={8}
-                className="w-full bg-gradient-to-br from-white/15 via-white/10 to-white/8 backdrop-blur-xl border border-white/30 rounded-3xl px-5 py-3.5 text-white placeholder-white/50 focus:from-white/22 focus:via-white/16 focus:to-white/12 focus:border-white/40 focus:outline-none resize-none shadow-[0_4px_16px_-2px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.1)] focus:shadow-[0_6px_24px_-2px_rgba(0,0,0,0.4),0_2px_8px_rgba(255,255,255,0.1),inset_0_1px_0_rgba(255,255,255,0.15)] transition-all duration-400 ease-premium font-light tracking-wide leading-relaxed"
+                className="w-full bg-black border border-white/30 rounded-3xl px-5 py-3.5 text-white placeholder-white/50 focus:border-white/50 focus:outline-none resize-none shadow-[0_4px_16px_-2px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.05)] focus:shadow-[0_6px_24px_-2px_rgba(0,0,0,0.5),0_2px_8px_rgba(255,255,255,0.1),inset_0_1px_0_rgba(255,255,255,0.1)] transition-all duration-400 ease-premium font-light tracking-wide leading-relaxed"
               />
               <p className="text-xs text-white/50 mt-2.5 font-light tracking-wide">
                 Tip: Be specific about personality, knowledge areas, and response style
