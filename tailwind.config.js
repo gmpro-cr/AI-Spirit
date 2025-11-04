@@ -25,6 +25,7 @@ module.exports = {
       },
       backdropBlur: {
         'glass': '20px',
+        '3xl': '64px',
       },
       fontFamily: {
         sans: ['Inter', 'sans-serif'],
