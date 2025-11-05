@@ -178,7 +178,7 @@ export default function ChatPage() {
       <Navbar />
       <SidePanel />
 
-      <div className="relative z-10 lg:pl-72 pt-14 sm:pt-16">
+      <div className="relative z-10 lg:pl-72 pt-[68px] sm:pt-20">
         <ChatInterface persona={persona} onSendMessage={handleSendMessage} />
       </div>
     </>
