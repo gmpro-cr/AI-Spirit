@@ -96,6 +96,22 @@ export default function ChatPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [persona?.slug, user])
 
+  const handleNewChat = () => {
+    // Clear messages from context
+    clearMessages()
+    setGuestMessageCount(0)
+
+    // Clear messages from localStorage for guests
+    if (!user && persona) {
+      localStorage.removeItem(`esperit_guest_${persona.slug}`)
+    }
+
+    // For authenticated users, clear conversation ID
+    if (user) {
+      setConversationId(null)
+    }
+  }
+
   const handleSendMessage = async (messageText) => {
     if (!persona) return
 
@@ -179,7 +195,7 @@ export default function ChatPage() {
       <SidePanel />
 
       <div className="relative z-10 lg:pl-72 pt-20 sm:pt-[5.5rem]">
-        <ChatInterface persona={persona} onSendMessage={handleSendMessage} />
+        <ChatInterface persona={persona} onSendMessage={handleSendMessage} onNewChat={handleNewChat} />
       </div>
     </>
   )

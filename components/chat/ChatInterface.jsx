@@ -3,7 +3,7 @@ import MessageBubble from './MessageBubble'
 import InputBox from './InputBox'
 import { useChat } from '@/context/ChatContext'
 
-export default function ChatInterface({ persona, onSendMessage }) {
+export default function ChatInterface({ persona, onSendMessage, onNewChat }) {
   const { messages, isLoading } = useChat()
   const messagesEndRef = useRef(null)
 
@@ -14,6 +14,16 @@ export default function ChatInterface({ persona, onSendMessage }) {
   useEffect(() => {
     scrollToBottom()
   }, [messages])
+
+  const handleNewChat = () => {
+    if (messages.length === 0) return
+
+    if (confirm('Are you sure you want to start a new chat? Current conversation will be cleared.')) {
+      if (onNewChat) {
+        onNewChat()
+      }
+    }
+  }
 
   return (
     <div className="flex flex-col h-[calc(100vh-64px)] sm:h-[calc(100vh-72px)]">
@@ -29,6 +39,18 @@ export default function ChatInterface({ persona, onSendMessage }) {
           <h2 className="font-semibold text-base sm:text-lg text-white tracking-tight truncate">{persona.name}</h2>
           <p className="text-white/70 text-xs sm:text-sm truncate font-light">{persona.description}</p>
         </div>
+
+        {/* New Chat Button */}
+        {messages.length > 0 && (
+          <button
+            onClick={handleNewChat}
+            className="group relative z-10 bg-gradient-to-br from-white/15 via-white/10 to-white/8 backdrop-blur-xl border border-white/30 text-white text-xs sm:text-sm font-semibold px-3 sm:px-4 py-2 sm:py-2.5 rounded-full hover:from-white/25 hover:via-white/18 hover:to-white/12 hover:border-white/45 shadow-[0_4px_16px_-2px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.12)] hover:shadow-[0_6px_24px_-2px_rgba(0,0,0,0.4),0_2px_8px_rgba(255,255,255,0.12)] transition-all duration-400 ease-premium overflow-hidden hover:scale-[1.02] active:scale-[0.98] whitespace-nowrap"
+            title="Start a new conversation"
+          >
+            <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-white/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400 pointer-events-none" />
+            <span className="relative z-10 tracking-wide">New Chat</span>
+          </button>
+        )}
       </div>
 
       {/* Messages */}
