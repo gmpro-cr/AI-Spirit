@@ -33,7 +33,7 @@ export default function SignIn() {
             <h1 className="text-3xl font-bold mb-6 text-center">
               Welcome to{' '}
               <span className="bg-gradient-accent bg-clip-text text-transparent">
-                eSperit.Ai
+                AI-Spirit
               </span>
             </h1>
 
@@ -44,14 +44,14 @@ export default function SignIn() {
                 variables: {
                   default: {
                     colors: {
-                      brand: '#FFFFFF',
-                      brandAccent: '#E5E5E5',
-                      brandButtonText: '#000000',
-                      defaultButtonBackground: '#FFFFFF',
-                      defaultButtonBackgroundHover: '#E5E5E5',
-                      defaultButtonBorder: '#FFFFFF',
-                      defaultButtonText: '#000000',
-                      inputBackground: '#141414',
+                      brand: '#000000',
+                      brandAccent: '#1a1a1a',
+                      brandButtonText: '#FFFFFF',
+                      defaultButtonBackground: '#000000',
+                      defaultButtonBackgroundHover: '#1a1a1a',
+                      defaultButtonBorder: 'rgba(255, 255, 255, 0.3)',
+                      defaultButtonText: '#FFFFFF',
+                      inputBackground: '#000000',
                       inputBorder: '#333333',
                       inputBorderHover: '#FFFFFF',
                       inputBorderFocus: '#FFFFFF',

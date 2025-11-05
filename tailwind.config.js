@@ -25,6 +25,7 @@ module.exports = {
       },
       backdropBlur: {
         'glass': '20px',
+        '3xl': '64px',
       },
       fontFamily: {
         sans: ['Inter', 'sans-serif'],
@@ -35,9 +36,27 @@ module.exports = {
           '0%': { opacity: '0', transform: 'translateY(10px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
         },
+        shimmer: {
+          '0%': { backgroundPosition: '-200% 0' },
+          '100%': { backgroundPosition: '200% 0' },
+        },
+        float: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-4px)' },
+        },
       },
       animation: {
         fadeIn: 'fadeIn 0.3s ease-out',
+        shimmer: 'shimmer 3s ease-in-out infinite',
+        float: 'float 3s ease-in-out infinite',
+      },
+      transitionTimingFunction: {
+        'premium': 'cubic-bezier(0.4, 0, 0.2, 1)',
+        'smooth': 'cubic-bezier(0.45, 0, 0.55, 1)',
+      },
+      transitionDuration: {
+        '400': '400ms',
+        '600': '600ms',
       },
     },
   },
