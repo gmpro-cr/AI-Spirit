@@ -44,13 +44,13 @@ export default function SignIn() {
                 variables: {
                   default: {
                     colors: {
-                      brand: '#FFFFFF',
-                      brandAccent: '#E5E5E5',
-                      brandButtonText: '#000000',
-                      defaultButtonBackground: '#FFFFFF',
-                      defaultButtonBackgroundHover: '#E5E5E5',
-                      defaultButtonBorder: '#FFFFFF',
-                      defaultButtonText: '#000000',
+                      brand: '#000000',
+                      brandAccent: '#1a1a1a',
+                      brandButtonText: '#FFFFFF',
+                      defaultButtonBackground: '#000000',
+                      defaultButtonBackgroundHover: '#1a1a1a',
+                      defaultButtonBorder: 'rgba(255, 255, 255, 0.3)',
+                      defaultButtonText: '#FFFFFF',
                       inputBackground: '#000000',
                       inputBorder: '#333333',
                       inputBorderHover: '#FFFFFF',
