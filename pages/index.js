@@ -31,10 +31,9 @@ export default function Home() {
             <div className="flex flex-col sm:flex-row gap-4 sm:gap-5 justify-center px-4">
               <Link
                 href="/personas"
-                className="group relative bg-gradient-to-br from-white/20 via-white/15 to-white/10 backdrop-blur-2xl border border-white/40 text-white font-semibold text-base sm:text-lg px-10 sm:px-12 py-4 sm:py-5 rounded-full hover:from-white/30 hover:via-white/20 hover:to-white/15 hover:border-white/60 transition-all duration-400 ease-premium hover:scale-[1.02] active:scale-[0.98] shadow-[0_8px_32px_-4px_rgba(0,0,0,0.4),0_2px_8px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.15)] hover:shadow-[0_12px_48px_-4px_rgba(0,0,0,0.5),0_4px_16px_rgba(255,255,255,0.15),inset_0_1px_0_rgba(255,255,255,0.2)] overflow-hidden"
+                className="group relative bg-gradient-to-br from-white/15 via-white/10 to-white/8 backdrop-blur-xl border border-white/30 text-white font-semibold text-base sm:text-lg px-10 sm:px-12 py-4 sm:py-5 rounded-full hover:from-white/25 hover:via-white/18 hover:to-white/12 hover:border-white/45 shadow-[0_4px_24px_-2px_rgba(0,0,0,0.4),0_2px_8px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.12)] hover:shadow-[0_6px_32px_-2px_rgba(0,0,0,0.5),0_4px_12px_rgba(255,255,255,0.12),inset_0_1px_0_rgba(255,255,255,0.18)] transition-all duration-400 ease-premium hover:scale-[1.02] active:scale-[0.98] whitespace-nowrap overflow-hidden"
               >
-                <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-white/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400" />
-                <div className="absolute inset-0 rounded-full bg-gradient-to-br from-transparent via-white/5 to-white/10" />
+                <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-white/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400 pointer-events-none" />
                 <span className="relative z-10 tracking-wide">Start Chatting</span>
               </Link>
             </div>
