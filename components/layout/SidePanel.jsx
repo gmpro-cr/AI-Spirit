@@ -9,7 +9,6 @@ export default function SidePanel() {
   const [recentPersonas, setRecentPersonas] = useState([])
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false)
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   useEffect(() => {
     // Load recent personas with chat history from localStorage
@@ -78,31 +77,8 @@ export default function SidePanel() {
 
   return (
     <>
-      {/* Mobile Menu Button */}
-      <button
-        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        className="group lg:hidden fixed left-4 bottom-6 z-50 w-13 h-13 bg-gradient-to-br from-white/18 via-white/14 to-white/10 backdrop-blur-xl border border-white/35 rounded-2xl flex items-center justify-center shadow-[0_4px_24px_-2px_rgba(0,0,0,0.4),0_2px_8px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.15)] hover:shadow-[0_6px_32px_-2px_rgba(0,0,0,0.5),0_4px_12px_rgba(255,255,255,0.15)] transition-all duration-400 ease-premium hover:scale-105 active:scale-95 overflow-hidden"
-      >
-        <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-white/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400 pointer-events-none" />
-        <svg className="w-5 h-5 text-white relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          {isMobileMenuOpen ? (
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-          ) : (
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-          )}
-        </svg>
-      </button>
-
-      {/* Mobile Overlay */}
-      {isMobileMenuOpen && (
-        <div
-          className="lg:hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-40"
-          onClick={() => setIsMobileMenuOpen(false)}
-        />
-      )}
-
       {/* Side Panel */}
-      <div className={`fixed left-0 top-16 sm:top-[4.5rem] h-[calc(100vh-4rem)] sm:h-[calc(100vh-4.5rem)] w-64 bg-black-secondary/98 backdrop-blur-xl border-r border-white/15 z-40 flex flex-col transition-transform duration-400 ease-premium ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'} shadow-[4px_0_24px_-2px_rgba(0,0,0,0.5)]`}>
+      <div className="fixed left-0 top-16 sm:top-[4.5rem] h-[calc(100vh-4rem)] sm:h-[calc(100vh-4.5rem)] w-64 bg-black-secondary/98 backdrop-blur-xl border-r border-white/15 z-40 flex flex-col transition-transform duration-400 ease-premium -translate-x-full lg:translate-x-0 shadow-[4px_0_24px_-2px_rgba(0,0,0,0.5)]">
       {/* Action Buttons */}
       <div className="p-4 border-b border-white/10 space-y-3">
         {/* Explore Button */}
