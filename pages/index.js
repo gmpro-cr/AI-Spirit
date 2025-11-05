@@ -22,13 +22,13 @@ export default function Home() {
             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-6xl font-bold mb-6 sm:mb-8 px-2 tracking-tight leading-[1.1] bg-gradient-to-b from-white via-white to-white/80 bg-clip-text text-transparent drop-shadow-[0_0_40px_rgba(255,255,255,0.15)]">
               Enter the world of AI Personas
             </h1>
-            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/70 mb-12 sm:mb-24 md:mb-48 max-w-3xl mx-auto leading-relaxed px-4 font-light tracking-tight">
+            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/70 mb-32 sm:mb-24 md:mb-48 max-w-3xl mx-auto leading-relaxed px-4 font-light tracking-tight">
               Engage with AI-powered personas - from business icons to historical figures,
               celebrities to fictional characters.
             </p>
 
             {/* Login/Signup Options - Moved Down */}
-            <div className="flex flex-col sm:flex-row gap-4 sm:gap-5 justify-center px-4">
+            <div className="flex flex-col sm:flex-row gap-4 sm:gap-5 justify-center px-4 mt-8 sm:mt-0">
               <Link
                 href="/personas"
                 className="group relative bg-gradient-to-br from-white/15 via-white/10 to-white/8 backdrop-blur-xl border border-white/30 text-white font-semibold text-base sm:text-lg px-10 sm:px-12 py-4 sm:py-5 rounded-full hover:from-white/25 hover:via-white/18 hover:to-white/12 hover:border-white/45 shadow-[0_4px_24px_-2px_rgba(0,0,0,0.4),0_2px_8px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.12)] hover:shadow-[0_6px_32px_-2px_rgba(0,0,0,0.5),0_4px_12px_rgba(255,255,255,0.12),inset_0_1px_0_rgba(255,255,255,0.18)] transition-all duration-400 ease-premium hover:scale-[1.02] active:scale-[0.98] whitespace-nowrap overflow-hidden"
