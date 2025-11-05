@@ -28,13 +28,13 @@ export default function InputBox({ onSend, disabled }) {
   }
 
   return (
-    <div className="border-t border-white/10 bg-black-secondary/95 backdrop-blur-2xl p-3 sm:p-5 shadow-[0_-4px_24px_-2px_rgba(0,0,0,0.4)]">
+    <div className="border-t border-white/10 bg-black-secondary/95 backdrop-blur-2xl p-2 sm:p-4 shadow-[0_-4px_24px_-2px_rgba(0,0,0,0.4)]">
       {error && (
         <div className="mb-3 text-red-400 text-xs sm:text-sm bg-red-500/10 border border-red-500/30 rounded-2xl px-3 sm:px-4 py-2 sm:py-2.5 font-light tracking-wide">
           {error}
         </div>
       )}
-      <div className="flex gap-2.5 sm:gap-3 w-full max-w-full">
+      <div className="flex gap-2 sm:gap-3 w-full max-w-full">
         <input
           type="text"
           value={input}
@@ -42,12 +42,12 @@ export default function InputBox({ onSend, disabled }) {
           onKeyPress={handleKeyPress}
           disabled={disabled}
           placeholder="Type your message..."
-          className="flex-1 min-w-0 bg-black border border-white/30 rounded-2xl sm:rounded-3xl px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-base text-white placeholder:text-white/50 focus:border-white/50 focus:outline-none shadow-[0_4px_16px_-2px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.05)] focus:shadow-[0_6px_24px_-2px_rgba(0,0,0,0.5),0_2px_8px_rgba(255,255,255,0.1),inset_0_1px_0_rgba(255,255,255,0.1)] transition-all duration-400 ease-premium disabled:opacity-50 disabled:cursor-not-allowed font-light tracking-wide"
+          className="flex-1 min-w-0 bg-black border border-white/30 rounded-2xl sm:rounded-3xl px-3 sm:px-5 py-3 sm:py-4 text-sm sm:text-base text-white placeholder:text-white/50 focus:border-white/50 focus:outline-none shadow-[0_4px_16px_-2px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.05)] focus:shadow-[0_6px_24px_-2px_rgba(0,0,0,0.5),0_2px_8px_rgba(255,255,255,0.1),inset_0_1px_0_rgba(255,255,255,0.1)] transition-all duration-400 ease-premium disabled:opacity-50 disabled:cursor-not-allowed font-light tracking-wide"
         />
         <button
           onClick={handleSend}
           disabled={disabled || !input.trim()}
-          className="group relative flex-shrink-0 bg-gradient-to-br from-white/18 via-white/14 to-white/10 backdrop-blur-xl border border-white/35 text-white font-semibold px-5 sm:px-10 py-3 sm:py-4 text-sm sm:text-base rounded-2xl sm:rounded-3xl hover:from-white/28 hover:via-white/22 hover:to-white/16 hover:border-white/50 shadow-[0_4px_24px_-2px_rgba(0,0,0,0.4),0_2px_8px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.15)] hover:shadow-[0_6px_32px_-2px_rgba(0,0,0,0.5),0_4px_12px_rgba(255,255,255,0.15),inset_0_1px_0_rgba(255,255,255,0.2)] transition-all duration-400 ease-premium disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none active:scale-95 overflow-hidden"
+          className="group relative flex-shrink-0 bg-gradient-to-br from-white/18 via-white/14 to-white/10 backdrop-blur-xl border border-white/35 text-white font-semibold px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-base rounded-2xl sm:rounded-3xl hover:from-white/28 hover:via-white/22 hover:to-white/16 hover:border-white/50 shadow-[0_4px_24px_-2px_rgba(0,0,0,0.4),0_2px_8px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.15)] hover:shadow-[0_6px_32px_-2px_rgba(0,0,0,0.5),0_4px_12px_rgba(255,255,255,0.15),inset_0_1px_0_rgba(255,255,255,0.2)] transition-all duration-400 ease-premium disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none active:scale-95 overflow-hidden"
         >
           <div className="absolute inset-0 rounded-2xl sm:rounded-3xl bg-gradient-to-tr from-white/25 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400 pointer-events-none" />
           <span className="relative z-10 tracking-wide">Send</span>

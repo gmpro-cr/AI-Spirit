@@ -79,7 +79,7 @@ export default function ChatInterface({ persona, onSendMessage, onNewChat }) {
 
         {isLoading && (
           <div className="flex justify-start mb-4">
-            <div className="relative bg-gradient-to-br from-white/12 via-white/8 to-white/4 backdrop-blur-2xl border border-white/25 px-5 py-3.5 rounded-3xl shadow-[0_4px_16px_-2px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.1)]">
+            <div className="relative bg-gradient-to-br from-white/12 via-white/8 to-white/4 backdrop-blur-2xl border border-white/25 px-4 sm:px-5 py-3 sm:py-3.5 rounded-3xl shadow-[0_4px_16px_-2px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.1)]">
               <div className="absolute inset-0 rounded-3xl bg-gradient-to-tr from-white/12 via-transparent to-transparent opacity-50 pointer-events-none" />
               <div className="relative z-10 flex space-x-2">
                 <div className="w-2 h-2 bg-gradient-to-br from-white via-white/90 to-white/80 rounded-full animate-bounce shadow-[0_0_8px_rgba(255,255,255,0.3)]" />
