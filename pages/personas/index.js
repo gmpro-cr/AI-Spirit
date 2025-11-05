@@ -106,7 +106,7 @@ export default function Personas() {
       <Navbar />
       <SidePanel />
 
-      <main className="relative min-h-screen bg-black-primary pt-20 pb-16 px-4 lg:pl-72 z-10">
+      <main className="relative min-h-screen bg-black-primary pt-[4.5rem] pb-16 px-4 lg:pl-72 z-10">
         <div className="max-w-7xl mx-auto">
           {/* Search and Create Button */}
           <div className="flex flex-col sm:flex-row gap-3 mb-6">

@@ -12,26 +12,23 @@ export default function Navbar() {
     router.push('/')
   }
 
-  // Determine if logo should be clickable
-  const shouldLogoRedirect = !user || isHomePage
-
   return (
     <nav className="fixed top-0 w-full bg-gradient-to-b from-white/10 via-white/[0.06] to-transparent backdrop-blur-3xl border-b border-white/30 z-50 shadow-[0_8px_32px_-4px_rgba(0,0,0,0.8),0_4px_16px_rgba(0,0,0,0.6),inset_0_2px_0_rgba(255,255,255,0.25),inset_0_-1px_0_rgba(255,255,255,0.08),0_0_40px_rgba(255,255,255,0.05)] relative overflow-hidden before:absolute before:inset-0 before:bg-gradient-to-b before:from-white/[0.12] before:via-white/[0.04] before:to-transparent before:pointer-events-none after:absolute after:inset-0 after:bg-gradient-to-r after:from-transparent after:via-white/[0.05] after:to-transparent after:pointer-events-none">
       <div className="w-full px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="flex justify-between items-center h-16 sm:h-18">
           {/* Logo - Extreme Left */}
-          {shouldLogoRedirect ? (
+          {isHomePage ? (
             <Link href="/" className="flex items-center space-x-2 group">
               <span className="text-xl sm:text-2xl font-bold text-white tracking-tight group-hover:scale-[1.02] transition-all duration-300 ease-premium bg-gradient-to-br from-white via-white to-white/90 bg-clip-text drop-shadow-[0_0_12px_rgba(255,255,255,0.4)] group-hover:drop-shadow-[0_0_20px_rgba(255,255,255,0.6)]">
                 AI-Spirit
               </span>
             </Link>
           ) : (
-            <div className="flex items-center space-x-2">
-              <span className="text-xl sm:text-2xl font-bold text-white tracking-tight bg-gradient-to-br from-white via-white to-white/90 bg-clip-text drop-shadow-[0_0_12px_rgba(255,255,255,0.4)]">
+            <Link href="/personas" className="flex items-center space-x-2 group">
+              <span className="text-xl sm:text-2xl font-bold text-white tracking-tight group-hover:scale-[1.02] transition-all duration-300 ease-premium bg-gradient-to-br from-white via-white to-white/90 bg-clip-text drop-shadow-[0_0_12px_rgba(255,255,255,0.4)] group-hover:drop-shadow-[0_0_20px_rgba(255,255,255,0.6)]">
                 AI-Spirit
               </span>
-            </div>
+            </Link>
           )}
 
           {/* Sign In/User Info - Upper Right (only on homepage) */}
