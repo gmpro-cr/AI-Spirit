@@ -106,10 +106,10 @@ export default function Personas() {
       <Navbar />
       <SidePanel />
 
-      <main className="relative min-h-screen bg-black-primary pt-20 sm:pt-[5.5rem] pb-16 px-4 lg:pl-72 z-10 overflow-x-hidden w-full">
-        <div className="max-w-7xl mx-auto">
-          {/* Search and Create Button */}
-          <div className="flex flex-col sm:flex-row gap-3 mb-6">
+      <main className="relative min-h-screen bg-black-primary pt-20 sm:pt-[5.5rem] pb-16 lg:pb-16 px-4 lg:pl-72 z-10 overflow-x-hidden w-full">
+        <div className="max-w-7xl mx-auto pb-28 lg:pb-0">
+          {/* Search and Create Button - Desktop only */}
+          <div className="hidden lg:flex flex-col sm:flex-row gap-3 mb-6">
             <div className="relative flex-1 bg-gradient-to-br from-white/12 via-white/8 to-white/4 backdrop-blur-2xl border border-white/25 rounded-3xl shadow-[0_4px_16px_-2px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.08)] transition-all duration-400 ease-premium focus-within:shadow-[0_6px_24px_-2px_rgba(0,0,0,0.4),0_2px_8px_rgba(255,255,255,0.1),inset_0_1px_0_rgba(255,255,255,0.12)] overflow-hidden">
               <div className="absolute inset-0 rounded-3xl bg-gradient-to-tr from-white/12 via-transparent to-transparent opacity-50 pointer-events-none" />
               <input
@@ -123,6 +123,17 @@ export default function Personas() {
             <button
               onClick={() => setIsModalOpen(true)}
               className="group relative bg-gradient-to-br from-white/15 via-white/10 to-white/8 backdrop-blur-xl border border-white/30 text-white font-semibold px-6 sm:px-7 py-3 sm:py-3.5 text-sm sm:text-base rounded-full hover:from-white/25 hover:via-white/18 hover:to-white/12 hover:border-white/45 shadow-[0_4px_24px_-2px_rgba(0,0,0,0.4),0_2px_8px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.12)] hover:shadow-[0_6px_32px_-2px_rgba(0,0,0,0.5),0_4px_12px_rgba(255,255,255,0.12),inset_0_1px_0_rgba(255,255,255,0.18)] transition-all duration-400 ease-premium whitespace-nowrap overflow-hidden hover:scale-[1.02] active:scale-[0.98]"
+            >
+              <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-white/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400 pointer-events-none" />
+              <span className="relative z-10 tracking-wide">Create Persona</span>
+            </button>
+          </div>
+
+          {/* Create Button - Mobile only at top */}
+          <div className="lg:hidden flex justify-end mb-4">
+            <button
+              onClick={() => setIsModalOpen(true)}
+              className="group relative bg-gradient-to-br from-white/15 via-white/10 to-white/8 backdrop-blur-xl border border-white/30 text-white font-semibold px-5 py-2.5 text-sm rounded-full hover:from-white/25 hover:via-white/18 hover:to-white/12 hover:border-white/45 shadow-[0_4px_24px_-2px_rgba(0,0,0,0.4),0_2px_8px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.12)] hover:shadow-[0_6px_32px_-2px_rgba(0,0,0,0.5),0_4px_12px_rgba(255,255,255,0.12),inset_0_1px_0_rgba(255,255,255,0.18)] transition-all duration-400 ease-premium whitespace-nowrap overflow-hidden hover:scale-[1.02] active:scale-[0.98]"
             >
               <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-white/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400 pointer-events-none" />
               <span className="relative z-10 tracking-wide">Create Persona</span>
@@ -163,6 +174,20 @@ export default function Personas() {
               No personas found matching your criteria
             </div>
           )}
+        </div>
+
+        {/* Search Bar - Mobile only at bottom */}
+        <div className="fixed bottom-0 left-0 right-0 lg:hidden z-30 bg-black-secondary/98 backdrop-blur-2xl border-t border-white/15 p-3 shadow-[0_-4px_24px_-2px_rgba(0,0,0,0.4)]">
+          <div className="relative bg-gradient-to-br from-white/12 via-white/8 to-white/4 backdrop-blur-2xl border border-white/25 rounded-3xl shadow-[0_4px_16px_-2px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.08)] transition-all duration-400 ease-premium focus-within:shadow-[0_6px_24px_-2px_rgba(0,0,0,0.4),0_2px_8px_rgba(255,255,255,0.1),inset_0_1px_0_rgba(255,255,255,0.12)] overflow-hidden">
+            <div className="absolute inset-0 rounded-3xl bg-gradient-to-tr from-white/12 via-transparent to-transparent opacity-50 pointer-events-none" />
+            <input
+              type="text"
+              placeholder="Search personas..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="relative z-10 w-full bg-transparent border-none rounded-3xl px-5 py-3 text-base text-white placeholder-white/50 focus:outline-none font-light tracking-wide"
+            />
+          </div>
         </div>
       </main>
 
