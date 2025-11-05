@@ -26,9 +26,9 @@ export default function ChatInterface({ persona, onSendMessage, onNewChat }) {
   }
 
   return (
-    <div className="relative h-full w-full overflow-hidden">
+    <div className="flex flex-col h-full w-full">
       {/* Persona Header - Fixed at top */}
-      <div className="absolute top-0 left-0 right-0 z-20 bg-gradient-to-br from-white/12 via-white/8 to-white/4 backdrop-blur-2xl border border-white/25 rounded-2xl sm:rounded-3xl p-4 sm:p-5 mx-3 sm:mx-4 mt-3 sm:mt-4 flex items-center space-x-3 sm:space-x-4 shadow-[0_4px_24px_-2px_rgba(0,0,0,0.4),0_2px_8px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.1)]">
+      <div className="flex-shrink-0 bg-gradient-to-br from-white/12 via-white/8 to-white/4 backdrop-blur-2xl border border-white/25 rounded-2xl sm:rounded-3xl p-4 sm:p-5 mx-3 sm:mx-4 mt-3 sm:mt-4 flex items-center space-x-3 sm:space-x-4 shadow-[0_4px_24px_-2px_rgba(0,0,0,0.4),0_2px_8px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.1)]">
         <div className="absolute inset-0 rounded-2xl sm:rounded-3xl bg-gradient-to-tr from-white/15 via-transparent to-transparent opacity-60 pointer-events-none" />
         <div className="absolute inset-[1px] rounded-2xl sm:rounded-3xl bg-gradient-to-br from-transparent via-white/3 to-white/8 pointer-events-none" />
 
@@ -54,7 +54,7 @@ export default function ChatInterface({ persona, onSendMessage, onNewChat }) {
       </div>
 
       {/* Messages - Scrollable middle section */}
-      <div className="absolute top-[88px] sm:top-[104px] bottom-[72px] sm:bottom-[88px] left-0 right-0 overflow-y-auto overflow-x-hidden px-3 sm:px-4">
+      <div className="flex-1 overflow-y-auto overflow-x-hidden px-3 sm:px-4 min-h-0">
         {messages.length === 0 && (
           <div className="text-center text-white/80 mt-4 sm:mt-8 px-2">
             <p className="mb-4 sm:mb-5 text-sm sm:text-base font-light tracking-wide">Start a conversation with {persona.name}</p>
@@ -94,7 +94,7 @@ export default function ChatInterface({ persona, onSendMessage, onNewChat }) {
       </div>
 
       {/* Input - Fixed at bottom */}
-      <div className="absolute bottom-0 left-0 right-0 z-20">
+      <div className="flex-shrink-0">
         <InputBox onSend={onSendMessage} disabled={isLoading} />
       </div>
     </div>
