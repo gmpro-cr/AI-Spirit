@@ -16,9 +16,9 @@ export default function ChatInterface({ persona, onSendMessage }) {
   }, [messages])
 
   return (
-    <div className="flex flex-col h-[calc(100vh-4rem)] sm:h-[calc(100vh-72px)]">
+    <div className="flex flex-col h-[calc(100vh-65px)]">
       {/* Persona Header */}
-      <div className="relative bg-gradient-to-br from-white/12 via-white/8 to-white/4 backdrop-blur-2xl border border-white/25 rounded-2xl sm:rounded-3xl p-4 sm:p-5 mx-3 sm:mx-4 mt-4 mb-3 sm:mb-4 flex items-center space-x-3 sm:space-x-4 shadow-[0_4px_24px_-2px_rgba(0,0,0,0.4),0_2px_8px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.1)]">
+      <div className="relative bg-gradient-to-br from-white/12 via-white/8 to-white/4 backdrop-blur-2xl border border-white/25 rounded-2xl sm:rounded-3xl p-4 sm:p-5 mx-3 sm:mx-4 mt-6 mb-3 sm:mb-4 flex items-center space-x-3 sm:space-x-4 shadow-[0_4px_24px_-2px_rgba(0,0,0,0.4),0_2px_8px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.1)]">
         <div className="absolute inset-0 rounded-2xl sm:rounded-3xl bg-gradient-to-tr from-white/15 via-transparent to-transparent opacity-60 pointer-events-none" />
         <div className="absolute inset-[1px] rounded-2xl sm:rounded-3xl bg-gradient-to-br from-transparent via-white/3 to-white/8 pointer-events-none" />
 
