@@ -32,8 +32,16 @@ export default function ChatInterface({ persona, onSendMessage, onNewChat }) {
         <div className="absolute inset-0 rounded-2xl sm:rounded-3xl bg-gradient-to-tr from-white/15 via-transparent to-transparent opacity-60 pointer-events-none" />
         <div className="absolute inset-[1px] rounded-2xl sm:rounded-3xl bg-gradient-to-br from-transparent via-white/3 to-white/8 pointer-events-none" />
 
-        <div className="relative z-10 w-11 h-11 sm:w-14 sm:h-14 rounded-full bg-gradient-to-br from-white/20 via-white/12 to-white/8 backdrop-blur-md border border-white/30 flex items-center justify-center text-lg sm:text-xl text-white font-bold shadow-[0_4px_16px_-2px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.2)]">
-          {persona.name[0]}
+        <div className="relative z-10 w-11 h-11 sm:w-14 sm:h-14 rounded-full bg-gradient-to-br from-white/20 via-white/12 to-white/8 backdrop-blur-md border border-white/30 flex items-center justify-center overflow-hidden text-lg sm:text-xl text-white font-bold shadow-[0_4px_16px_-2px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.2)]">
+          {persona.avatar_url ? (
+            <img
+              src={persona.avatar_url}
+              alt={persona.name}
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            persona.name[0]
+          )}
         </div>
         <div className="relative z-10 flex-1 min-w-0">
           <h2 className="font-semibold text-base sm:text-lg text-white tracking-tight truncate">{persona.name}</h2>
