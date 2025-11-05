@@ -102,7 +102,7 @@ export default function SidePanel() {
       )}
 
       {/* Side Panel */}
-      <div className={`fixed left-0 top-14 sm:top-16 h-[calc(100vh-3.5rem)] sm:h-[calc(100vh-4rem)] w-64 bg-black-secondary/98 backdrop-blur-xl border-r border-white/15 z-40 flex flex-col transition-transform duration-400 ease-premium ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'} shadow-[4px_0_24px_-2px_rgba(0,0,0,0.5)]`}>
+      <div className={`fixed left-0 top-16 sm:top-[4.5rem] h-[calc(100vh-4rem)] sm:h-[calc(100vh-4.5rem)] w-64 bg-black-secondary/98 backdrop-blur-xl border-r border-white/15 z-40 flex flex-col transition-transform duration-400 ease-premium ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'} shadow-[4px_0_24px_-2px_rgba(0,0,0,0.5)]`}>
       {/* Action Buttons */}
       <div className="p-4 border-b border-white/10 space-y-3">
         {/* Explore Button */}
