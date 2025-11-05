@@ -15,7 +15,7 @@ export default function Home() {
       <ParticlesBackground />
       <Navbar />
 
-      <main className="relative min-h-screen bg-gradient-dark pt-24 md:pt-32 pb-16 px-4 sm:px-6 z-10">
+      <main className="relative min-h-screen bg-gradient-dark pt-24 md:pt-32 pb-16 px-4 sm:px-6 z-10 overflow-x-hidden max-w-full">
         <div className="max-w-7xl mx-auto w-full">
           {/* Hero Section */}
           <div className="text-center animate-fadeIn">

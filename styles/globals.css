@@ -9,11 +9,16 @@
     @apply bg-black-primary text-text-primary antialiased;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+    max-width: 100vw;
   }
 
   body {
     @apply bg-black-primary min-h-screen;
     letter-spacing: -0.01em;
+    overflow-x: hidden;
+    max-width: 100vw;
+    position: relative;
   }
 
   * {
