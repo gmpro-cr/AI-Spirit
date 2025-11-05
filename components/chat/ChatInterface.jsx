@@ -54,7 +54,7 @@ export default function ChatInterface({ persona, onSendMessage, onNewChat }) {
       </div>
 
       {/* Messages - Scrollable middle section */}
-      <div className="flex-1 overflow-y-auto overflow-x-hidden px-3 sm:px-4 min-h-0">
+      <div className="flex-1 overflow-y-auto overflow-x-hidden px-3 sm:px-4 min-h-0" style={{ WebkitOverflowScrolling: 'touch', touchAction: 'pan-y' }}>
         {messages.length === 0 && (
           <div className="text-center text-white/80 mt-4 sm:mt-8 px-2">
             <p className="mb-4 sm:mb-5 text-sm sm:text-base font-light tracking-wide">Start a conversation with {persona.name}</p>

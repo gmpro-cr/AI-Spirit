@@ -18,6 +18,21 @@ export default function ChatPage() {
   const [conversationId, setConversationId] = useState(null)
   const [guestMessageCount, setGuestMessageCount] = useState(0)
 
+  // Prevent body scroll on chat page
+  useEffect(() => {
+    document.body.style.overflow = 'hidden'
+    document.body.style.position = 'fixed'
+    document.body.style.width = '100%'
+    document.body.style.height = '100%'
+
+    return () => {
+      document.body.style.overflow = ''
+      document.body.style.position = ''
+      document.body.style.width = ''
+      document.body.style.height = ''
+    }
+  }, [])
+
   useEffect(() => {
     const loadPersona = async () => {
       if (!personaId) return
@@ -188,14 +203,17 @@ export default function ChatPage() {
     <>
       <Head>
         <title>Chat with {persona.name} - AI-Spirit</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
       </Head>
 
       <ParticlesBackground />
       <Navbar />
       <SidePanel />
 
-      <div className="fixed left-0 right-0 top-16 sm:top-[4.5rem] bottom-0 z-10 lg:pl-72 overflow-hidden">
-        <ChatInterface persona={persona} onSendMessage={handleSendMessage} onNewChat={handleNewChat} />
+      <div className="fixed left-0 right-0 top-16 sm:top-[4.5rem] bottom-0 z-10 lg:pl-72 overflow-hidden" style={{ touchAction: 'none' }}>
+        <div className="h-full w-full" style={{ touchAction: 'pan-y' }}>
+          <ChatInterface persona={persona} onSendMessage={handleSendMessage} onNewChat={handleNewChat} />
+        </div>
       </div>
     </>
   )
