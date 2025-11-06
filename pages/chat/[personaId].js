@@ -210,10 +210,8 @@ export default function ChatPage() {
       <Navbar />
       <SidePanel />
 
-      <div className="relative z-10 lg:pl-72 h-screen flex flex-col">
-        <div className="pt-[65px] flex-1 overflow-hidden">
-          <ChatInterface persona={persona} onSendMessage={handleSendMessage} onNewChat={handleNewChat} />
-        </div>
+      <div className="relative z-10 lg:pl-72 pt-[65px]">
+        <ChatInterface persona={persona} onSendMessage={handleSendMessage} onNewChat={handleNewChat} />
       </div>
     </>
   )
