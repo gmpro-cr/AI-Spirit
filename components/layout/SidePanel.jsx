@@ -9,10 +9,18 @@ export default function SidePanel() {
   const [recentPersonas, setRecentPersonas] = useState([])
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [isMounted, setIsMounted] = useState(false)
+
+  // Handle mounting to prevent SSR issues
+  useEffect(() => {
+    setIsMounted(true)
+  }, [])
 
   useEffect(() => {
     // Load recent personas with chat history from localStorage
     const loadRecentChats = () => {
+      if (typeof window === 'undefined') return
       const recent = JSON.parse(localStorage.getItem('esperit_recent_personas') || '[]')
 
       // For each persona, get their last message from localStorage
@@ -74,6 +82,11 @@ export default function SidePanel() {
   }
 
   const displayName = getDisplayName()
+
+  // Don't render until mounted to avoid SSR hydration issues
+  if (!isMounted) {
+    return null
+  }
 
   return (
     <>
