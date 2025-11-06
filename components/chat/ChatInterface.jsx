@@ -26,9 +26,9 @@ export default function ChatInterface({ persona, onSendMessage, onNewChat }) {
   }
 
   return (
-    <div className="flex flex-col h-[calc(100dvh-65px)]">
+    <div className="fixed top-[65px] left-0 right-0 bottom-0 flex flex-col lg:left-72">
       {/* Persona Header */}
-      <div className="relative bg-gradient-to-br from-white/12 via-white/8 to-white/4 backdrop-blur-2xl border border-white/25 rounded-2xl sm:rounded-3xl p-3 sm:p-4 mx-3 sm:mx-4 mt-2 mb-2 sm:mb-3 flex items-center space-x-3 sm:space-x-4 shadow-[0_4px_24px_-2px_rgba(0,0,0,0.4),0_2px_8px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.1)]">
+      <div className="relative bg-gradient-to-br from-white/12 via-white/8 to-white/4 backdrop-blur-2xl border border-white/25 rounded-2xl sm:rounded-3xl p-3 sm:p-4 mx-3 sm:mx-4 mt-2 mb-2 flex items-center space-x-3 sm:space-x-4 shadow-[0_4px_24px_-2px_rgba(0,0,0,0.4),0_2px_8px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.1)]">
         <div className="absolute inset-0 rounded-2xl sm:rounded-3xl bg-gradient-to-tr from-white/15 via-transparent to-transparent opacity-60 pointer-events-none" />
         <div className="absolute inset-[1px] rounded-2xl sm:rounded-3xl bg-gradient-to-br from-transparent via-white/3 to-white/8 pointer-events-none" />
 
@@ -62,7 +62,7 @@ export default function ChatInterface({ persona, onSendMessage, onNewChat }) {
       </div>
 
       {/* Messages - Scrollable middle section */}
-      <div className={`overflow-y-auto overflow-x-hidden px-3 sm:px-4 min-h-0 ${messages.length > 0 ? 'flex-1' : ''}`} style={{ WebkitOverflowScrolling: 'touch', touchAction: 'pan-y' }}>
+      <div className="flex-1 overflow-y-auto overflow-x-hidden px-3 sm:px-4 min-h-0" style={{ WebkitOverflowScrolling: 'touch', touchAction: 'pan-y' }}>
         {messages.length === 0 && (
           <div className="text-center text-white/80 px-2 py-4">
             <p className="mb-4 text-sm sm:text-base font-light tracking-wide">Start a conversation with {persona.name}</p>

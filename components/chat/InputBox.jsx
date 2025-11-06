@@ -28,7 +28,7 @@ export default function InputBox({ onSend, disabled }) {
   }
 
   return (
-    <div className="border-t border-white/10 bg-black-secondary/95 backdrop-blur-2xl p-2 sm:p-4 shadow-[0_-4px_24px_-2px_rgba(0,0,0,0.4)]">
+    <div className="border-t border-white/10 bg-black-secondary/95 backdrop-blur-2xl p-2 sm:p-3 pb-3 sm:pb-4 shadow-[0_-4px_24px_-2px_rgba(0,0,0,0.4)]">
       {error && (
         <div className="mb-3 text-red-400 text-xs sm:text-sm bg-red-500/10 border border-red-500/30 rounded-2xl px-3 sm:px-4 py-2 sm:py-2.5 font-light tracking-wide">
           {error}
