@@ -27,11 +27,11 @@ async function deletePersonas() {
   for (const personaName of personasToDelete) {
     console.log(`\n📋 Searching for: ${personaName}`)
 
-    // Search for the persona
+    // Search for the persona (using pattern matching to handle trailing spaces)
     const { data: personas, error: searchError } = await supabase
       .from('personas')
       .select('*')
-      .ilike('name', personaName)
+      .ilike('name', `${personaName}%`)
 
     if (searchError) {
       console.error(`❌ Error searching for ${personaName}:`, searchError)

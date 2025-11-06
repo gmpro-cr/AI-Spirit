@@ -46,8 +46,8 @@ export default function ChatPage() {
         found = customPersonas.find(p => p.slug === personaId)
       }
 
-      // 3. Check database for authenticated user custom personas
-      if (!found && user) {
+      // 3. Check database for ALL custom personas (accessible to everyone)
+      if (!found) {
         try {
           const { supabase } = await import('@/lib/supabase')
           const { data, error } = await supabase

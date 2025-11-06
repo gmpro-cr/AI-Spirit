@@ -39,53 +39,52 @@ export default function CreatePersonaModal({ isOpen, onClose, onPersonaCreated }
         created_at: new Date().toISOString()
       }
 
-      // Save to database for authenticated users
-      if (user) {
-        console.log('Saving to database for authenticated user')
+      // Generate default avatar URL if none provided
+      const avatarUrl = formData.avatarUrl ||
+        `https://ui-avatars.com/api/?name=${encodeURIComponent(formData.name)}&size=400&background=4F46E5&color=fff&bold=true&format=png`
 
-        // Generate default avatar URL if none provided
-        const avatarUrl = formData.avatarUrl ||
-          `https://ui-avatars.com/api/?name=${encodeURIComponent(formData.name)}&size=400&background=4F46E5&color=fff&bold=true&format=png`
+      // Generate bio from system prompt (required field)
+      const bio = formData.systemPrompt.length > 200
+        ? formData.systemPrompt.substring(0, 200) + '...'
+        : formData.systemPrompt
 
-        // Generate bio from system prompt (required field)
-        const bio = formData.systemPrompt.length > 200
-          ? formData.systemPrompt.substring(0, 200) + '...'
-          : formData.systemPrompt
+      // Save to database for ALL users (authenticated and guest)
+      console.log(user ? 'Saving to database for authenticated user' : 'Saving to database for guest user')
 
-        const { data, error } = await supabase
-          .from('personas')
-          .insert({
-            name: newPersona.name,
-            slug: newPersona.slug,
-            category: newPersona.category,
-            short_description: newPersona.description,
-            bio: bio,
-            avatar_url: avatarUrl,
-            system_prompt: newPersona.system_prompt,
-            is_custom: true,
-            user_id: user.id
-          })
-          .select()
-          .single()
+      const personaData = {
+        name: newPersona.name,
+        slug: newPersona.slug,
+        category: newPersona.category,
+        short_description: newPersona.description,
+        bio: bio,
+        avatar_url: avatarUrl,
+        system_prompt: newPersona.system_prompt,
+        is_custom: true,
+        user_id: user?.id || null  // null for guest users
+      }
 
-        if (error) {
-          console.error('Database error:', error)
-          throw new Error(`Database error: ${error.message}`)
-        }
+      const { data, error } = await supabase
+        .from('personas')
+        .insert(personaData)
+        .select()
+        .single()
 
-        console.log('Persona saved to database:', data)
-        onPersonaCreated(data)
-      } else {
-        // Save to localStorage for guest users
-        console.log('Saving to localStorage for guest user')
+      if (error) {
+        console.error('Database error:', error)
+        throw new Error(`Database error: ${error.message}`)
+      }
 
+      console.log('Persona saved to database:', data)
+
+      // Also save to localStorage for guest users as backup
+      if (!user) {
         const customPersonas = JSON.parse(localStorage.getItem('esperit_custom_personas') || '[]')
         customPersonas.push(newPersona)
         localStorage.setItem('esperit_custom_personas', JSON.stringify(customPersonas))
-        console.log('Persona saved to localStorage:', newPersona)
-
-        onPersonaCreated(newPersona)
+        console.log('Persona also saved to localStorage backup')
       }
+
+      onPersonaCreated(data)
 
       // Reset form and close
       setFormData({ name: '', description: '', avatarUrl: '', systemPrompt: '' })
@@ -192,7 +191,11 @@ export default function CreatePersonaModal({ isOpen, onClose, onPersonaCreated }
             {/* Info Box */}
             <div className="relative bg-white/6 backdrop-blur-md border border-white/20 rounded-3xl p-4 shadow-[inset_0_2px_8px_rgba(0,0,0,0.2)] before:absolute before:inset-0 before:rounded-3xl before:bg-gradient-to-br before:from-white/5 before:to-transparent before:opacity-50 before:pointer-events-none">
               <p className="relative z-10 text-sm text-white/70 font-light tracking-wide">
-                ⚠️ Your custom persona will be saved to this browser only (localStorage). Database sync is not yet enabled.
+                {user ? (
+                  <>✅ Your custom persona will be saved to the database and synced across all your devices.</>
+                ) : (
+                  <>✅ Your custom persona will be saved to the database. Sign in to link it to your account for cross-device sync.</>
+                )}
               </p>
             </div>
 
