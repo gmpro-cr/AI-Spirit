@@ -106,7 +106,7 @@ export default function Personas() {
       <Navbar />
       <SidePanel />
 
-      <main className="relative min-h-screen bg-black-primary pb-16 px-4 lg:pl-72 z-10">
+      <main className="relative min-h-screen bg-black-primary pb-16 px-4 pt-20 lg:pt-0 lg:pl-72 z-10">
         <div className="max-w-7xl mx-auto">
           {/* Search and Create Button - Hidden on mobile, visible on desktop */}
           <div className="hidden lg:flex flex-col sm:flex-row gap-3 mb-6 mt-4">
