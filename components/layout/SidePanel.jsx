@@ -93,7 +93,7 @@ export default function SidePanel() {
       {/* Side Panel */}
       <div className={`fixed left-0 top-[65px] h-[calc(100vh-65px)] w-64 bg-black-secondary/98 backdrop-blur-xl border-r border-white/15 z-40 flex flex-col transition-transform duration-400 ease-premium ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'} shadow-[4px_0_24px_-2px_rgba(0,0,0,0.5)]`}>
       {/* Action Buttons */}
-      <div className="p-4 border-b border-white/10 space-y-3">
+      <div className="p-4 border-b border-white/10">
         {/* Explore Button */}
         <Link
           href="/personas"
@@ -102,15 +102,6 @@ export default function SidePanel() {
           <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-white/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400 pointer-events-none" />
           <span className="relative z-10 tracking-wide">Explore</span>
         </Link>
-
-        {/* Create Persona Button */}
-        <button
-          onClick={handleCreatePersona}
-          className="group relative w-full bg-gradient-to-br from-white/15 via-white/10 to-white/8 backdrop-blur-xl border border-white/30 text-white text-sm font-semibold px-4 py-3 rounded-full hover:from-white/25 hover:via-white/18 hover:to-white/12 hover:border-white/45 shadow-[0_4px_24px_-2px_rgba(0,0,0,0.4),0_2px_8px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.12)] hover:shadow-[0_6px_32px_-2px_rgba(0,0,0,0.5),0_4px_12px_rgba(255,255,255,0.12)] transition-all duration-400 ease-premium overflow-hidden hover:scale-[1.02] active:scale-[0.98]"
-        >
-          <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-white/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400 pointer-events-none" />
-          <span className="relative z-10 tracking-wide">Create Persona</span>
-        </button>
       </div>
 
       {/* Recent Chat History */}

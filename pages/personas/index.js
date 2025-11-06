@@ -129,16 +129,6 @@ export default function Personas() {
             </button>
           </div>
 
-          {/* Create Button - Mobile only at top */}
-          <div className="lg:hidden flex justify-end mb-4">
-            <button
-              onClick={() => setIsModalOpen(true)}
-              className="group relative bg-gradient-to-br from-white/15 via-white/10 to-white/8 backdrop-blur-xl border border-white/30 text-white font-semibold px-5 py-2.5 text-sm rounded-full hover:from-white/25 hover:via-white/18 hover:to-white/12 hover:border-white/45 shadow-[0_4px_24px_-2px_rgba(0,0,0,0.4),0_2px_8px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.12)] hover:shadow-[0_6px_32px_-2px_rgba(0,0,0,0.5),0_4px_12px_rgba(255,255,255,0.12),inset_0_1px_0_rgba(255,255,255,0.18)] transition-all duration-400 ease-premium whitespace-nowrap overflow-hidden hover:scale-[1.02] active:scale-[0.98]"
-            >
-              <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-white/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400 pointer-events-none" />
-              <span className="relative z-10 tracking-wide">Create Persona</span>
-            </button>
-          </div>
 
           {/* Category Filter */}
           <div className="flex flex-wrap gap-2.5 sm:gap-3 mb-7 sm:mb-9">
