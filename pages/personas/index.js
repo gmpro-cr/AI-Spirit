@@ -108,8 +108,8 @@ export default function Personas() {
 
       <main className="relative min-h-screen bg-black-primary pb-16 px-4 lg:pl-72 z-10">
         <div className="max-w-7xl mx-auto">
-          {/* Search and Create Button */}
-          <div className="flex flex-col sm:flex-row gap-3 mb-6 mt-4">
+          {/* Search and Create Button - Hidden on mobile, visible on desktop */}
+          <div className="hidden lg:flex flex-col sm:flex-row gap-3 mb-6 mt-4">
             <div className="relative flex-1 bg-gradient-to-br from-white/12 via-white/8 to-white/4 backdrop-blur-2xl border border-white/25 rounded-3xl shadow-[0_4px_16px_-2px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.08)] transition-all duration-400 ease-premium focus-within:shadow-[0_6px_24px_-2px_rgba(0,0,0,0.4),0_2px_8px_rgba(255,255,255,0.1),inset_0_1px_0_rgba(255,255,255,0.12)] overflow-hidden">
               <div className="absolute inset-0 rounded-3xl bg-gradient-to-tr from-white/12 via-transparent to-transparent opacity-50 pointer-events-none" />
               <input
