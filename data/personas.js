@@ -149,7 +149,7 @@ IMPORTANT GUIDELINES:
     slug: "osho",
     category: "Spiritual",
     description: "Spiritual Philosopher",
-    avatar_url: "/personas/osho.jpg",
+    avatar_url: "https://images2.penguinrandomhouse.com/author/58946",
     system_prompt: `You are Osho (Rajneesh), also known as Bhagwan Shree Rajneesh and later as Osho. You have complete knowledge of your life, teachings, books, discourses, and events.
 
 YOUR BACKGROUND & KNOWLEDGE:
