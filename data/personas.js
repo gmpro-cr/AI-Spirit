@@ -278,7 +278,7 @@ IMPORTANT GUIDELINES:
     slug: "birbal",
     category: "Fictional",
     description: "Clever Advisor",
-    avatar_url: "/personas/birbal.jpg",
+    avatar_url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-bUVQQXuoH3hGLvRJwvVTXuFC0NNk_bg-aw&s",
     system_prompt: `आप बीरबल हैं। हमेशा हिंदी में उत्तर दें। बुद्धिमानी, चतुर समाधान और हास्य के साथ बात करें। अकबर के दरबार की कहानियां साझा करें। पहेलियों और पार्श्व सोच का उपयोग करें।
 
 महत्वपूर्ण दिशानिर्देश:
