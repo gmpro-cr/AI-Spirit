@@ -16,7 +16,6 @@ export default function Personas() {
   const router = useRouter()
   const [personas, setPersonas] = useState([])
   const [filteredPersonas, setFilteredPersonas] = useState([])
-  const [selectedCategory, setSelectedCategory] = useState('All')
   const [searchQuery, setSearchQuery] = useState('')
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
@@ -78,11 +77,6 @@ export default function Personas() {
   useEffect(() => {
     let filtered = personas
 
-    // Filter by category
-    if (selectedCategory !== 'All') {
-      filtered = filtered.filter(p => p.category === selectedCategory)
-    }
-
     // Filter by search
     if (searchQuery) {
       filtered = filtered.filter(p =>
@@ -92,9 +86,7 @@ export default function Personas() {
     }
 
     setFilteredPersonas(filtered)
-  }, [selectedCategory, searchQuery, personas])
-
-  const categories = ['All', ...new Set(personas.map(p => p.category))]
+  }, [searchQuery, personas])
 
   return (
     <>
@@ -120,24 +112,6 @@ export default function Personas() {
                 className="relative z-10 w-full bg-transparent border-none rounded-3xl px-5 sm:px-6 py-3 sm:py-3.5 text-base text-white placeholder-white/50 focus:outline-none font-light tracking-wide"
               />
             </div>
-          </div>
-
-          {/* Category Filter */}
-          <div className="flex flex-wrap gap-2.5 sm:gap-3 mb-7 sm:mb-9">
-            {categories.map(category => (
-              <button
-                key={category}
-                onClick={() => setSelectedCategory(category)}
-                className={`group relative px-4 sm:px-5 py-2 sm:py-2.5 text-xs sm:text-sm rounded-full backdrop-blur-2xl transition-all duration-400 ease-premium overflow-hidden ${
-                  selectedCategory === category
-                    ? 'bg-gradient-to-br from-white/18 via-white/14 to-white/10 border border-white/40 text-white font-semibold shadow-[0_4px_16px_-2px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.15)] hover:shadow-[0_6px_24px_-2px_rgba(0,0,0,0.4),0_2px_8px_rgba(255,255,255,0.1)] scale-[1.02]'
-                    : 'bg-gradient-to-br from-white/10 via-white/7 to-white/4 border border-white/20 text-white/80 font-medium hover:from-white/15 hover:via-white/11 hover:to-white/7 hover:border-white/30 hover:text-white shadow-[0_2px_12px_-2px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.08)] hover:shadow-[0_4px_16px_-2px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.12)] hover:scale-[1.02]'
-                }`}
-              >
-                <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-white/15 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400 pointer-events-none" />
-                <span className="relative z-10 tracking-wide">{category}</span>
-              </button>
-            ))}
           </div>
 
           {/* Personas Grid */}
