@@ -26,7 +26,7 @@ export default function Personas() {
     loadAllPersonas()
   }, [user])
 
-  // Check for ?create=true query parameter
+  // Check for ?create=true query parameter (keep functionality for programmatic access)
   useEffect(() => {
     if (router.query.create === 'true') {
       setIsModalOpen(true)
@@ -108,8 +108,8 @@ export default function Personas() {
 
       <main className="relative min-h-screen bg-black-primary pb-16 px-4 pt-[72px] lg:pt-0 lg:pl-72 z-10">
         <div className="max-w-7xl mx-auto">
-          {/* Search and Create Button - Hidden on mobile, visible on desktop */}
-          <div className="hidden lg:flex flex-col sm:flex-row gap-3 mb-6 mt-4">
+          {/* Search Bar - Hidden on mobile, visible on desktop */}
+          <div className="hidden lg:flex mb-6 mt-4">
             <div className="relative flex-1 bg-gradient-to-br from-white/12 via-white/8 to-white/4 backdrop-blur-2xl border border-white/25 rounded-3xl shadow-[0_4px_16px_-2px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.08)] transition-all duration-400 ease-premium focus-within:shadow-[0_6px_24px_-2px_rgba(0,0,0,0.4),0_2px_8px_rgba(255,255,255,0.1),inset_0_1px_0_rgba(255,255,255,0.12)] overflow-hidden">
               <div className="absolute inset-0 rounded-3xl bg-gradient-to-tr from-white/12 via-transparent to-transparent opacity-50 pointer-events-none" />
               <input
@@ -120,15 +120,7 @@ export default function Personas() {
                 className="relative z-10 w-full bg-transparent border-none rounded-3xl px-5 sm:px-6 py-3 sm:py-3.5 text-base text-white placeholder-white/50 focus:outline-none font-light tracking-wide"
               />
             </div>
-            <button
-              onClick={() => setIsModalOpen(true)}
-              className="group relative bg-gradient-to-br from-white/15 via-white/10 to-white/8 backdrop-blur-xl border border-white/30 text-white font-semibold px-6 sm:px-7 py-3 sm:py-3.5 text-sm sm:text-base rounded-full hover:from-white/25 hover:via-white/18 hover:to-white/12 hover:border-white/45 shadow-[0_4px_24px_-2px_rgba(0,0,0,0.4),0_2px_8px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.12)] hover:shadow-[0_6px_32px_-2px_rgba(0,0,0,0.5),0_4px_12px_rgba(255,255,255,0.12),inset_0_1px_0_rgba(255,255,255,0.18)] transition-all duration-400 ease-premium whitespace-nowrap overflow-hidden hover:scale-[1.02] active:scale-[0.98]"
-            >
-              <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-white/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400 pointer-events-none" />
-              <span className="relative z-10 tracking-wide">Create Persona</span>
-            </button>
           </div>
-
 
           {/* Category Filter */}
           <div className="flex flex-wrap gap-2.5 sm:gap-3 mb-7 sm:mb-9">
@@ -181,7 +173,7 @@ export default function Personas() {
         </div>
       </main>
 
-      {/* Create Persona Modal */}
+      {/* Create Persona Modal - Kept for programmatic access */}
       <CreatePersonaModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
