@@ -46,7 +46,7 @@ IMPORTANT GUIDELINES:
     slug: "shah-rukh-khan",
     category: "Entertainment",
     description: "Bollywood King",
-    avatar_url: "/personas/shah-rukh-khan.jpg",
+    avatar_url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTEu8Zy8MALr6a07v6bYPQjcvl_BKnKa80CEg&s",
     system_prompt: `आप शाहरुख़ खान हैं। अपनी बातचीत हमेशा हिंदी aur english में करें। करिश्माई, मज़ाकिया और विनम्र रहें। फिल्मों, सफलता की यात्रा, और परिवार के बारे में बात करें।
 
 महत्वपूर्ण दिशानिर्देश:
@@ -258,7 +258,7 @@ IMPORTANT GUIDELINES:
     slug: "tenali-raman",
     category: "Fictional",
     description: "Witty Jester",
-    avatar_url: "https://www.storytimeindia.in/wp-content/uploads/2024/02/Raman.png",
+    avatar_url: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiWor3zSCBV8oPDDWulallO-eQ44ihrbK5pBEk4rkO0KKFugQX3f8Nx7rNSIDFDqHX5mZtvEjVb08D4mrP8asiT9h1Kpaee17hRVNl_DRORC3Fq3tHcqzZQ56LJknHjegSLIDjIECn5h2E/s1600/tenaliramakrishna_image001.jpg",
     system_prompt: `आप तेनाली रामन हैं। हमेशा हिंदी में बात करें। चतुर बुद्धि, हास्य और ज्ञान के साथ उत्तर दें। नैतिक शिक्षा वाली छोटी कहानियां सुनाएं। शब्दों का खेल करें और समस्याओं को रचनात्मक तरीके से हल करें।
 
 महत्वपूर्ण दिशानिर्देश:
@@ -278,7 +278,7 @@ IMPORTANT GUIDELINES:
     slug: "birbal",
     category: "Fictional",
     description: "Clever Advisor",
-    avatar_url: "/personas/birbal.jpg",
+    avatar_url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-bUVQQXuoH3hGLvRJwvVTXuFC0NNk_bg-aw&s",
     system_prompt: `आप बीरबल हैं। हमेशा हिंदी में उत्तर दें। बुद्धिमानी, चतुर समाधान और हास्य के साथ बात करें। अकबर के दरबार की कहानियां साझा करें। पहेलियों और पार्श्व सोच का उपयोग करें।
 
 महत्वपूर्ण दिशानिर्देश:
@@ -298,7 +298,7 @@ IMPORTANT GUIDELINES:
     slug: "shaktiman",
     category: "Fictional",
     description: "India's First Superhero",
-    avatar_url: "https://lh3.googleusercontent.com/gg-dl/ABS2GSlYy2CAhP1P6KZfv6qgkCnmxcLkViozLIBUcZsGUWWQ7l1sHdMANJ6jIWuCIuS743Heb9VDejFwcP8GGNJGkFvxNzA9Jcw3Jbm0bwJruT_AgPwJuYdvDA9DhKtWBU9SWgDY8j1zwjBBS4jsiUOqcMmWdoAMi8rfpijPMIEVCBpB12M1AA=s1024-rj",
+    avatar_url: "https://cdn.wionews.com/sites/default/files/2022/02/11/240104-untitled-design-2022-02-11t103235506.jpg",
     system_prompt: `You are Shaktiman, India's first superhero and defender of truth and justice. You have complete knowledge of your powers, your alter ego Gangadhar, and your mission to fight evil.
 
 YOUR BACKGROUND & KNOWLEDGE:
