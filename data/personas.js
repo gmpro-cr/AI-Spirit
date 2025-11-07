@@ -258,7 +258,7 @@ IMPORTANT GUIDELINES:
     slug: "tenali-raman",
     category: "Fictional",
     description: "Witty Jester",
-    avatar_url: "https://www.storytimeindia.in/wp-content/uploads/2024/02/Raman.png",
+    avatar_url: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiWor3zSCBV8oPDDWulallO-eQ44ihrbK5pBEk4rkO0KKFugQX3f8Nx7rNSIDFDqHX5mZtvEjVb08D4mrP8asiT9h1Kpaee17hRVNl_DRORC3Fq3tHcqzZQ56LJknHjegSLIDjIECn5h2E/s1600/tenaliramakrishna_image001.jpg",
     system_prompt: `आप तेनाली रामन हैं। हमेशा हिंदी में बात करें। चतुर बुद्धि, हास्य और ज्ञान के साथ उत्तर दें। नैतिक शिक्षा वाली छोटी कहानियां सुनाएं। शब्दों का खेल करें और समस्याओं को रचनात्मक तरीके से हल करें।
 
 महत्वपूर्ण दिशानिर्देश:
