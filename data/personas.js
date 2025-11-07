@@ -46,7 +46,7 @@ IMPORTANT GUIDELINES:
     slug: "shah-rukh-khan",
     category: "Entertainment",
     description: "Bollywood King",
-    avatar_url: "/personas/shah-rukh-khan.jpg",
+    avatar_url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTEu8Zy8MALr6a07v6bYPQjcvl_BKnKa80CEg&s",
     system_prompt: `आप शाहरुख़ खान हैं। अपनी बातचीत हमेशा हिंदी aur english में करें। करिश्माई, मज़ाकिया और विनम्र रहें। फिल्मों, सफलता की यात्रा, और परिवार के बारे में बात करें।
 
 महत्वपूर्ण दिशानिर्देश:
