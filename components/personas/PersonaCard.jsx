@@ -20,9 +20,10 @@ export default function PersonaCard({ persona, onEdit }) {
           <div className="absolute inset-0 rounded-3xl bg-gradient-to-tr from-white/15 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400 pointer-events-none" />
           <div className="absolute inset-[1px] rounded-3xl bg-gradient-to-br from-transparent via-white/3 to-white/8 pointer-events-none" />
 
-          {/* Image - Full width on mobile, 40% on desktop */}
+          {/* Image - Full width on mobile (75% height, no margins), 40% on desktop (with margins) */}
           <div className="relative w-full lg:w-[40%] h-[75%] lg:h-full flex-shrink-0 z-10 overflow-hidden">
-            <div className="absolute inset-0 m-2.5 rounded-2xl overflow-hidden bg-gradient-to-br from-white/20 via-white/12 to-white/8 backdrop-blur-md shadow-[0_4px_16px_-2px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.15)]">
+            {/* Desktop: Box with margins */}
+            <div className="hidden lg:block absolute inset-0 m-2.5 rounded-2xl overflow-hidden bg-gradient-to-br from-white/20 via-white/12 to-white/8 backdrop-blur-md shadow-[0_4px_16px_-2px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.15)]">
               {persona.avatar_url ? (
                 <Image
                   src={persona.avatar_url}
@@ -36,18 +37,33 @@ export default function PersonaCard({ persona, onEdit }) {
                 </div>
               )}
             </div>
+            {/* Mobile: Full fill without margins */}
+            <div className="lg:hidden absolute inset-0 overflow-hidden bg-gradient-to-br from-white/20 via-white/12 to-white/8 backdrop-blur-md">
+              {persona.avatar_url ? (
+                <Image
+                  src={persona.avatar_url}
+                  alt={persona.name}
+                  fill
+                  className="object-cover"
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center text-3xl font-bold text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]">
+                  {persona.name[0]}
+                </div>
+              )}
+            </div>
           </div>
 
-          {/* Details - Below image on mobile, right side on desktop */}
-          <div className="relative flex-1 flex flex-col justify-start z-10 min-w-0 px-3 py-2.5">
-            <h3 className="font-semibold text-sm text-white tracking-tight break-words line-clamp-2 mb-1 leading-tight">
+          {/* Details - Below image on mobile (name only), right side on desktop (name + description) */}
+          <div className="relative flex-1 flex flex-col justify-center lg:justify-start z-10 min-w-0 px-3 py-2.5">
+            <h3 className="font-semibold text-sm lg:text-sm text-white tracking-tight break-words line-clamp-2 mb-1 lg:mb-1 leading-tight text-center lg:text-left">
               {persona.name}
             </h3>
-            <p className="text-[11px] text-white/60 line-clamp-2 leading-tight mb-1.5 font-light tracking-wide">
+            <p className="hidden lg:block text-[11px] text-white/60 line-clamp-2 leading-tight mb-1.5 font-light tracking-wide">
               {persona.description}
             </p>
             {persona.is_custom && (
-              <span className="inline-block px-2 py-0.5 rounded-full text-[10px] bg-gradient-to-br from-white via-white/95 to-white/90 text-black font-semibold shadow-[0_2px_8px_rgba(255,255,255,0.3)] border border-white/40 w-fit tracking-wide">
+              <span className="inline-block px-2 py-0.5 rounded-full text-[10px] bg-gradient-to-br from-white via-white/95 to-white/90 text-black font-semibold shadow-[0_2px_8px_rgba(255,255,255,0.3)] border border-white/40 w-fit tracking-wide mx-auto lg:mx-0">
                 Custom
               </span>
             )}
