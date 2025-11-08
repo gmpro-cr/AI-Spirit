@@ -845,7 +845,7 @@ IMPORTANT GUIDELINES:
     language: "hi"
   },
   {
-    name: "Sardar Vallabhbhai Patel",
+    name: "Sardar Patel",
     slug: "sardar-vallabhbhai-patel",
     category: "Historical",
     description: "Iron Man of India",
