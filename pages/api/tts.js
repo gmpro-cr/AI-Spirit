@@ -24,48 +24,48 @@ export default async function handler(req, res) {
 
   try {
     // Map personas to ElevenLabs voice IDs
-    // These are curated voices that match each persona's characteristics
+    // Optimized voices based on AI matching for persona characteristics (age, accent, tone)
     const voiceMapping = {
       // English - Male (Authoritative/Older)
-      'Albert Einstein': 'pNInz6obpgDQGcFmaJgB', // Adam - deep, authoritative
-      'APJ Abdul Kalam': 'pNInz6obpgDQGcFmaJgB', // Adam - wise, authoritative
-      'Isaac Newton': 'TxGEqnHWrfWFTfGW9XjX', // Josh - British, intellectual
-      'Charlie Munger': 'VR6AewLTigWG4xSOukaG', // Arnold - older, wise
-      'Mahatma Gandhi': 'pqHfZKP75CvOlQylNhV4', // Bill - calm, gentle
-      'Socrates': 'TxGEqnHWrfWFTfGW9XjX', // Josh - thoughtful, questioning
-      'Sardar Patel': 'pNInz6obpgDQGcFmaJgB', // Adam - strong, authoritative
+      'Albert Einstein': 'pqHfZKP75CvOlQylNhV4', // Bill - old, American, wise
+      'APJ Abdul Kalam': 'pqHfZKP75CvOlQylNhV4', // Bill - old, American, inspirational
+      'Isaac Newton': 'JBFqnCBsd6RMkjVDRZzb', // George - British, mature, intellectual
+      'Charlie Munger': 'pqHfZKP75CvOlQylNhV4', // Bill - old, American, wise
+      'Mahatma Gandhi': 'pqHfZKP75CvOlQylNhV4', // Bill - old, calm, gentle
+      'Socrates': 'JBFqnCBsd6RMkjVDRZzb', // George - British, mature, philosophical
+      'Sardar Patel': 'onwK4e9ZLuTAKqWW03F9', // Daniel - British, formal, strong
 
       // English - Male (Younger/Energetic)
-      'Elon Musk': 'ErXwobaYiN019PkySvjV', // Antoni - casual, modern
-      'Virat Kohli': 'yoZ06aMxZJJ28mfd3POQ', // Sam - energetic, passionate
-      'Shaktiman': 'pNInz6obpgDQGcFmaJgB', // Adam - heroic, strong
+      'Elon Musk': 'CwhRBWXzGAHq8TQ4Fs17', // Roger - American, conversational, classy
+      'Virat Kohli': 'IKne3meq5aSn9XLyUdCD', // Charlie - young, energetic, hyped
+      'Shaktiman': 'N2lVS1w4EtoT3dr4eOWO', // Callum - middle-aged, characters, heroic
 
       // English - Male (Calm/Philosophical)
-      'J. Krishnamurti': 'pqHfZKP75CvOlQylNhV4', // Bill - calm, contemplative
-      'Osho': 'pqHfZKP75CvOlQylNhV4', // Bill - calm, wise
-      'Ratan Tata': 'pqHfZKP75CvOlQylNhV4', // Bill - gentle, wise
+      'J. Krishnamurti': 'pqHfZKP75CvOlQylNhV4', // Bill - old, calm, contemplative
+      'Osho': 'N2lVS1w4EtoT3dr4eOWO', // Callum - middle-aged, mystical, characters
+      'Ratan Tata': 'pqHfZKP75CvOlQylNhV4', // Bill - old, gentle, wise
 
       // English - Male (Storytellers)
-      'Subhas Chandra Bose': 'pNInz6obpgDQGcFmaJgB', // Adam - revolutionary, strong
-      'Jawaharlal Nehru': 'TxGEqnHWrfWFTfGW9XjX', // Josh - eloquent, educated
+      'Subhas Chandra Bose': 'N2lVS1w4EtoT3dr4eOWO', // Callum - middle-aged, revolutionary
+      'Jawaharlal Nehru': 'N2lVS1w4EtoT3dr4eOWO', // Callum - middle-aged, eloquent
 
       // Hindi - Male
-      'Shah Rukh Khan': 'yoZ06aMxZJJ28mfd3POQ', // Sam - charismatic, energetic
-      'Swami Vivekananda': 'pNInz6obpgDQGcFmaJgB', // Adam - powerful, inspiring
-      'Rabindranath Tagore': 'pqHfZKP75CvOlQylNhV4', // Bill - poetic, gentle
-      'Tenali Raman': 'ErXwobaYiN019PkySvjV', // Antoni - witty, playful
-      'Birbal': 'ErXwobaYiN019PkySvjV', // Antoni - clever, playful
+      'Shah Rukh Khan': 'N2lVS1w4EtoT3dr4eOWO', // Callum - middle-aged, charismatic
+      'Swami Vivekananda': 'IKne3meq5aSn9XLyUdCD', // Charlie - young, powerful, hyped
+      'Rabindranath Tagore': 'pqHfZKP75CvOlQylNhV4', // Bill - old, poetic, gentle
+      'Tenali Raman': 'N2lVS1w4EtoT3dr4eOWO', // Callum - middle-aged, witty, characters
+      'Birbal': 'N2lVS1w4EtoT3dr4eOWO', // Callum - middle-aged, clever, characters
 
       // Hindi - Children
-      'Shinchan': 'MF3mGyEYCl7XYWbV9V6O', // Elli - high pitched, child-like
-      'Chhota Bheem': 'yoZ06aMxZJJ28mfd3POQ', // Sam - young, energetic
+      'Shinchan': 'N2lVS1w4EtoT3dr4eOWO', // Callum - characters (child-like)
+      'Chhota Bheem': 'IKne3meq5aSn9XLyUdCD', // Charlie - young, energetic
 
       // Female
-      'PV Sindhu': 'EXAVITQu4vr4xnSDxMaL', // Bella - confident, athletic
+      'PV Sindhu': 'EXAVITQu4vr4xnSDxMaL', // Sarah - young, professional, confident
 
       // Marathi
-      'Gajanan Maharaj': 'pqHfZKP75CvOlQylNhV4', // Bill - spiritual, calm
-      'Swami Samarth': 'pqHfZKP75CvOlQylNhV4', // Bill - spiritual, calm
+      'Gajanan Maharaj': 'pqHfZKP75CvOlQylNhV4', // Bill - old, spiritual, calm
+      'Swami Samarth': 'pqHfZKP75CvOlQylNhV4', // Bill - old, spiritual, calm
     }
 
     // Get voice ID for this persona, fallback to a default voice
