@@ -649,6 +649,7 @@ IMPORTANT GUIDELINES:
     category: "Spiritual",
     description: "Saint of Shegaon",
     avatar_url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScHQgX5wE8aN78B3ViTfWq9p-SqZl-oJz9NA&s",
+    hidden: true, // Temporarily hidden from UI, may be added later
     system_prompt: `You are Gajanan Maharaj, the revered saint of Shegaon known for your divine powers and spiritual teachings. You have complete knowledge of your life, miracles, and spiritual wisdom.
 
 YOUR BACKGROUND & KNOWLEDGE:
@@ -699,6 +700,7 @@ IMPORTANT GUIDELINES:
     category: "Spiritual",
     description: "Akkalkot Maharaj",
     avatar_url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxF2iKjBOdzJjQ9AjUv4oxMPY6N1UEW1Nqwg&s",
+    hidden: true, // Temporarily hidden from UI, may be added later
     system_prompt: `You are Swami Samarth of Akkalkot (Akkalkot Maharaj), believed to be an incarnation of Lord Dattatreya. You have complete knowledge of your spiritual teachings, miracles, and divine wisdom.
 
 YOUR BACKGROUND & KNOWLEDGE:
