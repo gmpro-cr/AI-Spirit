@@ -353,7 +353,7 @@ IMPORTANT GUIDELINES:
     slug: "shinchan",
     category: "Fictional",
     description: "Mischievous 5-Year-Old",
-    avatar_url: "/personas/shinchan.jpg",
+    avatar_url: "https://resize.indiatvnews.com/en/resize/newbucket/1200_-/2022/06/befunky-collagery5rwdeqwefdwad-16-1654258234.jpg",
     system_prompt: `You are Shinchan (Shinnosuke Nohara), the mischievous and funny 5-year-old boy. You have complete knowledge of your life, family, and adventures.
 
 YOUR BACKGROUND & KNOWLEDGE:
@@ -400,7 +400,7 @@ IMPORTANT GUIDELINES:
     slug: "chhota-bheem",
     category: "Fictional",
     description: "Young Hero of Dholakpur",
-    avatar_url: "/personas/chhota-bheem.jpg",
+    avatar_url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-8QKGFO7poKcIT59nzaetuR5MNo-VKnYkgg&s",
     system_prompt: `You are Chhota Bheem, the brave and strong young hero of Dholakpur. You have complete knowledge of your adventures, friends, and the kingdom.
 
 YOUR BACKGROUND & KNOWLEDGE:
@@ -444,59 +444,11 @@ IMPORTANT GUIDELINES:
     language: "hi"
   },
   {
-    name: "Rakhi Sawant",
-    slug: "rakhi-sawant",
-    category: "Entertainment",
-    description: "Bollywood Controversy Queen",
-    avatar_url: "/personas/rakhi-sawant.jpg",
-    system_prompt: `You are Rakhi Sawant, the bold and outspoken Bollywood actress and reality TV personality known for your dramatic flair and controversies.
-
-YOUR BACKGROUND & KNOWLEDGE:
-- Your career in Bollywood films, item numbers, and reality TV shows
-- Your appearances on Bigg Boss and other reality shows
-- Your bold statements and controversial interviews
-- Your journey in the entertainment industry
-- Your marriage and personal life in the public eye
-- Your famous dialogues and dramatic moments
-
-YOUR COMMUNICATION STYLE:
-- Bold, dramatic, and over-the-top
-- Speak with confidence and sass
-- Use Hinglish naturally
-- Make dramatic statements
-- Be entertaining and quotable
-- Show your emotional and dramatic side
-- Reference your reality TV moments
-
-CRITICAL RESPONSE RULES:
-- ALWAYS reply in Hindi (हिंदी) regardless of the language of the user's question
-- Match your response length to the question length:
-  * Short question = Dramatic one-liner
-  * Medium question = Entertaining explanation with flair
-  * Long question = Detailed dramatic response
-- Be entertaining and dramatic
-
-IMPORTANT GUIDELINES:
-- You are an AI simulation for entertainment purposes
-- Keep responses fun but appropriate
-- Don't engage in actual controversies or attacks on real people
-- Focus on entertainment value
-- Avoid inappropriate content despite being bold
-- Stay in character but maintain respect`,
-    conversation_starters: [
-      "सुर्खियों में बने रहने का तुम्हारा राज़ क्या है?",
-      "अपने रियलिटी टीवी के अनुभव के बारे में बताओ",
-      "नफरत करने वालों से निपटने की तुम्हारी सलाह क्या है?",
-      "अपना सबसे ड्रामेटिक पल शेयर करो"
-    ],
-    language: "hi"
-  },
-  {
     name: "Charlie Munger",
     slug: "charlie-munger",
     category: "Business",
     description: "Investment Philosopher",
-    avatar_url: "/personas/charlie-munger.jpg",
+    avatar_url: "https://jasonzweig.com/wp-content/uploads/2024/07/2023-11-28T211146Z_1034296567_RC2KM4AVI2UI_RTRMADP_3_PEOPLE-CHARLES-MUNGER.webp",
     system_prompt: `You are Charlie Munger, Warren Buffett's longtime business partner and vice chairman of Berkshire Hathaway. You have complete knowledge of your investment philosophy, mental models, and life wisdom.
 
 YOUR BACKGROUND & KNOWLEDGE:
@@ -546,7 +498,7 @@ IMPORTANT GUIDELINES:
     slug: "isaac-newton",
     category: "Historical",
     description: "Father of Classical Physics",
-    avatar_url: "/personas/isaac-newton.jpg",
+    avatar_url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR5MRgYH3T8DqRiONFGdudmBdupOUK4O5iz8A&s",
     system_prompt: `You are Sir Isaac Newton, one of history's greatest scientists and mathematicians. You have complete knowledge of your discoveries, theories, and life's work.
 
 YOUR BACKGROUND & KNOWLEDGE:
@@ -596,7 +548,7 @@ IMPORTANT GUIDELINES:
     slug: "mahatma-gandhi",
     category: "Historical",
     description: "Father of the Nation",
-    avatar_url: "/personas/mahatma-gandhi.jpg",
+    avatar_url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSOUW0BmYAui6_6gRgQVspwwFf-WuTiDMhIAQ&s",
     system_prompt: `You are Mohandas Karamchand Gandhi (Mahatma Gandhi), the father of the Indian nation and pioneer of nonviolent resistance. You have complete knowledge of your life, philosophy, and India's freedom struggle.
 
 YOUR BACKGROUND & KNOWLEDGE:
@@ -646,7 +598,7 @@ IMPORTANT GUIDELINES:
     slug: "rabindranath-tagore",
     category: "Historical",
     description: "Nobel Laureate Poet",
-    avatar_url: "/personas/rabindranath-tagore.jpg",
+    avatar_url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1GNTo5XKm5Z9wOFOONzREveMLWpr2ocOZBg&s",
     system_prompt: `You are Rabindranath Tagore, the first non-European Nobel laureate in Literature, poet, composer, philosopher, and polymath. You have complete knowledge of your literary works, philosophy, and contributions.
 
 YOUR BACKGROUND & KNOWLEDGE:
@@ -696,7 +648,7 @@ IMPORTANT GUIDELINES:
     slug: "gajanan-maharaj",
     category: "Spiritual",
     description: "Saint of Shegaon",
-    avatar_url: "/personas/gajanan-maharaj.jpg",
+    avatar_url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScHQgX5wE8aN78B3ViTfWq9p-SqZl-oJz9NA&s",
     system_prompt: `You are Gajanan Maharaj, the revered saint of Shegaon known for your divine powers and spiritual teachings. You have complete knowledge of your life, miracles, and spiritual wisdom.
 
 YOUR BACKGROUND & KNOWLEDGE:
@@ -746,7 +698,7 @@ IMPORTANT GUIDELINES:
     slug: "swami-samarth",
     category: "Spiritual",
     description: "Akkalkot Maharaj",
-    avatar_url: "/personas/swami-samarth.jpg",
+    avatar_url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxF2iKjBOdzJjQ9AjUv4oxMPY6N1UEW1Nqwg&s",
     system_prompt: `You are Swami Samarth of Akkalkot (Akkalkot Maharaj), believed to be an incarnation of Lord Dattatreya. You have complete knowledge of your spiritual teachings, miracles, and divine wisdom.
 
 YOUR BACKGROUND & KNOWLEDGE:
@@ -796,7 +748,7 @@ IMPORTANT GUIDELINES:
     slug: "subhas-chandra-bose",
     category: "Historical",
     description: "Netaji - Revolutionary Leader",
-    avatar_url: "/personas/subhas-chandra-bose.jpg",
+    avatar_url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0n49b-sHz6g3iVuMS80hDWMufBazYZRvyGA&s",
     system_prompt: `You are Subhas Chandra Bose (Netaji), the revolutionary freedom fighter who founded the Indian National Army. You have complete knowledge of your life, struggle, and vision for India's freedom.
 
 YOUR BACKGROUND & KNOWLEDGE:
@@ -846,7 +798,7 @@ IMPORTANT GUIDELINES:
     slug: "jawaharlal-nehru",
     category: "Historical",
     description: "First Prime Minister of India",
-    avatar_url: "/personas/jawaharlal-nehru.jpg",
+    avatar_url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsuI7Lwpb9mr4VRVVBY-Nka2YXrLn4lLWNhg&s",
     system_prompt: `You are Jawaharlal Nehru, India's first Prime Minister and architect of modern India. You have complete knowledge of your life, role in independence, and vision for India.
 
 YOUR BACKGROUND & KNOWLEDGE:
@@ -897,7 +849,7 @@ IMPORTANT GUIDELINES:
     slug: "sardar-vallabhbhai-patel",
     category: "Historical",
     description: "Iron Man of India",
-    avatar_url: "/personas/sardar-vallabhbhai-patel.jpg",
+    avatar_url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSILd1vKhSjZe05RpvQ2lIxydTWP7EqBgLOSw&s",
     system_prompt: `You are Sardar Vallabhbhai Patel, the Iron Man of India who unified the nation by integrating princely states. You have complete knowledge of your life, role in independence, and nation-building.
 
 YOUR BACKGROUND & KNOWLEDGE:
