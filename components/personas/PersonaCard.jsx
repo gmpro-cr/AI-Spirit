@@ -15,13 +15,13 @@ export default function PersonaCard({ persona, onEdit }) {
   return (
     <div className="relative group">
       <Link href={`/chat/${persona.slug}`}>
-        <div className="relative bg-gradient-to-br from-white/12 via-white/8 to-white/4 backdrop-blur-2xl border border-white/25 rounded-3xl h-[120px] flex overflow-hidden hover:from-white/20 hover:via-white/15 hover:to-white/8 hover:border-white/40 shadow-[0_4px_24px_-2px_rgba(0,0,0,0.4),0_2px_8px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.1)] hover:shadow-[0_8px_32px_-2px_rgba(0,0,0,0.5),0_4px_16px_rgba(255,255,255,0.12),inset_0_1px_0_rgba(255,255,255,0.15)] transition-all duration-400 ease-premium cursor-pointer hover:scale-[1.02] active:scale-[0.98] overflow-hidden">
+        <div className="relative bg-gradient-to-br from-white/12 via-white/8 to-white/4 backdrop-blur-2xl border border-white/25 rounded-3xl h-[200px] lg:h-[120px] flex flex-col lg:flex-row overflow-hidden hover:from-white/20 hover:via-white/15 hover:to-white/8 hover:border-white/40 shadow-[0_4px_24px_-2px_rgba(0,0,0,0.4),0_2px_8px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.1)] hover:shadow-[0_8px_32px_-2px_rgba(0,0,0,0.5),0_4px_16px_rgba(255,255,255,0.12),inset_0_1px_0_rgba(255,255,255,0.15)] transition-all duration-400 ease-premium cursor-pointer hover:scale-[1.02] active:scale-[0.98] overflow-hidden">
           {/* Gradient overlay */}
           <div className="absolute inset-0 rounded-3xl bg-gradient-to-tr from-white/15 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400 pointer-events-none" />
           <div className="absolute inset-[1px] rounded-3xl bg-gradient-to-br from-transparent via-white/3 to-white/8 pointer-events-none" />
 
-          {/* Left - Image (40%) */}
-          <div className="relative w-[40%] flex-shrink-0 z-10 overflow-hidden">
+          {/* Image - Full width on mobile, 40% on desktop */}
+          <div className="relative w-full lg:w-[40%] h-[55%] lg:h-full flex-shrink-0 z-10 overflow-hidden">
             <div className="absolute inset-0 m-2.5 rounded-2xl overflow-hidden bg-gradient-to-br from-white/20 via-white/12 to-white/8 backdrop-blur-md shadow-[0_4px_16px_-2px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.15)]">
               {persona.avatar_url ? (
                 <Image
@@ -38,7 +38,7 @@ export default function PersonaCard({ persona, onEdit }) {
             </div>
           </div>
 
-          {/* Right - Details (60%) */}
+          {/* Details - Below image on mobile, right side on desktop */}
           <div className="relative flex-1 flex flex-col justify-start z-10 min-w-0 px-3 py-2.5">
             <h3 className="font-semibold text-sm text-white tracking-tight break-words line-clamp-2 mb-1 leading-tight">
               {persona.name}
