@@ -13,16 +13,24 @@ export default function MessageBubble({ message, language, personaName }) {
       setVoicesLoaded(true)
     })
 
+    // Cleanup: stop speaking when component unmounts
+    return () => {
+      stopSpeaking()
+    }
+  }, [])
+
+  useEffect(() => {
     // Check speaking status periodically
+    if (!speaking) return
+
     const interval = setInterval(() => {
-      if (speaking && !isSpeaking()) {
+      if (!isSpeaking()) {
         setSpeaking(false)
       }
     }, 100)
 
     return () => {
       clearInterval(interval)
-      stopSpeaking()
     }
   }, [speaking])
 
