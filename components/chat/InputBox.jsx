@@ -4,6 +4,7 @@ import { moderateContent } from '@/lib/moderation'
 export default function InputBox({ onSend, disabled }) {
   const [input, setInput] = useState('')
   const [error, setError] = useState('')
+  const [disclaimerExpanded, setDisclaimerExpanded] = useState(false)
 
   const handleSend = () => {
     if (!input.trim()) return
@@ -51,6 +52,19 @@ export default function InputBox({ onSend, disabled }) {
         >
           <div className="absolute inset-0 rounded-2xl sm:rounded-3xl bg-gradient-to-tr from-white/25 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400 pointer-events-none" />
           <span className="relative z-10 tracking-wide">Send</span>
+        </button>
+      </div>
+
+      <div className="mt-2 px-1">
+        <button
+          onClick={() => setDisclaimerExpanded(!disclaimerExpanded)}
+          className="text-white/40 text-xs hover:text-white/60 transition-colors text-left w-full cursor-pointer"
+        >
+          {disclaimerExpanded ? (
+            <span>This chat is powered by AI that imitate real or fictional characters. Responses are computer-generated and not from real individuals.</span>
+          ) : (
+            <span>This chat is powered by AI that imitate real or fictional characters...</span>
+          )}
         </button>
       </div>
     </div>

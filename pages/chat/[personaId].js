@@ -190,7 +190,9 @@ export default function ChatPage() {
     return (
       <>
         <ParticlesBackground />
-        <Navbar />
+        <div className="hidden lg:block">
+          <Navbar />
+        </div>
         <SidePanel />
         <div className="relative min-h-screen bg-black-primary flex items-center justify-center lg:pl-72 z-10">
           <p className="text-text-secondary text-sm sm:text-base">Loading persona...</p>
@@ -207,7 +209,9 @@ export default function ChatPage() {
       </Head>
 
       <ParticlesBackground />
-      <Navbar />
+      <div className="hidden lg:block">
+        <Navbar />
+      </div>
       <SidePanel />
 
       <div className="relative z-10 lg:pl-72">
