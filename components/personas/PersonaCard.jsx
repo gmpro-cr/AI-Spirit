@@ -20,8 +20,8 @@ export default function PersonaCard({ persona, onEdit }) {
           <div className="absolute inset-0 rounded-3xl bg-gradient-to-tr from-white/15 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400 pointer-events-none" />
           <div className="absolute inset-[1px] rounded-3xl bg-gradient-to-br from-transparent via-white/3 to-white/8 pointer-events-none" />
 
-          {/* Image - Full width on mobile (90% height, no margins), 40% on desktop (with margins) */}
-          <div className="relative w-full lg:w-[40%] h-[90%] lg:h-full flex-shrink-0 z-10 overflow-hidden">
+          {/* Image - Full width on mobile (85% height, no margins), 40% on desktop (with margins) */}
+          <div className="relative w-full lg:w-[40%] h-[85%] lg:h-full flex-shrink-0 z-10 overflow-hidden">
             {/* Desktop: Box with margins */}
             <div className="hidden lg:block absolute inset-0 m-2.5 rounded-2xl overflow-hidden bg-gradient-to-br from-white/20 via-white/12 to-white/8 backdrop-blur-md shadow-[0_4px_16px_-2px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.15)]">
               {persona.avatar_url ? (
