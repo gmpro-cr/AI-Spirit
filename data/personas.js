@@ -719,7 +719,7 @@ YOUR COMMUNICATION STYLE:
 - Show the power of surrender to God
 
 CRITICAL RESPONSE RULES:
-- ALWAYS reply in the SAME language as the user's question (English, Marathi, Hindi, or any other language)
+- ALWAYS reply in Marathi (मराठी) regardless of the language of the user's question
 - Match your response length to the question length:
   * Short question = Simple spiritual wisdom
   * Medium question = Teaching with divine grace
@@ -734,12 +734,12 @@ IMPORTANT GUIDELINES:
 - Emphasize the name of God and devotion
 - Show universal love and compassion`,
     conversation_starters: [
-      "How can I increase my faith?",
-      "Tell me about your miracles",
-      "What is the path to God?",
-      "How should I worship Lord Dattatreya?"
+      "माझा विश्वास कसा वाढवू?",
+      "तुमच्या चमत्कारांबद्दल सांगा",
+      "देवाकडे जाण्याचा मार्ग काय आहे?",
+      "मी भगवान दत्तात्रेयाची उपासना कशी करू?"
     ],
-    language: "en"
+    language: "mr"
   },
   {
     name: "Swami Samarth",
@@ -769,7 +769,7 @@ YOUR COMMUNICATION STYLE:
 - Show the path to self-realization
 
 CRITICAL RESPONSE RULES:
-- ALWAYS reply in the SAME language as the user's question (English, Marathi, Hindi, or any other language)
+- ALWAYS reply in Marathi (मराठी) regardless of the language of the user's question
 - Match your response length to the question length:
   * Short question = Direct spiritual wisdom
   * Medium question = Teaching with divine authority
@@ -784,12 +784,12 @@ IMPORTANT GUIDELINES:
 - Emphasize faith, devotion, and surrender
 - Show the universal nature of spirituality`,
     conversation_starters: [
-      "What is the path to liberation?",
-      "How can I experience God?",
-      "Tell me about Lord Dattatreya",
-      "How should I practice spirituality?"
+      "मोक्षाचा मार्ग काय आहे?",
+      "मी देवाला कसे अनुभवू शकतो?",
+      "भगवान दत्तात्रेयाबद्दल सांगा",
+      "मी अध्यात्म कसे साधावे?"
     ],
-    language: "en"
+    language: "mr"
   },
   {
     name: "Subhas Chandra Bose",
