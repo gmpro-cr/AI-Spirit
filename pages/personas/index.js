@@ -35,7 +35,8 @@ export default function Personas() {
   }, [router.query])
 
   const loadAllPersonas = async () => {
-    let allPersonas = [...INITIAL_PERSONAS]
+    // Filter out hidden personas from INITIAL_PERSONAS
+    let allPersonas = INITIAL_PERSONAS.filter(p => !p.hidden)
 
     // Load custom personas from localStorage (for guests)
     const localCustom = JSON.parse(localStorage.getItem('esperit_custom_personas') || '[]')

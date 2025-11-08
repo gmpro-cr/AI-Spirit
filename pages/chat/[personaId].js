@@ -37,8 +37,8 @@ export default function ChatPage() {
     const loadPersona = async () => {
       if (!personaId) return
 
-      // 1. Check INITIAL_PERSONAS (hardcoded personas)
-      let found = INITIAL_PERSONAS.find(p => p.slug === personaId)
+      // 1. Check INITIAL_PERSONAS (hardcoded personas) - exclude hidden ones
+      let found = INITIAL_PERSONAS.find(p => p.slug === personaId && !p.hidden)
 
       // 2. Check localStorage for guest custom personas
       if (!found) {
