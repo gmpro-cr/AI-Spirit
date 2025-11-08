@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
 import Head from 'next/head'
+import Navbar from '@/components/layout/Navbar'
 import ParticlesBackground from '@/components/layout/ParticlesBackground'
 import SidePanel from '@/components/layout/SidePanel'
 import ChatInterface from '@/components/chat/ChatInterface'
@@ -189,6 +190,9 @@ export default function ChatPage() {
     return (
       <>
         <ParticlesBackground />
+        <div className="hidden lg:block">
+          <Navbar />
+        </div>
         <SidePanel />
         <div className="relative min-h-screen bg-black-primary flex items-center justify-center lg:pl-72 z-10">
           <p className="text-text-secondary text-sm sm:text-base">Loading persona...</p>
@@ -205,6 +209,9 @@ export default function ChatPage() {
       </Head>
 
       <ParticlesBackground />
+      <div className="hidden lg:block">
+        <Navbar />
+      </div>
       <SidePanel />
 
       <div className="relative z-10 lg:pl-72">
