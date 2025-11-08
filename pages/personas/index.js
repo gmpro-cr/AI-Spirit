@@ -102,38 +102,49 @@ export default function Personas() {
       <main className="relative min-h-screen bg-black-primary pb-16 px-4 pt-[72px] lg:pt-0 lg:pl-72 z-10">
         <div className="max-w-7xl mx-auto">
           {/* Search Bar - Hidden on mobile, visible on desktop */}
-          <div className="hidden lg:block mb-8 mt-6">
-            <input
-              type="text"
-              placeholder="Search personas..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-gradient-to-br from-white/12 via-white/8 to-white/4 backdrop-blur-2xl border border-white/25 rounded-3xl px-5 py-4 text-base text-white placeholder-white/50 focus:outline-none focus:border-white/40 transition-all duration-300"
-            />
+          <div className="hidden lg:block mb-8 mt-6 animate-fadeIn">
+            <div className="relative group">
+              <input
+                type="text"
+                placeholder="Search personas..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full bg-gradient-to-br from-white/15 via-white/10 to-white/5 backdrop-blur-2xl border border-white/30 rounded-3xl px-5 py-4 text-base text-white placeholder-white/50 focus:outline-none focus:border-white/45 focus:from-white/18 focus:via-white/12 focus:to-white/8 shadow-[0_8px_32px_-4px_rgba(0,0,0,0.5),0_4px_16px_rgba(0,0,0,0.3),inset_0_2px_1px_rgba(255,255,255,0.12)] focus:shadow-[0_12px_48px_-4px_rgba(255,255,255,0.1),0_8px_24px_rgba(0,0,0,0.4),inset_0_2px_1px_rgba(255,255,255,0.15)] transition-all duration-500"
+              />
+              <div className="absolute inset-0 rounded-3xl bg-gradient-to-tr from-white/10 via-transparent to-transparent opacity-0 group-focus-within:opacity-100 transition-opacity duration-500 pointer-events-none" />
+            </div>
           </div>
 
           {/* Personas Grid */}
           <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
-            {filteredPersonas.map((persona) => (
-              <PersonaCard
+            {filteredPersonas.map((persona, index) => (
+              <div
                 key={persona.slug}
-                persona={persona}
-                onEdit={persona.is_custom ? handleEditPersona : undefined}
-              />
+                className="animate-fadeIn"
+                style={{animationDelay: `${index * 30}ms`, animationFillMode: 'both'}}
+              >
+                <PersonaCard
+                  persona={persona}
+                  onEdit={persona.is_custom ? handleEditPersona : undefined}
+                />
+              </div>
             ))}
           </div>
 
           {filteredPersonas.length === 0 && (
-            <div className="text-center py-20">
-              <p className="text-white/60">No personas found</p>
+            <div className="text-center py-20 animate-fadeIn">
+              <div className="inline-block p-8 bg-gradient-to-br from-white/12 via-white/8 to-white/5 backdrop-blur-2xl border border-white/25 rounded-3xl shadow-[0_8px_32px_-4px_rgba(0,0,0,0.5),inset_0_2px_1px_rgba(255,255,255,0.1)]">
+                <p className="text-white/60 text-lg">No personas found</p>
+                <p className="text-white/40 text-sm mt-2">Try a different search</p>
+              </div>
             </div>
           )}
         </div>
 
         {/* Search Bar - Mobile only at bottom */}
-        <div className="fixed bottom-0 left-0 right-0 lg:hidden z-30 bg-black-secondary/98 backdrop-blur-2xl border-t border-white/15 p-3 shadow-[0_-4px_24px_-2px_rgba(0,0,0,0.4)]">
-          <div className="relative bg-gradient-to-br from-white/12 via-white/8 to-white/4 backdrop-blur-2xl border border-white/25 rounded-3xl shadow-[0_4px_16px_-2px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.08)] transition-all duration-400 ease-premium focus-within:shadow-[0_6px_24px_-2px_rgba(0,0,0,0.4),0_2px_8px_rgba(255,255,255,0.1),inset_0_1px_0_rgba(255,255,255,0.12)] overflow-hidden">
-            <div className="absolute inset-0 rounded-3xl bg-gradient-to-tr from-white/12 via-transparent to-transparent opacity-50 pointer-events-none" />
+        <div className="fixed bottom-0 left-0 right-0 lg:hidden z-30 bg-black-secondary/98 backdrop-blur-2xl border-t border-white/20 p-3 shadow-[0_-8px_32px_-4px_rgba(0,0,0,0.5)]">
+          <div className="relative bg-gradient-to-br from-white/15 via-white/10 to-white/5 backdrop-blur-2xl border border-white/30 rounded-3xl shadow-[0_8px_32px_-4px_rgba(0,0,0,0.5),inset_0_2px_1px_rgba(255,255,255,0.12)] focus-within:shadow-[0_12px_48px_-4px_rgba(255,255,255,0.1),inset_0_2px_1px_rgba(255,255,255,0.15)] transition-all duration-500 overflow-hidden group">
+            <div className="absolute inset-0 rounded-3xl bg-gradient-to-tr from-white/10 via-transparent to-transparent opacity-0 group-focus-within:opacity-100 transition-opacity duration-500 pointer-events-none" />
             <input
               type="text"
               placeholder="Search personas..."
