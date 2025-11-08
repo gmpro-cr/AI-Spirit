@@ -15,14 +15,10 @@ export default function PersonaCard({ persona, onEdit }) {
   return (
     <div className="relative group">
       <Link href={`/chat/${persona.slug}`}>
-        <div className="relative bg-gradient-to-br from-white/12 via-white/8 to-white/4 backdrop-blur-2xl border border-white/25 rounded-3xl h-[200px] lg:h-[120px] flex flex-col lg:flex-row overflow-hidden hover:from-white/20 hover:via-white/15 hover:to-white/8 hover:border-white/40 shadow-[0_4px_24px_-2px_rgba(0,0,0,0.4),0_2px_8px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.1)] hover:shadow-[0_8px_40px_-2px_rgba(147,51,234,0.3),0_4px_16px_rgba(255,255,255,0.12),inset_0_1px_0_rgba(255,255,255,0.15)] transition-all duration-500 ease-premium cursor-pointer hover:scale-[1.03] active:scale-[0.98] overflow-hidden">
+        <div className="relative bg-gradient-to-br from-white/12 via-white/8 to-white/4 backdrop-blur-2xl border border-white/25 rounded-3xl h-[200px] lg:h-[120px] flex flex-col lg:flex-row overflow-hidden hover:from-white/20 hover:via-white/15 hover:to-white/8 hover:border-white/40 shadow-[0_4px_24px_-2px_rgba(0,0,0,0.4),0_2px_8px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.1)] hover:shadow-[0_8px_32px_-2px_rgba(0,0,0,0.5),0_4px_16px_rgba(255,255,255,0.12),inset_0_1px_0_rgba(255,255,255,0.15)] transition-all duration-400 ease-premium cursor-pointer hover:scale-[1.02] active:scale-[0.98] overflow-hidden">
           {/* Gradient overlay */}
-          <div className="absolute inset-0 rounded-3xl bg-gradient-to-tr from-purple-500/10 via-transparent to-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+          <div className="absolute inset-0 rounded-3xl bg-gradient-to-tr from-white/15 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400 pointer-events-none" />
           <div className="absolute inset-[1px] rounded-3xl bg-gradient-to-br from-transparent via-white/3 to-white/8 pointer-events-none" />
-          {/* Shimmer effect on hover */}
-          <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent animate-shimmer" />
-          </div>
 
           {/* Image - Full width on mobile (85% height, no margins), 40% on desktop (with margins) */}
           <div className="relative w-full lg:w-[40%] h-[85%] lg:h-full flex-shrink-0 z-10 overflow-hidden">

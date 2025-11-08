@@ -101,75 +101,31 @@ export default function Personas() {
 
       <main className="relative min-h-screen bg-black-primary pb-16 px-4 pt-[72px] lg:pt-0 lg:pl-72 z-10">
         <div className="max-w-7xl mx-auto">
-          {/* Page Header - Desktop only */}
-          <div className="hidden lg:block mb-8 mt-6 animate-fadeIn">
-            <div className="flex items-center justify-between">
-              <div>
-                <h1 className="text-3xl font-bold text-white mb-2 bg-gradient-to-r from-white via-white to-white/80 bg-clip-text text-transparent">
-                  Explore Personas
-                </h1>
-                <p className="text-white/50 text-sm flex items-center gap-2">
-                  <span className="inline-block w-2 h-2 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full animate-pulse"></span>
-                  {filteredPersonas.length} personas available
-                </p>
-              </div>
-            </div>
-          </div>
-
           {/* Search Bar - Hidden on mobile, visible on desktop */}
-          <div className="hidden lg:flex mb-8 animate-fadeIn">
-            <div className="relative flex-1 bg-gradient-to-br from-white/12 via-white/8 to-white/4 backdrop-blur-2xl border border-white/25 rounded-3xl shadow-[0_4px_16px_-2px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.08)] transition-all duration-400 ease-premium focus-within:shadow-[0_6px_24px_-2px_rgba(147,51,234,0.4),0_2px_8px_rgba(255,255,255,0.1),inset_0_1px_0_rgba(255,255,255,0.12)] focus-within:border-purple-400/50 overflow-hidden group">
-              <div className="absolute inset-0 rounded-3xl bg-gradient-to-tr from-white/12 via-transparent to-transparent opacity-50 pointer-events-none" />
-              <div className="absolute left-5 top-1/2 -translate-y-1/2 text-white/40 group-focus-within:text-purple-400 transition-colors">
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-              </div>
-              <input
-                type="text"
-                placeholder="Search by name or description..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="relative z-10 w-full bg-transparent border-none rounded-3xl pl-14 pr-5 py-4 text-base text-white placeholder-white/50 focus:outline-none font-light tracking-wide"
-              />
-              {searchQuery && (
-                <button
-                  onClick={() => setSearchQuery('')}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-white/40 hover:text-white transition-colors"
-                >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
-              )}
-            </div>
+          <div className="hidden lg:block mb-8 mt-6">
+            <input
+              type="text"
+              placeholder="Search personas..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full bg-gradient-to-br from-white/12 via-white/8 to-white/4 backdrop-blur-2xl border border-white/25 rounded-3xl px-5 py-4 text-base text-white placeholder-white/50 focus:outline-none focus:border-white/40 transition-all duration-300"
+            />
           </div>
 
           {/* Personas Grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 animate-fadeIn">
-            {filteredPersonas.map((persona, index) => (
-              <div
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
+            {filteredPersonas.map((persona) => (
+              <PersonaCard
                 key={persona.slug}
-                style={{animationDelay: `${index * 30}ms`}}
-                className="animate-fadeIn"
-              >
-                <PersonaCard
-                  persona={persona}
-                  onEdit={persona.is_custom ? handleEditPersona : undefined}
-                />
-              </div>
+                persona={persona}
+                onEdit={persona.is_custom ? handleEditPersona : undefined}
+              />
             ))}
           </div>
 
           {filteredPersonas.length === 0 && (
-            <div className="text-center py-20 animate-fadeIn">
-              <div className="inline-block p-6 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl border border-white/20 rounded-3xl">
-                <svg className="w-16 h-16 text-white/20 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-                <p className="text-white/60 text-lg font-medium">No personas found</p>
-                <p className="text-white/40 text-sm mt-2">Try adjusting your search</p>
-              </div>
+            <div className="text-center py-20">
+              <p className="text-white/60">No personas found</p>
             </div>
           )}
         </div>
