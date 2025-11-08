@@ -28,70 +28,37 @@ export default function ChatInterface({ persona, onSendMessage, onNewChat }) {
   return (
     <div className="fixed top-0 lg:top-[65px] left-0 right-0 bottom-0 flex flex-col lg:left-72">
       {/* Persona Header */}
-      <div className="relative bg-gradient-to-br from-white/12 via-white/8 to-white/4 backdrop-blur-2xl border border-white/25 rounded-2xl sm:rounded-3xl p-3 sm:p-4 mx-3 sm:mx-4 mt-2 mb-2 shadow-[0_4px_24px_-2px_rgba(0,0,0,0.4),0_2px_8px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.1)]">
+      <div className="relative bg-gradient-to-br from-white/12 via-white/8 to-white/4 backdrop-blur-2xl border border-white/25 rounded-2xl sm:rounded-3xl p-3 sm:p-4 mx-3 sm:mx-4 mt-2 mb-2 flex items-center space-x-3 sm:space-x-4 shadow-[0_4px_24px_-2px_rgba(0,0,0,0.4),0_2px_8px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.1)]">
         <div className="absolute inset-0 rounded-2xl sm:rounded-3xl bg-gradient-to-tr from-white/15 via-transparent to-transparent opacity-60 pointer-events-none" />
         <div className="absolute inset-[1px] rounded-2xl sm:rounded-3xl bg-gradient-to-br from-transparent via-white/3 to-white/8 pointer-events-none" />
 
-        {/* Mobile Layout - Avatar on top, details below */}
-        <div className="flex flex-col items-center space-y-3 lg:hidden">
-          <div className="relative z-10 w-24 h-24 rounded-full bg-gradient-to-br from-white/20 via-white/12 to-white/8 backdrop-blur-md border border-white/30 flex items-center justify-center overflow-hidden text-3xl text-white font-bold shadow-[0_4px_16px_-2px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.2)]">
-            {persona.avatar_url ? (
-              <img
-                src={persona.avatar_url}
-                alt={persona.name}
-                className="w-full h-full object-cover"
-              />
-            ) : (
-              persona.name[0]
-            )}
-          </div>
-          <div className="relative z-10 text-center w-full">
-            <h2 className="font-semibold text-lg text-white tracking-tight">{persona.name}</h2>
-            <p className="text-white/70 text-sm font-light">{persona.description}</p>
-          </div>
-          {/* New Chat Button for Mobile */}
-          {messages.length > 0 && (
-            <button
-              onClick={handleNewChat}
-              className="group relative z-10 bg-gradient-to-br from-white/15 via-white/10 to-white/8 backdrop-blur-xl border border-white/30 text-white text-xs font-semibold px-4 py-2 rounded-full hover:from-white/25 hover:via-white/18 hover:to-white/12 hover:border-white/45 shadow-[0_4px_16px_-2px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.12)] hover:shadow-[0_6px_24px_-2px_rgba(0,0,0,0.4),0_2px_8px_rgba(255,255,255,0.12)] transition-all duration-400 ease-premium overflow-hidden hover:scale-[1.02] active:scale-[0.98] whitespace-nowrap"
-              title="Start a new conversation"
-            >
-              <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-white/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400 pointer-events-none" />
-              <span className="relative z-10 tracking-wide">New Chat</span>
-            </button>
+        <div className="relative z-10 w-11 h-11 sm:w-14 sm:h-14 rounded-full bg-gradient-to-br from-white/20 via-white/12 to-white/8 backdrop-blur-md border border-white/30 flex items-center justify-center overflow-hidden text-lg sm:text-xl text-white font-bold shadow-[0_4px_16px_-2px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.2)]">
+          {persona.avatar_url ? (
+            <img
+              src={persona.avatar_url}
+              alt={persona.name}
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            persona.name[0]
           )}
         </div>
-
-        {/* Desktop Layout - Avatar on left, details on right */}
-        <div className="hidden lg:flex items-center space-x-4">
-          <div className="relative z-10 w-14 h-14 rounded-full bg-gradient-to-br from-white/20 via-white/12 to-white/8 backdrop-blur-md border border-white/30 flex items-center justify-center overflow-hidden text-xl text-white font-bold shadow-[0_4px_16px_-2px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.2)]">
-            {persona.avatar_url ? (
-              <img
-                src={persona.avatar_url}
-                alt={persona.name}
-                className="w-full h-full object-cover"
-              />
-            ) : (
-              persona.name[0]
-            )}
-          </div>
-          <div className="relative z-10 flex-1 min-w-0">
-            <h2 className="font-semibold text-lg text-white tracking-tight truncate">{persona.name}</h2>
-            <p className="text-white/70 text-sm truncate font-light">{persona.description}</p>
-          </div>
-
-          {/* New Chat Button for Desktop */}
-          {messages.length > 0 && (
-            <button
-              onClick={handleNewChat}
-              className="group relative z-10 bg-gradient-to-br from-white/15 via-white/10 to-white/8 backdrop-blur-xl border border-white/30 text-white text-sm font-semibold px-4 py-2.5 rounded-full hover:from-white/25 hover:via-white/18 hover:to-white/12 hover:border-white/45 shadow-[0_4px_16px_-2px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.12)] hover:shadow-[0_6px_24px_-2px_rgba(0,0,0,0.4),0_2px_8px_rgba(255,255,255,0.12)] transition-all duration-400 ease-premium overflow-hidden hover:scale-[1.02] active:scale-[0.98] whitespace-nowrap"
-              title="Start a new conversation"
-            >
-              <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-white/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400 pointer-events-none" />
-              <span className="relative z-10 tracking-wide">New Chat</span>
-            </button>
-          )}
+        <div className="relative z-10 flex-1 min-w-0">
+          <h2 className="font-semibold text-base sm:text-lg text-white tracking-tight truncate">{persona.name}</h2>
+          <p className="text-white/70 text-xs sm:text-sm truncate font-light">{persona.description}</p>
         </div>
+
+        {/* New Chat Button */}
+        {messages.length > 0 && (
+          <button
+            onClick={handleNewChat}
+            className="group relative z-10 bg-gradient-to-br from-white/15 via-white/10 to-white/8 backdrop-blur-xl border border-white/30 text-white text-xs sm:text-sm font-semibold px-3 sm:px-4 py-2 sm:py-2.5 rounded-full hover:from-white/25 hover:via-white/18 hover:to-white/12 hover:border-white/45 shadow-[0_4px_16px_-2px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.12)] hover:shadow-[0_6px_24px_-2px_rgba(0,0,0,0.4),0_2px_8px_rgba(255,255,255,0.12)] transition-all duration-400 ease-premium overflow-hidden hover:scale-[1.02] active:scale-[0.98] whitespace-nowrap"
+            title="Start a new conversation"
+          >
+            <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-white/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400 pointer-events-none" />
+            <span className="relative z-10 tracking-wide">New Chat</span>
+          </button>
+        )}
       </div>
 
       {/* Messages - Scrollable middle section */}
