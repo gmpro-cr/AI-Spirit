@@ -44,15 +44,20 @@ export default function MessageBubble({ message, language, personaName }) {
     }
   }
 
-  const handleSpeak = () => {
+  const handleSpeak = async () => {
     if (speaking) {
       stopSpeaking()
       setSpeaking(false)
     } else {
       setSpeaking(true)
-      speak(message.content, personaName || 'Default', language, () => {
+      try {
+        await speak(message.content, personaName || 'Default', language, () => {
+          setSpeaking(false)
+        })
+      } catch (error) {
+        console.error('Speech error:', error)
         setSpeaking(false)
-      })
+      }
     }
   }
 
