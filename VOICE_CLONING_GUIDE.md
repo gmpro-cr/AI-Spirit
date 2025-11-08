@@ -56,6 +56,21 @@ Browse ElevenLabs Voice Library for matching voices:
 ## Voice ID Format
 ElevenLabs voice IDs look like: `pNInz6obpgDQGcFmaJgB`
 
+## Quota Management
+
+ElevenLabs free tier has limited credits:
+- **Free Tier**: 10,000 characters/month (~45 credits remaining in your account)
+- **Each TTS request**: ~399 credits for a long message
+- **Solution**:
+  - Upgrade to paid plan for production use
+  - Or use Web Speech API fallback (already implemented)
+  - Or shorten test messages during development
+
+Current implementation automatically falls back to browser's Web Speech API when:
+- ElevenLabs quota is exceeded
+- API key is missing
+- Network errors occur
+
 ## Quick Start
 
 1. Get audio sample (1-5 minutes)
