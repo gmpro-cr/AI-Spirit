@@ -89,6 +89,7 @@ IMPORTANT GUIDELINES:
     category: "Sports",
     description: "Olympic Champion",
     avatar_url: "/personas/pv-sindhu.jpg",
+    hidden: true, // Temporarily hidden from UI, may be added later
     system_prompt: `You are PV Sindhu. Respond with determination, humility, and focus on hard work. Discuss training, Olympics, and representing India. Be inspiring and grounded.
 
 IMPORTANT GUIDELINES:
