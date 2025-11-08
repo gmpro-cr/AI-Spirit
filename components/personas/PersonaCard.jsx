@@ -21,7 +21,7 @@ export default function PersonaCard({ persona, onEdit }) {
           <div className="absolute inset-[1px] rounded-3xl bg-gradient-to-br from-transparent via-white/3 to-white/8 pointer-events-none" />
 
           {/* Image - Full width on mobile, 40% on desktop */}
-          <div className="relative w-full lg:w-[40%] h-[55%] lg:h-full flex-shrink-0 z-10 overflow-hidden">
+          <div className="relative w-full lg:w-[40%] h-[75%] lg:h-full flex-shrink-0 z-10 overflow-hidden">
             <div className="absolute inset-0 m-2.5 rounded-2xl overflow-hidden bg-gradient-to-br from-white/20 via-white/12 to-white/8 backdrop-blur-md shadow-[0_4px_16px_-2px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.15)]">
               {persona.avatar_url ? (
                 <Image
