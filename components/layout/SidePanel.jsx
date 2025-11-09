@@ -97,7 +97,7 @@ export default function SidePanel() {
         {/* Explore Button */}
         <Link
           href="/personas"
-          className="group relative block w-full bg-gradient-to-br from-white/15 via-white/10 to-white/8 backdrop-blur-xl border border-white/30 text-white text-sm font-semibold px-4 py-3 rounded-full hover:from-white/25 hover:via-white/18 hover:to-white/12 hover:border-white/45 shadow-[0_4px_24px_-2px_rgba(0,0,0,0.4),0_2px_8px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.12)] hover:shadow-[0_6px_32px_-2px_rgba(0,0,0,0.5),0_4px_12px_rgba(255,255,255,0.12)] transition-all duration-400 ease-premium text-center overflow-hidden hover:scale-[1.02] active:scale-[0.98]"
+          className="group relative block w-full bg-gradient-to-br from-white/15 via-white/10 to-white/8 backdrop-blur-xl border border-white/30 text-white text-sm font-semibold px-4 py-3 rounded-full hover:from-white/25 hover:via-white/18 hover:to-white/12 hover:border-white/45 shadow-glass hover:shadow-glass-hover transition-smooth text-center overflow-hidden hover:scale-[1.02] active:scale-[0.98]"
         >
           <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-white/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400 pointer-events-none" />
           <span className="relative z-10 tracking-wide">Explore</span>
@@ -114,7 +114,7 @@ export default function SidePanel() {
               <Link
                 key={persona.slug}
                 href={`/chat/${persona.slug}`}
-                className="group relative block p-3 bg-gradient-to-br from-white/10 via-white/7 to-white/4 backdrop-blur-2xl border border-white/20 rounded-2xl hover:from-white/18 hover:via-white/12 hover:to-white/8 hover:border-white/35 shadow-[0_4px_16px_-2px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.08)] hover:shadow-[0_6px_24px_-2px_rgba(0,0,0,0.4),0_2px_8px_rgba(255,255,255,0.1)] transition-all duration-400 ease-premium hover:scale-[1.02] overflow-hidden"
+                className="group relative block p-3 bg-gradient-to-br from-white/10 via-white/7 to-white/4 backdrop-blur-2xl border border-white/20 rounded-2xl hover:from-white/18 hover:via-white/12 hover:to-white/8 hover:border-white/35 shadow-glass hover:shadow-glass-hover transition-smooth hover:scale-[1.02] overflow-hidden"
               >
                 <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-white/12 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400 pointer-events-none" />
                 <div className="relative z-10 flex items-start space-x-2.5">

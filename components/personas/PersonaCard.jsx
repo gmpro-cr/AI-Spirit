@@ -15,7 +15,7 @@ export default function PersonaCard({ persona, onEdit }) {
   return (
     <div className="relative group">
       <Link href={`/chat/${persona.slug}`}>
-        <div className="relative bg-gradient-to-br from-white/15 via-white/10 to-white/5 backdrop-blur-2xl border border-white/30 rounded-3xl h-[200px] lg:h-[120px] flex flex-col lg:flex-row overflow-hidden hover:from-white/22 hover:via-white/16 hover:to-white/10 hover:border-white/45 shadow-[0_8px_32px_-4px_rgba(0,0,0,0.5),0_4px_16px_rgba(0,0,0,0.3),inset_0_2px_1px_rgba(255,255,255,0.12),inset_0_-2px_1px_rgba(0,0,0,0.1)] hover:shadow-[0_12px_48px_-4px_rgba(255,255,255,0.12),0_8px_24px_rgba(0,0,0,0.4),inset_0_2px_1px_rgba(255,255,255,0.18),inset_0_-2px_1px_rgba(0,0,0,0.15)] transition-all duration-500 ease-out cursor-pointer hover:scale-[1.03] hover:-translate-y-1 active:scale-[0.98] overflow-hidden">
+        <div className="relative bg-gradient-to-br from-white/15 via-white/10 to-white/5 backdrop-blur-2xl border border-white/30 rounded-3xl h-[200px] lg:h-[120px] flex flex-col lg:flex-row overflow-hidden hover:from-white/22 hover:via-white/16 hover:to-white/10 hover:border-white/45 shadow-glass hover:shadow-glass-hover transition-smooth cursor-pointer hover:scale-[1.03] hover:-translate-y-1 active:scale-[0.98] overflow-hidden">
           {/* Gradient overlays */}
           <div className="absolute inset-0 rounded-3xl bg-gradient-to-tr from-white/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
           <div className="absolute inset-[1px] rounded-3xl bg-gradient-to-br from-transparent via-white/5 to-white/10 pointer-events-none" />
@@ -30,7 +30,7 @@ export default function PersonaCard({ persona, onEdit }) {
                   src={persona.avatar_url}
                   alt={persona.name}
                   fill
-                  className="object-cover"
+                  className="object-cover group-hover:scale-105 transition-smooth"
                 />
               ) : (
                 <div className="w-full h-full flex items-center justify-center text-2xl font-bold text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]">
@@ -45,7 +45,7 @@ export default function PersonaCard({ persona, onEdit }) {
                   src={persona.avatar_url}
                   alt={persona.name}
                   fill
-                  className="object-cover"
+                  className="object-cover group-hover:scale-105 transition-smooth"
                 />
               ) : (
                 <div className="w-full h-full flex items-center justify-center text-3xl font-bold text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]">

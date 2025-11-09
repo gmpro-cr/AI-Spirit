@@ -47,14 +47,14 @@ export default function InputBox({ onSend, disabled }) {
               disabled={disabled}
               maxLength={MAX_CHARS}
               placeholder="Type your message..."
-              className="w-full bg-gradient-to-br from-black via-black to-black/95 border border-white/30 rounded-2xl sm:rounded-3xl px-3 sm:px-5 py-3 sm:py-4 text-base text-white placeholder:text-white/50 focus:border-white/50 focus:outline-none shadow-[0_8px_32px_-4px_rgba(0,0,0,0.5),0_4px_16px_rgba(0,0,0,0.3),inset_0_2px_1px_rgba(255,255,255,0.08),inset_0_-2px_1px_rgba(0,0,0,0.1)] focus:shadow-[0_12px_48px_-4px_rgba(255,255,255,0.08),0_8px_24px_rgba(0,0,0,0.4),inset_0_2px_1px_rgba(255,255,255,0.12)] focus:from-black focus:via-black/98 focus:to-black/95 transition-all duration-500 disabled:opacity-50 disabled:cursor-not-allowed font-light tracking-wide"
+              className="w-full bg-gradient-to-br from-black via-black to-black/95 border border-white/30 rounded-2xl sm:rounded-3xl px-3 sm:px-5 py-3 sm:py-4 text-base text-white placeholder:text-white/50 focus:border-white/50 shadow-glass focus-glow transition-smooth disabled:opacity-50 disabled:cursor-not-allowed font-light tracking-wide"
             />
             <div className="absolute inset-0 rounded-2xl sm:rounded-3xl bg-gradient-to-tr from-white/8 via-transparent to-transparent opacity-0 group-focus-within:opacity-100 transition-opacity duration-500 pointer-events-none" />
           </div>
           <button
             onClick={handleSend}
             disabled={disabled || !input.trim()}
-            className="group relative flex-shrink-0 bg-gradient-to-br from-white/20 via-white/15 to-white/10 backdrop-blur-xl border border-white/35 text-white font-semibold px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-base rounded-2xl sm:rounded-3xl hover:from-white/30 hover:via-white/22 hover:to-white/16 hover:border-white/50 shadow-[0_8px_32px_-4px_rgba(0,0,0,0.5),0_4px_16px_rgba(0,0,0,0.3),inset_0_2px_1px_rgba(255,255,255,0.15),inset_0_-2px_1px_rgba(0,0,0,0.1)] hover:shadow-[0_12px_48px_-4px_rgba(255,255,255,0.12),0_8px_24px_rgba(0,0,0,0.4),inset_0_2px_1px_rgba(255,255,255,0.2)] transition-all duration-500 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none active:scale-95 hover:scale-[1.02] overflow-hidden"
+            className="group relative flex-shrink-0 bg-gradient-to-br from-white/20 via-white/15 to-white/10 backdrop-blur-xl border border-white/35 text-white font-semibold px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-base rounded-2xl sm:rounded-3xl hover:from-white/30 hover:via-white/22 hover:to-white/16 hover:border-white/50 shadow-glass hover:shadow-glass-hover transition-smooth disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none active:scale-95 hover:scale-[1.02] overflow-hidden"
           >
             <div className="absolute inset-0 rounded-2xl sm:rounded-3xl bg-gradient-to-tr from-white/25 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
             <div className="absolute inset-0 rounded-2xl sm:rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-xl bg-white/10 -z-10" />

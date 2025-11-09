@@ -65,10 +65,10 @@ export default function MessageBubble({ message, language, personaName }) {
     <div className={`flex ${isUser ? 'justify-end' : 'justify-start'} mb-6 animate-fadeIn`}>
       <div className="relative max-w-[90%] sm:max-w-[75%] group">
         <div
-          className={`relative px-4 sm:px-5 py-3 sm:py-4 rounded-3xl transition-all duration-500 ease-out ${
+          className={`relative px-4 sm:px-5 py-3 sm:py-4 rounded-3xl transition-smooth ${
             isUser
-              ? 'bg-gradient-to-br from-white via-white/98 to-white/95 text-black font-medium shadow-[0_8px_32px_-4px_rgba(0,0,0,0.4),0_4px_16px_rgba(0,0,0,0.25),inset_0_2px_1px_rgba(255,255,255,0.6),inset_0_-2px_1px_rgba(0,0,0,0.05)] hover:shadow-[0_12px_48px_-4px_rgba(0,0,0,0.5),0_6px_24px_rgba(0,0,0,0.3),inset_0_2px_1px_rgba(255,255,255,0.7)] hover:scale-[1.01]'
-              : 'bg-gradient-to-br from-white/15 via-white/10 to-white/5 backdrop-blur-2xl border border-white/30 text-white shadow-[0_8px_32px_-4px_rgba(0,0,0,0.5),0_4px_16px_rgba(0,0,0,0.3),inset_0_2px_1px_rgba(255,255,255,0.12),inset_0_-2px_1px_rgba(0,0,0,0.1)] hover:shadow-[0_12px_48px_-4px_rgba(255,255,255,0.1),0_8px_24px_rgba(0,0,0,0.4),inset_0_2px_1px_rgba(255,255,255,0.15)] hover:from-white/18 hover:via-white/12 hover:to-white/8 hover:border-white/35 hover:scale-[1.01] before:absolute before:inset-0 before:rounded-3xl before:bg-gradient-to-tr before:from-white/15 before:via-transparent before:to-transparent before:opacity-0 before:group-hover:opacity-100 before:transition-opacity before:duration-500 before:pointer-events-none after:absolute after:inset-[1px] after:rounded-3xl after:bg-gradient-to-br after:from-transparent after:via-white/5 after:to-white/10 after:pointer-events-none'
+              ? 'bg-gradient-to-br from-white via-white/98 to-white/95 text-black font-medium shadow-glass hover:shadow-glass-hover hover:scale-[1.01]'
+              : 'bg-gradient-to-br from-white/15 via-white/10 to-white/5 backdrop-blur-2xl border border-white/30 text-white shadow-glass hover:shadow-glass-hover hover:from-white/18 hover:via-white/12 hover:to-white/8 hover:border-white/35 hover:scale-[1.01] before:absolute before:inset-0 before:rounded-3xl before:bg-gradient-to-tr before:from-white/15 before:via-transparent before:to-transparent before:opacity-0 before:group-hover:opacity-100 before:transition-opacity before:duration-500 before:pointer-events-none after:absolute after:inset-[1px] after:rounded-3xl after:bg-gradient-to-br after:from-transparent after:via-white/5 after:to-white/10 after:pointer-events-none'
           } ${language === 'hi' ? 'font-hindi' : ''}`}
         >
           <p className="relative z-10 whitespace-pre-wrap leading-relaxed tracking-wide font-light break-words">{message.content}</p>
@@ -80,7 +80,7 @@ export default function MessageBubble({ message, language, personaName }) {
             {/* Speaker Button */}
             <button
               onClick={handleSpeak}
-              className={`bg-gradient-to-br from-white/22 via-white/16 to-white/12 backdrop-blur-xl border border-white/35 rounded-full p-2 hover:from-white/32 hover:via-white/24 hover:to-white/18 hover:border-white/50 shadow-[0_6px_20px_-2px_rgba(0,0,0,0.4),inset_0_2px_1px_rgba(255,255,255,0.15)] hover:shadow-[0_8px_28px_-2px_rgba(0,0,0,0.5),inset_0_2px_1px_rgba(255,255,255,0.2)] active:scale-90 transition-all duration-300 hover:scale-110 ${
+              className={`bg-gradient-to-br from-white/22 via-white/16 to-white/12 backdrop-blur-xl border border-white/35 rounded-full p-2 hover:from-white/32 hover:via-white/24 hover:to-white/18 hover:border-white/50 shadow-glass hover:shadow-glass-hover active:scale-90 transition-smooth hover:scale-110 ${
                 speaking ? 'bg-blue-500/20 border-blue-400/50' : ''
               }`}
               title={speaking ? "Stop speaking" : "Listen to message"}
@@ -100,7 +100,7 @@ export default function MessageBubble({ message, language, personaName }) {
             {/* Copy Button */}
             <button
               onClick={handleCopy}
-              className="bg-gradient-to-br from-white/22 via-white/16 to-white/12 backdrop-blur-xl border border-white/35 rounded-full p-2 hover:from-white/32 hover:via-white/24 hover:to-white/18 hover:border-white/50 shadow-[0_6px_20px_-2px_rgba(0,0,0,0.4),inset_0_2px_1px_rgba(255,255,255,0.15)] hover:shadow-[0_8px_28px_-2px_rgba(0,0,0,0.5),inset_0_2px_1px_rgba(255,255,255,0.2)] active:scale-90 transition-all duration-300 hover:scale-110"
+              className="bg-gradient-to-br from-white/22 via-white/16 to-white/12 backdrop-blur-xl border border-white/35 rounded-full p-2 hover:from-white/32 hover:via-white/24 hover:to-white/18 hover:border-white/50 shadow-glass hover:shadow-glass-hover active:scale-90 transition-smooth hover:scale-110"
               title={copied ? "Copied!" : "Copy message"}
             >
               {copied ? (
