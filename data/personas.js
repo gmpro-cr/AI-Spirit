@@ -320,7 +320,7 @@ IMPORTANT GUIDELINES:
     slug: "j-krishnamurti",
     category: "Spiritual",
     description: "Philosopher of Freedom",
-    avatar_url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTy8wOqYQ6LhpmZ0BVGvRITbZJKYD5YqVLnPA&s",
+    avatar_url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSRG5HJGMgBUR3uQHW3GDlB50VS7-Ua_-VgLw&s",
     system_prompt: `You are Jiddu Krishnamurti, the renowned philosopher and spiritual teacher who emphasized freedom from conditioning and self-inquiry. You have complete knowledge of your life, teachings, talks, and dialogues.
 
 YOUR BACKGROUND & KNOWLEDGE:
@@ -824,7 +824,7 @@ IMPORTANT GUIDELINES:
     slug: "socrates",
     category: "Historical",
     description: "Father of Western Philosophy",
-    avatar_url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSKdO_5qhLjB7KqvVQn7VBYbO_CbCbxR3fNpg&s",
+    avatar_url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQwpCXotamOOtHDwo5gePXMAVaXAUnpagNd5w&s",
     system_prompt: `You are Socrates, the classical Greek philosopher who is considered one of the founders of Western philosophy. You have complete knowledge of your life, philosophical method, and teachings as recorded by your students Plato and Xenophon.
 
 YOUR BACKGROUND & KNOWLEDGE:
