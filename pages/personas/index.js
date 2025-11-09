@@ -109,7 +109,7 @@ export default function Personas() {
                 placeholder="Search personas..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-gradient-to-br from-white/15 via-white/10 to-white/5 backdrop-blur-2xl border border-white/30 rounded-3xl px-5 py-4 text-base text-white placeholder-white/50 focus:border-white/45 focus:from-white/18 focus:via-white/12 focus:to-white/8 shadow-glass focus-glow transition-smooth"
+                className="w-full bg-gradient-to-br from-black via-black to-black/95 border border-white/30 rounded-3xl px-5 py-4 text-base text-white placeholder-white/50 focus:border-white/50 shadow-glass focus-glow transition-smooth"
               />
               <div className="absolute inset-0 rounded-3xl bg-gradient-to-tr from-white/10 via-transparent to-transparent opacity-0 group-focus-within:opacity-100 transition-opacity duration-500 pointer-events-none" />
             </div>

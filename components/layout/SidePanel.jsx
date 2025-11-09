@@ -97,9 +97,10 @@ export default function SidePanel() {
         {/* Explore Button */}
         <Link
           href="/personas"
-          className="group relative block w-full bg-gradient-to-br from-white/15 via-white/10 to-white/8 backdrop-blur-xl border border-white/30 text-white text-sm font-semibold px-4 py-3 rounded-full hover:from-white/25 hover:via-white/18 hover:to-white/12 hover:border-white/45 shadow-glass hover:shadow-glass-hover transition-smooth text-center overflow-hidden hover:scale-[1.02] active:scale-[0.98]"
+          className="group relative block w-full bg-gradient-to-br from-white/15 via-white/10 to-white/5 backdrop-blur-2xl border border-white/30 text-white text-sm font-semibold px-4 py-3 rounded-3xl hover:from-white/22 hover:via-white/16 hover:to-white/10 hover:border-white/45 shadow-glass hover:shadow-glass-hover transition-smooth text-center overflow-hidden hover:scale-[1.03] hover:-translate-y-1 active:scale-[0.98]"
         >
-          <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-white/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400 pointer-events-none" />
+          <div className="absolute inset-0 rounded-3xl bg-gradient-to-tr from-white/18 via-transparent to-transparent opacity-60 pointer-events-none" />
+          <div className="absolute inset-[1px] rounded-3xl bg-gradient-to-br from-transparent via-white/5 to-white/10 pointer-events-none" />
           <span className="relative z-10 tracking-wide">Explore</span>
         </Link>
       </div>
