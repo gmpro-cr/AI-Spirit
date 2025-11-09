@@ -22,8 +22,17 @@ export default function Personas() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
   const [personaToEdit, setPersonaToEdit] = useState(null)
 
-  // Get unique categories
+  // Get unique categories with color mappings
   const categories = ['All', ...new Set(INITIAL_PERSONAS.filter(p => !p.hidden).map(p => p.category))]
+
+  // Category color gradients
+  const categoryColors = {
+    'All': 'from-purple-500 to-pink-500',
+    'Business': 'from-purple-500 to-pink-500',
+    'Historical': 'from-cyan-500 to-blue-500',
+    'Spiritual': 'from-green-500 to-emerald-500',
+    'Entertainment': 'from-orange-500 to-red-500'
+  }
 
   useEffect(() => {
     loadAllPersonas()
@@ -132,17 +141,23 @@ export default function Personas() {
                 <button
                   key={category}
                   onClick={() => setSelectedCategory(category)}
-                  className={`relative px-6 py-3 rounded-full font-semibold text-sm whitespace-nowrap transition-all duration-500 ${
+                  className={`group relative px-6 py-3 rounded-full font-semibold text-sm whitespace-nowrap transition-all duration-500 overflow-hidden ${
                     selectedCategory === category
-                      ? 'bg-gradient-to-br from-white via-white/95 to-white/90 text-black shadow-[0_8px_32px_-4px_rgba(255,255,255,0.25),inset_0_2px_1px_rgba(255,255,255,0.8)] scale-[1.02]'
+                      ? 'text-white shadow-[0_8px_32px_-4px_rgba(102,126,234,0.4),0_4px_16px_rgba(0,0,0,0.3)] scale-[1.05] hover:scale-[1.07]'
                       : 'bg-gradient-to-br from-white/10 via-white/6 to-white/3 backdrop-blur-xl border border-white/20 text-white hover:from-white/15 hover:via-white/10 hover:to-white/5 hover:border-white/30 shadow-[0_4px_16px_-2px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.08)] hover:shadow-[0_6px_24px_-2px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.12)]'
                   }`}
                 >
+                  {selectedCategory === category && (
+                    <>
+                      <div className={`absolute inset-0 bg-gradient-to-r ${categoryColors[category]} opacity-100`}></div>
+                      <div className={`absolute inset-0 bg-gradient-to-r ${categoryColors[category]} opacity-0 group-hover:opacity-100 transition-opacity blur-xl`}></div>
+                    </>
+                  )}
                   <span className="relative z-10 flex items-center gap-2">
                     {category}
                     <span className={`inline-flex items-center justify-center w-5 h-5 rounded-full text-xs font-bold ${
                       selectedCategory === category
-                        ? 'bg-black/15 text-black'
+                        ? 'bg-black/20 text-white'
                         : 'bg-white/15 text-white/80'
                     }`}>
                       {getCategoryCount(category)}
@@ -228,13 +243,18 @@ export default function Personas() {
               <button
                 key={category}
                 onClick={() => setSelectedCategory(category)}
-                className={`px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap transition-all duration-300 ${
+                className={`group relative px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap transition-all duration-300 overflow-hidden ${
                   selectedCategory === category
-                    ? 'bg-white text-black shadow-[0_4px_16px_rgba(255,255,255,0.3)]'
+                    ? 'text-white shadow-[0_4px_16px_rgba(102,126,234,0.4)]'
                     : 'bg-white/10 text-white border border-white/20'
                 }`}
               >
-                {category} ({getCategoryCount(category)})
+                {selectedCategory === category && (
+                  <div className={`absolute inset-0 bg-gradient-to-r ${categoryColors[category]}`}></div>
+                )}
+                <span className="relative z-10">
+                  {category} ({getCategoryCount(category)})
+                </span>
               </button>
             ))}
           </div>
