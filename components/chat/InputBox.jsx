@@ -30,30 +30,34 @@ export default function InputBox({ onSend, disabled }) {
   }
 
   return (
-    <div className="border-t border-white/10 bg-black-secondary/95 backdrop-blur-2xl p-2 sm:p-3 pb-3 sm:pb-4 shadow-[0_-4px_24px_-2px_rgba(0,0,0,0.4)]">
+    <div className="border-t border-white/15 bg-gradient-to-b from-black-secondary/98 to-black-secondary/95 backdrop-blur-2xl p-2 sm:p-3 pb-3 sm:pb-4 shadow-[0_-8px_32px_-4px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.05)]">
       {error && (
-        <div className="mb-3 text-red-400 text-xs sm:text-sm bg-red-500/10 border border-red-500/30 rounded-2xl px-3 sm:px-4 py-2 sm:py-2.5 font-light tracking-wide">
+        <div className="mb-3 text-red-400 text-xs sm:text-sm bg-red-500/10 border border-red-500/30 rounded-2xl px-3 sm:px-4 py-2 sm:py-2.5 font-light tracking-wide animate-fadeIn">
           {error}
         </div>
       )}
       <div className="space-y-1.5">
         <div className="flex gap-2 sm:gap-3 w-full max-w-full">
-          <input
-            type="text"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyPress={handleKeyPress}
-            disabled={disabled}
-            maxLength={MAX_CHARS}
-            placeholder="Type your message..."
-            className="flex-1 min-w-0 bg-black border border-white/30 rounded-2xl sm:rounded-3xl px-3 sm:px-5 py-3 sm:py-4 text-base text-white placeholder:text-white/50 focus:border-white/50 focus:outline-none shadow-[0_4px_16px_-2px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.05)] focus:shadow-[0_6px_24px_-2px_rgba(0,0,0,0.5),0_2px_8px_rgba(255,255,255,0.1),inset_0_1px_0_rgba(255,255,255,0.1)] transition-all duration-400 ease-premium disabled:opacity-50 disabled:cursor-not-allowed font-light tracking-wide"
-          />
+          <div className="relative flex-1 min-w-0 group">
+            <input
+              type="text"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyPress={handleKeyPress}
+              disabled={disabled}
+              maxLength={MAX_CHARS}
+              placeholder="Type your message..."
+              className="w-full bg-gradient-to-br from-black via-black to-black/95 border border-white/30 rounded-2xl sm:rounded-3xl px-3 sm:px-5 py-3 sm:py-4 text-base text-white placeholder:text-white/50 focus:border-white/50 focus:outline-none shadow-[0_8px_32px_-4px_rgba(0,0,0,0.5),0_4px_16px_rgba(0,0,0,0.3),inset_0_2px_1px_rgba(255,255,255,0.08),inset_0_-2px_1px_rgba(0,0,0,0.1)] focus:shadow-[0_12px_48px_-4px_rgba(255,255,255,0.08),0_8px_24px_rgba(0,0,0,0.4),inset_0_2px_1px_rgba(255,255,255,0.12)] focus:from-black focus:via-black/98 focus:to-black/95 transition-all duration-500 disabled:opacity-50 disabled:cursor-not-allowed font-light tracking-wide"
+            />
+            <div className="absolute inset-0 rounded-2xl sm:rounded-3xl bg-gradient-to-tr from-white/8 via-transparent to-transparent opacity-0 group-focus-within:opacity-100 transition-opacity duration-500 pointer-events-none" />
+          </div>
           <button
             onClick={handleSend}
             disabled={disabled || !input.trim()}
-            className="group relative flex-shrink-0 bg-gradient-to-br from-white/18 via-white/14 to-white/10 backdrop-blur-xl border border-white/35 text-white font-semibold px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-base rounded-2xl sm:rounded-3xl hover:from-white/28 hover:via-white/22 hover:to-white/16 hover:border-white/50 shadow-[0_4px_24px_-2px_rgba(0,0,0,0.4),0_2px_8px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.15)] hover:shadow-[0_6px_32px_-2px_rgba(0,0,0,0.5),0_4px_12px_rgba(255,255,255,0.15),inset_0_1px_0_rgba(255,255,255,0.2)] transition-all duration-400 ease-premium disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none active:scale-95 overflow-hidden"
+            className="group relative flex-shrink-0 bg-gradient-to-br from-white/20 via-white/15 to-white/10 backdrop-blur-xl border border-white/35 text-white font-semibold px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-base rounded-2xl sm:rounded-3xl hover:from-white/30 hover:via-white/22 hover:to-white/16 hover:border-white/50 shadow-[0_8px_32px_-4px_rgba(0,0,0,0.5),0_4px_16px_rgba(0,0,0,0.3),inset_0_2px_1px_rgba(255,255,255,0.15),inset_0_-2px_1px_rgba(0,0,0,0.1)] hover:shadow-[0_12px_48px_-4px_rgba(255,255,255,0.12),0_8px_24px_rgba(0,0,0,0.4),inset_0_2px_1px_rgba(255,255,255,0.2)] transition-all duration-500 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none active:scale-95 hover:scale-[1.02] overflow-hidden"
           >
-            <div className="absolute inset-0 rounded-2xl sm:rounded-3xl bg-gradient-to-tr from-white/25 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400 pointer-events-none" />
+            <div className="absolute inset-0 rounded-2xl sm:rounded-3xl bg-gradient-to-tr from-white/25 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+            <div className="absolute inset-0 rounded-2xl sm:rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-xl bg-white/10 -z-10" />
             <span className="relative z-10 tracking-wide">Send</span>
           </button>
         </div>
