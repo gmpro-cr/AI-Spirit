@@ -9,10 +9,22 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     // Check active sessions and sets the user
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null)
-      setLoading(false)
-    })
+    supabase.auth.getSession()
+      .then(({ data: { session } }) => {
+        setUser(session?.user ?? null)
+        setLoading(false)
+      })
+      .catch((error) => {
+        // Silently handle session errors (e.g., invalid refresh token)
+        console.debug('Auth session error (can be ignored for guest users):', error.message)
+        setUser(null)
+        setLoading(false)
+
+        // Clear invalid tokens from localStorage
+        if (error.message?.includes('refresh_token') || error.message?.includes('Refresh Token')) {
+          localStorage.removeItem('supabase.auth.token')
+        }
+      })
 
     // Listen for changes on auth state
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
