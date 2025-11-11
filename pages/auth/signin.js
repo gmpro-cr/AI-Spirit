@@ -79,7 +79,7 @@ export default function SignIn() {
                 },
               }}
               providers={['google']}
-              redirectTo={`${process.env.NEXT_PUBLIC_APP_URL}${redirectUrl}`}
+              redirectTo={`${process.env.NEXT_PUBLIC_APP_URL}/auth/callback?returnTo=${encodeURIComponent(redirectUrl)}`}
               view="sign_in"
               showLinks={true}
             />
