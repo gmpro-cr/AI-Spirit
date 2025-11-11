@@ -19,8 +19,17 @@ export default function SignIn() {
   useEffect(() => {
     // Only redirect if user is authenticated and not still loading
     if (user && !loading && router.isReady) {
-      console.log('User already authenticated, redirecting to:', redirectUrl)
-      router.replace(redirectUrl)
+      // Priority 1: Check sessionStorage for saved redirect (from shared links)
+      const savedRedirectPath = sessionStorage.getItem('redirectAfterAuth')
+      if (savedRedirectPath) {
+        sessionStorage.removeItem('redirectAfterAuth')
+        console.log('User authenticated, redirecting to saved path:', savedRedirectPath)
+        router.replace(savedRedirectPath)
+      } else {
+        // Priority 2: Use returnTo query param or default to /personas
+        console.log('User authenticated, redirecting to:', redirectUrl)
+        router.replace(redirectUrl)
+      }
     }
   }, [user, loading, router, redirectUrl, router.isReady])
 

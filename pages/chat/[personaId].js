@@ -12,12 +12,22 @@ import { INITIAL_PERSONAS } from '@/data/personas'
 export default function ChatPage() {
   const router = useRouter()
   const { personaId } = router.query
-  const { user } = useAuth()
+  const { user, loading } = useAuth()
   const { messages, setMessages, setIsLoading, addMessage, clearMessages } = useChat()
   const [persona, setPersona] = useState(null)
   const [conversationId, setConversationId] = useState(null)
   const [guestMessageCount, setGuestMessageCount] = useState(0)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+
+  // Authentication check: require sign-in for direct persona links
+  useEffect(() => {
+    if (!loading && !user && personaId) {
+      // Save the intended destination
+      sessionStorage.setItem('redirectAfterAuth', `/chat/${personaId}`)
+      // Redirect to sign-in
+      router.push('/auth/signin')
+    }
+  }, [user, loading, personaId, router])
 
   // Prevent body scroll on chat page
   useEffect(() => {
