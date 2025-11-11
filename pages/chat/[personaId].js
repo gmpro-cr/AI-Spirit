@@ -198,10 +198,6 @@ export default function ChatPage() {
     return (
       <>
         <ParticlesBackground />
-        <Navbar
-          onMenuToggle={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          showMenuButton={true}
-        />
         <SidePanel
           isMobileMenuOpen={isMobileMenuOpen}
           setIsMobileMenuOpen={setIsMobileMenuOpen}
@@ -221,17 +217,18 @@ export default function ChatPage() {
       </Head>
 
       <ParticlesBackground />
-      <Navbar
-        onMenuToggle={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        showMenuButton={true}
-      />
       <SidePanel
         isMobileMenuOpen={isMobileMenuOpen}
         setIsMobileMenuOpen={setIsMobileMenuOpen}
       />
 
       <div className="relative z-10 lg:pl-72">
-        <ChatInterface persona={persona} onSendMessage={handleSendMessage} onNewChat={handleNewChat} />
+        <ChatInterface
+          persona={persona}
+          onSendMessage={handleSendMessage}
+          onNewChat={handleNewChat}
+          onMenuToggle={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        />
       </div>
     </>
   )

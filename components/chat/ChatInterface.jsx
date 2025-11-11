@@ -3,7 +3,7 @@ import MessageBubble from './MessageBubble'
 import InputBox from './InputBox'
 import { useChat } from '@/context/ChatContext'
 
-export default function ChatInterface({ persona, onSendMessage, onNewChat }) {
+export default function ChatInterface({ persona, onSendMessage, onNewChat, onMenuToggle }) {
   const { messages, isLoading } = useChat()
   const messagesEndRef = useRef(null)
 
@@ -31,6 +31,17 @@ export default function ChatInterface({ persona, onSendMessage, onNewChat }) {
       <div className="relative bg-gradient-to-br from-white/15 via-white/10 to-white/5 backdrop-blur-2xl border border-white/30 rounded-2xl sm:rounded-3xl p-3 sm:p-4 mx-3 sm:mx-4 mt-2 mb-2 flex items-center space-x-3 sm:space-x-4 shadow-glass animate-fadeIn">
         <div className="absolute inset-0 rounded-2xl sm:rounded-3xl bg-gradient-to-tr from-white/18 via-transparent to-transparent opacity-60 pointer-events-none" />
         <div className="absolute inset-[1px] rounded-2xl sm:rounded-3xl bg-gradient-to-br from-transparent via-white/5 to-white/10 pointer-events-none" />
+
+        {/* Hamburger Menu Button - Mobile only */}
+        <button
+          onClick={onMenuToggle}
+          className="lg:hidden relative z-10 w-9 h-9 flex flex-col items-center justify-center space-y-1.5 bg-gradient-to-br from-white/18 via-white/12 to-white/8 backdrop-blur-xl border border-white/35 rounded-xl hover:from-white/25 hover:via-white/18 hover:to-white/12 hover:border-white/50 transition-smooth shadow-glass hover:shadow-glass-hover active:scale-95"
+          aria-label="Toggle menu"
+        >
+          <span className="w-5 h-0.5 bg-white rounded-full shadow-[0_0_8px_rgba(255,255,255,0.4)]"></span>
+          <span className="w-5 h-0.5 bg-white rounded-full shadow-[0_0_8px_rgba(255,255,255,0.4)]"></span>
+          <span className="w-5 h-0.5 bg-white rounded-full shadow-[0_0_8px_rgba(255,255,255,0.4)]"></span>
+        </button>
 
         <div className="relative z-10 w-11 h-11 sm:w-14 sm:h-14 rounded-full bg-gradient-to-br from-white/22 via-white/14 to-white/10 backdrop-blur-md border border-white/35 flex items-center justify-center overflow-hidden text-lg sm:text-xl text-white font-bold shadow-[0_6px_20px_-2px_rgba(0,0,0,0.4),inset_0_2px_1px_rgba(255,255,255,0.18),inset_0_-2px_1px_rgba(0,0,0,0.1)]">
           {persona.avatar_url ? (
