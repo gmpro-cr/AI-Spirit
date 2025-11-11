@@ -217,6 +217,12 @@ export default function ChatPage() {
       </Head>
 
       <ParticlesBackground />
+
+      {/* Navbar - Hidden on mobile, visible on desktop */}
+      <div className="hidden lg:block">
+        <Navbar />
+      </div>
+
       <SidePanel
         isMobileMenuOpen={isMobileMenuOpen}
         setIsMobileMenuOpen={setIsMobileMenuOpen}
