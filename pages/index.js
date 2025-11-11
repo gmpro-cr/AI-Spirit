@@ -1,9 +1,25 @@
 import Head from 'next/head'
-import Link from 'next/link'
+import { useRouter } from 'next/router'
 import Navbar from '@/components/layout/Navbar'
 import ParticlesBackground from '@/components/layout/ParticlesBackground'
+import { useAuth } from '@/context/AuthContext'
 
 export default function Home() {
+  const router = useRouter()
+  const { user, loading } = useAuth()
+
+  const handleStartChatting = () => {
+    if (loading) return // Wait for auth state to load
+
+    if (user) {
+      // User is authenticated, go to personas page
+      router.push('/personas')
+    } else {
+      // User is not authenticated, redirect to sign in with return URL
+      router.push('/auth/signin?returnTo=/personas')
+    }
+  }
+
   return (
     <>
       <Head>
@@ -29,14 +45,15 @@ export default function Home() {
 
             {/* CTA Button */}
             <div className="flex flex-col sm:flex-row gap-4 sm:gap-5 justify-center px-4 mt-8 sm:mt-0 animate-fadeIn" style={{animationDelay: '0.2s'}}>
-              <Link
-                href="/personas"
-                className="group relative bg-gradient-to-br from-white/20 via-white/12 to-white/8 backdrop-blur-2xl border border-white/35 text-white font-semibold text-base sm:text-lg px-10 sm:px-12 py-4 sm:py-5 rounded-full shadow-[0_8px_32px_-4px_rgba(0,0,0,0.5),0_4px_16px_rgba(0,0,0,0.3),inset_0_2px_1px_rgba(255,255,255,0.15),inset_0_-2px_1px_rgba(0,0,0,0.1)] hover:shadow-[0_12px_48px_-4px_rgba(255,255,255,0.15),0_8px_24px_rgba(0,0,0,0.4),inset_0_2px_1px_rgba(255,255,255,0.2),inset_0_-2px_1px_rgba(0,0,0,0.15)] transition-all duration-500 ease-out hover:scale-[1.03] hover:border-white/50 hover:from-white/25 hover:via-white/15 hover:to-white/10 active:scale-[0.98] whitespace-nowrap overflow-hidden"
+              <button
+                onClick={handleStartChatting}
+                disabled={loading}
+                className="group relative bg-gradient-to-br from-white/20 via-white/12 to-white/8 backdrop-blur-2xl border border-white/35 text-white font-semibold text-base sm:text-lg px-10 sm:px-12 py-4 sm:py-5 rounded-full shadow-[0_8px_32px_-4px_rgba(0,0,0,0.5),0_4px_16px_rgba(0,0,0,0.3),inset_0_2px_1px_rgba(255,255,255,0.15),inset_0_-2px_1px_rgba(0,0,0,0.1)] hover:shadow-[0_12px_48px_-4px_rgba(255,255,255,0.15),0_8px_24px_rgba(0,0,0,0.4),inset_0_2px_1px_rgba(255,255,255,0.2),inset_0_-2px_1px_rgba(0,0,0,0.15)] transition-all duration-500 ease-out hover:scale-[1.03] hover:border-white/50 hover:from-white/25 hover:via-white/15 hover:to-white/10 active:scale-[0.98] whitespace-nowrap overflow-hidden disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
               >
                 <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-white/25 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
                 <div className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-xl bg-white/20 -z-10" />
                 <span className="relative z-10 tracking-wide">Start Chatting</span>
-              </Link>
+              </button>
             </div>
           </div>
 
