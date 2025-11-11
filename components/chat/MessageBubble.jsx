@@ -1,38 +1,8 @@
-import { useState, useEffect } from 'react'
-import { speak, stopSpeaking, isSpeaking, loadVoices } from '@/lib/textToSpeech'
+import { useState } from 'react'
 
 export default function MessageBubble({ message, language, personaName }) {
   const isUser = message.role === 'user'
   const [copied, setCopied] = useState(false)
-  const [speaking, setSpeaking] = useState(false)
-  const [voicesLoaded, setVoicesLoaded] = useState(false)
-
-  useEffect(() => {
-    // Load voices on component mount
-    loadVoices().then(() => {
-      setVoicesLoaded(true)
-    })
-
-    // Cleanup: stop speaking when component unmounts
-    return () => {
-      stopSpeaking()
-    }
-  }, [])
-
-  useEffect(() => {
-    // Check speaking status periodically
-    if (!speaking) return
-
-    const interval = setInterval(() => {
-      if (!isSpeaking()) {
-        setSpeaking(false)
-      }
-    }, 100)
-
-    return () => {
-      clearInterval(interval)
-    }
-  }, [speaking])
 
   const handleCopy = async () => {
     try {
@@ -41,23 +11,6 @@ export default function MessageBubble({ message, language, personaName }) {
       setTimeout(() => setCopied(false), 2000)
     } catch (err) {
       console.error('Failed to copy:', err)
-    }
-  }
-
-  const handleSpeak = async () => {
-    if (speaking) {
-      stopSpeaking()
-      setSpeaking(false)
-    } else {
-      setSpeaking(true)
-      try {
-        await speak(message.content, personaName || 'Default', language, () => {
-          setSpeaking(false)
-        })
-      } catch (error) {
-        console.error('Speech error:', error)
-        setSpeaking(false)
-      }
     }
   }
 
@@ -77,26 +30,6 @@ export default function MessageBubble({ message, language, personaName }) {
         {/* Action Buttons - Only show for AI messages */}
         {!isUser && (
           <div className="absolute -top-2 -right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-1 group-hover:translate-y-0">
-            {/* Speaker Button */}
-            <button
-              onClick={handleSpeak}
-              className={`bg-gradient-to-br from-white/22 via-white/16 to-white/12 backdrop-blur-xl border border-white/35 rounded-full p-2 hover:from-white/32 hover:via-white/24 hover:to-white/18 hover:border-white/50 shadow-glass hover:shadow-glass-hover active:scale-90 transition-smooth hover:scale-110 ${
-                speaking ? 'bg-blue-500/20 border-blue-400/50' : ''
-              }`}
-              title={speaking ? "Stop speaking" : "Listen to message"}
-              disabled={!voicesLoaded}
-            >
-              {speaking ? (
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-blue-300" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
-                </svg>
-              ) : (
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-white" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.828 1 1 0 010-1.415z" clipRule="evenodd" />
-                </svg>
-              )}
-            </button>
-
             {/* Copy Button */}
             <button
               onClick={handleCopy}
