@@ -17,13 +17,14 @@ export async function middleware(req) {
     return res
   }
 
-  // If user is not authenticated and trying to access protected pages
-  if (!session && !isAuthPage) {
+  // Allow homepage and personas page to be accessed without authentication
+  const isPublicPage = isHomePage || req.nextUrl.pathname === '/personas'
+
+  // If user is not authenticated and trying to access protected pages (not homepage/personas/auth)
+  if (!session && !isAuthPage && !isPublicPage) {
     const redirectUrl = new URL('/auth/signin', req.url)
     // Store the original URL to redirect back after sign in
-    if (req.nextUrl.pathname !== '/') {
-      redirectUrl.searchParams.set('returnTo', req.nextUrl.pathname)
-    }
+    redirectUrl.searchParams.set('returnTo', req.nextUrl.pathname)
     return NextResponse.redirect(redirectUrl)
   }
 
