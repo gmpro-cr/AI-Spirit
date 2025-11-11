@@ -3,13 +3,12 @@ import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { useAuth } from '@/context/AuthContext'
 
-export default function SidePanel() {
+export default function SidePanel({ isMobileMenuOpen = false, setIsMobileMenuOpen = () => {} }) {
   const { user, signOut } = useAuth()
   const router = useRouter()
   const [recentPersonas, setRecentPersonas] = useState([])
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false)
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isMounted, setIsMounted] = useState(false)
 
   // Handle mounting to prevent SSR issues
@@ -90,6 +89,14 @@ export default function SidePanel() {
 
   return (
     <>
+      {/* Mobile Overlay */}
+      {isMobileMenuOpen && (
+        <div
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-30 lg:hidden"
+          onClick={() => setIsMobileMenuOpen(false)}
+        />
+      )}
+
       {/* Side Panel */}
       <div className={`fixed left-0 top-[65px] h-[calc(100vh-65px)] w-64 bg-black-secondary/98 backdrop-blur-xl border-r border-white/15 z-40 flex flex-col transition-transform duration-400 ease-premium ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'} shadow-[4px_0_24px_-2px_rgba(0,0,0,0.5)]`}>
       {/* Action Buttons */}

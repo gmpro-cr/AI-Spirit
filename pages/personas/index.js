@@ -20,6 +20,7 @@ export default function Personas() {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
   const [personaToEdit, setPersonaToEdit] = useState(null)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   useEffect(() => {
     loadAllPersonas()
@@ -96,8 +97,14 @@ export default function Personas() {
       </Head>
 
       <ParticlesBackground />
-      <Navbar />
-      <SidePanel />
+      <Navbar
+        onMenuToggle={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        showMenuButton={true}
+      />
+      <SidePanel
+        isMobileMenuOpen={isMobileMenuOpen}
+        setIsMobileMenuOpen={setIsMobileMenuOpen}
+      />
 
       <main className="relative min-h-screen bg-black-primary pb-16 px-4 pt-[72px] lg:pt-0 lg:pl-72 z-10">
         <div className="max-w-7xl mx-auto">
