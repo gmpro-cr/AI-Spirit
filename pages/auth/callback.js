@@ -6,6 +6,7 @@ import ParticlesBackground from '@/components/layout/ParticlesBackground'
 
 export default function AuthCallback() {
   const router = useRouter()
+  const { returnTo } = router.query
 
   useEffect(() => {
     const handleAuthCallback = async () => {
@@ -21,8 +22,9 @@ export default function AuthCallback() {
         }
 
         if (data.session) {
-          // Successfully authenticated, redirect to personas page
-          router.push('/personas')
+          // Successfully authenticated, redirect to the return URL or personas page
+          const redirectUrl = returnTo || '/personas'
+          router.push(redirectUrl)
         } else {
           // No session, redirect to sign in
           router.push('/auth/signin')
@@ -33,8 +35,11 @@ export default function AuthCallback() {
       }
     }
 
-    handleAuthCallback()
-  }, [router])
+    // Wait for router to be ready to ensure query params are available
+    if (router.isReady) {
+      handleAuthCallback()
+    }
+  }, [router, returnTo, router.isReady])
 
   return (
     <>
