@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
+import { useEffect } from 'react'
 import Navbar from '@/components/layout/Navbar'
 import ParticlesBackground from '@/components/layout/ParticlesBackground'
 import { useAuth } from '@/context/AuthContext'
@@ -7,6 +8,16 @@ import { useAuth } from '@/context/AuthContext'
 export default function Home() {
   const router = useRouter()
   const { user, loading } = useAuth()
+
+  // Redirect to sign in if not authenticated
+  useEffect(() => {
+    if (!loading && !user) {
+      router.replace('/auth/signin')
+    } else if (!loading && user) {
+      // If authenticated, redirect to personas
+      router.replace('/personas')
+    }
+  }, [user, loading, router])
 
   const handleStartChatting = () => {
     if (loading) return // Wait for auth state to load
@@ -18,6 +29,26 @@ export default function Home() {
       // User is not authenticated, redirect to sign in with return URL
       router.push('/auth/signin?returnTo=/personas')
     }
+  }
+
+  // Show loading state while checking authentication
+  if (loading) {
+    return (
+      <>
+        <Head>
+          <title>AI-Spirit - Chat with Anyone, Real or Imagined</title>
+          <meta name="description" content="Conversational AI platform with 45+ personas" />
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+        </Head>
+        <ParticlesBackground />
+        <div className="relative min-h-screen bg-gradient-dark flex items-center justify-center">
+          <div className="text-center">
+            <div className="inline-block animate-spin rounded-full h-16 w-16 border-b-2 border-white mb-4"></div>
+            <p className="text-white/60 text-sm">Loading...</p>
+          </div>
+        </div>
+      </>
+    )
   }
 
   return (
