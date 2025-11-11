@@ -10,17 +10,19 @@ import ParticlesBackground from '@/components/layout/ParticlesBackground'
 
 export default function SignIn() {
   const router = useRouter()
-  const { user } = useAuth()
+  const { user, loading } = useAuth()
   const { returnTo } = router.query
 
   // Determine redirect URL: use returnTo query param or default to /personas
   const redirectUrl = returnTo || '/personas'
 
   useEffect(() => {
-    if (user) {
-      router.push(redirectUrl)
+    // Only redirect if user is authenticated and not still loading
+    if (user && !loading && router.isReady) {
+      console.log('User already authenticated, redirecting to:', redirectUrl)
+      router.replace(redirectUrl)
     }
-  }, [user, router, redirectUrl])
+  }, [user, loading, router, redirectUrl, router.isReady])
 
   return (
     <>
