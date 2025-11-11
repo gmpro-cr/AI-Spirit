@@ -12,12 +12,19 @@ import { INITIAL_PERSONAS } from '@/data/personas'
 export default function ChatPage() {
   const router = useRouter()
   const { personaId } = router.query
-  const { user } = useAuth()
+  const { user, loading } = useAuth()
   const { messages, setMessages, setIsLoading, addMessage, clearMessages } = useChat()
   const [persona, setPersona] = useState(null)
   const [conversationId, setConversationId] = useState(null)
   const [guestMessageCount, setGuestMessageCount] = useState(0)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+
+  // Require authentication for chat pages (shared links)
+  useEffect(() => {
+    if (!loading && !user && personaId) {
+      router.push(`/auth/signin?returnTo=/chat/${personaId}`)
+    }
+  }, [user, loading, personaId, router])
 
   // Prevent body scroll on chat page
   useEffect(() => {

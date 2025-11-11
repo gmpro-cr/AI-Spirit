@@ -12,7 +12,7 @@ import { useAuth } from '@/context/AuthContext'
 import { supabase } from '@/lib/supabase'
 
 export default function Personas() {
-  const { user } = useAuth()
+  const { user, loading } = useAuth()
   const router = useRouter()
   const [personas, setPersonas] = useState([])
   const [filteredPersonas, setFilteredPersonas] = useState([])
@@ -21,6 +21,13 @@ export default function Personas() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
   const [personaToEdit, setPersonaToEdit] = useState(null)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+
+  // Require authentication for personas page
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push('/auth/signin?returnTo=/personas')
+    }
+  }, [user, loading, router])
 
   useEffect(() => {
     loadAllPersonas()
