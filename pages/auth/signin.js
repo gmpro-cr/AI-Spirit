@@ -78,10 +78,11 @@ export default function SignIn() {
                   },
                 },
               }}
-              providers={['google']}
+              providers={['google', 'apple']}
+              onlyThirdPartyProviders={true}
               redirectTo={`${process.env.NEXT_PUBLIC_APP_URL}/auth/callback?returnTo=${encodeURIComponent(redirectUrl)}`}
               view="sign_in"
-              showLinks={true}
+              showLinks={false}
             />
 
             <div className="mt-6 text-center text-text-muted text-sm">
