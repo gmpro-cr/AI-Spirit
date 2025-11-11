@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import { useState, useEffect, useRef } from 'react'
 import Head from 'next/head'
-import SidePanelNew from '@/components/layout/SidePanel-new'
+import SidePanelNew from '@/components/layout/SidePanel'
 import { useAuth } from '@/context/AuthContext'
 import { useChat } from '@/context/ChatContext'
 import { INITIAL_PERSONAS } from '@/data/personas'
