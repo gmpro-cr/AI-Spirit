@@ -78,7 +78,7 @@ export default function SignIn() {
                   },
                 },
               }}
-              providers={['google', 'apple']}
+              providers={['google']}
               onlyThirdPartyProviders={true}
               redirectTo={`${process.env.NEXT_PUBLIC_APP_URL}/auth/callback?returnTo=${encodeURIComponent(redirectUrl)}`}
               view="sign_in"
