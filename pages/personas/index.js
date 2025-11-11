@@ -12,7 +12,7 @@ import { useAuth } from '@/context/AuthContext'
 import { supabase } from '@/lib/supabase'
 
 export default function Personas() {
-  const { user, loading } = useAuth()
+  const { user } = useAuth()
   const router = useRouter()
   const [personas, setPersonas] = useState([])
   const [filteredPersonas, setFilteredPersonas] = useState([])
@@ -21,9 +21,6 @@ export default function Personas() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
   const [personaToEdit, setPersonaToEdit] = useState(null)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-
-  // Allow guest access to personas page (browsing only)
-  // Authentication is required when clicking on a persona to chat
 
   useEffect(() => {
     loadAllPersonas()

@@ -6,38 +6,9 @@ export async function middleware(req) {
   const supabase = createMiddlewareClient({ req, res })
 
   // Refresh session if expired - required for Server Components
-  const { data: { session } } = await supabase.auth.getSession()
+  await supabase.auth.getSession()
 
-  const isAuthPage = req.nextUrl.pathname.startsWith('/auth/')
-  const isHomePage = req.nextUrl.pathname === '/'
-  const isApiRoute = req.nextUrl.pathname.startsWith('/api/')
-
-  // API routes should handle their own auth - don't redirect them
-  if (isApiRoute) {
-    return res
-  }
-
-  // Allow homepage and personas page to be accessed without authentication
-  const isPublicPage = isHomePage || req.nextUrl.pathname === '/personas'
-
-  // If user is not authenticated and trying to access protected pages (not homepage/personas/auth)
-  if (!session && !isAuthPage && !isPublicPage) {
-    const redirectUrl = new URL('/auth/signin', req.url)
-    // Store the original URL to redirect back after sign in
-    redirectUrl.searchParams.set('returnTo', req.nextUrl.pathname)
-    return NextResponse.redirect(redirectUrl)
-  }
-
-  // If user is authenticated and trying to access auth pages, redirect to personas
-  if (session && isAuthPage && !req.nextUrl.pathname.includes('/callback')) {
-    return NextResponse.redirect(new URL('/personas', req.url))
-  }
-
-  // If user is authenticated and on home page, redirect to personas
-  if (session && isHomePage) {
-    return NextResponse.redirect(new URL('/personas', req.url))
-  }
-
+  // Just refresh the session, no redirects or auth checks
   return res
 }
 

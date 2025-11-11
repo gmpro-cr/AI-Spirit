@@ -10,28 +10,13 @@ import ParticlesBackground from '@/components/layout/ParticlesBackground'
 
 export default function SignIn() {
   const router = useRouter()
-  const { user, loading } = useAuth()
-  const { returnTo } = router.query
-
-  // Determine redirect URL: use returnTo query param or default to /personas
-  const redirectUrl = returnTo || '/personas'
+  const { user } = useAuth()
 
   useEffect(() => {
-    // Only redirect if user is authenticated and not still loading
-    if (user && !loading && router.isReady) {
-      // Priority 1: Check sessionStorage for saved redirect (from shared links)
-      const savedRedirectPath = sessionStorage.getItem('redirectAfterAuth')
-      if (savedRedirectPath) {
-        sessionStorage.removeItem('redirectAfterAuth')
-        console.log('User authenticated, redirecting to saved path:', savedRedirectPath)
-        router.replace(savedRedirectPath)
-      } else {
-        // Priority 2: Use returnTo query param or default to /personas
-        console.log('User authenticated, redirecting to:', redirectUrl)
-        router.replace(redirectUrl)
-      }
+    if (user) {
+      router.push('/personas')
     }
-  }, [user, loading, router, redirectUrl, router.isReady])
+  }, [user, router])
 
   return (
     <>
@@ -90,10 +75,9 @@ export default function SignIn() {
                 },
               }}
               providers={['google']}
-              onlyThirdPartyProviders={true}
-              redirectTo={`${process.env.NEXT_PUBLIC_APP_URL}/auth/callback?returnTo=${encodeURIComponent(redirectUrl)}`}
+              redirectTo={`${process.env.NEXT_PUBLIC_APP_URL}/personas`}
               view="sign_in"
-              showLinks={false}
+              showLinks={true}
             />
 
             <div className="mt-6 text-center text-text-muted text-sm">
