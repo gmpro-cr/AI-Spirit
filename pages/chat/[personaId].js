@@ -1,10 +1,7 @@
 import { useRouter } from 'next/router'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Head from 'next/head'
-import Navbar from '@/components/layout/Navbar'
-import ParticlesBackground from '@/components/layout/ParticlesBackground'
-import SidePanel from '@/components/layout/SidePanel'
-import ChatInterface from '@/components/chat/ChatInterface'
+import SidePanelNew from '@/components/layout/SidePanel-new'
 import { useAuth } from '@/context/AuthContext'
 import { useChat } from '@/context/ChatContext'
 import { INITIAL_PERSONAS } from '@/data/personas'
@@ -13,48 +10,34 @@ export default function ChatPage() {
   const router = useRouter()
   const { personaId } = router.query
   const { user, loading } = useAuth()
-  const { messages, setMessages, setIsLoading, addMessage, clearMessages } = useChat()
+  const { messages, setMessages, isLoading, setIsLoading, addMessage, clearMessages } = useChat()
   const [persona, setPersona] = useState(null)
-  const [conversationId, setConversationId] = useState(null)
+  const [currentInput, setCurrentInput] = useState('')
   const [guestMessageCount, setGuestMessageCount] = useState(0)
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const chatContainerRef = useRef(null)
 
-  // Require authentication for chat pages (shared links)
+  // Require authentication
   useEffect(() => {
     if (!loading && !user && personaId) {
       router.push(`/auth/signin?returnTo=/chat/${personaId}`)
     }
   }, [user, loading, personaId, router])
 
-  // Prevent body scroll on chat page
-  useEffect(() => {
-    document.body.style.overflow = 'hidden'
-    document.body.style.position = 'fixed'
-    document.body.style.width = '100%'
-    document.body.style.height = '100%'
-
-    return () => {
-      document.body.style.overflow = ''
-      document.body.style.position = ''
-      document.body.style.width = ''
-      document.body.style.height = ''
-    }
-  }, [])
-
+  // Load persona
   useEffect(() => {
     const loadPersona = async () => {
       if (!personaId) return
 
-      // 1. Check INITIAL_PERSONAS (hardcoded personas) - exclude hidden ones
+      // Check hardcoded personas
       let found = INITIAL_PERSONAS.find(p => p.slug === personaId && !p.hidden)
 
-      // 2. Check localStorage for guest custom personas
+      // Check localStorage
       if (!found) {
         const customPersonas = JSON.parse(localStorage.getItem('esperit_custom_personas') || '[]')
         found = customPersonas.find(p => p.slug === personaId)
       }
 
-      // 3. Check database for ALL custom personas (accessible to everyone)
+      // Check database
       if (!found) {
         try {
           const { supabase } = await import('@/lib/supabase')
@@ -68,7 +51,7 @@ export default function ChatPage() {
             found = data
           }
         } catch (error) {
-          console.error('Error loading persona from database:', error)
+          console.error('Error loading persona:', error)
         }
       }
 
@@ -77,32 +60,25 @@ export default function ChatPage() {
 
         // Track recent personas
         const recentPersonas = JSON.parse(localStorage.getItem('esperit_recent_personas') || '[]')
-
-        // Remove if already exists (to move to front)
         const filtered = recentPersonas.filter(p => p.slug !== found.slug)
-
-        // Add to beginning of array
         const updated = [{
           name: found.name,
           slug: found.slug,
           category: found.category
-        }, ...filtered].slice(0, 10) // Keep only last 10
-
+        }, ...filtered].slice(0, 10)
         localStorage.setItem('esperit_recent_personas', JSON.stringify(updated))
       }
     }
 
     loadPersona()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [personaId, user])
 
+  // Load saved messages
   useEffect(() => {
-    // Clear messages when persona changes
     if (persona) {
       clearMessages()
       setGuestMessageCount(0)
 
-      // Load guest messages from localStorage
       if (!user) {
         const guestData = localStorage.getItem(`esperit_guest_${persona.slug}`)
         if (guestData) {
@@ -116,38 +92,36 @@ export default function ChatPage() {
         }
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [persona?.slug, user])
 
-  const handleNewChat = () => {
-    // Clear messages from context
-    clearMessages()
-    setGuestMessageCount(0)
-
-    // Clear messages from localStorage for guests
-    if (!user && persona) {
-      localStorage.removeItem(`esperit_guest_${persona.slug}`)
+  // Auto-scroll to bottom
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight
     }
+  }, [messages])
 
-    // For authenticated users, clear conversation ID
-    if (user) {
-      setConversationId(null)
-    }
+  const handleBack = () => {
+    router.push('/personas')
   }
 
-  const handleSendMessage = async (messageText) => {
-    if (!persona) return
+  const handleSendMessage = async (e) => {
+    e.preventDefault()
+    if (!currentInput.trim() || isLoading || !persona) return
 
-    // Guest mode limit check
+    const messageText = currentInput.trim()
+
+    // Guest limit check
     if (!user && guestMessageCount >= 10) {
       alert('Guest limit reached! Sign up to continue chatting.')
       router.push('/auth/signin')
       return
     }
 
-    // Add user message optimistically
+    // Add user message
     const userMessage = { role: 'user', content: messageText }
     addMessage(userMessage)
+    setCurrentInput('')
     setIsLoading(true)
 
     try {
@@ -155,11 +129,10 @@ export default function ChatPage() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          persona: persona, // Send full persona object
-          personaId: persona.id || persona.slug, // Keep for backward compatibility
+          persona: persona,
+          personaId: persona.id || persona.slug,
           message: messageText,
-          conversationHistory: messages, // Send conversation history for context
-          conversationId: conversationId,
+          conversationHistory: messages,
           isGuest: !user,
         }),
       })
@@ -174,7 +147,7 @@ export default function ChatPage() {
       const aiMessage = { role: 'assistant', content: data.response }
       addMessage(aiMessage)
 
-      // Update guest mode tracking
+      // Update guest tracking
       if (!user) {
         const newCount = guestMessageCount + 1
         setGuestMessageCount(newCount)
@@ -188,7 +161,8 @@ export default function ChatPage() {
       }
     } catch (error) {
       console.error('Error sending message:', error)
-      alert(error.message || 'Failed to send message')
+      const errorMessage = { role: 'assistant', content: "Sorry, something went wrong. Please try again." }
+      addMessage(errorMessage)
     } finally {
       setIsLoading(false)
     }
@@ -196,16 +170,9 @@ export default function ChatPage() {
 
   if (!persona) {
     return (
-      <>
-        <ParticlesBackground />
-        <SidePanel
-          isMobileMenuOpen={isMobileMenuOpen}
-          setIsMobileMenuOpen={setIsMobileMenuOpen}
-        />
-        <div className="relative min-h-screen bg-black-primary flex items-center justify-center lg:pl-72 z-10">
-          <p className="text-text-secondary text-sm sm:text-base">Loading persona...</p>
-        </div>
-      </>
+      <div className="flex h-screen items-center justify-center bg-white">
+        <p className="text-gray-600">Loading persona...</p>
+      </div>
     )
   }
 
@@ -213,22 +180,156 @@ export default function ChatPage() {
     <>
       <Head>
         <title>Chat with {persona.name} - AI-Spirit</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
-      <ParticlesBackground />
-      <SidePanel
-        isMobileMenuOpen={isMobileMenuOpen}
-        setIsMobileMenuOpen={setIsMobileMenuOpen}
-      />
+      <div className="flex h-screen bg-white">
+        {/* Side Panel */}
+        <SidePanelNew onBack={handleBack} backButtonText="Back to Personas" />
 
-      <div className="relative z-10 lg:pl-72">
-        <ChatInterface
-          persona={persona}
-          onSendMessage={handleSendMessage}
-          onNewChat={handleNewChat}
-          onMenuToggle={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        />
+        {/* Chat Area */}
+        <div className="flex flex-col flex-1 h-screen md:ml-64">
+          {/* Header */}
+          <header className="flex items-center p-4 border-b border-gray-200 sticky top-0 bg-white/80 backdrop-blur-sm z-10">
+            <button
+              onClick={handleBack}
+              className="mr-4 p-2 rounded-full hover:bg-gray-100 md:hidden"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 19l-7-7 7-7"
+                />
+              </svg>
+            </button>
+            <img
+              src={persona.image_url || '/default-persona.png'}
+              alt={persona.name}
+              className="w-10 h-10 rounded-full mr-4 object-cover"
+              onError={(e) => {
+                e.target.src = '/default-persona.png'
+              }}
+            />
+            <h2 className="text-xl font-bold">{persona.name}</h2>
+          </header>
+
+          {/* Messages */}
+          <main ref={chatContainerRef} className="flex-1 overflow-y-auto p-6 space-y-6">
+            {messages.length === 0 && (
+              <div className="flex items-center justify-center h-full">
+                <div className="text-center">
+                  <img
+                    src={persona.image_url || '/default-persona.png'}
+                    alt={persona.name}
+                    className="w-24 h-24 rounded-full mx-auto mb-4 object-cover"
+                    onError={(e) => {
+                      e.target.src = '/default-persona.png'
+                    }}
+                  />
+                  <h3 className="text-2xl font-bold mb-2">{persona.name}</h3>
+                  <p className="text-gray-600 max-w-md">
+                    {persona.description || persona.bio}
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {messages.map((msg, index) => (
+              <div
+                key={index}
+                className={`flex items-start gap-4 ${msg.role === 'user' ? 'justify-end' : ''}`}
+              >
+                {msg.role === 'assistant' && (
+                  <img
+                    src={persona.image_url || '/default-persona.png'}
+                    alt={persona.name}
+                    className="w-8 h-8 rounded-full object-cover"
+                    onError={(e) => {
+                      e.target.src = '/default-persona.png'
+                    }}
+                  />
+                )}
+                <div
+                  className={`max-w-md lg:max-w-lg p-3 rounded-2xl ${
+                    msg.role === 'user'
+                      ? 'bg-black text-white rounded-br-none'
+                      : 'bg-gray-100 text-black rounded-bl-none'
+                  }`}
+                >
+                  <p className="whitespace-pre-wrap">{msg.content}</p>
+                </div>
+                {msg.role === 'user' && (
+                  <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center font-bold">
+                    {user?.email?.[0]?.toUpperCase() || 'U'}
+                  </div>
+                )}
+              </div>
+            ))}
+
+            {isLoading && (
+              <div className="flex items-start gap-4">
+                <img
+                  src={persona.image_url || '/default-persona.png'}
+                  alt={persona.name}
+                  className="w-8 h-8 rounded-full object-cover"
+                  onError={(e) => {
+                    e.target.src = '/default-persona.png'
+                  }}
+                />
+                <div className="max-w-md lg:max-w-lg p-3 rounded-2xl bg-gray-100 text-black rounded-bl-none">
+                  <div className="flex items-center space-x-2">
+                    <div className="w-2 h-2 bg-gray-500 rounded-full animate-pulse"></div>
+                    <div className="w-2 h-2 bg-gray-500 rounded-full animate-pulse" style={{ animationDelay: '0.2s' }}></div>
+                    <div className="w-2 h-2 bg-gray-500 rounded-full animate-pulse" style={{ animationDelay: '0.4s' }}></div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </main>
+
+          {/* Input Box */}
+          <footer className="p-4 sticky bottom-0 bg-white border-t border-gray-200">
+            <form onSubmit={handleSendMessage} className="flex items-center gap-2">
+              <input
+                type="text"
+                value={currentInput}
+                onChange={(e) => setCurrentInput(e.target.value)}
+                placeholder={`Message ${persona.name}...`}
+                className="flex-1 p-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-black"
+                disabled={isLoading}
+              />
+              <button
+                type="submit"
+                className="bg-black text-white p-3 rounded-full disabled:bg-gray-400 hover:bg-gray-800 transition-colors"
+                disabled={isLoading || !currentInput.trim()}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
+                </svg>
+              </button>
+            </form>
+
+            {/* Guest message counter */}
+            {!user && (
+              <div className="text-center text-xs text-gray-500 mt-2">
+                Guest mode: {guestMessageCount}/10 messages used
+              </div>
+            )}
+          </footer>
+        </div>
       </div>
     </>
   )

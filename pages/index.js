@@ -1,7 +1,5 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import Navbar from '@/components/layout/Navbar'
-import ParticlesBackground from '@/components/layout/ParticlesBackground'
 import { useAuth } from '@/context/AuthContext'
 
 export default function Home() {
@@ -10,56 +8,72 @@ export default function Home() {
 
   const handleStartChatting = () => {
     if (user) {
-      // User is authenticated, go to personas
       router.push('/personas')
     } else {
-      // User is not authenticated, redirect to sign in
       router.push('/auth/signin?returnTo=/personas')
     }
+  }
+
+  const handleSignIn = () => {
+    router.push('/auth/signin')
   }
 
   return (
     <>
       <Head>
-        <title>AI-Spirit - Chat with Anyone, Real or Imagined</title>
-        <meta name="description" content="Conversational AI platform with 45+ personas" />
+        <title>AI-Spirit - Talk to Legends</title>
+        <meta name="description" content="Engage in enlightening conversations with AI-powered personas" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
-      <ParticlesBackground />
-      <Navbar />
-
-      <main className="relative min-h-screen bg-gradient-dark pt-24 md:pt-32 pb-16 px-4 sm:px-6 z-10 overflow-x-hidden max-w-full">
-        <div className="max-w-7xl mx-auto w-full">
-          {/* Hero Section */}
-          <div className="text-center animate-fadeIn">
-            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-6xl font-bold mb-6 sm:mb-8 px-2 tracking-tight leading-[1.1] bg-gradient-to-b from-white via-white to-white/80 bg-clip-text text-transparent drop-shadow-[0_0_50px_rgba(255,255,255,0.2)] animate-float">
-              Enter the world of AI Personas
-            </h1>
-            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/75 mb-32 sm:mb-24 md:mb-48 max-w-3xl mx-auto leading-relaxed px-4 font-light tracking-tight">
-              Engage with AI-powered personas - from business icons to historical figures,
-              celebrities to fictional characters.
-            </p>
-
-            {/* CTA Button */}
-            <div className="flex flex-col sm:flex-row gap-4 sm:gap-5 justify-center px-4 mt-8 sm:mt-0 animate-fadeIn" style={{animationDelay: '0.2s'}}>
+      <div className="flex flex-col h-screen bg-white text-black">
+        {/* Header */}
+        <header className="p-4 border-b border-gray-200">
+          <div className="container mx-auto flex justify-between items-center">
+            <h1 className="text-2xl font-bold">AI-Spirit</h1>
+            {!user && (
               <button
-                onClick={handleStartChatting}
-                className="group relative bg-gradient-to-br from-white/20 via-white/12 to-white/8 backdrop-blur-2xl border border-white/35 text-white font-semibold text-base sm:text-lg px-10 sm:px-12 py-4 sm:py-5 rounded-full shadow-[0_8px_32px_-4px_rgba(0,0,0,0.5),0_4px_16px_rgba(0,0,0,0.3),inset_0_2px_1px_rgba(255,255,255,0.15),inset_0_-2px_1px_rgba(0,0,0,0.1)] hover:shadow-[0_12px_48px_-4px_rgba(255,255,255,0.15),0_8px_24px_rgba(0,0,0,0.4),inset_0_2px_1px_rgba(255,255,255,0.2),inset_0_-2px_1px_rgba(0,0,0,0.15)] transition-all duration-500 ease-out hover:scale-[1.03] hover:border-white/50 hover:from-white/25 hover:via-white/15 hover:to-white/10 active:scale-[0.98] whitespace-nowrap overflow-hidden"
+                onClick={handleSignIn}
+                className="px-4 py-2 border border-black rounded-md hover:bg-gray-100 transition-colors"
               >
-                <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-white/25 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-                <div className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-xl bg-white/20 -z-10" />
-                <span className="relative z-10 tracking-wide">Start Chatting</span>
+                Sign In
               </button>
-            </div>
+            )}
+            {user && (
+              <div className="flex items-center gap-3">
+                <span className="text-sm text-gray-600">{user.email}</span>
+                <button
+                  onClick={() => router.push('/personas')}
+                  className="px-4 py-2 bg-black text-white rounded-md hover:bg-gray-800 transition-colors"
+                >
+                  Personas
+                </button>
+              </div>
+            )}
           </div>
+        </header>
 
-          {/* Disclaimer */}
-          <div className="text-center text-white/40 text-xs sm:text-sm mt-6 px-4 font-light tracking-wide animate-fadeIn" style={{animationDelay: '0.4s'}}>
-            AI-generated responses for entertainment and educational purposes
+        {/* Main Content */}
+        <main className="flex-grow flex flex-col items-center justify-center text-center p-4">
+          <h2 className="text-5xl md:text-6xl font-extrabold mb-4">Talk to Legends</h2>
+          <p className="text-lg md:text-xl text-gray-600 max-w-2xl">
+            Engage in enlightening conversations with AI-powered personas of the world's greatest minds.
+            History, innovation, and wisdom are just a message away.
+          </p>
+        </main>
+
+        {/* Footer with CTA */}
+        <footer className="p-8">
+          <div className="container mx-auto flex justify-center">
+            <button
+              onClick={handleStartChatting}
+              className="bg-black text-white text-lg font-semibold px-12 py-4 rounded-full hover:bg-gray-800 transition-transform hover:scale-105"
+            >
+              Start Chatting
+            </button>
           </div>
-        </div>
-      </main>
+        </footer>
+      </div>
     </>
   )
 }

@@ -1,86 +1,60 @@
-import Link from 'next/link'
-import Image from 'next/image'
-import { useAuth } from '@/context/AuthContext'
+import { useRouter } from 'next/router'
 
 export default function PersonaCard({ persona, onEdit }) {
-  const { user } = useAuth()
-  const handleEditClick = (e) => {
-    e.preventDefault() // Prevent navigation to chat
-    e.stopPropagation()
-    if (onEdit) {
-      onEdit(persona)
-    }
+  const router = useRouter()
+
+  const handleClick = () => {
+    router.push(`/chat/${persona.slug}`)
   }
 
   return (
-    <div className="relative group">
-      <Link href={`/chat/${persona.slug}`}>
-        <div className="relative bg-gradient-to-br from-white/15 via-white/10 to-white/5 backdrop-blur-2xl border border-white/30 rounded-3xl h-[200px] lg:h-[120px] flex flex-col lg:flex-row overflow-hidden hover:from-white/22 hover:via-white/16 hover:to-white/10 hover:border-white/45 shadow-glass hover:shadow-glass-hover transition-smooth cursor-pointer hover:scale-[1.03] hover:-translate-y-1 active:scale-[0.98] overflow-hidden">
-          {/* Gradient overlays */}
-          <div className="absolute inset-0 rounded-3xl bg-gradient-to-tr from-white/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-          <div className="absolute inset-[1px] rounded-3xl bg-gradient-to-br from-transparent via-white/5 to-white/10 pointer-events-none" />
-          <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-2xl bg-white/10 -z-10" />
+    <div
+      className="bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-xl transition-shadow duration-300 cursor-pointer group relative"
+      onClick={handleClick}
+    >
+      {/* Persona Image */}
+      <img
+        src={persona.image_url || '/default-persona.png'}
+        alt={persona.name}
+        className="w-full h-48 object-cover rounded-t-lg"
+        onError={(e) => {
+          e.target.src = '/default-persona.png'
+        }}
+      />
 
-          {/* Image - Full width on mobile (85% height, no margins), 40% on desktop (with margins) */}
-          <div className="relative w-full lg:w-[40%] h-[85%] lg:h-full flex-shrink-0 z-10 overflow-hidden">
-            {/* Desktop: Box with margins */}
-            <div className="hidden lg:block absolute inset-0 m-2.5 rounded-2xl overflow-hidden bg-gradient-to-br from-white/22 via-white/14 to-white/10 backdrop-blur-md shadow-[0_6px_20px_-2px_rgba(0,0,0,0.4),inset_0_2px_1px_rgba(255,255,255,0.18),inset_0_-2px_1px_rgba(0,0,0,0.1)] group-hover:shadow-[0_8px_28px_-2px_rgba(0,0,0,0.5),inset_0_2px_1px_rgba(255,255,255,0.22)] transition-shadow duration-500">
-              {persona.avatar_url ? (
-                <Image
-                  src={persona.avatar_url}
-                  alt={persona.name}
-                  fill
-                  className="object-cover group-hover:scale-105 transition-smooth"
-                />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center text-2xl font-bold text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]">
-                  {persona.name[0]}
-                </div>
-              )}
-            </div>
-            {/* Mobile: Full fill without margins */}
-            <div className="lg:hidden absolute inset-0 overflow-hidden bg-gradient-to-br from-white/22 via-white/14 to-white/10 backdrop-blur-md">
-              {persona.avatar_url ? (
-                <Image
-                  src={persona.avatar_url}
-                  alt={persona.name}
-                  fill
-                  className="object-cover group-hover:scale-105 transition-smooth"
-                />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center text-3xl font-bold text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]">
-                  {persona.name[0]}
-                </div>
-              )}
-            </div>
-          </div>
+      {/* Persona Info */}
+      <div className="p-4">
+        <h3 className="text-xl font-bold text-black group-hover:text-blue-600 transition-colors">
+          {persona.name}
+        </h3>
+        <p className="text-gray-600 text-sm mt-1 line-clamp-2">
+          {persona.description || persona.bio}
+        </p>
+      </div>
 
-          {/* Details - Below image on mobile (name only), right side on desktop (name + description) */}
-          <div className="relative flex-1 flex flex-col justify-center lg:justify-start z-10 min-w-0 px-3 py-2.5">
-            <h3 className="font-semibold text-sm lg:text-sm text-white tracking-tight break-words line-clamp-2 mb-1 lg:mb-1 leading-tight text-center lg:text-left">
-              {persona.name}
-            </h3>
-            <p className="hidden lg:block text-[11px] text-white/60 line-clamp-2 leading-tight mb-1.5 font-light tracking-wide">
-              {persona.description}
-            </p>
-            {persona.is_custom && (
-              <span className="inline-block px-2 py-0.5 rounded-full text-[10px] bg-gradient-to-br from-white via-white/95 to-white/90 text-black font-semibold shadow-[0_2px_8px_rgba(255,255,255,0.3)] border border-white/40 w-fit tracking-wide mx-auto lg:mx-0">
-                Custom
-              </span>
-            )}
-          </div>
-        </div>
-      </Link>
-
-      {/* Edit Button - Only for custom personas owned by current user */}
-      {persona.is_custom && onEdit && user && persona.user_id === user.id && (
+      {/* Edit Button (if custom persona) */}
+      {onEdit && (
         <button
-          onClick={handleEditClick}
-          className="absolute top-2.5 right-2.5 z-20 w-8 h-8 bg-white/20 backdrop-blur-xl border border-white/35 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 hover:bg-white/30 hover:border-white/55 transition-all duration-500 ease-out shadow-[0_6px_16px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.18)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.25)] hover:scale-110 active:scale-95"
+          onClick={(e) => {
+            e.stopPropagation()
+            onEdit(persona)
+          }}
+          className="absolute top-2 right-2 bg-white/90 hover:bg-white p-2 rounded-full shadow-md transition-all"
           title="Edit persona"
         >
-          <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-4 w-4 text-gray-700"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+            />
           </svg>
         </button>
       )}

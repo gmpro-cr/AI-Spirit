@@ -1,10 +1,8 @@
 import { useState, useEffect } from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import Navbar from '@/components/layout/Navbar'
-import ParticlesBackground from '@/components/layout/ParticlesBackground'
-import SidePanel from '@/components/layout/SidePanel'
-import PersonaCard from '@/components/personas/PersonaCard'
+import SidePanelNew from '@/components/layout/SidePanel-new'
+import PersonaCardNew from '@/components/personas/PersonaCard-new'
 import CreatePersonaModal from '@/components/personas/CreatePersonaModal'
 import EditPersonaModal from '@/components/personas/EditPersonaModal'
 import { INITIAL_PERSONAS } from '@/data/personas'
@@ -20,9 +18,8 @@ export default function Personas() {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
   const [personaToEdit, setPersonaToEdit] = useState(null)
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
-  // Require authentication for personas page
+  // Require authentication
   useEffect(() => {
     if (!loading && !user) {
       router.push('/auth/signin?returnTo=/personas')
@@ -33,24 +30,23 @@ export default function Personas() {
     loadAllPersonas()
   }, [user])
 
-  // Check for ?create=true query parameter (keep functionality for programmatic access)
+  // Check for ?create=true query parameter
   useEffect(() => {
     if (router.query.create === 'true') {
       setIsModalOpen(true)
-      // Remove query parameter from URL
       router.replace('/personas', undefined, { shallow: true })
     }
   }, [router.query])
 
   const loadAllPersonas = async () => {
-    // Filter out hidden personas from INITIAL_PERSONAS
+    // Filter out hidden personas
     let allPersonas = INITIAL_PERSONAS.filter(p => !p.hidden)
 
     // Load custom personas from localStorage (for guests)
     const localCustom = JSON.parse(localStorage.getItem('esperit_custom_personas') || '[]')
     allPersonas = [...allPersonas, ...localCustom]
 
-    // Load ALL custom personas from database (visible to everyone)
+    // Load custom personas from database
     try {
       const { data, error } = await supabase
         .from('personas')
@@ -59,7 +55,6 @@ export default function Personas() {
         .order('created_at', { ascending: false })
 
       if (!error && data) {
-        // Add all custom personas from database
         allPersonas = [...allPersonas, ...data]
       }
     } catch (error) {
@@ -70,7 +65,7 @@ export default function Personas() {
     setFilteredPersonas(allPersonas)
   }
 
-  const handlePersonaCreated = (newPersona) => {
+  const handlePersonaCreated = () => {
     loadAllPersonas()
   }
 
@@ -79,18 +74,21 @@ export default function Personas() {
     setIsEditModalOpen(true)
   }
 
-  const handlePersonaUpdated = (updatedPersona) => {
+  const handlePersonaUpdated = () => {
     loadAllPersonas()
+  }
+
+  const handleBack = () => {
+    router.push('/')
   }
 
   useEffect(() => {
     let filtered = personas
 
-    // Filter by search
     if (searchQuery) {
       filtered = filtered.filter(p =>
         p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        p.description.toLowerCase().includes(searchQuery.toLowerCase())
+        (p.description || p.bio || '').toLowerCase().includes(searchQuery.toLowerCase())
       )
     }
 
@@ -100,84 +98,80 @@ export default function Personas() {
   return (
     <>
       <Head>
-        <title>Personas - AI-Spirit</title>
+        <title>Select a Persona - AI-Spirit</title>
       </Head>
 
-      <ParticlesBackground />
-      <Navbar
-        onMenuToggle={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        showMenuButton={true}
-      />
-      <SidePanel
-        isMobileMenuOpen={isMobileMenuOpen}
-        setIsMobileMenuOpen={setIsMobileMenuOpen}
-      />
+      <div className="flex h-screen bg-white">
+        {/* Side Panel */}
+        <SidePanelNew onBack={handleBack} backButtonText="Back to Home" />
 
-      <main className="relative min-h-screen bg-black-primary pb-16 px-4 pt-[72px] lg:pt-0 lg:pl-72 z-10">
-        <div className="max-w-7xl mx-auto">
-          {/* Search Bar - Hidden on mobile, visible on desktop */}
-          <div className="hidden lg:block mb-8 mt-6 animate-fadeIn">
-            <div className="relative group">
+        {/* Main Content */}
+        <main className="flex-1 p-6 md:p-10 overflow-y-auto md:ml-64">
+          {/* Header */}
+          <div className="mb-8">
+            <h1 className="text-4xl font-bold mb-4">Select a Persona</h1>
+
+            {/* Search Bar */}
+            <div className="relative max-w-xl">
               <input
                 type="text"
                 placeholder="Search personas..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-gradient-to-br from-black via-black to-black/95 border border-white/30 rounded-3xl px-5 py-4 text-base text-white placeholder-white/50 focus:border-white/50 shadow-glass focus-glow transition-smooth"
+                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
               />
-              <div className="absolute inset-0 rounded-3xl bg-gradient-to-tr from-white/10 via-transparent to-transparent opacity-0 group-focus-within:opacity-100 transition-opacity duration-500 pointer-events-none" />
             </div>
           </div>
 
           {/* Personas Grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
-            {filteredPersonas.map((persona, index) => (
-              <div
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+            {filteredPersonas.map((persona) => (
+              <PersonaCardNew
                 key={persona.slug}
-                className="animate-fadeIn"
-                style={{animationDelay: `${index * 30}ms`, animationFillMode: 'both'}}
-              >
-                <PersonaCard
-                  persona={persona}
-                  onEdit={persona.is_custom ? handleEditPersona : undefined}
-                />
-              </div>
+                persona={persona}
+                onEdit={persona.is_custom ? handleEditPersona : undefined}
+              />
             ))}
           </div>
 
+          {/* No Results */}
           {filteredPersonas.length === 0 && (
-            <div className="text-center py-20 animate-fadeIn">
-              <div className="inline-block p-8 bg-gradient-to-br from-white/12 via-white/8 to-white/5 backdrop-blur-2xl border border-white/25 rounded-3xl shadow-[0_8px_32px_-4px_rgba(0,0,0,0.5),inset_0_2px_1px_rgba(255,255,255,0.1)]">
-                <p className="text-white/60 text-lg">No personas found</p>
-                <p className="text-white/40 text-sm mt-2">Try a different search</p>
-              </div>
+            <div className="text-center py-20">
+              <p className="text-gray-600 text-lg">No personas found</p>
+              <p className="text-gray-400 text-sm mt-2">Try a different search</p>
             </div>
           )}
-        </div>
 
-        {/* Search Bar - Mobile only at bottom */}
-        <div className="fixed bottom-0 left-0 right-0 lg:hidden z-30 bg-black-secondary/98 backdrop-blur-2xl border-t border-white/20 p-3 shadow-[0_-8px_32px_-4px_rgba(0,0,0,0.5)]">
-          <div className="relative bg-gradient-to-br from-white/15 via-white/10 to-white/5 backdrop-blur-2xl border border-white/30 rounded-3xl shadow-glass focus-within:shadow-glass-hover transition-smooth overflow-hidden group">
-            <div className="absolute inset-0 rounded-3xl bg-gradient-to-tr from-white/10 via-transparent to-transparent opacity-0 group-focus-within:opacity-100 transition-opacity duration-500 pointer-events-none" />
-            <input
-              type="text"
-              placeholder="Search personas..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="relative z-10 w-full bg-transparent border-none rounded-3xl px-5 py-3 text-base text-white placeholder-white/50 focus:outline-none font-light tracking-wide"
-            />
-          </div>
-        </div>
-      </main>
+          {/* Mobile Back Button */}
+          <button
+            onClick={handleBack}
+            className="md:hidden fixed top-4 left-4 p-2 rounded-full bg-white border border-gray-200 hover:bg-gray-100 shadow-md z-50"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M15 19l-7-7 7-7"
+              />
+            </svg>
+          </button>
+        </main>
+      </div>
 
-      {/* Create Persona Modal - Kept for programmatic access */}
+      {/* Modals */}
       <CreatePersonaModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onPersonaCreated={handlePersonaCreated}
       />
 
-      {/* Edit Persona Modal */}
       <EditPersonaModal
         isOpen={isEditModalOpen}
         onClose={() => {
