@@ -11,12 +11,16 @@ import ParticlesBackground from '@/components/layout/ParticlesBackground'
 export default function SignIn() {
   const router = useRouter()
   const { user } = useAuth()
+  const { returnTo } = router.query
+
+  // Determine redirect URL: use returnTo query param or default to /personas
+  const redirectUrl = returnTo || '/personas'
 
   useEffect(() => {
     if (user) {
-      router.push('/personas')
+      router.push(redirectUrl)
     }
-  }, [user, router])
+  }, [user, router, redirectUrl])
 
   return (
     <>
@@ -75,7 +79,7 @@ export default function SignIn() {
                 },
               }}
               providers={['google']}
-              redirectTo={`${process.env.NEXT_PUBLIC_APP_URL}/personas`}
+              redirectTo={`${process.env.NEXT_PUBLIC_APP_URL}${redirectUrl}`}
               view="sign_in"
               showLinks={true}
             />
