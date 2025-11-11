@@ -6,7 +6,6 @@ import ParticlesBackground from '@/components/layout/ParticlesBackground'
 
 export default function AuthCallback() {
   const router = useRouter()
-  const { returnTo } = router.query
 
   useEffect(() => {
     const handleAuthCallback = async () => {
@@ -22,9 +21,15 @@ export default function AuthCallback() {
         }
 
         if (data.session) {
-          // Successfully authenticated, redirect to the return URL or personas page
+          // Get returnTo from query params, with fallback to /personas
+          const searchParams = new URLSearchParams(window.location.search)
+          const returnTo = searchParams.get('returnTo') || router.query.returnTo
           const redirectUrl = returnTo || '/personas'
-          router.push(redirectUrl)
+
+          console.log('Auth successful, redirecting to:', redirectUrl)
+
+          // Use replace instead of push to avoid back button issues
+          router.replace(redirectUrl)
         } else {
           // No session, redirect to sign in
           router.push('/auth/signin')
@@ -39,7 +44,7 @@ export default function AuthCallback() {
     if (router.isReady) {
       handleAuthCallback()
     }
-  }, [router, returnTo, router.isReady])
+  }, [router, router.isReady])
 
   return (
     <>

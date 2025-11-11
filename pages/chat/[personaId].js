@@ -17,6 +17,7 @@ export default function ChatPage() {
   const [persona, setPersona] = useState(null)
   const [conversationId, setConversationId] = useState(null)
   const [guestMessageCount, setGuestMessageCount] = useState(0)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   // Prevent body scroll on chat page
   useEffect(() => {
@@ -190,10 +191,14 @@ export default function ChatPage() {
     return (
       <>
         <ParticlesBackground />
-        <div className="hidden lg:block">
-          <Navbar />
-        </div>
-        <SidePanel />
+        <Navbar
+          onMenuToggle={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          showMenuButton={true}
+        />
+        <SidePanel
+          isMobileMenuOpen={isMobileMenuOpen}
+          setIsMobileMenuOpen={setIsMobileMenuOpen}
+        />
         <div className="relative min-h-screen bg-black-primary flex items-center justify-center lg:pl-72 z-10">
           <p className="text-text-secondary text-sm sm:text-base">Loading persona...</p>
         </div>
@@ -209,10 +214,14 @@ export default function ChatPage() {
       </Head>
 
       <ParticlesBackground />
-      <div className="hidden lg:block">
-        <Navbar />
-      </div>
-      <SidePanel />
+      <Navbar
+        onMenuToggle={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        showMenuButton={true}
+      />
+      <SidePanel
+        isMobileMenuOpen={isMobileMenuOpen}
+        setIsMobileMenuOpen={setIsMobileMenuOpen}
+      />
 
       <div className="relative z-10 lg:pl-72">
         <ChatInterface persona={persona} onSendMessage={handleSendMessage} onNewChat={handleNewChat} />

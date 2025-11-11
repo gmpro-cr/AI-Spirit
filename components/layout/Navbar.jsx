@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { useAuth } from '@/context/AuthContext'
 import { useRouter } from 'next/router'
 
-export default function Navbar() {
+export default function Navbar({ onMenuToggle, showMenuButton = false }) {
   const { user, signOut } = useAuth()
   const router = useRouter()
   const isHomePage = router.pathname === '/'
@@ -16,20 +16,37 @@ export default function Navbar() {
     <nav className="fixed top-0 w-full bg-gradient-to-b from-white/10 via-white/[0.06] to-transparent backdrop-blur-3xl border-b border-white/30 z-50 shadow-glass relative overflow-hidden before:absolute before:inset-0 before:bg-gradient-to-b before:from-white/[0.12] before:via-white/[0.04] before:to-transparent before:pointer-events-none after:absolute after:inset-0 after:bg-gradient-to-r after:from-transparent after:via-white/[0.05] after:to-transparent after:pointer-events-none">
       <div className="w-full px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="flex justify-between items-center h-16 sm:h-18">
-          {/* Logo - Extreme Left */}
-          {isHomePage ? (
-            <Link href="/" className="flex items-center space-x-2 group">
-              <span className="text-xl sm:text-2xl font-bold text-white tracking-tight group-hover:scale-[1.02] transition-smooth bg-gradient-to-br from-white via-white to-white/90 bg-clip-text drop-shadow-[0_0_12px_rgba(255,255,255,0.4)] group-hover:drop-shadow-[0_0_20px_rgba(255,255,255,0.6)]">
-                AI-Spirit
-              </span>
-            </Link>
-          ) : (
-            <Link href="/personas" className="flex items-center space-x-2 group">
-              <span className="text-xl sm:text-2xl font-bold text-white tracking-tight group-hover:scale-[1.02] transition-smooth bg-gradient-to-br from-white via-white to-white/90 bg-clip-text drop-shadow-[0_0_12px_rgba(255,255,255,0.4)] group-hover:drop-shadow-[0_0_20px_rgba(255,255,255,0.6)]">
-                AI-Spirit
-              </span>
-            </Link>
-          )}
+          {/* Left Side - Menu Button + Logo */}
+          <div className="flex items-center gap-3">
+            {/* Hamburger Menu Button - Only on pages with SidePanel */}
+            {showMenuButton && (
+              <button
+                onClick={onMenuToggle}
+                className="lg:hidden group relative bg-gradient-to-br from-white/22 via-white/16 to-white/12 backdrop-blur-xl border border-white/35 rounded-lg p-2 hover:from-white/32 hover:via-white/24 hover:to-white/18 hover:border-white/50 shadow-glass hover:shadow-glass-hover active:scale-90 transition-smooth"
+                aria-label="Toggle menu"
+              >
+                <div className="w-5 h-4 flex flex-col justify-center gap-1.5">
+                  <span className="block w-full h-0.5 bg-white rounded-full transition-all duration-300"></span>
+                  <span className="block w-full h-0.5 bg-white rounded-full transition-all duration-300"></span>
+                </div>
+              </button>
+            )}
+
+            {/* Logo */}
+            {isHomePage ? (
+              <Link href="/" className="flex items-center space-x-2 group">
+                <span className="text-xl sm:text-2xl font-bold text-white tracking-tight group-hover:scale-[1.02] transition-smooth bg-gradient-to-br from-white via-white to-white/90 bg-clip-text drop-shadow-[0_0_12px_rgba(255,255,255,0.4)] group-hover:drop-shadow-[0_0_20px_rgba(255,255,255,0.6)]">
+                  AI-Spirit
+                </span>
+              </Link>
+            ) : (
+              <Link href="/personas" className="flex items-center space-x-2 group">
+                <span className="text-xl sm:text-2xl font-bold text-white tracking-tight group-hover:scale-[1.02] transition-smooth bg-gradient-to-br from-white via-white to-white/90 bg-clip-text drop-shadow-[0_0_12px_rgba(255,255,255,0.4)] group-hover:drop-shadow-[0_0_20px_rgba(255,255,255,0.6)]">
+                  AI-Spirit
+                </span>
+              </Link>
+            )}
+          </div>
 
           {/* Sign In/User Info - Upper Right (only on homepage) */}
           {isHomePage && (
