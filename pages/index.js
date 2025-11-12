@@ -57,7 +57,7 @@ export default function Home() {
         <main className="flex-grow flex flex-col items-center justify-center text-center p-4">
           <h2 className="text-5xl md:text-6xl font-extrabold mb-4">Talk to Legends</h2>
           <p className="text-lg md:text-xl text-gray-600 max-w-2xl">
-            Engage in enlightening conversations with AI-powered personas of the world's greatest minds.
+            Engage in enlightening conversations with AI-powered personas of the world&apos;s greatest minds.
             History, innovation, and wisdom are just a message away.
           </p>
         </main>
