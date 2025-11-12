@@ -54,8 +54,7 @@ export default function Home() {
 
         {/* Main Content */}
         <main className="flex-grow flex flex-col items-center justify-center text-center p-4">
-          <h2 className="text-5xl md:text-6xl font-extrabold mb-4">Enter the world of AI Personas</h2>    
-          </p>
+          <h2 className="text-5xl md:text-6xl font-extrabold mb-4">Enter the world of AI Personas</h2>
         </main>
 
         {/* Footer with CTA */}
