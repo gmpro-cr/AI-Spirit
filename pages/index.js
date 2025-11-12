@@ -59,7 +59,7 @@ export default function Home() {
         </main>
 
         {/* Footer with CTA */}
-        <footer className="p-8">
+        <footer className="px-8 pt-4 pb-8">
           <div className="container mx-auto flex justify-center">
             <button
               onClick={handleStartChatting}
