@@ -55,14 +55,23 @@ export default async function handler(req, res) {
       messageHistory = messageHistory.slice(-20)
     } else {
       // Load conversation history from database
-      const { data: history } = await supabaseAdmin
-        .from('messages')
-        .select('role, content')
-        .eq('conversation_id', conversationId)
-        .order('created_at', { ascending: true })
-        .limit(20)
+      if (conversationId) {
+        const { data: history } = await supabaseAdmin
+          .from('messages')
+          .select('role, content')
+          .eq('conversation_id', conversationId)
+          .order('created_at', { ascending: true })
+          .limit(20)
 
-      messageHistory = [...(history || []), { role: 'user', content: message }]
+        messageHistory = [...(history || []), { role: 'user', content: message }]
+      } else {
+        // Fallback: use conversation history from frontend (for authenticated users without conversationId)
+        messageHistory = [
+          ...(conversationHistory || []),
+          { role: 'user', content: message }
+        ]
+        messageHistory = messageHistory.slice(-20)
+      }
     }
 
     // Generate AI response

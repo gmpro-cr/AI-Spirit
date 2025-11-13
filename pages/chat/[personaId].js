@@ -208,7 +208,8 @@ export default function ChatPage() {
           persona: persona,
           personaId: persona.id || persona.slug,
           message: messageText,
-          conversationHistory: messages,
+          conversationHistory: [...messages, userMessage],
+          conversationId: conversationId,
           isGuest: !user,
         }),
       })
