@@ -119,7 +119,7 @@ export default function Personas() {
           </div>
 
           {/* Header */}
-          <div className="mb-8">
+          <div className="mb-4">
             <h1 className="text-4xl font-bold">Select a Persona</h1>
           </div>
 
