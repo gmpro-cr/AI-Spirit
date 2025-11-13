@@ -16,7 +16,7 @@ export default function PersonaCard({ persona, onEdit }) {
       <img
         src={persona.image_url || '/default-persona.png'}
         alt={persona.name}
-        className="w-full h-48 object-cover object-top rounded-t-lg"
+        className="w-full h-60 object-cover object-top rounded-t-lg"
         onError={(e) => {
           e.target.src = '/default-persona.png'
         }}
