@@ -323,25 +323,6 @@ export default function ChatPage() {
 
           {/* Messages */}
           <main ref={chatContainerRef} className="flex-1 overflow-y-auto p-6 space-y-6">
-            {messages.length === 0 && (
-              <div className="flex items-center justify-center h-full">
-                <div className="text-center">
-                  <img
-                    src={persona.image_url || '/default-persona.png'}
-                    alt={persona.name}
-                    className="w-24 h-24 rounded-full mx-auto mb-4 object-cover"
-                    onError={(e) => {
-                      e.target.src = '/default-persona.png'
-                    }}
-                  />
-                  <h3 className="text-2xl font-bold mb-2 text-black">{persona.name}</h3>
-                  <p className="text-black max-w-md">
-                    {persona.description || persona.bio}
-                  </p>
-                </div>
-              </div>
-            )}
-
             {messages.map((msg, index) => (
               <div
                 key={index}
