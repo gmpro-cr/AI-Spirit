@@ -117,7 +117,7 @@ export default function Personas() {
               placeholder="Search personas..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full p-4 text-lg border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+              className="w-full p-4 text-lg text-black border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
             />
           </div>
 
