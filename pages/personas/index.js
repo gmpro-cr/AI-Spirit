@@ -111,7 +111,7 @@ export default function Personas() {
         {/* Main Content */}
         <main className="flex-1 p-6 md:p-10 overflow-y-auto md:ml-64">
           {/* Search Bar */}
-          <div className="mb-4">
+          <div className="mb-6">
             <input
               type="text"
               placeholder="Search personas..."
@@ -119,11 +119,6 @@ export default function Personas() {
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full p-4 text-lg border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
             />
-          </div>
-
-          {/* Header */}
-          <div className="mb-6">
-            <h1 className="text-4xl font-bold">Select a Persona</h1>
           </div>
 
           {/* Personas Grid */}
