@@ -108,7 +108,7 @@ export default function Personas() {
         {/* Main Content */}
         <main className="flex-1 p-6 md:p-10 overflow-y-auto md:ml-64">
           {/* Search Bar */}
-          <div className="mb-6">
+          <div className="mb-4">
             <input
               type="text"
               placeholder="Search personas..."
@@ -119,7 +119,7 @@ export default function Personas() {
           </div>
 
           {/* Header */}
-          <div className="mb-4">
+          <div className="mb-6">
             <h1 className="text-4xl font-bold">Select a Persona</h1>
           </div>
 
