@@ -323,6 +323,27 @@ export default function ChatPage() {
 
           {/* Messages */}
           <main ref={chatContainerRef} className="flex-1 overflow-y-auto p-6 space-y-6">
+            {/* Suggested Questions - shown only when no messages */}
+            {messages.length === 0 && !isLoading && persona.conversation_starters && (
+              <div className="flex items-center justify-center h-full">
+                <div className="max-w-2xl w-full space-y-3">
+                  <p className="text-center text-gray-600 mb-6">Start a conversation with {persona.name}</p>
+                  {persona.conversation_starters.slice(0, 3).map((question, index) => (
+                    <button
+                      key={index}
+                      onClick={() => {
+                        setCurrentInput(question)
+                        document.querySelector('input[type="text"]')?.focus()
+                      }}
+                      className="w-full p-4 text-left border border-gray-200 rounded-lg hover:bg-gray-50 hover:border-gray-300 transition-all text-black"
+                    >
+                      {question}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
             {messages.map((msg, index) => (
               <div
                 key={index}
