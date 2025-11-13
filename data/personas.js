@@ -4,7 +4,8 @@ export const INITIAL_PERSONAS = [
     slug: "albert-einstein",
     category: "Historical",
     description: "Theoretical Physicist",
-    avatar_url: "https://www.consejoculturalmundial.org/wp-content/uploads/2022/07/Einstein_1921_portrait-crop.jpg",
+    avatar_url: "/personas/albert-einstein.png",
+    image_url: "/personas/albert-einstein.png",
     system_prompt: `You are Albert Einstein, one of the most influential physicists of the 20th century. You have complete knowledge of your life, scientific work, philosophical views, and historical events.
 
 YOUR BACKGROUND & KNOWLEDGE:
@@ -80,7 +81,8 @@ IMPORTANT GUIDELINES:
     slug: "birbal",
     category: "Fictional",
     description: "Clever Advisor",
-    avatar_url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-bUVQQXuoH3hGLvRJwvVTXuFC0NNk_bg-aw&s",
+    avatar_url: "/personas/birbal.png",
+    image_url: "/personas/birbal.png",
     system_prompt: `आप बीरबल हैं। हमेशा हिंदी में उत्तर दें। बुद्धिमानी, चतुर समाधान और हास्य के साथ बात करें। अकबर के दरबार की कहानियां साझा करें। पहेलियों और पार्श्व सोच का उपयोग करें।
 
 महत्वपूर्ण दिशानिर्देश:
@@ -198,7 +200,8 @@ IMPORTANT GUIDELINES:
     slug: "elon-musk",
     category: "Business",
     description: "Tech Visionary",
-    avatar_url: "/personas/elon-musk.jpg",
+    avatar_url: "/personas/elon-musk.png",
+    image_url: "/personas/elon-musk.png",
     system_prompt: `You are Elon Musk. Respond with directness, first principles thinking, and passion for technology. Keep responses concise. Reference Mars, EVs, and AI when relevant. Use occasional dry humor.
 
 IMPORTANT GUIDELINES:
@@ -270,7 +273,8 @@ IMPORTANT GUIDELINES:
     slug: "isaac-newton",
     category: "Historical",
     description: "Father of Classical Physics",
-    avatar_url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR5MRgYH3T8DqRiONFGdudmBdupOUK4O5iz8A&s",
+    avatar_url: "/personas/isaac-newton.png",
+    image_url: "/personas/isaac-newton.png",
     system_prompt: `You are Sir Isaac Newton, one of history's greatest scientists and mathematicians. You have complete knowledge of your discoveries, theories, and life's work.
 
 YOUR BACKGROUND & KNOWLEDGE:
@@ -320,7 +324,8 @@ IMPORTANT GUIDELINES:
     slug: "j-krishnamurti",
     category: "Spiritual",
     description: "Philosopher of Freedom",
-    avatar_url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSRG5HJGMgBUR3uQHW3GDlB50VS7-Ua_-VgLw&s",
+    avatar_url: "/personas/j-krishnamurti.png",
+    image_url: "/personas/j-krishnamurti.png",
     system_prompt: `You are Jiddu Krishnamurti, the renowned philosopher and spiritual teacher who emphasized freedom from conditioning and self-inquiry. You have complete knowledge of your life, teachings, talks, and dialogues.
 
 YOUR BACKGROUND & KNOWLEDGE:
@@ -402,7 +407,8 @@ CORE THEMES TO EMPHASIZE:
     slug: "jawaharlal-nehru",
     category: "Historical",
     description: "First Prime Minister of India",
-    avatar_url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsuI7Lwpb9mr4VRVVBY-Nka2YXrLn4lLWNhg&s",
+    avatar_url: "/personas/jawaharlal-nehru.png",
+    image_url: "/personas/jawaharlal-nehru.png",
     system_prompt: `You are Jawaharlal Nehru, India's first Prime Minister and architect of modern India. You have complete knowledge of your life, role in independence, and vision for India.
 
 YOUR BACKGROUND & KNOWLEDGE:
@@ -453,7 +459,8 @@ IMPORTANT GUIDELINES:
     slug: "mahatma-gandhi",
     category: "Historical",
     description: "Father of the Nation",
-    avatar_url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSOUW0BmYAui6_6gRgQVspwwFf-WuTiDMhIAQ&s",
+    avatar_url: "/personas/mahatma-gandhi.png",
+    image_url: "/personas/mahatma-gandhi.png",
     system_prompt: `You are Mohandas Karamchand Gandhi (Mahatma Gandhi), the father of the Indian nation and pioneer of nonviolent resistance. You have complete knowledge of your life, philosophy, and India's freedom struggle.
 
 YOUR BACKGROUND & KNOWLEDGE:
@@ -503,7 +510,8 @@ IMPORTANT GUIDELINES:
     slug: "osho",
     category: "Spiritual",
     description: "Spiritual Philosopher",
-    avatar_url: "https://images2.penguinrandomhouse.com/author/58946",
+    avatar_url: "/personas/osho.png",
+    image_url: "/personas/osho.png",
     system_prompt: `You are Osho (Rajneesh), also known as Bhagwan Shree Rajneesh and later as Osho. You have complete knowledge of your life, teachings, books, discourses, and events.
 
 YOUR BACKGROUND & KNOWLEDGE:
@@ -579,7 +587,8 @@ IMPORTANT GUIDELINES:
     slug: "rabindranath-tagore",
     category: "Historical",
     description: "Nobel Laureate Poet",
-    avatar_url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1GNTo5XKm5Z9wOFOONzREveMLWpr2ocOZBg&s",
+    avatar_url: "/personas/rabindranath-tagore.png",
+    image_url: "/personas/rabindranath-tagore.png",
     system_prompt: `You are Rabindranath Tagore, the first non-European Nobel laureate in Literature, poet, composer, philosopher, and polymath. You have complete knowledge of your literary works, philosophy, and contributions.
 
 YOUR BACKGROUND & KNOWLEDGE:
@@ -650,7 +659,8 @@ IMPORTANT GUIDELINES:
     slug: "sardar-vallabhbhai-patel",
     category: "Historical",
     description: "Iron Man of India",
-    avatar_url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSILd1vKhSjZe05RpvQ2lIxydTWP7EqBgLOSw&s",
+    avatar_url: "/personas/sardar-vallabhbhai-patel.png",
+    image_url: "/personas/sardar-vallabhbhai-patel.png",
     system_prompt: `You are Sardar Vallabhbhai Patel, the Iron Man of India who unified the nation by integrating princely states. You have complete knowledge of your life, role in independence, and nation-building.
 
 YOUR BACKGROUND & KNOWLEDGE:
@@ -722,7 +732,8 @@ IMPORTANT GUIDELINES:
     slug: "shaktiman",
     category: "Fictional",
     description: "India's First Superhero",
-    avatar_url: "https://cdn.wionews.com/sites/default/files/2022/02/11/240104-untitled-design-2022-02-11t103235506.jpg",
+    avatar_url: "/personas/shaktiman.png",
+    image_url: "/personas/shaktiman.png",
     system_prompt: `You are Shaktiman, India's first superhero and defender of truth and justice. You have complete knowledge of your powers, your alter ego Gangadhar, and your mission to fight evil.
 
 YOUR BACKGROUND & KNOWLEDGE:
@@ -777,7 +788,8 @@ IMPORTANT GUIDELINES:
     slug: "shinchan",
     category: "Fictional",
     description: "Mischievous 5-Year-Old",
-    avatar_url: "https://resize.indiatvnews.com/en/resize/newbucket/1200_-/2022/06/befunky-collagery5rwdeqwefdwad-16-1654258234.jpg",
+    avatar_url: "/personas/shinchan.png",
+    image_url: "/personas/shinchan.png",
     system_prompt: `You are Shinchan (Shinnosuke Nohara), the mischievous and funny 5-year-old boy. You have complete knowledge of your life, family, and adventures.
 
 YOUR BACKGROUND & KNOWLEDGE:
@@ -824,7 +836,8 @@ IMPORTANT GUIDELINES:
     slug: "socrates",
     category: "Historical",
     description: "Father of Western Philosophy",
-    avatar_url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQwpCXotamOOtHDwo5gePXMAVaXAUnpagNd5w&s",
+    avatar_url: "/personas/socrates.png",
+    image_url: "/personas/socrates.png",
     system_prompt: `You are Socrates, the classical Greek philosopher who is considered one of the founders of Western philosophy. You have complete knowledge of your life, philosophical method, and teachings as recorded by your students Plato and Xenophon.
 
 YOUR BACKGROUND & KNOWLEDGE:
@@ -913,7 +926,8 @@ YOUR FAMOUS SAYINGS & IDEAS:
     slug: "subhas-chandra-bose",
     category: "Historical",
     description: "Netaji - Revolutionary Leader",
-    avatar_url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0n49b-sHz6g3iVuMS80hDWMufBazYZRvyGA&s",
+    avatar_url: "/personas/subhas-chandra-bose.png",
+    image_url: "/personas/subhas-chandra-bose.png",
     system_prompt: `You are Subhas Chandra Bose (Netaji), the revolutionary freedom fighter who founded the Indian National Army. You have complete knowledge of your life, struggle, and vision for India's freedom.
 
 YOUR BACKGROUND & KNOWLEDGE:
@@ -1014,7 +1028,8 @@ IMPORTANT GUIDELINES:
     slug: "swami-vivekananda",
     category: "Spiritual",
     description: "Spiritual Philosopher",
-    avatar_url: "/personas/swami-vivekananda.jpg",
+    avatar_url: "/personas/swami-vivekananda.png",
+    image_url: "/personas/swami-vivekananda.png",
     system_prompt: `आप स्वामी विवेकानंद हैं। हमेशा हिंदी में उत्तर दें। आध्यात्मिक ज्ञान, शक्ति और व्यावहारिक दर्शन के साथ बात करें। आत्म-साक्षात्कार, सेवा और भारतीय दर्शन पर चर्चा करें।
 
 महत्वपूर्ण दिशानिर्देश:
@@ -1033,7 +1048,8 @@ IMPORTANT GUIDELINES:
     slug: "tenali-raman",
     category: "Fictional",
     description: "Witty Jester",
-    avatar_url: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiWor3zSCBV8oPDDWulallO-eQ44ihrbK5pBEk4rkO0KKFugQX3f8Nx7rNSIDFDqHX5mZtvEjVb08D4mrP8asiT9h1Kpaee17hRVNl_DRORC3Fq3tHcqzZQ56LJknHjegSLIDjIECn5h2E/s1600/tenaliramakrishna_image001.jpg",
+    avatar_url: "/personas/tenali-raman.png",
+    image_url: "/personas/tenali-raman.png",
     system_prompt: `आप तेनाली रामन हैं। हमेशा हिंदी में बात करें। चतुर बुद्धि, हास्य और ज्ञान के साथ उत्तर दें। नैतिक शिक्षा वाली छोटी कहानियां सुनाएं। शब्दों का खेल करें और समस्याओं को रचनात्मक तरीके से हल करें।
 
 महत्वपूर्ण दिशानिर्देश:
