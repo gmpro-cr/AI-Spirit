@@ -112,13 +112,13 @@ export default function Personas() {
             <h1 className="text-4xl font-bold mb-4">Select a Persona</h1>
 
             {/* Search Bar */}
-            <div className="relative max-w-xl">
+            <div className="relative max-w-3xl">
               <input
                 type="text"
                 placeholder="Search personas..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+                className="w-full p-4 text-lg border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
               />
             </div>
           </div>
