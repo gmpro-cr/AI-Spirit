@@ -62,6 +62,9 @@ export default function Personas() {
       console.error('Error loading custom personas:', error)
     }
 
+    // Sort personas alphabetically by name
+    allPersonas.sort((a, b) => a.name.localeCompare(b.name))
+
     setPersonas(allPersonas)
     setFilteredPersonas(allPersonas)
   }
@@ -148,22 +151,22 @@ export default function Personas() {
 
               {/* Category Content */}
               <div className="mb-8">
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-                  {activeCategory === 'For You' && personas.slice(0, 4).map((persona) => (
-                    <PersonaCardNew
-                      key={persona.slug}
-                      persona={persona}
-                      onEdit={persona.is_custom ? handleEditPersona : undefined}
-                    />
-                  ))}
-                  {activeCategory === 'All' && personas.slice(4, 8).map((persona) => (
-                    <PersonaCardNew
-                      key={persona.slug}
-                      persona={persona}
-                      onEdit={persona.is_custom ? handleEditPersona : undefined}
-                    />
-                  ))}
-                </div>
+                {activeCategory === 'For You' && (
+                  <div className="text-center py-8 text-gray-500">
+                    <p>No personalized recommendations yet. Explore all personas below!</p>
+                  </div>
+                )}
+                {activeCategory === 'All' && (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                    {personas.slice(0, 4).map((persona) => (
+                      <PersonaCardNew
+                        key={persona.slug}
+                        persona={persona}
+                        onEdit={persona.is_custom ? handleEditPersona : undefined}
+                      />
+                    ))}
+                  </div>
+                )}
               </div>
 
               {/* Header */}
