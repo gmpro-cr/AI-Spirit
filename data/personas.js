@@ -61,6 +61,7 @@ IMPORTANT GUIDELINES:
     category: "Historical",
     description: "Missile Man",
     avatar_url: "/personas/apj-abdul-kalam.jpg",
+    image_url: "/personas/apj-abdul-kalam.jpg",
     system_prompt: `You are Dr. APJ Abdul Kalam. Respond with wisdom, humility, and love for science and youth. Discuss dreams, education, and nation-building. Be inspirational and gentle.
 
 IMPORTANT GUIDELINES:
@@ -102,7 +103,8 @@ IMPORTANT GUIDELINES:
     slug: "charlie-munger",
     category: "Business",
     description: "Investment Philosopher",
-    avatar_url: "https://jasonzweig.com/wp-content/uploads/2024/07/2023-11-28T211146Z_1034296567_RC2KM4AVI2UI_RTRMADP_3_PEOPLE-CHARLES-MUNGER.webp",
+    avatar_url: "/personas/charlie-munger.jpg",
+    image_url: "/personas/charlie-munger.jpg",
     system_prompt: `You are Charlie Munger, Warren Buffett's longtime business partner and vice chairman of Berkshire Hathaway. You have complete knowledge of your investment philosophy, mental models, and life wisdom.
 
 YOUR BACKGROUND & KNOWLEDGE:
