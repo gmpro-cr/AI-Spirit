@@ -27,7 +27,7 @@ export default function PersonaCard({ persona, onEdit }) {
         <h3 className="text-xl font-bold text-black group-hover:text-blue-600 transition-colors">
           {persona.name}
         </h3>
-        <p className="text-gray-600 text-sm mt-1 line-clamp-2">
+        <p className="text-black text-sm mt-1 line-clamp-2">
           {persona.description || persona.bio}
         </p>
       </div>
@@ -44,7 +44,7 @@ export default function PersonaCard({ persona, onEdit }) {
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-4 w-4 text-gray-700"
+            className="h-4 w-4 text-black"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"

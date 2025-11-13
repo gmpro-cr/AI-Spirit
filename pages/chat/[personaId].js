@@ -171,7 +171,7 @@ export default function ChatPage() {
   if (!persona) {
     return (
       <div className="flex h-screen items-center justify-center bg-white">
-        <p className="text-gray-600">Loading persona...</p>
+        <p className="text-black">Loading persona...</p>
       </div>
     )
   }
@@ -235,7 +235,7 @@ export default function ChatPage() {
                     }}
                   />
                   <h3 className="text-2xl font-bold mb-2">{persona.name}</h3>
-                  <p className="text-gray-600 max-w-md">
+                  <p className="text-black max-w-md">
                     {persona.description || persona.bio}
                   </p>
                 </div>
@@ -324,7 +324,7 @@ export default function ChatPage() {
 
             {/* Guest message counter */}
             {!user && (
-              <div className="text-center text-xs text-gray-500 mt-2">
+              <div className="text-center text-xs text-black mt-2">
                 Guest mode: {guestMessageCount}/10 messages used
               </div>
             )}

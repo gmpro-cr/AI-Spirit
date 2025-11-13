@@ -137,8 +137,8 @@ export default function Personas() {
           {/* No Results */}
           {filteredPersonas.length === 0 && (
             <div className="text-center py-20">
-              <p className="text-gray-600 text-lg">No personas found</p>
-              <p className="text-gray-400 text-sm mt-2">Try a different search</p>
+              <p className="text-black text-lg">No personas found</p>
+              <p className="text-black text-sm mt-2">Try a different search</p>
             </div>
           )}
 

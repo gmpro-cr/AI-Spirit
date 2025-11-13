@@ -40,7 +40,7 @@ export default function Home() {
             )}
             {user && (
               <div className="flex items-center gap-3">
-                <span className="text-sm text-gray-600">{user.email}</span>
+                <span className="text-sm text-black">{user.email}</span>
                 <button
                   onClick={() => router.push('/personas')}
                   className="px-4 py-2 bg-black text-white rounded-md hover:bg-gray-800 transition-colors"
@@ -54,8 +54,7 @@ export default function Home() {
 
         {/* Main Content */}
         <main className="flex-grow flex flex-col items-center justify-center text-center p-4">
-          <h2 className="text-5xl md:text-6xl font-extrabold mb-4">Enter the world of AI Personas</h2>    
-          </p>
+          <h2 className="text-5xl md:text-6xl font-extrabold mb-4">Enter the world of AI Personas</h2>
         </main>
 
         {/* Footer with CTA */}

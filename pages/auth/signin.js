@@ -5,8 +5,8 @@ import { supabase } from '@/lib/supabase'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { useAuth } from '@/context/AuthContext'
-import Navbar from '@/components/layout/Navbar'
-import ParticlesBackground from '@/components/layout/ParticlesBackground'
+import Link from 'next/link'
+// import ParticlesBackground from '@/components/layout/ParticlesBackground'
 
 export default function SignIn() {
   const router = useRouter()
@@ -27,17 +27,22 @@ export default function SignIn() {
         <title>Sign In - AI-Spirit</title>
       </Head>
 
-      <ParticlesBackground />
-      <Navbar />
 
-      <main className="relative min-h-screen bg-black-primary pt-24 pb-16 px-4 flex items-center justify-center z-10">
+
+      {/* Header */}
+      <header className="p-4 border-b border-gray-200 bg-white">
+        <div className="container mx-auto flex justify-between items-center">
+          <Link href="/">
+            <h1 className="text-2xl font-bold text-black cursor-pointer">AI-Spirit</h1>
+          </Link>
+        </div>
+      </header>
+
+      <main className="relative min-h-screen bg-white pb-16 px-4 flex items-center justify-center z-10">
         <div className="w-full max-w-md">
-          <div className="glass-panel p-8">
-            <h1 className="text-3xl font-bold mb-6 text-center">
-              Welcome to{' '}
-              <span className="bg-gradient-accent bg-clip-text text-transparent">
-                AI-Spirit
-              </span>
+          <div className="bg-white border border-gray-200 rounded-lg shadow-sm p-8">
+            <h1 className="text-3xl font-bold mb-6 text-center text-black">
+              Welcome to AI-Spirit
             </h1>
 
             <Auth
@@ -52,14 +57,14 @@ export default function SignIn() {
                       brandButtonText: '#FFFFFF',
                       defaultButtonBackground: '#000000',
                       defaultButtonBackgroundHover: '#1a1a1a',
-                      defaultButtonBorder: 'rgba(255, 255, 255, 0.3)',
+                      defaultButtonBorder: '#d1d5db',
                       defaultButtonText: '#FFFFFF',
-                      inputBackground: '#000000',
-                      inputBorder: '#333333',
-                      inputBorderHover: '#FFFFFF',
-                      inputBorderFocus: '#FFFFFF',
-                      inputText: '#FFFFFF',
-                      inputPlaceholder: '#666666',
+                      inputBackground: '#FFFFFF',
+                      inputBorder: '#d1d5db',
+                      inputBorderHover: '#000000',
+                      inputBorderFocus: '#000000',
+                      inputText: '#000000',
+                      inputPlaceholder: '#9ca3af',
                     },
                   },
                 },
@@ -69,11 +74,11 @@ export default function SignIn() {
                     fontWeight: '600',
                   },
                   anchor: {
-                    color: '#FFFFFF',
+                    color: '#000000',
                     textDecoration: 'underline',
                   },
                   message: {
-                    color: '#666666',
+                    color: '#000000',
                   },
                 },
               }}
@@ -83,7 +88,7 @@ export default function SignIn() {
               showLinks={true}
             />
 
-            <div className="mt-6 text-center text-text-muted text-sm">
+            <div className="mt-6 text-center text-black text-sm">
               <p>By signing in, you agree to our Terms and Privacy Policy</p>
               <p className="mt-2">AI-generated responses for entertainment purposes</p>
             </div>
