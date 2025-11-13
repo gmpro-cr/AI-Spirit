@@ -14,6 +14,7 @@ export default function ChatPage() {
   const [persona, setPersona] = useState(null)
   const [currentInput, setCurrentInput] = useState('')
   const [guestMessageCount, setGuestMessageCount] = useState(0)
+  const [conversationId, setConversationId] = useState(null)
   const chatContainerRef = useRef(null)
 
   // Require authentication
@@ -73,13 +74,79 @@ export default function ChatPage() {
     loadPersona()
   }, [personaId, user])
 
-  // Load saved messages
+  // Load or create conversation and messages
   useEffect(() => {
-    if (persona) {
+    const loadConversation = async () => {
+      if (!persona) return
+
       clearMessages()
       setGuestMessageCount(0)
+      setConversationId(null)
 
-      if (!user) {
+      if (user) {
+        // Authenticated user - load from database
+        try {
+          const { supabase } = await import('@/lib/supabase')
+          const { data: session } = await supabase.auth.getSession()
+
+          if (!session?.session) return
+
+          // Find or create conversation
+          const { data: existingConv, error: convError } = await supabase
+            .from('conversations')
+            .select('*')
+            .eq('session_id', session.session.user.id)
+            .eq('persona_type', persona.slug)
+            .eq('is_active', true)
+            .order('updated_at', { ascending: false })
+            .limit(1)
+            .maybeSingle()
+
+          let convId = existingConv?.id
+
+          if (!existingConv) {
+            // Create new conversation
+            const { data: newConv, error: createError } = await supabase
+              .from('conversations')
+              .insert({
+                session_id: session.session.user.id,
+                persona_type: persona.slug,
+                persona_id: persona.id || null,
+                title: `Chat with ${persona.name}`,
+                is_active: true,
+                is_guest_session: false
+              })
+              .select()
+              .single()
+
+            if (!createError && newConv) {
+              convId = newConv.id
+            }
+          }
+
+          if (convId) {
+            setConversationId(convId)
+
+            // Load messages
+            const { data: msgs, error: msgsError } = await supabase
+              .from('messages')
+              .select('*')
+              .eq('conversation_id', convId)
+              .eq('is_deleted', false)
+              .order('created_at', { ascending: true })
+
+            if (!msgsError && msgs) {
+              setMessages(msgs.map(m => ({
+                role: m.role,
+                content: m.content
+              })))
+            }
+          }
+        } catch (error) {
+          console.error('Error loading conversation:', error)
+        }
+      } else {
+        // Guest user - load from localStorage
         const guestData = localStorage.getItem(`esperit_guest_${persona.slug}`)
         if (guestData) {
           try {
@@ -92,6 +159,8 @@ export default function ChatPage() {
         }
       }
     }
+
+    loadConversation()
   }, [persona?.slug, user])
 
   // Auto-scroll to bottom
@@ -147,8 +216,39 @@ export default function ChatPage() {
       const aiMessage = { role: 'assistant', content: data.response }
       addMessage(aiMessage)
 
-      // Update guest tracking
-      if (!user) {
+      // Save to database or localStorage
+      if (user && conversationId) {
+        // Authenticated user - save to database
+        try {
+          const { supabase } = await import('@/lib/supabase')
+
+          // Save both messages
+          await supabase.from('messages').insert([
+            {
+              conversation_id: conversationId,
+              role: 'user',
+              content: messageText
+            },
+            {
+              conversation_id: conversationId,
+              role: 'assistant',
+              content: data.response
+            }
+          ])
+
+          // Update conversation
+          await supabase
+            .from('conversations')
+            .update({
+              updated_at: new Date().toISOString(),
+              message_count: messages.length + 2
+            })
+            .eq('id', conversationId)
+        } catch (error) {
+          console.error('Error saving to database:', error)
+        }
+      } else if (!user) {
+        // Guest user - save to localStorage
         const newCount = guestMessageCount + 1
         setGuestMessageCount(newCount)
         localStorage.setItem(

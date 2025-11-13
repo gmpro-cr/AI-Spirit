@@ -1,22 +1,57 @@
 import { useRouter } from 'next/router'
+import { useState, useEffect } from 'react'
 import { useAuth } from '@/context/AuthContext'
 import { supabase } from '@/lib/supabase'
 
 export default function SidePanel({ onBack, backButtonText, showPastChats = true }) {
   const router = useRouter()
   const { user } = useAuth()
+  const [pastChats, setPastChats] = useState([])
+  const [loading, setLoading] = useState(true)
 
   const handleSignOut = async () => {
     await supabase.auth.signOut()
     router.push('/')
   }
 
-  // Mock past chats - you can replace this with real data from your database
-  const pastChats = [
-    { id: 1, title: "Chat with Elon Musk" },
-    { id: 2, title: "Business with Warren" },
-    { id: 3, title: "Philosophy with Socrates" },
-  ]
+  // Load past chats
+  useEffect(() => {
+    const loadPastChats = async () => {
+      if (!user || !showPastChats) {
+        setPastChats([])
+        setLoading(false)
+        return
+      }
+
+      try {
+        const { data: session } = await supabase.auth.getSession()
+        if (!session?.session) return
+
+        const { data, error } = await supabase
+          .from('conversations')
+          .select('*')
+          .eq('session_id', session.session.user.id)
+          .eq('is_active', true)
+          .order('updated_at', { ascending: false })
+          .limit(10)
+
+        if (!error && data) {
+          setPastChats(data.map(conv => ({
+            id: conv.id,
+            title: conv.title || `Chat with ${conv.persona_type}`,
+            personaSlug: conv.persona_type,
+            updatedAt: conv.updated_at
+          })))
+        }
+      } catch (error) {
+        console.error('Error loading past chats:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    loadPastChats()
+  }, [user, showPastChats])
 
   return (
     <aside className="w-64 bg-gray-50 border-r border-gray-200 p-4 flex-col justify-between hidden md:flex h-screen fixed left-0 top-0">
@@ -51,18 +86,24 @@ export default function SidePanel({ onBack, backButtonText, showPastChats = true
         {showPastChats && (
           <div>
             <h2 className="text-lg font-semibold mb-4 text-black">Past Chats</h2>
-            <ul className="space-y-2">
-              {pastChats.map(chat => (
-                <li key={chat.id}>
-                  <a
-                    href="#"
-                    className="block p-2 rounded-md text-sm text-gray-700 hover:bg-gray-200 truncate transition-colors"
-                  >
-                    {chat.title}
-                  </a>
-                </li>
-              ))}
-            </ul>
+            {loading ? (
+              <p className="text-sm text-gray-500">Loading...</p>
+            ) : pastChats.length > 0 ? (
+              <ul className="space-y-2">
+                {pastChats.map(chat => (
+                  <li key={chat.id}>
+                    <button
+                      onClick={() => router.push(`/chat/${chat.personaSlug}`)}
+                      className="block w-full text-left p-2 rounded-md text-sm text-gray-700 hover:bg-gray-200 truncate transition-colors"
+                    >
+                      {chat.title}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-sm text-gray-500">No past chats yet</p>
+            )}
           </div>
         )}
       </div>
