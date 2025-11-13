@@ -25,7 +25,13 @@ export default function SidePanel({ onBack, backButtonText, showPastChats = true
 
       try {
         const { data: session } = await supabase.auth.getSession()
-        if (!session?.session) return
+        if (!session?.session) {
+          console.log('No active session for loading chats')
+          setLoading(false)
+          return
+        }
+
+        console.log('Loading chats for user:', session.session.user.id)
 
         const { data, error } = await supabase
           .from('conversations')
@@ -35,7 +41,10 @@ export default function SidePanel({ onBack, backButtonText, showPastChats = true
           .order('updated_at', { ascending: false })
           .limit(10)
 
-        if (!error && data) {
+        if (error) {
+          console.error('Error fetching conversations:', error)
+        } else {
+          console.log('Loaded conversations:', data)
           setPastChats(data.map(conv => ({
             id: conv.id,
             title: conv.title || `Chat with ${conv.persona_type}`,
