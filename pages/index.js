@@ -38,17 +38,6 @@ export default function Home() {
                 Sign In
               </button>
             )}
-            {user && (
-              <div className="flex items-center gap-3">
-                <span className="text-sm text-black">{user.email}</span>
-                <button
-                  onClick={() => router.push('/personas')}
-                  className="px-4 py-2 bg-black text-white rounded-md hover:bg-gray-800 transition-colors"
-                >
-                  Personas
-                </button>
-              </div>
-            )}
           </div>
         </header>
 
