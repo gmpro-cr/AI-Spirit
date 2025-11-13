@@ -23,7 +23,7 @@ export default function PersonaCard({ persona, onEdit }) {
       />
 
       {/* Persona Info */}
-      <div className="p-4">
+      <div className="p-4 bg-white/95">
         <h3 className="text-xl font-bold text-black group-hover:text-blue-600 transition-colors">
           {persona.name}
         </h3>
