@@ -17,6 +17,13 @@ export default function ChatPage() {
   const [conversationId, setConversationId] = useState(null)
   const chatContainerRef = useRef(null)
 
+  // Format message content with bold text
+  const formatMessage = (content) => {
+    // Replace **text** with <strong>text</strong>
+    const formatted = content.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    return formatted
+  }
+
   // Require authentication
   useEffect(() => {
     if (!loading && !user && personaId) {
@@ -366,7 +373,10 @@ export default function ChatPage() {
                       : 'bg-gray-100 text-black rounded-bl-none'
                   }`}
                 >
-                  <p className="whitespace-pre-wrap">{msg.content}</p>
+                  <p
+                    className="whitespace-pre-wrap"
+                    dangerouslySetInnerHTML={{ __html: formatMessage(msg.content) }}
+                  />
                 </div>
                 {msg.role === 'user' && (
                   <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center font-bold">
