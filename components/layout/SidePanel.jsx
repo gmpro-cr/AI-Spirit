@@ -31,26 +31,36 @@ export default function SidePanel({ onBack, backButtonText, showPastChats = true
           return
         }
 
-        console.log('Loading chats for user:', session.session.user.id)
+        const userId = session.session.user.id
+        console.log('Loading chats for user:', userId)
 
         const { data, error } = await supabase
           .from('conversations')
           .select('*')
-          .eq('session_id', session.session.user.id)
+          .eq('session_id', userId)
           .eq('is_active', true)
           .order('updated_at', { ascending: false })
           .limit(10)
+
+        console.log('Query result - error:', error, 'data length:', data?.length)
 
         if (error) {
           console.error('Error fetching conversations:', error)
         } else {
           console.log('Loaded conversations:', data)
-          setPastChats(data.map(conv => ({
-            id: conv.id,
-            title: conv.title || `Chat with ${conv.persona_type}`,
-            personaSlug: conv.persona_type,
-            updatedAt: conv.updated_at
-          })))
+          if (data && data.length > 0) {
+            const chats = data.map(conv => ({
+              id: conv.id,
+              title: conv.title || `Chat with ${conv.persona_type}`,
+              personaSlug: conv.persona_type,
+              updatedAt: conv.updated_at
+            }))
+            console.log('Mapped past chats:', chats)
+            setPastChats(chats)
+          } else {
+            console.log('No conversations found for this user')
+            setPastChats([])
+          }
         }
       } catch (error) {
         console.error('Error loading past chats:', error)
