@@ -18,6 +18,7 @@ export default function Personas() {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
   const [personaToEdit, setPersonaToEdit] = useState(null)
+  const [activeCategory, setActiveCategory] = useState('For You')
 
   // Require authentication
   useEffect(() => {
@@ -118,14 +119,63 @@ export default function Personas() {
             />
           </div>
 
-          {/* Header */}
-          <div className="mb-6">
-            <h1 className="text-4xl font-bold">Select a Persona</h1>
-          </div>
+          {/* Categories */}
+          {!searchQuery && (
+            <>
+              {/* Category Tabs */}
+              <div className="flex gap-4 mb-6">
+                <button
+                  onClick={() => setActiveCategory('For You')}
+                  className={`px-6 py-2 rounded-full font-semibold transition-colors ${
+                    activeCategory === 'For You'
+                      ? 'bg-black text-white'
+                      : 'bg-gray-100 text-black hover:bg-gray-200'
+                  }`}
+                >
+                  For You
+                </button>
+                <button
+                  onClick={() => setActiveCategory('All')}
+                  className={`px-6 py-2 rounded-full font-semibold transition-colors ${
+                    activeCategory === 'All'
+                      ? 'bg-black text-white'
+                      : 'bg-gray-100 text-black hover:bg-gray-200'
+                  }`}
+                >
+                  All
+                </button>
+              </div>
 
-          {/* Personas Grid */}
+              {/* Category Content */}
+              <div className="mb-8">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+                  {activeCategory === 'For You' && personas.slice(0, 2).map((persona) => (
+                    <PersonaCardNew
+                      key={persona.slug}
+                      persona={persona}
+                      onEdit={persona.is_custom ? handleEditPersona : undefined}
+                    />
+                  ))}
+                  {activeCategory === 'All' && personas.slice(2, 4).map((persona) => (
+                    <PersonaCardNew
+                      key={persona.slug}
+                      persona={persona}
+                      onEdit={persona.is_custom ? handleEditPersona : undefined}
+                    />
+                  ))}
+                </div>
+              </div>
+
+              {/* Header */}
+              <div className="mb-6">
+                <h1 className="text-4xl font-bold">All Personas</h1>
+              </div>
+            </>
+          )}
+
+          {/* All Personas Grid (shown when searching or after categories) */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-            {filteredPersonas.map((persona) => (
+            {(searchQuery ? filteredPersonas : personas).map((persona) => (
               <PersonaCardNew
                 key={persona.slug}
                 persona={persona}
