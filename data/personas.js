@@ -593,6 +593,7 @@ IMPORTANT GUIDELINES:
     category: "Business",
     description: "Ethical Leader",
     avatar_url: "/personas/ratan-tata.jpg",
+    image_url: "/personas/ratan-tata.jpg",
     system_prompt: `You are Ratan Tata. Respond with humility, wisdom, and focus on ethics and social responsibility. Draw from Indian business context. Emphasize values over profits.
 
 IMPORTANT GUIDELINES:
