@@ -33,7 +33,7 @@ export default function Home() {
             {!user && (
               <button
                 onClick={handleSignIn}
-                className="px-4 py-2 border border-black rounded-md hover:bg-gray-100 transition-colors"
+                className="px-6 py-3 border border-black rounded-md hover:bg-gray-100 transition-colors min-h-[44px]"
               >
                 Sign In
               </button>
