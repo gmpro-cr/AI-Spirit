@@ -18,6 +18,7 @@ export default function Personas() {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
   const [personaToEdit, setPersonaToEdit] = useState(null)
+  const [loadingPersonas, setLoadingPersonas] = useState(true)
 
   // Require authentication
   useEffect(() => {
@@ -39,6 +40,8 @@ export default function Personas() {
   }, [router.query])
 
   const loadAllPersonas = async () => {
+    setLoadingPersonas(true)
+
     // Filter out hidden personas
     let allPersonas = INITIAL_PERSONAS.filter(p => !p.hidden)
 
@@ -66,6 +69,7 @@ export default function Personas() {
 
     setPersonas(allPersonas)
     setFilteredPersonas(allPersonas)
+    setLoadingPersonas(false)
   }
 
   const handlePersonaCreated = () => {
@@ -121,23 +125,32 @@ export default function Personas() {
             />
           </div>
 
-          {/* Personas Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-            {(searchQuery ? filteredPersonas : personas).map((persona) => (
-              <PersonaCardNew
-                key={persona.slug}
-                persona={persona}
-                onEdit={persona.is_custom ? handleEditPersona : undefined}
-              />
-            ))}
-          </div>
-
-          {/* No Results */}
-          {filteredPersonas.length === 0 && (
+          {/* Loading State */}
+          {loadingPersonas ? (
             <div className="text-center py-20">
-              <p className="text-black text-lg">No personas found</p>
-              <p className="text-black text-sm mt-2">Try a different search</p>
+              <p className="text-black text-lg">Loading personas...</p>
             </div>
+          ) : (
+            <>
+              {/* Personas Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                {(searchQuery ? filteredPersonas : personas).map((persona) => (
+                  <PersonaCardNew
+                    key={persona.slug}
+                    persona={persona}
+                    onEdit={persona.is_custom ? handleEditPersona : undefined}
+                  />
+                ))}
+              </div>
+
+              {/* No Results */}
+              {filteredPersonas.length === 0 && (
+                <div className="text-center py-20">
+                  <p className="text-black text-lg">No personas found</p>
+                  <p className="text-black text-sm mt-2">Try a different search</p>
+                </div>
+              )}
+            </>
           )}
 
           {/* Mobile Back Button */}
