@@ -354,13 +354,13 @@ export default function ChatPage() {
             {messages.map((msg, index) => (
               <div
                 key={index}
-                className={`flex items-start gap-4 ${msg.role === 'user' ? 'justify-end' : ''}`}
+                className={`flex items-center gap-4 ${msg.role === 'user' ? 'justify-end' : ''}`}
               >
                 {msg.role === 'assistant' && (
                   <img
                     src={persona.image_url || '/default-persona.png'}
                     alt={persona.name}
-                    className="w-8 h-8 rounded-full object-cover"
+                    className="w-8 h-8 rounded-full object-cover object-top"
                     onError={(e) => {
                       e.target.src = '/default-persona.png'
                     }}
@@ -387,11 +387,11 @@ export default function ChatPage() {
             ))}
 
             {isLoading && (
-              <div className="flex items-start gap-4">
+              <div className="flex items-center gap-4">
                 <img
                   src={persona.image_url || '/default-persona.png'}
                   alt={persona.name}
-                  className="w-8 h-8 rounded-full object-cover"
+                  className="w-8 h-8 rounded-full object-cover object-top"
                   onError={(e) => {
                     e.target.src = '/default-persona.png'
                   }}
