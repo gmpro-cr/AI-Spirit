@@ -50,7 +50,7 @@ export default function SidePanel({ onBack, backButtonText, showPastChats = true
         {/* Past Chats */}
         {showPastChats && (
           <div>
-            <h2 className="text-lg font-semibold mb-4">Past Chats</h2>
+            <h2 className="text-lg font-semibold mb-4 text-black">Past Chats</h2>
             <ul className="space-y-2">
               {pastChats.map(chat => (
                 <li key={chat.id}>
@@ -75,7 +75,7 @@ export default function SidePanel({ onBack, backButtonText, showPastChats = true
               {user?.email?.[0]?.toUpperCase() || 'U'}
             </div>
             <div className="ml-3 flex-1 min-w-0">
-              <p className="font-semibold text-sm truncate">{user?.email || 'User'}</p>
+              <p className="font-semibold text-sm truncate text-black">{user?.email || 'User'}</p>
               <button
                 onClick={handleSignOut}
                 className="text-xs text-gray-500 hover:text-gray-700 transition-colors"

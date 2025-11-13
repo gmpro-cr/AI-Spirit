@@ -218,7 +218,7 @@ export default function ChatPage() {
                 e.target.src = '/default-persona.png'
               }}
             />
-            <h2 className="text-xl font-bold">{persona.name}</h2>
+            <h2 className="text-xl font-bold text-black">{persona.name}</h2>
           </header>
 
           {/* Messages */}
@@ -234,7 +234,7 @@ export default function ChatPage() {
                       e.target.src = '/default-persona.png'
                     }}
                   />
-                  <h3 className="text-2xl font-bold mb-2">{persona.name}</h3>
+                  <h3 className="text-2xl font-bold mb-2 text-black">{persona.name}</h3>
                   <p className="text-black max-w-md">
                     {persona.description || persona.bio}
                   </p>
@@ -303,7 +303,7 @@ export default function ChatPage() {
                 value={currentInput}
                 onChange={(e) => setCurrentInput(e.target.value)}
                 placeholder={`Message ${persona.name}...`}
-                className="flex-1 p-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-black"
+                className="flex-1 p-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-black text-black"
                 disabled={isLoading}
               />
               <button
