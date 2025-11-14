@@ -137,11 +137,34 @@ export default function SidePanel({ onBack, backButtonText, showPastChats = true
       <div>
         <div className="border-t border-gray-200 pt-4">
           <div className="flex items-center">
-            <div className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center font-bold text-gray-700">
-              {user?.email?.[0]?.toUpperCase() || 'U'}
+            {/* User Avatar - show Google photo if available */}
+            {user?.user_metadata?.avatar_url ? (
+              <img
+                src={user.user_metadata.avatar_url}
+                alt={user.user_metadata.full_name || user.email}
+                className="w-10 h-10 rounded-full object-cover"
+                onError={(e) => {
+                  // Fallback to initials if image fails to load
+                  e.target.style.display = 'none'
+                  e.target.nextSibling.style.display = 'flex'
+                }}
+              />
+            ) : null}
+            <div
+              className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center font-bold text-gray-700"
+              style={{ display: user?.user_metadata?.avatar_url ? 'none' : 'flex' }}
+            >
+              {user?.user_metadata?.full_name?.[0]?.toUpperCase() ||
+               user?.user_metadata?.name?.[0]?.toUpperCase() ||
+               user?.email?.[0]?.toUpperCase() || 'U'}
             </div>
             <div className="ml-3 flex-1 min-w-0">
-              <p className="font-semibold text-sm truncate text-black">{user?.email || 'User'}</p>
+              {/* Display name instead of email */}
+              <p className="font-semibold text-sm truncate text-black">
+                {user?.user_metadata?.full_name ||
+                 user?.user_metadata?.name ||
+                 user?.email || 'User'}
+              </p>
               <button
                 onClick={handleSignOut}
                 className="text-xs text-gray-500 hover:text-gray-700 transition-colors"
