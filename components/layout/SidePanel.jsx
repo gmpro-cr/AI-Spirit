@@ -42,7 +42,8 @@ export default function SidePanel({ onBack, backButtonText, showPastChats = true
         const { data, error } = await supabase
           .from('conversations')
           .select('*')
-          .eq('user_id', userId)
+          .eq('session_id', userId)
+          .eq('is_active', true)
           .order('updated_at', { ascending: false })
           .limit(10)
 
@@ -57,7 +58,7 @@ export default function SidePanel({ onBack, backButtonText, showPastChats = true
             const chats = data.map(conv => ({
               id: conv.id,
               title: conv.title,
-              personaSlug: conv.persona_slug,
+              personaSlug: conv.persona_slug || conv.persona_type,
               updatedAt: conv.updated_at
             }))
             console.log('[SidePanel] Mapped past chats:', chats)
