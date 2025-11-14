@@ -102,9 +102,8 @@ export default function ChatPage() {
           const { data: existingConv, error: convError } = await supabase
             .from('conversations')
             .select('*')
-            .eq('session_id', session.session.user.id)
-            .eq('persona_type', persona.slug)
-            .eq('is_active', true)
+            .eq('user_id', session.session.user.id)
+            .eq('persona_slug', persona.slug)
             .order('updated_at', { ascending: false })
             .limit(1)
             .maybeSingle()
@@ -116,12 +115,10 @@ export default function ChatPage() {
             const { data: newConv, error: createError } = await supabase
               .from('conversations')
               .insert({
-                session_id: session.session.user.id,
-                persona_type: persona.slug,
+                user_id: session.session.user.id,
                 persona_id: persona.id || null,
-                title: `Chat with ${persona.name}`,
-                is_active: true,
-                is_guest_session: false
+                persona_slug: persona.slug,
+                title: `Chat with ${persona.name}`
               })
               .select()
               .single()
@@ -139,7 +136,6 @@ export default function ChatPage() {
               .from('messages')
               .select('*')
               .eq('conversation_id', convId)
-              .eq('is_deleted', false)
               .order('created_at', { ascending: true })
 
             if (!msgsError && msgs) {

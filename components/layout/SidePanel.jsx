@@ -17,48 +17,53 @@ export default function SidePanel({ onBack, backButtonText, showPastChats = true
   // Load past chats
   useEffect(() => {
     const loadPastChats = async () => {
+      console.log('[SidePanel] loadPastChats called')
+      console.log('[SidePanel] user exists:', !!user, 'showPastChats:', showPastChats)
+
       if (!user || !showPastChats) {
+        console.log('[SidePanel] Exiting early - no user or showPastChats=false')
         setPastChats([])
         setLoading(false)
         return
       }
 
       try {
+        console.log('[SidePanel] Getting session...')
         const { data: session } = await supabase.auth.getSession()
         if (!session?.session) {
-          console.log('No active session for loading chats')
+          console.log('[SidePanel] No active session for loading chats')
           setLoading(false)
           return
         }
 
         const userId = session.session.user.id
-        console.log('Loading chats for user:', userId)
+        console.log('[SidePanel] Loading chats for user:', userId)
 
         const { data, error } = await supabase
           .from('conversations')
           .select('*')
-          .eq('session_id', userId)
-          .eq('is_active', true)
+          .eq('user_id', userId)
           .order('updated_at', { ascending: false })
           .limit(10)
 
-        console.log('Query result - error:', error, 'data length:', data?.length)
+        console.log('[SidePanel] Query result - error:', error, 'data length:', data?.length)
+        console.log('[SidePanel] Query result data:', JSON.stringify(data, null, 2))
 
         if (error) {
-          console.error('Error fetching conversations:', error)
+          console.error('[SidePanel] Error fetching conversations:', error)
         } else {
-          console.log('Loaded conversations:', data)
+          console.log('[SidePanel] Loaded conversations:', data)
           if (data && data.length > 0) {
             const chats = data.map(conv => ({
               id: conv.id,
-              title: conv.title || `Chat with ${conv.persona_type}`,
-              personaSlug: conv.persona_type,
+              title: conv.title,
+              personaSlug: conv.persona_slug,
               updatedAt: conv.updated_at
             }))
-            console.log('Mapped past chats:', chats)
+            console.log('[SidePanel] Mapped past chats:', chats)
             setPastChats(chats)
           } else {
-            console.log('No conversations found for this user')
+            console.log('[SidePanel] No conversations found for this user')
             setPastChats([])
           }
         }
