@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router'
 import { useState, useEffect, useRef } from 'react'
 import Head from 'next/head'
+import DOMPurify from 'isomorphic-dompurify'
 import SidePanelNew from '@/components/layout/SidePanel'
 import { useAuth } from '@/context/AuthContext'
 import { useChat } from '@/context/ChatContext'
@@ -19,10 +20,11 @@ export default function ChatPage() {
 
   // Format message content with bold text
   const formatMessage = (content) => {
-    // Replace **text** with <strong>text</strong>
-    const formatted = content.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-    return formatted
-  }
+  // Replace **text** with <strong>text</strong>
+  const formatted = content.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+  // Sanitize HTML to prevent XSS attacks
+  return DOMPurify.sanitize(formatted)
+}
 
   // Require authentication
   useEffect(() => {
@@ -357,9 +359,21 @@ export default function ChatPage() {
 
             {/* New Chat Button */}
             <button
-              onClick={() => {
-                // Navigate to chat page without conversationId to create new conversation
-                router.push(`/chat/${personaId}`)
+              onClick={async () => {
+                if (messages.length > 0) {
+                  if (confirm('Start a new chat? Your current conversation will be saved.')) {
+                    // Clear current conversation
+                    clearMessages()
+                    setConversationId(null)
+                    setGuestMessageCount(0)
+                    
+                    // Remove conversationId from URL
+                    router.replace(`/chat/${personaId}`, undefined, { shallow: true })
+                  }
+                } else {
+                  // No messages, just reload
+                  router.replace(`/chat/${personaId}`, undefined, { shallow: true })
+                }
               }}
               className="flex items-center gap-2 px-4 py-2 bg-black text-white rounded-full hover:bg-gray-800 transition-all hover:shadow-lg group"
               title="Start a new chat"
