@@ -299,14 +299,51 @@ export default function ChatPage() {
         {/* Chat Area */}
         <div className="flex flex-col flex-1 h-screen md:ml-64">
           {/* Header */}
-          <header className="flex items-center p-4 border-b border-gray-200 sticky top-0 bg-white/80 backdrop-blur-sm z-10">
+          <header className="flex items-center justify-between p-4 border-b border-gray-200 sticky top-0 bg-white/80 backdrop-blur-sm z-10">
+            <div className="flex items-center flex-1">
+              <button
+                onClick={handleBack}
+                className="mr-4 p-2 rounded-full hover:bg-gray-100 md:hidden"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6 text-black"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15 19l-7-7 7-7"
+                  />
+                </svg>
+              </button>
+              <img
+                src={persona.image_url || '/default-persona.png'}
+                alt={persona.name}
+                className="w-10 h-10 rounded-full mr-4 object-cover"
+                onError={(e) => {
+                  e.target.src = '/default-persona.png'
+                }}
+              />
+              <h2 className="text-xl font-bold text-black">{persona.name}</h2>
+            </div>
+
+            {/* New Chat Button */}
             <button
-              onClick={handleBack}
-              className="mr-4 p-2 rounded-full hover:bg-gray-100 md:hidden"
+              onClick={() => {
+                clearMessages()
+                setConversationId(null)
+                setGuestMessageCount(0)
+              }}
+              className="flex items-center gap-2 px-4 py-2 bg-black text-white rounded-full hover:bg-gray-800 transition-all hover:shadow-lg group"
+              title="Start a new chat"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6 text-black"
+                className="h-5 w-5 transition-transform group-hover:rotate-90"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -315,19 +352,11 @@ export default function ChatPage() {
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   strokeWidth={2}
-                  d="M15 19l-7-7 7-7"
+                  d="M12 4v16m8-8H4"
                 />
               </svg>
+              <span className="hidden md:inline font-medium">New Chat</span>
             </button>
-            <img
-              src={persona.image_url || '/default-persona.png'}
-              alt={persona.name}
-              className="w-10 h-10 rounded-full mr-4 object-cover"
-              onError={(e) => {
-                e.target.src = '/default-persona.png'
-              }}
-            />
-            <h2 className="text-xl font-bold text-black">{persona.name}</h2>
           </header>
 
           {/* Messages */}
