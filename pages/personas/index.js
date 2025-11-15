@@ -20,6 +20,8 @@ export default function Personas() {
   const [personaToEdit, setPersonaToEdit] = useState(null)
   const [loadingPersonas, setLoadingPersonas] = useState(true)
   const [isMobileSidePanelOpen, setIsMobileSidePanelOpen] = useState(false)
+  const [pastChats, setPastChats] = useState([])
+  const [loadingPastChats, setLoadingPastChats] = useState(false)
 
   // Require authentication
   useEffect(() => {
@@ -30,6 +32,50 @@ export default function Personas() {
 
   useEffect(() => {
     loadAllPersonas()
+  }, [user])
+
+  // Load past chats for mobile side panel
+  useEffect(() => {
+    const loadPastChats = async () => {
+      if (!user) {
+        setPastChats([])
+        return
+      }
+
+      setLoadingPastChats(true)
+      try {
+        const { data: session } = await supabase.auth.getSession()
+        if (!session?.session) {
+          setLoadingPastChats(false)
+          return
+        }
+
+        const userId = session.session.user.id
+        const { data, error } = await supabase
+          .from('conversations')
+          .select('*')
+          .eq('session_id', userId)
+          .eq('is_active', true)
+          .order('updated_at', { ascending: false })
+          .limit(10)
+
+        if (!error && data) {
+          const chats = data.map(conv => ({
+            id: conv.id,
+            title: conv.title,
+            personaSlug: conv.persona_slug || conv.persona_type,
+            updatedAt: conv.updated_at
+          }))
+          setPastChats(chats)
+        }
+      } catch (error) {
+        console.error('Error loading past chats:', error)
+      } finally {
+        setLoadingPastChats(false)
+      }
+    }
+
+    loadPastChats()
   }, [user])
 
   // Check for ?create=true query parameter
@@ -144,7 +190,7 @@ export default function Personas() {
               placeholder="Search personas..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="flex-1 p-4 text-lg text-black border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+              className="flex-1 p-3 text-base text-black border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black h-12"
             />
           </div>
 
@@ -241,8 +287,27 @@ export default function Personas() {
               {/* Past Chats Section */}
               <div className="flex-1 overflow-y-auto">
                 <h2 className="text-lg font-semibold mb-4 text-black">Past Chats</h2>
-                {/* This will be populated by the SidePanel component logic */}
-                <p className="text-sm text-gray-500">No past chats yet</p>
+                {loadingPastChats ? (
+                  <p className="text-sm text-gray-500">Loading...</p>
+                ) : pastChats.length > 0 ? (
+                  <ul className="space-y-2">
+                    {pastChats.map(chat => (
+                      <li key={chat.id}>
+                        <button
+                          onClick={() => {
+                            setIsMobileSidePanelOpen(false)
+                            router.push(`/chat/${chat.personaSlug}`)
+                          }}
+                          className="block w-full text-left p-2 rounded-md text-sm text-gray-700 hover:bg-gray-200 truncate transition-colors"
+                        >
+                          {chat.title}
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="text-sm text-gray-500">No past chats yet</p>
+                )}
               </div>
 
               {/* User Account Section */}
