@@ -24,7 +24,7 @@ export default function PrivacyPolicy() {
             <section className="mb-8">
               <h2 className="text-2xl font-semibold text-gray-900 mb-4">1. Introduction</h2>
               <p className="text-gray-700">
-                Welcome to AI-Spirit ("we", "our", or "us"). We respect your privacy and are committed to protecting your personal data. This privacy policy will inform you about how we look after your personal data when you visit our website and tell you about your privacy rights and how the law protects you.
+                Welcome to AI-Spirit (&quot;we&quot;, &quot;our&quot;, or &quot;us&quot;). We respect your privacy and are committed to protecting your personal data. This privacy policy will inform you about how we look after your personal data when you visit our website and tell you about your privacy rights and how the law protects you.
               </p>
             </section>
 
@@ -66,7 +66,7 @@ export default function PrivacyPolicy() {
               <h2 className="text-2xl font-semibold text-gray-900 mb-4">5. Third-Party Services</h2>
               <p className="text-gray-700 mb-2">We use the following third-party services:</p>
               <ul className="list-disc pl-6 text-gray-700 space-y-2">
-                <li><strong>Google OAuth:</strong> For authentication (Google's Privacy Policy applies)</li>
+                <li><strong>Google OAuth:</strong> For authentication (Google&apos;s Privacy Policy applies)</li>
                 <li><strong>Supabase:</strong> For database and authentication services</li>
                 <li><strong>Google Gemini AI:</strong> For generating AI persona responses</li>
                 <li><strong>Vercel:</strong> For hosting and deployment</li>
@@ -103,7 +103,7 @@ export default function PrivacyPolicy() {
             <section className="mb-8">
               <h2 className="text-2xl font-semibold text-gray-900 mb-4">9. Changes to This Policy</h2>
               <p className="text-gray-700">
-                We may update this privacy policy from time to time. We will notify you of any changes by posting the new privacy policy on this page and updating the "Last updated" date.
+                We may update this privacy policy from time to time. We will notify you of any changes by posting the new privacy policy on this page and updating the &quot;Last updated&quot; date.
               </p>
             </section>
 
