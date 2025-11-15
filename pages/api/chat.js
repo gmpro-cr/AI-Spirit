@@ -87,6 +87,8 @@ export default async function handler(req, res) {
     let persona
     if (personaObj) {
       // Use persona object directly (for INITIAL_PERSONAS)
+      console.log('[DEBUG] Received persona object keys:', Object.keys(personaObj))
+      console.log('[DEBUG] Has system_prompt:', !!personaObj.system_prompt)
       persona = personaObj
     } else {
       // Query database (for custom personas)
@@ -132,6 +134,15 @@ export default async function handler(req, res) {
         ]
         messageHistory = messageHistory.slice(-20)
       }
+    }
+
+    // Validate persona has system_prompt
+    if (!persona.system_prompt) {
+      console.error('Missing system_prompt for persona:', persona)
+      return res.status(500).json({ 
+        error: 'Persona configuration error: missing system prompt',
+        debug: { personaSlug: persona.slug, personaKeys: Object.keys(persona) }
+      })
     }
 
     // Generate AI response - use Groq for dead personas, Gemini for alive personas
