@@ -19,6 +19,7 @@ export default function Personas() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
   const [personaToEdit, setPersonaToEdit] = useState(null)
   const [loadingPersonas, setLoadingPersonas] = useState(true)
+  const [isMobileSidePanelOpen, setIsMobileSidePanelOpen] = useState(false)
 
   // Require authentication
   useEffect(() => {
@@ -133,7 +134,7 @@ export default function Personas() {
           ) : (
             <>
               {/* Personas Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+              <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-8">
                 {(searchQuery ? filteredPersonas : personas).map((persona) => (
                   <PersonaCardNew
                     key={persona.slug}
@@ -153,14 +154,14 @@ export default function Personas() {
             </>
           )}
 
-          {/* Mobile Back Button */}
+          {/* Mobile Hamburger Menu Button */}
           <button
-            onClick={handleBack}
-            className="md:hidden fixed top-4 left-4 p-2 rounded-full bg-white border border-gray-200 hover:bg-gray-100 shadow-md z-50"
+            onClick={() => setIsMobileSidePanelOpen(true)}
+            className="md:hidden fixed top-4 left-4 p-3 rounded-lg bg-white border border-gray-200 hover:bg-gray-50 shadow-lg z-50 transition-all"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
+              className="h-6 w-6 text-black"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -169,12 +170,119 @@ export default function Personas() {
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeWidth={2}
-                d="M15 19l-7-7 7-7"
+                d="M4 6h16M4 12h16M4 18h16"
               />
             </svg>
           </button>
         </main>
       </div>
+
+      {/* Mobile Side Panel */}
+      {isMobileSidePanelOpen && (
+        <>
+          {/* Backdrop */}
+          <div
+            className="fixed inset-0 bg-black bg-opacity-50 z-[60] md:hidden"
+            onClick={() => setIsMobileSidePanelOpen(false)}
+          />
+
+          {/* Side Panel */}
+          <div className="fixed inset-y-0 left-0 w-64 bg-gray-50 border-r border-gray-200 z-[70] md:hidden transform transition-transform duration-300 ease-in-out">
+            <div className="flex flex-col h-full p-4">
+              {/* Close Button */}
+              <button
+                onClick={() => setIsMobileSidePanelOpen(false)}
+                className="self-end p-2 hover:bg-gray-200 rounded-lg transition-colors mb-4"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6 text-black"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+
+              {/* Back to Home */}
+              <div className="mb-8">
+                <button
+                  onClick={() => {
+                    setIsMobileSidePanelOpen(false)
+                    handleBack()
+                  }}
+                  className="flex items-center text-sm text-gray-600 hover:text-black transition-colors"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-4 w-4 mr-2"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M15 19l-7-7 7-7"
+                    />
+                  </svg>
+                  Back to Home
+                </button>
+              </div>
+
+              {/* Past Chats Section */}
+              <div className="flex-1 overflow-y-auto">
+                <h2 className="text-lg font-semibold mb-4 text-black">Past Chats</h2>
+                {/* This will be populated by the SidePanel component logic */}
+                <p className="text-sm text-gray-500">No past chats yet</p>
+              </div>
+
+              {/* User Account Section */}
+              {user && (
+                <div className="border-t border-gray-200 pt-4 mt-4">
+                  <div className="flex items-center">
+                    {user?.user_metadata?.avatar_url ? (
+                      <img
+                        src={user.user_metadata.avatar_url}
+                        alt={user.user_metadata.full_name || user.email}
+                        className="w-10 h-10 rounded-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center font-bold text-gray-700">
+                        {user?.user_metadata?.full_name?.[0]?.toUpperCase() ||
+                         user?.email?.[0]?.toUpperCase() || 'U'}
+                      </div>
+                    )}
+                    <div className="ml-3 flex-1 min-w-0">
+                      <p className="font-semibold text-sm truncate text-black">
+                        {user?.user_metadata?.full_name ||
+                         user?.user_metadata?.name ||
+                         user?.email || 'User'}
+                      </p>
+                      <button
+                        onClick={async () => {
+                          await supabase.auth.signOut()
+                          router.push('/')
+                        }}
+                        className="text-xs text-gray-500 hover:text-gray-700 transition-colors"
+                      >
+                        Sign out
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </>
+      )}
 
       {/* Modals */}
       <CreatePersonaModal

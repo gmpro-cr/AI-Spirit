@@ -1,10 +1,13 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
+import { useState } from 'react'
 import { useAuth } from '@/context/AuthContext'
+import ContactModal from '@/components/ContactModal'
 
 export default function Home() {
   const router = useRouter()
   const { user } = useAuth()
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false)
 
   const handleStartChatting = () => {
     if (user) {
@@ -30,14 +33,22 @@ export default function Home() {
         <header className="p-4 border-b border-gray-200">
           <div className="container mx-auto flex justify-between items-center">
             <h1 className="text-2xl font-bold">AI-Spirit</h1>
-            {!user && (
+            <div className="flex items-center gap-3">
               <button
-                onClick={handleSignIn}
+                onClick={() => setIsContactModalOpen(true)}
                 className="px-6 py-3 border border-black rounded-md hover:bg-gray-100 transition-colors min-h-[44px]"
               >
-                Sign In
+                Contact Us
               </button>
-            )}
+              {!user && (
+                <button
+                  onClick={handleSignIn}
+                  className="px-6 py-3 bg-black text-white rounded-md hover:bg-gray-800 transition-colors min-h-[44px]"
+                >
+                  Sign In
+                </button>
+              )}
+            </div>
           </div>
         </header>
 
@@ -58,6 +69,12 @@ export default function Home() {
           </div>
         </footer>
       </div>
+
+      {/* Contact Modal */}
+      <ContactModal
+        isOpen={isContactModalOpen}
+        onClose={() => setIsContactModalOpen(false)}
+      />
     </>
   )
 }
