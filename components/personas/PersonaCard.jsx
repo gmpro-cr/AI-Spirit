@@ -16,18 +16,18 @@ export default function PersonaCard({ persona, onEdit }) {
       <img
         src={persona.image_url || persona.avatar_url || '/default-persona.png'}
         alt={persona.name}
-        className="w-full h-60 object-cover object-center rounded-t-lg"
+        className="w-full h-32 md:h-40 object-cover object-center rounded-t-lg"
         onError={(e) => {
           e.target.src = '/default-persona.png'
         }}
       />
 
       {/* Persona Info */}
-      <div className="p-4 bg-white/95">
-        <h3 className="text-xl font-bold text-black group-hover:text-blue-600 transition-colors">
+      <div className="p-2 md:p-3 bg-white/95">
+        <h3 className="text-base md:text-lg font-bold text-black group-hover:text-blue-600 transition-colors">
           {persona.name}
         </h3>
-        <p className="text-black text-sm mt-1 line-clamp-2">
+        <p className="text-black text-xs mt-1 line-clamp-1 md:line-clamp-2">
           {persona.description || persona.bio}
         </p>
       </div>
