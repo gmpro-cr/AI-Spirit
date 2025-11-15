@@ -466,10 +466,10 @@ export default function ChatPage() {
             </form>
 
             {/* Disclaimer */}
-            <div className="text-center text-xs text-gray-500 mt-3 px-2">
+            <div className="text-center text-[10px] md:text-xs text-gray-500 mt-3 px-2">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-3.5 w-3.5 inline-block mr-1"
+                className="h-3 w-3 md:h-3.5 md:w-3.5 inline-block mr-1"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -481,7 +481,7 @@ export default function ChatPage() {
                   d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                 />
               </svg>
-              AI-generated responses. This is a simulated persona, not a real person.
+              These are AI generated responses and not from real person
             </div>
 
             {/* Guest message counter */}
