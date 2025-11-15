@@ -1,8 +1,19 @@
 import { supabaseAdmin } from '@/lib/supabase'
 import { generatePersonaResponse } from '@/lib/gemini'
+import { generateGroqResponse } from '@/lib/groq'
 import { moderateContent } from '@/lib/moderation'
 import { chatRateLimiter, getClientIdentifier } from '@/lib/rate-limit'
 import { logApiCall, checkCostThreshold } from '@/lib/cost-tracking'
+
+// List of alive personas (use Gemini API)
+const ALIVE_PERSONAS = [
+  'elon-musk',
+  'pv-sindhu',
+  'ratan-tata',
+  'charlie-munger',
+  'virat-kohli',
+  'ms-dhoni'
+]
 
 // Configuration constants
 const MAX_MESSAGE_LENGTH = 2000 // characters
@@ -123,8 +134,11 @@ export default async function handler(req, res) {
       }
     }
 
-    // Generate AI response
-    const result = await generatePersonaResponse(persona.system_prompt, messageHistory)
+    // Generate AI response - use Groq for dead personas, Gemini for alive personas
+    const isAlive = ALIVE_PERSONAS.includes(persona.slug)
+    const result = isAlive
+      ? await generatePersonaResponse(persona.system_prompt, messageHistory)
+      : await generateGroqResponse(persona.system_prompt, messageHistory)
 
     if (!result.success) {
       return res.status(500).json({ error: result.error })
