@@ -1,6 +1,12 @@
 import { supabaseAdmin } from '@/lib/supabase'
 import { generatePersonaResponse } from '@/lib/gemini'
 import { moderateContent } from '@/lib/moderation'
+import { chatRateLimiter, getClientIdentifier } from '@/lib/rate-limit'
+import { logApiCall, checkCostThreshold } from '@/lib/cost-tracking'
+
+// Configuration constants
+const MAX_MESSAGE_LENGTH = 2000 // characters
+const MAX_CONVERSATION_HISTORY = 50 // messages
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -10,9 +16,52 @@ export default async function handler(req, res) {
   try {
     const { conversationId, personaId, persona: personaObj, message, conversationHistory, isGuest } = req.body
 
-    // Validate input
+    // Get session for rate limiting
+    const { data: { session } } = await supabaseAdmin.auth.getSession()
+    const clientId = getClientIdentifier(req, session)
+
+    // Rate limiting check
+    const rateLimitResult = chatRateLimiter.check(clientId)
+    if (!rateLimitResult.allowed) {
+      return res.status(429).json({
+        error: `Too many requests. Please try again in ${rateLimitResult.retryAfter} seconds.`,
+        retryAfter: rateLimitResult.retryAfter,
+        remaining: 0
+      })
+    }
+
+    // Add rate limit headers
+    res.setHeader('X-RateLimit-Limit', '10')
+    res.setHeader('X-RateLimit-Remaining', rateLimitResult.remaining.toString())
+    res.setHeader('X-RateLimit-Reset', new Date(rateLimitResult.resetTime).toISOString())
+
+    // Validate input - basic checks
     if (!message || (!personaId && !personaObj)) {
       return res.status(400).json({ error: 'Missing required fields' })
+    }
+
+    // Validate message length
+    if (typeof message !== 'string') {
+      return res.status(400).json({ error: 'Message must be a string' })
+    }
+
+    if (message.trim().length === 0) {
+      return res.status(400).json({ error: 'Message cannot be empty' })
+    }
+
+    if (message.length > MAX_MESSAGE_LENGTH) {
+      return res.status(400).json({
+        error: `Message too long. Maximum ${MAX_MESSAGE_LENGTH} characters allowed.`,
+        maxLength: MAX_MESSAGE_LENGTH
+      })
+    }
+
+    // Validate conversation history length
+    if (Array.isArray(conversationHistory) && conversationHistory.length > MAX_CONVERSATION_HISTORY) {
+      return res.status(400).json({
+        error: `Conversation history too long. Maximum ${MAX_CONVERSATION_HISTORY} messages allowed.`,
+        maxHistory: MAX_CONVERSATION_HISTORY
+      })
     }
 
     // Content moderation
@@ -81,6 +130,27 @@ export default async function handler(req, res) {
       return res.status(500).json({ error: result.error })
     }
 
+    // Log API call for cost tracking
+    logApiCall({
+      conversationId,
+      userId: session?.user?.id || 'guest',
+      input: messageHistory.map(m => m.content).join('\n'),
+      output: result.response,
+      inputTokens: result.metadata?.inputTokens,
+      outputTokens: result.metadata?.outputTokens,
+    })
+
+    // Check if daily budget exceeded (log warning)
+    const costCheck = checkCostThreshold(15) // $15 daily budget
+    if (costCheck.percentUsed > 80) {
+      console.warn('[Cost Alert]', {
+        percentUsed: `${costCheck.percentUsed.toFixed(1)}%`,
+        currentCost: `$${costCheck.currentCost.toFixed(2)}`,
+        budget: `$${costCheck.budget}`,
+        remaining: `$${costCheck.remaining.toFixed(2)}`,
+      })
+    }
+
     // Save to database (if authenticated)
     if (!isGuest && conversationId) {
       await supabaseAdmin.from('messages').insert([
@@ -95,7 +165,25 @@ export default async function handler(req, res) {
     })
 
   } catch (error) {
-    console.error('Chat API Error:', error)
-    return res.status(500).json({ error: 'Internal server error' })
+    console.error('Chat API Error:', {
+      message: error.message,
+      stack: error.stack,
+      conversationId,
+      personaId,
+      isGuest,
+      timestamp: new Date().toISOString()
+    })
+
+    // Return user-friendly error without exposing internal details
+    if (error.name === 'RateLimitError') {
+      return res.status(429).json({
+        error: error.message,
+        retryAfter: error.retryAfter
+      })
+    }
+
+    return res.status(500).json({
+      error: 'An error occurred while processing your message. Please try again.'
+    })
   }
 }
