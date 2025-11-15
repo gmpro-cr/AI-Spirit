@@ -115,14 +115,36 @@ export default function Personas() {
 
         {/* Main Content */}
         <main className="flex-1 p-6 md:p-10 overflow-y-auto md:ml-64">
-          {/* Search Bar */}
-          <div className="mb-6">
+          {/* Search Bar with Hamburger Menu */}
+          <div className="mb-6 flex items-center gap-3">
+            {/* Mobile Hamburger Menu Button */}
+            <button
+              onClick={() => setIsMobileSidePanelOpen(true)}
+              className="md:hidden p-3 rounded-lg bg-white border border-gray-200 hover:bg-gray-50 shadow-lg transition-all flex-shrink-0"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6 text-black"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
+              </svg>
+            </button>
+
+            {/* Search Input */}
             <input
               type="text"
               placeholder="Search personas..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full p-4 text-lg text-black border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+              className="flex-1 p-4 text-lg text-black border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
             />
           </div>
 
@@ -153,27 +175,6 @@ export default function Personas() {
               )}
             </>
           )}
-
-          {/* Mobile Hamburger Menu Button */}
-          <button
-            onClick={() => setIsMobileSidePanelOpen(true)}
-            className="md:hidden fixed top-4 left-4 p-3 rounded-lg bg-white border border-gray-200 hover:bg-gray-50 shadow-lg z-50 transition-all"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6 text-black"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4 6h16M4 12h16M4 18h16"
-              />
-            </svg>
-          </button>
         </main>
       </div>
 
