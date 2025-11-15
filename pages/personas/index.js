@@ -296,7 +296,7 @@ export default function Personas() {
                         <button
                           onClick={() => {
                             setIsMobileSidePanelOpen(false)
-                            router.push(`/chat/${chat.personaSlug}`)
+                            router.push(`/chat/${chat.personaSlug}?conversationId=${chat.id}`)
                           }}
                           className="block w-full text-left p-2 rounded-md text-sm text-gray-700 hover:bg-gray-200 truncate transition-colors"
                         >

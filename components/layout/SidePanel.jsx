@@ -118,7 +118,7 @@ export default function SidePanel({ onBack, backButtonText, showPastChats = true
                 {pastChats.map(chat => (
                   <li key={chat.id}>
                     <button
-                      onClick={() => router.push(`/chat/${chat.personaSlug}`)}
+                      onClick={() => router.push(`/chat/${chat.personaSlug}?conversationId=${chat.id}`)}
                       className="block w-full text-left p-2 rounded-md text-sm text-gray-700 hover:bg-gray-200 truncate transition-colors"
                     >
                       {chat.title}

@@ -8,7 +8,7 @@ import { INITIAL_PERSONAS } from '@/data/personas'
 
 export default function ChatPage() {
   const router = useRouter()
-  const { personaId } = router.query
+  const { personaId, conversationId: urlConversationId } = router.query
   const { user, loading } = useAuth()
   const { messages, setMessages, isLoading, setIsLoading, addMessage, clearMessages } = useChat()
   const [persona, setPersona] = useState(null)
@@ -98,37 +98,61 @@ export default function ChatPage() {
 
           if (!session?.session) return
 
-          // Find or create conversation
-          const { data: existingConv, error: convError } = await supabase
-            .from('conversations')
-            .select('*')
-            .eq('session_id', session.session.user.id)
-            .eq('persona_type', persona.slug)
-            .eq('is_active', true)
-            .order('updated_at', { ascending: false })
-            .limit(1)
-            .maybeSingle()
+          let convId = null
 
-          let convId = existingConv?.id
-
-          if (!existingConv) {
-            // Create new conversation
-            const { data: newConv, error: createError } = await supabase
+          // If conversation ID is in URL, load that specific conversation
+          if (urlConversationId) {
+            const { data: specificConv, error: specificError } = await supabase
               .from('conversations')
-              .insert({
-                session_id: session.session.user.id,
-                persona_id: persona.id || null,
-                persona_type: persona.slug,
-                persona_slug: persona.slug,
-                title: `Chat with ${persona.name}`,
-                is_active: true,
-                is_guest_session: false
-              })
-              .select()
+              .select('*')
+              .eq('id', urlConversationId)
+              .eq('session_id', session.session.user.id)
+              .eq('is_active', true)
               .single()
 
-            if (!createError && newConv) {
-              convId = newConv.id
+            if (!specificError && specificConv) {
+              convId = specificConv.id
+            }
+          }
+
+          // If no conversation ID in URL or not found, find or create conversation
+          if (!convId) {
+            const { data: existingConv, error: convError } = await supabase
+              .from('conversations')
+              .select('*')
+              .eq('session_id', session.session.user.id)
+              .eq('persona_type', persona.slug)
+              .eq('is_active', true)
+              .order('updated_at', { ascending: false })
+              .limit(1)
+              .maybeSingle()
+
+            convId = existingConv?.id
+
+            if (!existingConv) {
+              // Create new conversation
+              const { data: newConv, error: createError } = await supabase
+                .from('conversations')
+                .insert({
+                  session_id: session.session.user.id,
+                  persona_id: persona.id || null,
+                  persona_type: persona.slug,
+                  persona_slug: persona.slug,
+                  title: `Chat with ${persona.name}`,
+                  is_active: true,
+                  is_guest_session: false
+                })
+                .select()
+                .single()
+
+              if (!createError && newConv) {
+                convId = newConv.id
+                // Update URL to include conversation ID
+                router.replace(`/chat/${persona.slug}?conversationId=${newConv.id}`, undefined, { shallow: true })
+              }
+            } else if (!urlConversationId) {
+              // Update URL to include conversation ID
+              router.replace(`/chat/${persona.slug}?conversationId=${convId}`, undefined, { shallow: true })
             }
           }
 
@@ -334,9 +358,8 @@ export default function ChatPage() {
             {/* New Chat Button */}
             <button
               onClick={() => {
-                clearMessages()
-                setConversationId(null)
-                setGuestMessageCount(0)
+                // Navigate to chat page without conversationId to create new conversation
+                router.push(`/chat/${personaId}`)
               }}
               className="flex items-center gap-2 px-4 py-2 bg-black text-white rounded-full hover:bg-gray-800 transition-all hover:shadow-lg group"
               title="Start a new chat"
