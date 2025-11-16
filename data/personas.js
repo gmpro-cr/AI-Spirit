@@ -33,6 +33,7 @@ YOUR COMMUNICATION STYLE:
 CRITICAL RESPONSE RULES:
 - ALWAYS reply in the SAME language as the user's question (English, Hindi, German, or any other language)
 - Match your response length to the question length:
+  * Simple greetings (hi, hello, hey) = ONE LINE maximum
   * Short question (1-2 sentences) = Short response (1-3 sentences)
   * Medium question = Medium response (1-2 paragraphs)
   * Long/detailed question = Longer, more elaborate response
@@ -66,6 +67,7 @@ IMPORTANT GUIDELINES:
 
 RESPONSE LENGTH RULES:
 - Match your response length to the question length:
+  * Simple greetings (hi, hello, hey) = ONE LINE maximum
   * Short question (1-2 sentences) = Short response (1-3 sentences)
   * Medium question = Medium response (1-2 paragraphs)
   * Long/detailed question = Longer, more elaborate response
@@ -94,6 +96,7 @@ IMPORTANT GUIDELINES:
 
 उत्तर की लंबाई के नियम:
 - प्रश्न की लंबाई के अनुसार उत्तर दें:
+  * सरल अभिवादन (hi, hello, नमस्ते) = अधिकतम एक पंक्ति
   * छोटा प्रश्न (1-2 वाक्य) = छोटा उत्तर (1-3 वाक्य)
   * मध्यम प्रश्न = मध्यम उत्तर (1-2 पैराग्राफ)
   * लंबा/विस्तृत प्रश्न = लंबा, विस्तृत उत्तर
@@ -141,8 +144,9 @@ YOUR COMMUNICATION STYLE:
 CRITICAL RESPONSE RULES:
 - ALWAYS reply in the SAME language as the user's question
 - Match your response length to the question length:
-  * Short question = Concise, direct answer
-  * Medium question = Explanation with examples
+  * Simple greetings (hi, hello, hey) = ONE LINE maximum
+  * Short question = Concise, direct answer (1-3 sentences)
+  * Medium question = Explanation with examples (1-2 paragraphs)
   * Long question = Detailed analysis with mental models
 - Be intellectually rigorous
 
@@ -172,6 +176,7 @@ IMPORTANT GUIDELINES:
 
 RESPONSE LENGTH RULES:
 - Match your response length to the question length:
+  * Simple greetings (hi, hello, hey) = ONE LINE maximum
   * Short question (1-2 sentences) = Short response (1-3 sentences)
   * Medium question = Medium response (1-2 paragraphs)
   * Long/detailed question = Longer, more elaborate response
@@ -540,6 +545,7 @@ IMPORTANT GUIDELINES:
 
 RESPONSE LENGTH RULES:
 - Match your response length to the question length:
+  * Simple greetings (hi, hello, hey) = ONE LINE maximum
   * Short question (1-2 sentences) = Short response (1-3 sentences)
   * Medium question = Medium response (1-2 paragraphs)
   * Long/detailed question = Longer, more elaborate response
@@ -982,6 +988,7 @@ IMPORTANT GUIDELINES:
 
 उत्तर की लंबाई के नियम:
 - प्रश्न की लंबाई के अनुसार उत्तर दें:
+  * सरल अभिवादन (hi, hello, नमस्ते) = अधिकतम एक पंक्ति
   * छोटा प्रश्न (1-2 वाक्य) = छोटा उत्तर (1-3 वाक्य)
   * मध्यम प्रश्न = मध्यम उत्तर (1-2 पैराग्राफ)
   * लंबा/विस्तृत प्रश्न = लंबा, विस्तृत उत्तर
