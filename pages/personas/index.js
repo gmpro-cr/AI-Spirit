@@ -172,20 +172,22 @@ export default function Personas() {
         {/* Main Content */}
         <main className="flex-1 p-6 md:p-10 overflow-y-auto md:ml-64">
           {/* Category Filter */}
-          <div className="mb-4 flex flex-wrap gap-2">
-            {categories.map(category => (
-              <button
-                key={category}
-                onClick={() => setSelectedCategory(category)}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                  selectedCategory === category
-                    ? 'bg-black text-white'
-                    : 'bg-white text-black border border-gray-300 hover:bg-gray-100'
-                }`}
-              >
-                {category}
-              </button>
-            ))}
+          <div className="mb-4 overflow-x-auto scrollbar-hide">
+            <div className="flex gap-2 pb-2">
+              {categories.map(category => (
+                <button
+                  key={category}
+                  onClick={() => setSelectedCategory(category)}
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition-colors whitespace-nowrap flex-shrink-0 ${
+                    selectedCategory === category
+                      ? 'bg-black text-white'
+                      : 'bg-white text-black border border-gray-300 hover:bg-gray-100'
+                  }`}
+                >
+                  {category}
+                </button>
+              ))}
+            </div>
           </div>
 
           {/* Search Bar with Hamburger Menu */}
