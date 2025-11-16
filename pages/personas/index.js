@@ -138,13 +138,16 @@ export default function Personas() {
   }
 
   // Get unique categories
-  const categories = ['All', ...new Set(personas.map(p => p.category).filter(Boolean))]
+  const categories = ['For You', 'All', ...new Set(personas.map(p => p.category).filter(Boolean))]
 
   useEffect(() => {
     let filtered = personas
 
     // Filter by category
-    if (selectedCategory && selectedCategory !== 'All') {
+    if (selectedCategory === 'For You') {
+      // For You category - no personas for now
+      filtered = []
+    } else if (selectedCategory && selectedCategory !== 'All') {
       filtered = filtered.filter(p => p.category === selectedCategory)
     }
 
