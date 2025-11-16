@@ -62,15 +62,15 @@ export default function PersonaCard({ persona, onEdit, onLikeChange }) {
           {/* Like Button (Heart) */}
           <button
             onClick={handleLike}
-            className="flex-shrink-0 ml-2 hover:scale-110 transition-transform"
+            className="flex-shrink-0 ml-2 p-1.5 border-2 border-black rounded-full hover:scale-110 hover:bg-gray-100 transition-all"
             title={isLiked ? "Unlike persona" : "Like persona"}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5 md:h-6 md:w-6 transition-colors"
+              className="h-4 w-4 md:h-5 md:w-5 transition-colors"
               fill={isLiked ? "red" : "none"}
               viewBox="0 0 24 24"
-              stroke={isLiked ? "red" : "currentColor"}
+              stroke={isLiked ? "red" : "black"}
               strokeWidth={2}
             >
               <path
