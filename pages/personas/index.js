@@ -23,6 +23,7 @@ export default function Personas() {
   const [isMobileSidePanelOpen, setIsMobileSidePanelOpen] = useState(false)
   const [pastChats, setPastChats] = useState([])
   const [loadingPastChats, setLoadingPastChats] = useState(false)
+  const [likedPersonaSlugs, setLikedPersonaSlugs] = useState([])
 
   // Require authentication
   useEffect(() => {
@@ -30,6 +31,15 @@ export default function Personas() {
       router.push('/auth/signin?returnTo=/personas')
     }
   }, [user, loading, router])
+
+  // Load liked personas from localStorage
+  useEffect(() => {
+    const loadLikedPersonas = () => {
+      const liked = JSON.parse(localStorage.getItem('esperit_liked_personas') || '[]')
+      setLikedPersonaSlugs(liked)
+    }
+    loadLikedPersonas()
+  }, [])
 
   useEffect(() => {
     loadAllPersonas()
@@ -137,6 +147,11 @@ export default function Personas() {
     router.push('/')
   }
 
+  const handleLikeChange = () => {
+    const liked = JSON.parse(localStorage.getItem('esperit_liked_personas') || '[]')
+    setLikedPersonaSlugs(liked)
+  }
+
   // Get unique categories
   const categories = ['For You', 'All', ...new Set(personas.map(p => p.category).filter(Boolean))]
 
@@ -145,8 +160,8 @@ export default function Personas() {
 
     // Filter by category
     if (selectedCategory === 'For You') {
-      // For You category - no personas for now
-      filtered = []
+      // For You category - show liked personas
+      filtered = personas.filter(p => likedPersonaSlugs.includes(p.slug))
     } else if (selectedCategory && selectedCategory !== 'All') {
       filtered = filtered.filter(p => p.category === selectedCategory)
     }
@@ -160,7 +175,7 @@ export default function Personas() {
     }
 
     setFilteredPersonas(filtered)
-  }, [searchQuery, selectedCategory, personas])
+  }, [searchQuery, selectedCategory, personas, likedPersonaSlugs])
 
   return (
     <>
@@ -240,6 +255,7 @@ export default function Personas() {
                     key={persona.slug}
                     persona={persona}
                     onEdit={persona.is_custom ? handleEditPersona : undefined}
+                    onLikeChange={handleLikeChange}
                   />
                 ))}
               </div>

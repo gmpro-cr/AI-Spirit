@@ -1,10 +1,41 @@
 import { useRouter } from 'next/router'
+import { useState, useEffect } from 'react'
 
-export default function PersonaCard({ persona, onEdit }) {
+export default function PersonaCard({ persona, onEdit, onLikeChange }) {
   const router = useRouter()
+  const [isLiked, setIsLiked] = useState(false)
+
+  useEffect(() => {
+    // Check if persona is liked from localStorage
+    const likedPersonas = JSON.parse(localStorage.getItem('esperit_liked_personas') || '[]')
+    setIsLiked(likedPersonas.includes(persona.slug))
+  }, [persona.slug])
 
   const handleClick = () => {
     router.push(`/chat/${persona.slug}`)
+  }
+
+  const handleLike = (e) => {
+    e.stopPropagation()
+
+    const likedPersonas = JSON.parse(localStorage.getItem('esperit_liked_personas') || '[]')
+    let newLikedPersonas
+
+    if (isLiked) {
+      // Unlike
+      newLikedPersonas = likedPersonas.filter(slug => slug !== persona.slug)
+    } else {
+      // Like
+      newLikedPersonas = [...likedPersonas, persona.slug]
+    }
+
+    localStorage.setItem('esperit_liked_personas', JSON.stringify(newLikedPersonas))
+    setIsLiked(!isLiked)
+
+    // Notify parent component about the change
+    if (onLikeChange) {
+      onLikeChange()
+    }
   }
 
   return (
@@ -31,6 +62,28 @@ export default function PersonaCard({ persona, onEdit }) {
           {persona.description || persona.bio}
         </p>
       </div>
+
+      {/* Like Button (Heart) */}
+      <button
+        onClick={handleLike}
+        className="absolute top-2 left-2 bg-white/90 hover:bg-white p-2 rounded-full shadow-md transition-all"
+        title={isLiked ? "Unlike persona" : "Like persona"}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-5 w-5 transition-colors"
+          fill={isLiked ? "red" : "none"}
+          viewBox="0 0 24 24"
+          stroke={isLiked ? "red" : "currentColor"}
+          strokeWidth={2}
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+          />
+        </svg>
+      </button>
 
       {/* Edit Button (if custom persona) */}
       {onEdit && (
