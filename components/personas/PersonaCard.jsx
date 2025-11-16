@@ -55,19 +55,19 @@ export default function PersonaCard({ persona, onEdit, onLikeChange }) {
 
       {/* Persona Info */}
       <div className="p-2 md:p-3 bg-white/90">
-        <div className="flex items-center justify-between">
-          <h3 className="text-base md:text-lg font-bold text-black group-hover:text-blue-600 transition-colors flex-1">
+        <div className="flex items-start justify-between gap-2">
+          <h3 className="text-base md:text-lg font-bold text-black group-hover:text-blue-600 transition-colors flex-1 min-w-0">
             {persona.name}
           </h3>
           {/* Like Button (Heart) */}
           <button
             onClick={handleLike}
-            className="flex-shrink-0 ml-2 p-1.5 border-2 border-black rounded-full hover:scale-110 hover:bg-gray-100 transition-all"
+            className="flex-shrink-0 hover:scale-110 transition-transform mt-0.5"
             title={isLiked ? "Unlike persona" : "Like persona"}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4 md:h-5 md:w-5 transition-colors"
+              className="h-5 w-5 md:h-6 md:w-6 transition-colors"
               fill={isLiked ? "red" : "none"}
               viewBox="0 0 24 24"
               stroke={isLiked ? "red" : "black"}
