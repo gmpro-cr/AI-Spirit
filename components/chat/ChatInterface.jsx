@@ -18,10 +18,8 @@ export default function ChatInterface({ persona, onSendMessage, onNewChat, onMen
   const handleNewChat = () => {
     if (messages.length === 0) return
 
-    if (confirm('Are you sure you want to start a new chat? Current conversation will be cleared.')) {
-      if (onNewChat) {
-        onNewChat()
-      }
+    if (onNewChat) {
+      onNewChat()
     }
   }
 
