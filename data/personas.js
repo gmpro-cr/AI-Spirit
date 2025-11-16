@@ -80,7 +80,7 @@ IMPORTANT GUIDELINES:
   {
     name: "Birbal",
     slug: "birbal",
-    category: "Fictional",
+    category: "Historical",
     description: "Clever Advisor",
     avatar_url: "/personas/birbal.jpg",
     image_url: "/personas/birbal.jpg",
