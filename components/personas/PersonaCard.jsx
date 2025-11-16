@@ -55,35 +55,36 @@ export default function PersonaCard({ persona, onEdit, onLikeChange }) {
 
       {/* Persona Info */}
       <div className="p-2 md:p-3 bg-white/90">
-        <h3 className="text-base md:text-lg font-bold text-black group-hover:text-blue-600 transition-colors">
-          {persona.name}
-        </h3>
+        <div className="flex items-center justify-between">
+          <h3 className="text-base md:text-lg font-bold text-black group-hover:text-blue-600 transition-colors flex-1">
+            {persona.name}
+          </h3>
+          {/* Like Button (Heart) */}
+          <button
+            onClick={handleLike}
+            className="flex-shrink-0 ml-2 hover:scale-110 transition-transform"
+            title={isLiked ? "Unlike persona" : "Like persona"}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5 md:h-6 md:w-6 transition-colors"
+              fill={isLiked ? "red" : "none"}
+              viewBox="0 0 24 24"
+              stroke={isLiked ? "red" : "currentColor"}
+              strokeWidth={2}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+              />
+            </svg>
+          </button>
+        </div>
         <p className="text-black text-xs mt-1 line-clamp-1 md:line-clamp-2">
           {persona.description || persona.bio}
         </p>
       </div>
-
-      {/* Like Button (Heart) */}
-      <button
-        onClick={handleLike}
-        className="absolute top-2 left-2 bg-white/90 hover:bg-white p-2 rounded-full shadow-md transition-all"
-        title={isLiked ? "Unlike persona" : "Like persona"}
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-5 w-5 transition-colors"
-          fill={isLiked ? "red" : "none"}
-          viewBox="0 0 24 24"
-          stroke={isLiked ? "red" : "currentColor"}
-          strokeWidth={2}
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-          />
-        </svg>
-      </button>
 
       {/* Edit Button (if custom persona) */}
       {onEdit && (
