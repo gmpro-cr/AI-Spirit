@@ -15,6 +15,7 @@ export default function Personas() {
   const [personas, setPersonas] = useState([])
   const [filteredPersonas, setFilteredPersonas] = useState([])
   const [searchQuery, setSearchQuery] = useState('')
+  const [selectedCategory, setSelectedCategory] = useState('All')
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
   const [personaToEdit, setPersonaToEdit] = useState(null)
@@ -136,9 +137,18 @@ export default function Personas() {
     router.push('/')
   }
 
+  // Get unique categories
+  const categories = ['All', ...new Set(personas.map(p => p.category).filter(Boolean))]
+
   useEffect(() => {
     let filtered = personas
 
+    // Filter by category
+    if (selectedCategory && selectedCategory !== 'All') {
+      filtered = filtered.filter(p => p.category === selectedCategory)
+    }
+
+    // Filter by search query
     if (searchQuery) {
       filtered = filtered.filter(p =>
         p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -147,7 +157,7 @@ export default function Personas() {
     }
 
     setFilteredPersonas(filtered)
-  }, [searchQuery, personas])
+  }, [searchQuery, selectedCategory, personas])
 
   return (
     <>
@@ -161,6 +171,23 @@ export default function Personas() {
 
         {/* Main Content */}
         <main className="flex-1 p-6 md:p-10 overflow-y-auto md:ml-64">
+          {/* Category Filter */}
+          <div className="mb-4 flex flex-wrap gap-2">
+            {categories.map(category => (
+              <button
+                key={category}
+                onClick={() => setSelectedCategory(category)}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                  selectedCategory === category
+                    ? 'bg-black text-white'
+                    : 'bg-white text-black border border-gray-300 hover:bg-gray-100'
+                }`}
+              >
+                {category}
+              </button>
+            ))}
+          </div>
+
           {/* Search Bar with Hamburger Menu */}
           <div className="mb-6 flex items-center gap-3">
             {/* Mobile Hamburger Menu Button */}
