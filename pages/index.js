@@ -162,14 +162,14 @@ export default function Home() {
         </header>
 
         {/* Hero Section */}
-        <main className="flex-1 flex flex-col items-center justify-center px-6 py-8">
+        <main className="flex-1 flex flex-col items-center justify-center px-6 pt-4 pb-8">
           {/* Headline */}
-          <h2 className="text-3xl md:text-5xl lg:text-6xl font-black tracking-tight text-black mb-8 animate-fadeIn">
+          <h2 className="text-3xl md:text-5xl lg:text-6xl font-black tracking-tight text-black mb-6 animate-fadeIn">
             Enter the world of AI Personas
           </h2>
 
           {/* Floating Personas Box */}
-          <div ref={boxRef} className="relative w-full max-w-4xl h-[400px] md:h-[500px] border-4 border-black rounded-2xl overflow-hidden bg-white mb-8 animate-fadeIn" style={{animationDelay: '100ms'}}>
+          <div ref={boxRef} className="relative w-full max-w-4xl h-[400px] md:h-[500px] border-4 border-black rounded-2xl overflow-hidden bg-white mb-6 animate-fadeIn" style={{animationDelay: '100ms'}}>
             {/* Floating Persona Images */}
             {personas.map((persona) => (
               <div
