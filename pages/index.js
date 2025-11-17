@@ -44,9 +44,9 @@ export default function Home() {
       id: index,
       x: Math.random() * 80 + 10, // 10-90% of container width
       y: Math.random() * 80 + 10, // 10-90% of container height
-      vx: (Math.random() - 0.5) * 1.2, // Faster horizontal velocity
-      vy: (Math.random() - 0.5) * 1.2, // Faster vertical velocity
-      size: 50 + Math.random() * 20, // Smaller sizes: 50-70px
+      vx: (Math.random() - 0.5) * 0.7, // Slower horizontal velocity
+      vy: (Math.random() - 0.5) * 0.7, // Slower vertical velocity
+      size: 60, // Same size for all personas
     }))
 
     setPersonas(initialPersonas)
@@ -95,8 +95,8 @@ export default function Home() {
             const dy = p2.y - p1.y
             const distance = Math.sqrt(dx * dx + dy * dy)
 
-            // Calculate minimum distance based on actual sizes (in percentage)
-            const minDistance = ((p1.size + p2.size) / 2 / 600) * 100 // Adjust for box size
+            // Calculate minimum distance based on uniform size (in percentage)
+            const minDistance = (60 / 400) * 100 // 60px persona size relative to ~400px box height
 
             if (distance < minDistance && distance > 0) {
               // Calculate collision normal
@@ -211,7 +211,7 @@ export default function Home() {
                   transform: 'translate(-50%, -50%)',
                 }}
               >
-                <img src={persona.image} alt={persona.name} className="w-full h-full object-cover" />
+                <img src={persona.image} alt={persona.name} className="w-full h-full object-cover object-[center_25%]" />
               </div>
             ))}
 
