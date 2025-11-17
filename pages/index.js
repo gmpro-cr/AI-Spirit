@@ -44,8 +44,8 @@ export default function Home() {
       id: index,
       x: Math.random() * 80 + 10, // 10-90% of container width
       y: Math.random() * 80 + 10, // 10-90% of container height
-      vx: (Math.random() - 0.5) * 0.7, // Slower horizontal velocity
-      vy: (Math.random() - 0.5) * 0.7, // Slower vertical velocity
+      vx: (Math.random() - 0.5) * 0.4, // Even slower horizontal velocity
+      vy: (Math.random() - 0.5) * 0.4, // Even slower vertical velocity
       size: 60, // Same size for all personas
     }))
 
@@ -170,13 +170,13 @@ export default function Home() {
       <div className="min-h-screen bg-white text-black flex flex-col">
         {/* Header */}
         <header className="px-6 md:px-12 py-6 flex justify-between items-center animate-fadeIn relative z-10">
-          <h1 className="text-base md:text-base font-black tracking-tight">
+          <h1 className="text-xl md:text-2xl font-black tracking-tight">
             <span className="italic">AI</span>-Spirit
           </h1>
           <div className="flex items-center gap-3">
             <button
               onClick={() => setIsContactModalOpen(true)}
-              className="px-4 md:px-6 py-2 text-base md:text-base font-semibold hover:opacity-60 transition-opacity min-h-[44px]"
+              className="px-4 md:px-6 py-2 text-xl md:text-2xl font-semibold hover:opacity-60 transition-opacity min-h-[44px]"
             >
               Contact Us
             </button>
