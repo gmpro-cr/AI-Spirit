@@ -28,9 +28,22 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
-      <div className="min-h-screen bg-white text-black flex flex-col">
+      <div className="min-h-screen bg-white text-black flex flex-col relative overflow-hidden">
+        {/* Minimalistic Background Animations */}
+        <div className="absolute inset-0 pointer-events-none">
+          {/* Floating circles */}
+          <div className="absolute top-20 left-10 w-32 h-32 border border-gray-100 rounded-full animate-float opacity-40" />
+          <div className="absolute top-40 right-20 w-24 h-24 border border-gray-100 rounded-full animate-float opacity-30" style={{animationDelay: '1s'}} />
+          <div className="absolute bottom-32 left-1/4 w-40 h-40 border border-gray-100 rounded-full animate-float opacity-20" style={{animationDelay: '2s'}} />
+          <div className="absolute bottom-20 right-1/3 w-20 h-20 border border-gray-100 rounded-full animate-float opacity-25" style={{animationDelay: '3s'}} />
+
+          {/* Gradient orbs */}
+          <div className="absolute top-1/4 right-10 w-64 h-64 bg-gradient-to-br from-gray-50 to-transparent rounded-full blur-3xl opacity-30 animate-pulse" />
+          <div className="absolute bottom-1/4 left-10 w-80 h-80 bg-gradient-to-tr from-gray-50 to-transparent rounded-full blur-3xl opacity-20 animate-pulse" style={{animationDelay: '2s'}} />
+        </div>
+
         {/* Header */}
-        <header className="px-6 md:px-12 py-6 flex justify-between items-center animate-fadeIn">
+        <header className="px-6 md:px-12 py-6 flex justify-between items-center animate-fadeIn relative z-10">
           <h1 className="text-xl md:text-2xl font-black tracking-tight">AI-Spirit</h1>
           <div className="flex items-center gap-3">
             <button
@@ -65,54 +78,17 @@ export default function Home() {
               </p>
             </div>
 
-            {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fadeIn" style={{animationDelay: '200ms'}}>
+            {/* CTA Button */}
+            <div className="flex justify-center animate-fadeIn" style={{animationDelay: '200ms'}}>
               <button
                 onClick={handleStartChatting}
-                className="w-full sm:w-auto px-10 py-4 bg-black text-white text-base font-bold rounded-full hover:scale-105 transition-transform shadow-lg"
+                className="px-10 py-4 bg-black text-white text-base font-bold rounded-full hover:scale-105 transition-transform shadow-lg"
               >
                 Start Chatting →
               </button>
-              <button
-                onClick={() => router.push('/personas')}
-                className="w-full sm:w-auto px-10 py-4 border-2 border-black text-black text-base font-bold rounded-full hover:bg-black hover:text-white transition-colors"
-              >
-                Explore Personas
-              </button>
-            </div>
-
-            {/* Stats */}
-            <div className="grid grid-cols-3 gap-8 pt-8 md:pt-12 animate-fadeIn" style={{animationDelay: '300ms'}}>
-              <div>
-                <div className="text-3xl md:text-5xl font-black mb-1">22+</div>
-                <div className="text-xs md:text-sm text-gray-600 uppercase tracking-wider">Personas</div>
-              </div>
-              <div>
-                <div className="text-3xl md:text-5xl font-black mb-1">6</div>
-                <div className="text-xs md:text-sm text-gray-600 uppercase tracking-wider">Categories</div>
-              </div>
-              <div>
-                <div className="text-3xl md:text-5xl font-black mb-1">∞</div>
-                <div className="text-xs md:text-sm text-gray-600 uppercase tracking-wider">Conversations</div>
-              </div>
             </div>
           </div>
         </main>
-
-        {/* Footer */}
-        <footer className="px-6 md:px-12 py-6 border-t border-gray-200 animate-fadeIn" style={{animationDelay: '400ms'}}>
-          <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-sm">
-            <div className="text-gray-600">© 2025 AI-Spirit</div>
-            <div className="flex gap-6">
-              <button onClick={() => setIsContactModalOpen(true)} className="text-gray-600 hover:text-black transition-colors">
-                Contact
-              </button>
-              <button onClick={() => router.push('/personas')} className="text-gray-600 hover:text-black transition-colors">
-                Personas
-              </button>
-            </div>
-          </div>
-        </footer>
       </div>
 
       {/* Contact Modal */}
