@@ -9,6 +9,16 @@ export default function Home() {
   const { user } = useAuth()
   const [isContactModalOpen, setIsContactModalOpen] = useState(false)
 
+  // Featured personas for floating images
+  const floatingPersonas = [
+    { name: 'Albert Einstein', image: '/personas/albert-einstein.jpg' },
+    { name: 'Swami Vivekananda', image: '/personas/swami-vivekananda.jpg' },
+    { name: 'Buddha', image: '/personas/buddha.jpg' },
+    { name: 'Aman Dhattarwal', image: '/personas/aman-dhattarwal.jpg' },
+    { name: 'Steve Jobs', image: '/personas/steve-jobs.jpg' },
+    { name: 'Jiddu Krishnamurti', image: '/personas/jiddu-krishnamurti.jpg' },
+  ]
+
   const handleStartChatting = () => {
     if (user) {
       router.push('/personas')
@@ -30,16 +40,30 @@ export default function Home() {
 
       <div className="min-h-screen bg-white text-black flex flex-col relative overflow-hidden">
         {/* Minimalistic Background Animations */}
-        <div className="absolute inset-0 pointer-events-none">
-          {/* Floating circles */}
-          <div className="absolute top-20 left-10 w-32 h-32 border-2 border-gray-200 rounded-full animate-float opacity-60" />
-          <div className="absolute top-40 right-20 w-24 h-24 border-2 border-gray-200 rounded-full animate-float opacity-50" style={{animationDelay: '1s'}} />
-          <div className="absolute bottom-32 left-1/4 w-40 h-40 border-2 border-gray-200 rounded-full animate-float opacity-40" style={{animationDelay: '2s'}} />
-          <div className="absolute bottom-20 right-1/3 w-20 h-20 border-2 border-gray-200 rounded-full animate-float opacity-50" style={{animationDelay: '3s'}} />
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          {/* Floating Persona Images */}
+          <div className="absolute top-20 left-[5%] w-16 h-16 md:w-20 md:h-20 rounded-full overflow-hidden border-2 border-gray-200 shadow-lg animate-float opacity-70">
+            <img src="/personas/albert-einstein.jpg" alt="Albert Einstein" className="w-full h-full object-cover" />
+          </div>
+          <div className="absolute top-32 right-[8%] w-14 h-14 md:w-16 md:h-16 rounded-full overflow-hidden border-2 border-gray-200 shadow-lg animate-float opacity-60" style={{animationDelay: '0.5s'}}>
+            <img src="/personas/swami-vivekananda.jpg" alt="Swami Vivekananda" className="w-full h-full object-cover" />
+          </div>
+          <div className="absolute top-[45%] left-[3%] w-12 h-12 md:w-14 md:h-14 rounded-full overflow-hidden border-2 border-gray-200 shadow-lg animate-float opacity-50" style={{animationDelay: '1s'}}>
+            <img src="/personas/buddha.jpg" alt="Buddha" className="w-full h-full object-cover" />
+          </div>
+          <div className="absolute bottom-32 left-[15%] w-16 h-16 md:w-20 md:h-20 rounded-full overflow-hidden border-2 border-gray-200 shadow-lg animate-float opacity-65" style={{animationDelay: '1.5s'}}>
+            <img src="/personas/aman-dhattarwal.jpg" alt="Aman Dhattarwal" className="w-full h-full object-cover" />
+          </div>
+          <div className="absolute bottom-40 right-[12%] w-14 h-14 md:w-18 md:h-18 rounded-full overflow-hidden border-2 border-gray-200 shadow-lg animate-float opacity-60" style={{animationDelay: '2s'}}>
+            <img src="/personas/steve-jobs.jpg" alt="Steve Jobs" className="w-full h-full object-cover" />
+          </div>
+          <div className="absolute top-[55%] right-[5%] w-12 h-12 md:w-16 md:h-16 rounded-full overflow-hidden border-2 border-gray-200 shadow-lg animate-float opacity-55" style={{animationDelay: '2.5s'}}>
+            <img src="/personas/jiddu-krishnamurti.jpg" alt="Jiddu Krishnamurti" className="w-full h-full object-cover" />
+          </div>
 
           {/* Gradient orbs */}
-          <div className="absolute top-1/4 right-10 w-64 h-64 bg-gradient-to-br from-gray-100 to-transparent rounded-full blur-3xl opacity-50 animate-pulse" />
-          <div className="absolute bottom-1/4 left-10 w-80 h-80 bg-gradient-to-tr from-gray-100 to-transparent rounded-full blur-3xl opacity-40 animate-pulse" style={{animationDelay: '2s'}} />
+          <div className="absolute top-1/4 right-10 w-64 h-64 bg-gradient-to-br from-gray-100 to-transparent rounded-full blur-3xl opacity-30 animate-pulse" />
+          <div className="absolute bottom-1/4 left-10 w-80 h-80 bg-gradient-to-tr from-gray-100 to-transparent rounded-full blur-3xl opacity-25 animate-pulse" style={{animationDelay: '2s'}} />
         </div>
 
         {/* Header */}
