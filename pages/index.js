@@ -83,24 +83,25 @@ export default function Home() {
                 'bottom-[45%] left-[35%]'
               ]
               const sizes = [
+                'w-20 h-20 md:w-28 md:h-28',
+                'w-18 h-18 md:w-24 md:h-24',
                 'w-16 h-16 md:w-20 md:h-20',
-                'w-14 h-14 md:w-18 md:h-18',
-                'w-12 h-12 md:w-16 md:h-16',
-                'w-14 h-14 md:w-18 md:h-18',
+                'w-18 h-18 md:w-24 md:h-24',
+                'w-20 h-20 md:w-28 md:h-28',
                 'w-16 h-16 md:w-20 md:h-20',
-                'w-12 h-12 md:w-16 md:h-16',
-                'w-14 h-14 md:w-18 md:h-18',
-                'w-16 h-16 md:w-20 md:h-20',
-                'w-12 h-12 md:w-14 md:h-14',
-                'w-14 h-14 md:w-16 md:h-16'
+                'w-18 h-18 md:w-24 md:h-24',
+                'w-20 h-20 md:w-28 md:h-28',
+                'w-16 h-16 md:w-22 md:h-22',
+                'w-18 h-18 md:w-24 md:h-24'
               ]
-              const opacities = ['opacity-80', 'opacity-70', 'opacity-75', 'opacity-85', 'opacity-80', 'opacity-70', 'opacity-75', 'opacity-85', 'opacity-70', 'opacity-75']
+              const opacities = ['opacity-90', 'opacity-85', 'opacity-80', 'opacity-90', 'opacity-85', 'opacity-80', 'opacity-85', 'opacity-90', 'opacity-80', 'opacity-85']
+              const animations = index % 2 === 0 ? 'animate-moveAround' : 'animate-moveAroundAlt'
 
               return (
                 <div
                   key={index}
-                  className={`absolute ${positions[index]} ${sizes[index]} ${opacities[index]} rounded-full overflow-hidden border-2 border-gray-300 shadow-lg animate-float`}
-                  style={{animationDelay: `${index * 0.3}s`}}
+                  className={`absolute ${positions[index]} ${sizes[index]} ${opacities[index]} rounded-full overflow-hidden border-2 border-gray-300 shadow-lg ${animations}`}
+                  style={{animationDelay: `${index * 0.4}s`}}
                 >
                   <img src={persona.image} alt={persona.name} className="w-full h-full object-cover" />
                 </div>
