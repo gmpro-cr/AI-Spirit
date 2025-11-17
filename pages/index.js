@@ -171,7 +171,7 @@ export default function Home() {
         {/* Header */}
         <header className="px-6 md:px-12 py-6 flex justify-between items-center animate-fadeIn relative z-10">
           <h1 className="text-xl md:text-2xl font-black tracking-tight">
-            <span className="italic">AI</span>-Spirit
+            <span className="italic">AI</span> -Spirit
           </h1>
           <div className="flex items-center gap-3">
             <button
