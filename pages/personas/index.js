@@ -185,7 +185,7 @@ export default function Personas() {
 
       <div className="flex h-screen bg-white">
         {/* Side Panel */}
-        <SidePanelNew onBack={handleBack} backButtonText="Back to Home" />
+        <SidePanelNew onBack={handleBack} backButtonText="Back to Home" showPastChats={false} />
 
         {/* Main Content */}
         <main className="flex-1 p-6 md:p-10 overflow-y-auto md:ml-64">
