@@ -12,7 +12,7 @@ export default function Home() {
   const animationFrameRef = useRef(null)
   const boxRef = useRef(null)
 
-  // Featured personas for floating images (only those with available images)
+  // All available personas for floating images
   const floatingPersonas = [
     { name: 'Albert Einstein', image: '/personas/albert-einstein.jpg' },
     { name: 'Swami Vivekananda', image: '/personas/swami-vivekananda.jpg' },
@@ -24,22 +24,29 @@ export default function Home() {
     { name: 'Socrates', image: '/personas/socrates.jpg' },
     { name: 'J Krishnamurti', image: '/personas/j-krishnamurti.jpg' },
     { name: 'Rabindranath Tagore', image: '/personas/rabindranath-tagore.jpg' },
+    { name: 'Birbal', image: '/personas/birbal.jpg' },
+    { name: 'Charlie Munger', image: '/personas/charlie-munger.jpg' },
+    { name: 'Isaac Newton', image: '/personas/isaac-newton.jpg' },
+    { name: 'Jawaharlal Nehru', image: '/personas/jawaharlal-nehru.jpg' },
+    { name: 'Sardar Patel', image: '/personas/sardar-vallabhbhai-patel.jpg' },
+    { name: 'Shaktiman', image: '/personas/shaktiman.jpg' },
+    { name: 'Shinchan', image: '/personas/shinchan.jpg' },
+    { name: 'Subhas Chandra Bose', image: '/personas/subhas-chandra-bose.jpg' },
+    { name: 'Tenali Raman', image: '/personas/tenali-raman.jpg' },
   ]
 
   // Initialize personas with random positions and velocities
   useEffect(() => {
     if (typeof window === 'undefined') return
 
-    const sizes = [80, 70, 60, 70, 80, 60, 70, 80, 65, 70]
-
     const initialPersonas = floatingPersonas.map((persona, index) => ({
       ...persona,
       id: index,
-      x: Math.random() * 70 + 10, // 10-80% of container width
-      y: Math.random() * 70 + 10, // 10-80% of container height
-      vx: (Math.random() - 0.5) * 0.8, // Faster horizontal velocity
-      vy: (Math.random() - 0.5) * 0.8, // Faster vertical velocity
-      size: sizes[index],
+      x: Math.random() * 80 + 10, // 10-90% of container width
+      y: Math.random() * 80 + 10, // 10-90% of container height
+      vx: (Math.random() - 0.5) * 1.2, // Faster horizontal velocity
+      vy: (Math.random() - 0.5) * 1.2, // Faster vertical velocity
+      size: 50 + Math.random() * 20, // Smaller sizes: 50-70px
     }))
 
     setPersonas(initialPersonas)
@@ -58,14 +65,23 @@ export default function Home() {
           persona.x += persona.vx
           persona.y += persona.vy
 
-          // Bounce off walls
-          if (persona.x <= 0 || persona.x >= 100) {
-            persona.vx *= -1
-            persona.x = Math.max(0, Math.min(100, persona.x))
+          // Bounce off walls with padding
+          const padding = 5
+          if (persona.x <= padding) {
+            persona.x = padding
+            persona.vx = Math.abs(persona.vx)
           }
-          if (persona.y <= 0 || persona.y >= 100) {
-            persona.vy *= -1
-            persona.y = Math.max(0, Math.min(100, persona.y))
+          if (persona.x >= 100 - padding) {
+            persona.x = 100 - padding
+            persona.vx = -Math.abs(persona.vx)
+          }
+          if (persona.y <= padding) {
+            persona.y = padding
+            persona.vy = Math.abs(persona.vy)
+          }
+          if (persona.y >= 100 - padding) {
+            persona.y = 100 - padding
+            persona.vy = -Math.abs(persona.vy)
           }
         })
 
@@ -78,29 +94,41 @@ export default function Home() {
             const dx = p2.x - p1.x
             const dy = p2.y - p1.y
             const distance = Math.sqrt(dx * dx + dy * dy)
-            const minDistance = 12 // Minimum distance to avoid overlap
 
-            if (distance < minDistance) {
-              // Collision detected - swap velocities (simplified elastic collision)
-              const tempVx = p1.vx
-              const tempVy = p1.vy
-              p1.vx = p2.vx
-              p1.vy = p2.vy
-              p2.vx = tempVx
-              p2.vy = tempVy
+            // Calculate minimum distance based on actual sizes (in percentage)
+            const minDistance = ((p1.size + p2.size) / 2 / 600) * 100 // Adjust for box size
 
-              // Add some randomness to prevent getting stuck
-              p1.vx += (Math.random() - 0.5) * 0.2
-              p1.vy += (Math.random() - 0.5) * 0.2
-              p2.vx += (Math.random() - 0.5) * 0.2
-              p2.vy += (Math.random() - 0.5) * 0.2
+            if (distance < minDistance && distance > 0) {
+              // Calculate collision normal
+              const nx = dx / distance
+              const ny = dy / distance
 
-              // Separate the personas to prevent overlap
-              const angle = Math.atan2(dy, dx)
-              const targetX = p1.x + Math.cos(angle) * minDistance
-              const targetY = p1.y + Math.sin(angle) * minDistance
-              p2.x = targetX
-              p2.y = targetY
+              // Relative velocity
+              const dvx = p2.vx - p1.vx
+              const dvy = p2.vy - p1.vy
+
+              // Relative velocity in collision normal direction
+              const dvn = dvx * nx + dvy * ny
+
+              // Only resolve if objects are moving toward each other
+              if (dvn < 0) {
+                // Apply impulse
+                const impulse = dvn
+                p1.vx += impulse * nx
+                p1.vy += impulse * ny
+                p2.vx -= impulse * nx
+                p2.vy -= impulse * ny
+              }
+
+              // Separate overlapping personas
+              const overlap = minDistance - distance
+              const separationX = (overlap / 2) * nx
+              const separationY = (overlap / 2) * ny
+
+              p1.x -= separationX
+              p1.y -= separationY
+              p2.x += separationX
+              p2.y += separationY
             }
           }
         }
@@ -169,12 +197,12 @@ export default function Home() {
           </h2>
 
           {/* Floating Personas Box */}
-          <div ref={boxRef} className="relative w-full max-w-4xl h-[400px] md:h-[500px] border-4 border-black rounded-2xl overflow-hidden bg-white mb-6 animate-fadeIn" style={{animationDelay: '100ms'}}>
+          <div ref={boxRef} className="relative w-full max-w-3xl h-[350px] md:h-[400px] border-4 border-black rounded-2xl overflow-hidden bg-white mb-6 animate-fadeIn" style={{animationDelay: '100ms'}}>
             {/* Floating Persona Images */}
             {personas.map((persona) => (
               <div
                 key={persona.id}
-                className="absolute rounded-full overflow-hidden border-2 border-gray-300 shadow-lg opacity-90 transition-all duration-75 ease-linear"
+                className="absolute rounded-full overflow-hidden border-2 border-gray-300 shadow-lg opacity-90 transition-all duration-0 ease-linear"
                 style={{
                   left: `${persona.x}%`,
                   top: `${persona.y}%`,
