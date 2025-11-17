@@ -9,14 +9,18 @@ export default function Home() {
   const { user } = useAuth()
   const [isContactModalOpen, setIsContactModalOpen] = useState(false)
 
-  // Featured personas for floating images
+  // Featured personas for floating images (only those with available images)
   const floatingPersonas = [
     { name: 'Albert Einstein', image: '/personas/albert-einstein.jpg' },
     { name: 'Swami Vivekananda', image: '/personas/swami-vivekananda.jpg' },
-    { name: 'Buddha', image: '/personas/buddha.jpg' },
-    { name: 'Aman Dhattarwal', image: '/personas/aman-dhattarwal.jpg' },
-    { name: 'Steve Jobs', image: '/personas/steve-jobs.jpg' },
-    { name: 'Jiddu Krishnamurti', image: '/personas/jiddu-krishnamurti.jpg' },
+    { name: 'APJ Abdul Kalam', image: '/personas/apj-abdul-kalam.jpg' },
+    { name: 'Elon Musk', image: '/personas/elon-musk.jpg' },
+    { name: 'Mahatma Gandhi', image: '/personas/mahatma-gandhi.jpg' },
+    { name: 'Osho', image: '/personas/osho.jpg' },
+    { name: 'Ratan Tata', image: '/personas/ratan-tata.jpg' },
+    { name: 'Socrates', image: '/personas/socrates.jpg' },
+    { name: 'J Krishnamurti', image: '/personas/j-krishnamurti.jpg' },
+    { name: 'Rabindranath Tagore', image: '/personas/rabindranath-tagore.jpg' },
   ]
 
   const handleStartChatting = () => {
@@ -42,24 +46,43 @@ export default function Home() {
         {/* Minimalistic Background Animations */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           {/* Floating Persona Images */}
-          <div className="absolute top-20 left-[5%] w-16 h-16 md:w-20 md:h-20 rounded-full overflow-hidden border-2 border-gray-200 shadow-lg animate-float opacity-70">
-            <img src="/personas/albert-einstein.jpg" alt="Albert Einstein" className="w-full h-full object-cover" />
-          </div>
-          <div className="absolute top-32 right-[8%] w-14 h-14 md:w-16 md:h-16 rounded-full overflow-hidden border-2 border-gray-200 shadow-lg animate-float opacity-60" style={{animationDelay: '0.5s'}}>
-            <img src="/personas/swami-vivekananda.jpg" alt="Swami Vivekananda" className="w-full h-full object-cover" />
-          </div>
-          <div className="absolute top-[45%] left-[3%] w-12 h-12 md:w-14 md:h-14 rounded-full overflow-hidden border-2 border-gray-200 shadow-lg animate-float opacity-50" style={{animationDelay: '1s'}}>
-            <img src="/personas/buddha.jpg" alt="Buddha" className="w-full h-full object-cover" />
-          </div>
-          <div className="absolute bottom-32 left-[15%] w-16 h-16 md:w-20 md:h-20 rounded-full overflow-hidden border-2 border-gray-200 shadow-lg animate-float opacity-65" style={{animationDelay: '1.5s'}}>
-            <img src="/personas/aman-dhattarwal.jpg" alt="Aman Dhattarwal" className="w-full h-full object-cover" />
-          </div>
-          <div className="absolute bottom-40 right-[12%] w-14 h-14 md:w-18 md:h-18 rounded-full overflow-hidden border-2 border-gray-200 shadow-lg animate-float opacity-60" style={{animationDelay: '2s'}}>
-            <img src="/personas/steve-jobs.jpg" alt="Steve Jobs" className="w-full h-full object-cover" />
-          </div>
-          <div className="absolute top-[55%] right-[5%] w-12 h-12 md:w-16 md:h-16 rounded-full overflow-hidden border-2 border-gray-200 shadow-lg animate-float opacity-55" style={{animationDelay: '2.5s'}}>
-            <img src="/personas/jiddu-krishnamurti.jpg" alt="Jiddu Krishnamurti" className="w-full h-full object-cover" />
-          </div>
+          {floatingPersonas.map((persona, index) => {
+            const positions = [
+              'top-16 left-[5%]',
+              'top-24 right-[8%]',
+              'top-[35%] left-[3%]',
+              'top-[50%] right-[6%]',
+              'bottom-32 left-[10%]',
+              'bottom-40 right-[15%]',
+              'top-[60%] left-[18%]',
+              'bottom-24 right-[25%]',
+              'top-[40%] right-[20%]',
+              'top-[70%] left-[25%]'
+            ]
+            const sizes = [
+              'w-16 h-16 md:w-20 md:h-20',
+              'w-14 h-14 md:w-18 md:h-18',
+              'w-12 h-12 md:w-16 md:h-16',
+              'w-14 h-14 md:w-18 md:h-18',
+              'w-16 h-16 md:w-20 md:h-20',
+              'w-12 h-12 md:w-16 md:h-16',
+              'w-14 h-14 md:w-18 md:h-18',
+              'w-16 h-16 md:w-20 md:h-20',
+              'w-12 h-12 md:w-14 md:h-14',
+              'w-14 h-14 md:w-16 md:h-16'
+            ]
+            const opacities = ['opacity-70', 'opacity-60', 'opacity-55', 'opacity-65', 'opacity-70', 'opacity-60', 'opacity-55', 'opacity-65', 'opacity-60', 'opacity-55']
+
+            return (
+              <div
+                key={index}
+                className={`absolute ${positions[index]} ${sizes[index]} ${opacities[index]} rounded-full overflow-hidden border-2 border-gray-200 shadow-lg animate-float`}
+                style={{animationDelay: `${index * 0.3}s`}}
+              >
+                <img src={persona.image} alt={persona.name} className="w-full h-full object-cover" />
+              </div>
+            )
+          })}
 
           {/* Gradient orbs */}
           <div className="absolute top-1/4 right-10 w-64 h-64 bg-gradient-to-br from-gray-100 to-transparent rounded-full blur-3xl opacity-30 animate-pulse" />
@@ -88,29 +111,14 @@ export default function Home() {
         </header>
 
         {/* Hero Section */}
-        <main className="flex-1 flex items-center justify-center px-6 py-12 md:py-20">
-          <div className="max-w-4xl mx-auto text-center space-y-8 md:space-y-12">
-            {/* Main Headline */}
-            <div className="space-y-4 animate-fadeIn" style={{animationDelay: '100ms'}}>
-              <h2 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tight leading-none">
-                Chat with
-                <br />
-                Legendary Minds
-              </h2>
-              <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto">
-                22+ AI personas. Spiritual guides, historical figures, philosophers, and scientists.
-              </p>
-            </div>
-
-            {/* CTA Button */}
-            <div className="flex justify-center animate-fadeIn" style={{animationDelay: '200ms'}}>
-              <button
-                onClick={handleStartChatting}
-                className="px-10 py-4 bg-black text-white text-base font-bold rounded-full hover:scale-105 transition-transform shadow-lg"
-              >
-                Start Chatting →
-              </button>
-            </div>
+        <main className="flex-1 flex items-center justify-center px-6">
+          <div className="flex justify-center animate-fadeIn">
+            <button
+              onClick={handleStartChatting}
+              className="px-10 py-4 bg-black text-white text-base md:text-lg font-bold rounded-full hover:scale-105 transition-transform shadow-lg"
+            >
+              Start Chatting →
+            </button>
           </div>
         </main>
       </div>
