@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useAuth } from '@/context/AuthContext'
 import ContactModal from '@/components/ContactModal'
 
@@ -8,6 +8,9 @@ export default function Home() {
   const router = useRouter()
   const { user } = useAuth()
   const [isContactModalOpen, setIsContactModalOpen] = useState(false)
+  const [personas, setPersonas] = useState([])
+  const animationFrameRef = useRef(null)
+  const boxRef = useRef(null)
 
   // Featured personas for floating images (only those with available images)
   const floatingPersonas = [
@@ -22,6 +25,100 @@ export default function Home() {
     { name: 'J Krishnamurti', image: '/personas/j-krishnamurti.jpg' },
     { name: 'Rabindranath Tagore', image: '/personas/rabindranath-tagore.jpg' },
   ]
+
+  // Initialize personas with random positions and velocities
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+
+    const sizes = [80, 70, 60, 70, 80, 60, 70, 80, 65, 70]
+
+    const initialPersonas = floatingPersonas.map((persona, index) => ({
+      ...persona,
+      id: index,
+      x: Math.random() * 70 + 10, // 10-80% of container width
+      y: Math.random() * 70 + 10, // 10-80% of container height
+      vx: (Math.random() - 0.5) * 0.8, // Faster horizontal velocity
+      vy: (Math.random() - 0.5) * 0.8, // Faster vertical velocity
+      size: sizes[index],
+    }))
+
+    setPersonas(initialPersonas)
+  }, [])
+
+  // Animation loop with collision detection
+  useEffect(() => {
+    if (personas.length === 0) return
+
+    const animate = () => {
+      setPersonas(prevPersonas => {
+        const newPersonas = prevPersonas.map(persona => ({ ...persona }))
+
+        // Move each persona
+        newPersonas.forEach(persona => {
+          persona.x += persona.vx
+          persona.y += persona.vy
+
+          // Bounce off walls
+          if (persona.x <= 0 || persona.x >= 100) {
+            persona.vx *= -1
+            persona.x = Math.max(0, Math.min(100, persona.x))
+          }
+          if (persona.y <= 0 || persona.y >= 100) {
+            persona.vy *= -1
+            persona.y = Math.max(0, Math.min(100, persona.y))
+          }
+        })
+
+        // Check for collisions between personas
+        for (let i = 0; i < newPersonas.length; i++) {
+          for (let j = i + 1; j < newPersonas.length; j++) {
+            const p1 = newPersonas[i]
+            const p2 = newPersonas[j]
+
+            const dx = p2.x - p1.x
+            const dy = p2.y - p1.y
+            const distance = Math.sqrt(dx * dx + dy * dy)
+            const minDistance = 12 // Minimum distance to avoid overlap
+
+            if (distance < minDistance) {
+              // Collision detected - swap velocities (simplified elastic collision)
+              const tempVx = p1.vx
+              const tempVy = p1.vy
+              p1.vx = p2.vx
+              p1.vy = p2.vy
+              p2.vx = tempVx
+              p2.vy = tempVy
+
+              // Add some randomness to prevent getting stuck
+              p1.vx += (Math.random() - 0.5) * 0.2
+              p1.vy += (Math.random() - 0.5) * 0.2
+              p2.vx += (Math.random() - 0.5) * 0.2
+              p2.vy += (Math.random() - 0.5) * 0.2
+
+              // Separate the personas to prevent overlap
+              const angle = Math.atan2(dy, dx)
+              const targetX = p1.x + Math.cos(angle) * minDistance
+              const targetY = p1.y + Math.sin(angle) * minDistance
+              p2.x = targetX
+              p2.y = targetY
+            }
+          }
+        }
+
+        return newPersonas
+      })
+
+      animationFrameRef.current = requestAnimationFrame(animate)
+    }
+
+    animationFrameRef.current = requestAnimationFrame(animate)
+
+    return () => {
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current)
+      }
+    }
+  }, [personas.length])
 
   const handleStartChatting = () => {
     if (user) {
@@ -67,46 +164,23 @@ export default function Home() {
         {/* Hero Section */}
         <main className="flex-1 flex flex-col items-center justify-center px-6 py-8">
           {/* Floating Personas Box */}
-          <div className="relative w-full max-w-4xl h-[400px] md:h-[500px] border-4 border-black rounded-2xl overflow-hidden bg-white mb-8 animate-fadeIn">
+          <div ref={boxRef} className="relative w-full max-w-4xl h-[400px] md:h-[500px] border-4 border-black rounded-2xl overflow-hidden bg-white mb-8 animate-fadeIn">
             {/* Floating Persona Images */}
-            {floatingPersonas.map((persona, index) => {
-              const positions = [
-                'top-[10%] left-[8%]',
-                'top-[15%] right-[12%]',
-                'top-[35%] left-[5%]',
-                'top-[50%] right-[8%]',
-                'bottom-[15%] left-[15%]',
-                'bottom-[20%] right-[18%]',
-                'top-[60%] left-[25%]',
-                'bottom-[35%] right-[28%]',
-                'top-[40%] right-[35%]',
-                'bottom-[45%] left-[35%]'
-              ]
-              const sizes = [
-                'w-20 h-20 md:w-28 md:h-28',
-                'w-18 h-18 md:w-24 md:h-24',
-                'w-16 h-16 md:w-20 md:h-20',
-                'w-18 h-18 md:w-24 md:h-24',
-                'w-20 h-20 md:w-28 md:h-28',
-                'w-16 h-16 md:w-20 md:h-20',
-                'w-18 h-18 md:w-24 md:h-24',
-                'w-20 h-20 md:w-28 md:h-28',
-                'w-16 h-16 md:w-22 md:h-22',
-                'w-18 h-18 md:w-24 md:h-24'
-              ]
-              const opacities = ['opacity-90', 'opacity-85', 'opacity-80', 'opacity-90', 'opacity-85', 'opacity-80', 'opacity-85', 'opacity-90', 'opacity-80', 'opacity-85']
-              const animations = index % 2 === 0 ? 'animate-moveAround' : 'animate-moveAroundAlt'
-
-              return (
-                <div
-                  key={index}
-                  className={`absolute ${positions[index]} ${sizes[index]} ${opacities[index]} rounded-full overflow-hidden border-2 border-gray-300 shadow-lg ${animations}`}
-                  style={{animationDelay: `${index * 0.4}s`}}
-                >
-                  <img src={persona.image} alt={persona.name} className="w-full h-full object-cover" />
-                </div>
-              )
-            })}
+            {personas.map((persona) => (
+              <div
+                key={persona.id}
+                className="absolute rounded-full overflow-hidden border-2 border-gray-300 shadow-lg opacity-90 transition-all duration-75 ease-linear"
+                style={{
+                  left: `${persona.x}%`,
+                  top: `${persona.y}%`,
+                  width: `${persona.size}px`,
+                  height: `${persona.size}px`,
+                  transform: 'translate(-50%, -50%)',
+                }}
+              >
+                <img src={persona.image} alt={persona.name} className="w-full h-full object-cover" />
+              </div>
+            ))}
 
             {/* Gradient orbs inside box */}
             <div className="absolute top-1/4 right-[10%] w-48 h-48 bg-gradient-to-br from-gray-100 to-transparent rounded-full blur-3xl opacity-40 animate-pulse pointer-events-none" />
