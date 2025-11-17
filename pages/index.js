@@ -99,7 +99,7 @@ export default function Home() {
                 </span>
               </h2>
               <p className="text-lg md:text-2xl text-gray-600 max-w-3xl mx-auto font-medium">
-                From spiritual leaders to scientists, philosophers to revolutionaries — experience AI-powered conversations with history&apos;s greatest minds.
+                From spiritual leaders to scientists, philosophers to revolutionaries — experience AI-powered conversations with history's greatest minds.
               </p>
             </div>
 
@@ -167,7 +167,7 @@ export default function Home() {
                   💬
                 </div>
                 <blockquote className="text-xl md:text-2xl font-bold mb-4">
-                  &ldquo;Every conversation is a journey through time and wisdom&rdquo;
+                  "Every conversation is a journey through time and wisdom"
                 </blockquote>
                 <p className="text-gray-600">Experience AI-powered dialogues that inspire, educate, and transform.</p>
               </div>
