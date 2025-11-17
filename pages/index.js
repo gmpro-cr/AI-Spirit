@@ -148,7 +148,7 @@ export default function Home() {
               onClick={() => setIsContactModalOpen(true)}
               className="px-4 md:px-6 py-2 text-sm md:text-base font-semibold hover:opacity-60 transition-opacity min-h-[44px]"
             >
-              Contact
+              Contact Us
             </button>
             {!user && (
               <button
