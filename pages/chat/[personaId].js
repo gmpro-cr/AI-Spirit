@@ -73,13 +73,34 @@ export default function ChatPage() {
     loadPersona()
   }, [personaId])
 
-  // Start fresh conversation every time
+  // Load conversation
   useEffect(() => {
     if (!persona) return
 
-    clearMessages()
-    setConversationId(null)
-  }, [persona?.slug])
+    // If conversation ID is in URL, load that conversation
+    if (urlConversationId) {
+      const savedConv = localStorage.getItem(`esperit_conversation_${urlConversationId}`)
+      if (savedConv) {
+        try {
+          const { messages: savedMessages } = JSON.parse(savedConv)
+          setMessages(savedMessages || [])
+          setConversationId(urlConversationId)
+        } catch (error) {
+          console.error('Error loading conversation:', error)
+          clearMessages()
+          setConversationId(null)
+        }
+      } else {
+        // Conversation ID in URL but not found in localStorage
+        clearMessages()
+        setConversationId(null)
+      }
+    } else {
+      // No conversation ID in URL - start fresh
+      clearMessages()
+      setConversationId(null)
+    }
+  }, [persona?.slug, urlConversationId])
 
   // Auto-scroll to bottom
   useEffect(() => {
@@ -127,6 +148,49 @@ export default function ChatPage() {
       // Add AI response
       const aiMessage = { role: 'assistant', content: data.response }
       addMessage(aiMessage)
+
+      // Save conversation to localStorage
+      let convId = conversationId
+      if (!convId) {
+        // Create new conversation ID
+        convId = `conv_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+        setConversationId(convId)
+        // Update URL with conversation ID
+        router.replace(`/chat/${personaId}?conversationId=${convId}`, undefined, { shallow: true })
+      }
+
+      const allMessages = [...messages, userMessage, aiMessage]
+
+      // Save conversation
+      localStorage.setItem(`esperit_conversation_${convId}`, JSON.stringify({
+        id: convId,
+        personaSlug: persona.slug,
+        personaName: persona.name,
+        messages: allMessages,
+        updatedAt: new Date().toISOString()
+      }))
+
+      // Update conversations list
+      const conversationsList = JSON.parse(localStorage.getItem('esperit_conversations') || '[]')
+      const existingIndex = conversationsList.findIndex(c => c.id === convId)
+      const conversationMeta = {
+        id: convId,
+        personaSlug: persona.slug,
+        personaName: persona.name,
+        title: `Chat with ${persona.name}`,
+        updatedAt: new Date().toISOString()
+      }
+
+      if (existingIndex >= 0) {
+        conversationsList[existingIndex] = conversationMeta
+      } else {
+        conversationsList.unshift(conversationMeta)
+      }
+
+      // Keep only last 50 conversations
+      const trimmedList = conversationsList.slice(0, 50)
+      localStorage.setItem('esperit_conversations', JSON.stringify(trimmedList))
+
     } catch (error) {
       console.error('Error sending message:', error)
       const errorMessage = { role: 'assistant', content: "Sorry, something went wrong. Please try again." }
@@ -198,8 +262,7 @@ export default function ChatPage() {
                     // Clear current conversation
                     clearMessages()
                     setConversationId(null)
-                    setGuestMessageCount(0)
-                    
+
                     // Remove conversationId from URL
                     router.replace(`/chat/${personaId}`, undefined, { shallow: true })
                   }
