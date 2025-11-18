@@ -176,7 +176,7 @@ export default function Home() {
         {/* Hero Section */}
         <main className="flex-1 flex flex-col items-center justify-center px-6 pt-4 pb-8">
           {/* Headline */}
-          <h2 className="text-3xl md:text-5xl lg:text-6xl font-black tracking-tight text-black mb-6 animate-fadeIn">
+          <h2 className="text-xl md:text-5xl lg:text-6xl font-black tracking-tight text-black mb-6 animate-fadeIn">
             Enter the world of AI Personas
           </h2>
 
