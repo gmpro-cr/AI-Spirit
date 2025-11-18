@@ -281,15 +281,25 @@ export default function Personas() {
               <div className="mt-auto border-t border-gray-300 pt-4">
                 <button
                   onClick={async () => {
-                    const { supabase } = await import('@/lib/supabase')
-                    const { error } = await supabase.auth.signInWithOAuth({
-                      provider: 'google',
-                      options: {
-                        redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/auth/callback?returnTo=/personas`
+                    try {
+                      console.log('Initiating Google sign-in from mobile...')
+                      const { supabase } = await import('@/lib/supabase')
+                      const { data, error } = await supabase.auth.signInWithOAuth({
+                        provider: 'google',
+                        options: {
+                          redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/auth/callback?returnTo=/personas`
+                        }
+                      })
+                      console.log('OAuth response:', { data, error })
+                      if (error) {
+                        console.error('Error signing in:', error)
+                        alert('Sign-in error: ' + error.message)
+                      } else {
+                        console.log('OAuth initiated successfully')
                       }
-                    })
-                    if (error) {
-                      console.error('Error signing in:', error)
+                    } catch (err) {
+                      console.error('Unexpected error during sign-in:', err)
+                      alert('Unexpected error: ' + err.message)
                     }
                   }}
                   className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-white border-2 border-black rounded-lg hover:bg-gray-50 transition-colors"

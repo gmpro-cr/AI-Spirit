@@ -27,14 +27,28 @@ export default function SidePanel({ onBack, backButtonText, showPastChats = true
   }, [showPastChats])
 
   const handleGoogleSignIn = async () => {
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/auth/callback?returnTo=/personas`
+    try {
+      console.log('Initiating Google sign-in...')
+      console.log('Redirect URL:', `${process.env.NEXT_PUBLIC_APP_URL}/auth/callback?returnTo=/personas`)
+
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/auth/callback?returnTo=/personas`
+        }
+      })
+
+      console.log('OAuth response:', { data, error })
+
+      if (error) {
+        console.error('Error signing in:', error)
+        alert('Sign-in error: ' + error.message)
+      } else {
+        console.log('OAuth initiated successfully')
       }
-    })
-    if (error) {
-      console.error('Error signing in:', error)
+    } catch (err) {
+      console.error('Unexpected error during sign-in:', err)
+      alert('Unexpected error: ' + err.message)
     }
   }
 
