@@ -12,7 +12,6 @@ export default function ChatPage() {
   const { messages, setMessages, isLoading, setIsLoading, addMessage, clearMessages } = useChat()
   const [persona, setPersona] = useState(null)
   const [currentInput, setCurrentInput] = useState('')
-  const [guestMessageCount, setGuestMessageCount] = useState(0)
   const [conversationId, setConversationId] = useState(null)
   const chatContainerRef = useRef(null)
 
@@ -74,29 +73,12 @@ export default function ChatPage() {
     loadPersona()
   }, [personaId])
 
-  // Load or create conversation and messages
+  // Start fresh conversation every time
   useEffect(() => {
-    const loadConversation = async () => {
-      if (!persona) return
+    if (!persona) return
 
-      clearMessages()
-      setGuestMessageCount(0)
-      setConversationId(null)
-
-      // Load from localStorage
-      const guestData = localStorage.getItem(`esperit_guest_${persona.slug}`)
-      if (guestData) {
-        try {
-          const { messages: savedMessages, count } = JSON.parse(guestData)
-          setMessages(savedMessages || [])
-          setGuestMessageCount(count || 0)
-        } catch (error) {
-          console.error('Error loading data:', error)
-        }
-      }
-    }
-
-    loadConversation()
+    clearMessages()
+    setConversationId(null)
   }, [persona?.slug])
 
   // Auto-scroll to bottom
@@ -145,17 +127,6 @@ export default function ChatPage() {
       // Add AI response
       const aiMessage = { role: 'assistant', content: data.response }
       addMessage(aiMessage)
-
-      // Save to localStorage
-      const newCount = guestMessageCount + 1
-      setGuestMessageCount(newCount)
-      localStorage.setItem(
-        `esperit_guest_${persona.slug}`,
-        JSON.stringify({
-          messages: [...messages, userMessage, aiMessage],
-          count: newCount,
-        })
-      )
     } catch (error) {
       console.error('Error sending message:', error)
       const errorMessage = { role: 'assistant', content: "Sorry, something went wrong. Please try again." }
