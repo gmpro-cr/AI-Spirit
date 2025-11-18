@@ -1,82 +1,17 @@
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
-import { useAuth } from '@/context/AuthContext'
 import { supabase } from '@/lib/supabase'
 
 export default function SidePanel({ onBack, backButtonText, showPastChats = true }) {
   const router = useRouter()
-  const { user } = useAuth()
   const [pastChats, setPastChats] = useState([])
   const [loading, setLoading] = useState(true)
 
-  const handleSignOut = async () => {
-    await supabase.auth.signOut()
-    router.push('/')
-  }
-
-  // Load past chats
+  // Since we removed authentication, past chats are not available
   useEffect(() => {
-    const loadPastChats = async () => {
-      console.log('[SidePanel] loadPastChats called')
-      console.log('[SidePanel] user exists:', !!user, 'showPastChats:', showPastChats)
-
-      if (!user || !showPastChats) {
-        console.log('[SidePanel] Exiting early - no user or showPastChats=false')
-        setPastChats([])
-        setLoading(false)
-        return
-      }
-
-      try {
-        console.log('[SidePanel] Getting session...')
-        const { data: session } = await supabase.auth.getSession()
-        if (!session?.session) {
-          console.log('[SidePanel] No active session for loading chats')
-          setLoading(false)
-          return
-        }
-
-        const userId = session.session.user.id
-        console.log('[SidePanel] Loading chats for user:', userId)
-
-        const { data, error } = await supabase
-          .from('conversations')
-          .select('*')
-          .eq('session_id', userId)
-          .eq('is_active', true)
-          .order('updated_at', { ascending: false })
-          .limit(10)
-
-        console.log('[SidePanel] Query result - error:', error, 'data length:', data?.length)
-        console.log('[SidePanel] Query result data:', JSON.stringify(data, null, 2))
-
-        if (error) {
-          console.error('[SidePanel] Error fetching conversations:', error)
-        } else {
-          console.log('[SidePanel] Loaded conversations:', data)
-          if (data && data.length > 0) {
-            const chats = data.map(conv => ({
-              id: conv.id,
-              title: conv.title,
-              personaSlug: conv.persona_slug || conv.persona_type,
-              updatedAt: conv.updated_at
-            }))
-            console.log('[SidePanel] Mapped past chats:', chats)
-            setPastChats(chats)
-          } else {
-            console.log('[SidePanel] No conversations found for this user')
-            setPastChats([])
-          }
-        }
-      } catch (error) {
-        console.error('Error loading past chats:', error)
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    loadPastChats()
-  }, [user, showPastChats])
+    setPastChats([])
+    setLoading(false)
+  }, [showPastChats])
 
   return (
     <aside className="w-64 bg-gray-50 border-r border-gray-200 p-4 flex-col justify-between hidden md:flex h-screen fixed left-0 top-0">
@@ -131,49 +66,6 @@ export default function SidePanel({ onBack, backButtonText, showPastChats = true
             )}
           </div>
         )}
-      </div>
-
-      {/* User Account Section */}
-      <div>
-        <div className="border-t border-gray-200 pt-4">
-          <div className="flex items-center">
-            {/* User Avatar - show Google photo if available */}
-            {user?.user_metadata?.avatar_url ? (
-              <img
-                src={user.user_metadata.avatar_url}
-                alt={user.user_metadata.full_name || user.email}
-                className="w-10 h-10 rounded-full object-cover"
-                onError={(e) => {
-                  // Fallback to initials if image fails to load
-                  e.target.style.display = 'none'
-                  e.target.nextSibling.style.display = 'flex'
-                }}
-              />
-            ) : null}
-            <div
-              className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center font-bold text-gray-700"
-              style={{ display: user?.user_metadata?.avatar_url ? 'none' : 'flex' }}
-            >
-              {user?.user_metadata?.full_name?.[0]?.toUpperCase() ||
-               user?.user_metadata?.name?.[0]?.toUpperCase() ||
-               user?.email?.[0]?.toUpperCase() || 'U'}
-            </div>
-            <div className="ml-3 flex-1 min-w-0">
-              {/* Display name instead of email */}
-              <p className="font-semibold text-sm truncate text-black">
-                {user?.user_metadata?.full_name ||
-                 user?.user_metadata?.name ||
-                 user?.email || 'User'}
-              </p>
-              <button
-                onClick={handleSignOut}
-                className="text-xs text-gray-500 hover:text-gray-700 transition-colors"
-              >
-                Sign out
-              </button>
-            </div>
-          </div>
-        </div>
       </div>
     </aside>
   )

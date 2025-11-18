@@ -1,12 +1,10 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useState, useEffect, useRef } from 'react'
-import { useAuth } from '@/context/AuthContext'
 import ContactModal from '@/components/ContactModal'
 
 export default function Home() {
   const router = useRouter()
-  const { user } = useAuth()
   const [isContactModalOpen, setIsContactModalOpen] = useState(false)
   const [personas, setPersonas] = useState([])
   const animationFrameRef = useRef(null)
@@ -149,15 +147,7 @@ export default function Home() {
   }, [personas.length])
 
   const handleStartChatting = () => {
-    if (user) {
-      router.push('/personas')
-    } else {
-      router.push('/auth/signin?returnTo=/personas')
-    }
-  }
-
-  const handleSignIn = () => {
-    router.push('/auth/signin')
+    router.push('/personas')
   }
 
   return (

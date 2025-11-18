@@ -87,8 +87,6 @@ export default async function handler(req, res) {
     let persona
     if (personaObj) {
       // Use persona object directly (for INITIAL_PERSONAS)
-      console.log('[DEBUG] Received persona object keys:', Object.keys(personaObj))
-      console.log('[DEBUG] Has system_prompt:', !!personaObj.system_prompt)
       persona = personaObj
     } else {
       // Query database (for custom personas)

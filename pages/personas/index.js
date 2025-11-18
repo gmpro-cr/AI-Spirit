@@ -6,11 +6,9 @@ import PersonaCardNew from '@/components/personas/PersonaCard'
 import CreatePersonaModal from '@/components/personas/CreatePersonaModal'
 import EditPersonaModal from '@/components/personas/EditPersonaModal'
 import { INITIAL_PERSONAS } from '@/data/personas'
-import { useAuth } from '@/context/AuthContext'
 import { supabase } from '@/lib/supabase'
 
 export default function Personas() {
-  const { user, loading } = useAuth()
   const router = useRouter()
   const [personas, setPersonas] = useState([])
   const [filteredPersonas, setFilteredPersonas] = useState([])
@@ -25,13 +23,6 @@ export default function Personas() {
   const [loadingPastChats, setLoadingPastChats] = useState(false)
   const [likedPersonaSlugs, setLikedPersonaSlugs] = useState([])
 
-  // Require authentication
-  useEffect(() => {
-    if (!loading && !user) {
-      router.push('/auth/signin?returnTo=/personas')
-    }
-  }, [user, loading, router])
-
   // Load liked personas from localStorage
   useEffect(() => {
     const loadLikedPersonas = () => {
@@ -43,51 +34,7 @@ export default function Personas() {
 
   useEffect(() => {
     loadAllPersonas()
-  }, [user])
-
-  // Load past chats for mobile side panel
-  useEffect(() => {
-    const loadPastChats = async () => {
-      if (!user) {
-        setPastChats([])
-        return
-      }
-
-      setLoadingPastChats(true)
-      try {
-        const { data: session } = await supabase.auth.getSession()
-        if (!session?.session) {
-          setLoadingPastChats(false)
-          return
-        }
-
-        const userId = session.session.user.id
-        const { data, error } = await supabase
-          .from('conversations')
-          .select('*')
-          .eq('session_id', userId)
-          .eq('is_active', true)
-          .order('updated_at', { ascending: false })
-          .limit(10)
-
-        if (!error && data) {
-          const chats = data.map(conv => ({
-            id: conv.id,
-            title: conv.title,
-            personaSlug: conv.persona_slug || conv.persona_type,
-            updatedAt: conv.updated_at
-          }))
-          setPastChats(chats)
-        }
-      } catch (error) {
-        console.error('Error loading past chats:', error)
-      } finally {
-        setLoadingPastChats(false)
-      }
-    }
-
-    loadPastChats()
-  }, [user])
+  }, [])
 
   // Check for ?create=true query parameter
   useEffect(() => {
@@ -357,42 +304,6 @@ export default function Personas() {
                   <p className="text-sm text-gray-500">No past chats yet</p>
                 )}
               </div>
-
-              {/* User Account Section */}
-              {user && (
-                <div className="border-t border-gray-200 pt-4 mt-4">
-                  <div className="flex items-center">
-                    {user?.user_metadata?.avatar_url ? (
-                      <img
-                        src={user.user_metadata.avatar_url}
-                        alt={user.user_metadata.full_name || user.email}
-                        className="w-10 h-10 rounded-full object-cover"
-                      />
-                    ) : (
-                      <div className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center font-bold text-gray-700">
-                        {user?.user_metadata?.full_name?.[0]?.toUpperCase() ||
-                         user?.email?.[0]?.toUpperCase() || 'U'}
-                      </div>
-                    )}
-                    <div className="ml-3 flex-1 min-w-0">
-                      <p className="font-semibold text-sm truncate text-black">
-                        {user?.user_metadata?.full_name ||
-                         user?.user_metadata?.name ||
-                         user?.email || 'User'}
-                      </p>
-                      <button
-                        onClick={async () => {
-                          await supabase.auth.signOut()
-                          router.push('/')
-                        }}
-                        className="text-xs text-gray-500 hover:text-gray-700 transition-colors"
-                      >
-                        Sign out
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              )}
             </div>
           </div>
         </>

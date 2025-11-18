@@ -3,14 +3,12 @@ import { useState, useEffect, useRef } from 'react'
 import Head from 'next/head'
 import DOMPurify from 'isomorphic-dompurify'
 import SidePanelNew from '@/components/layout/SidePanel'
-import { useAuth } from '@/context/AuthContext'
 import { useChat } from '@/context/ChatContext'
 import { INITIAL_PERSONAS } from '@/data/personas'
 
 export default function ChatPage() {
   const router = useRouter()
   const { personaId, conversationId: urlConversationId } = router.query
-  const { user, loading } = useAuth()
   const { messages, setMessages, isLoading, setIsLoading, addMessage, clearMessages } = useChat()
   const [persona, setPersona] = useState(null)
   const [currentInput, setCurrentInput] = useState('')
@@ -25,13 +23,6 @@ export default function ChatPage() {
   // Sanitize HTML to prevent XSS attacks
   return DOMPurify.sanitize(formatted)
 }
-
-  // Require authentication
-  useEffect(() => {
-    if (!loading && !user && personaId) {
-      router.push(`/auth/signin?returnTo=/chat/${personaId}`)
-    }
-  }, [user, loading, personaId, router])
 
   // Load persona
   useEffect(() => {
@@ -81,7 +72,7 @@ export default function ChatPage() {
     }
 
     loadPersona()
-  }, [personaId, user])
+  }, [personaId])
 
   // Load or create conversation and messages
   useEffect(() => {
@@ -92,110 +83,21 @@ export default function ChatPage() {
       setGuestMessageCount(0)
       setConversationId(null)
 
-      if (user) {
-        // Authenticated user - load from database
+      // Load from localStorage
+      const guestData = localStorage.getItem(`esperit_guest_${persona.slug}`)
+      if (guestData) {
         try {
-          const { supabase } = await import('@/lib/supabase')
-          const { data: session } = await supabase.auth.getSession()
-
-          if (!session?.session) return
-
-          let convId = null
-
-          // If conversation ID is in URL, load that specific conversation
-          if (urlConversationId) {
-            const { data: specificConv, error: specificError } = await supabase
-              .from('conversations')
-              .select('*')
-              .eq('id', urlConversationId)
-              .eq('session_id', session.session.user.id)
-              .eq('is_active', true)
-              .single()
-
-            if (!specificError && specificConv) {
-              convId = specificConv.id
-            }
-          }
-
-          // If no conversation ID in URL or not found, find or create conversation
-          if (!convId) {
-            const { data: existingConv, error: convError } = await supabase
-              .from('conversations')
-              .select('*')
-              .eq('session_id', session.session.user.id)
-              .eq('persona_type', persona.slug)
-              .eq('is_active', true)
-              .order('updated_at', { ascending: false })
-              .limit(1)
-              .maybeSingle()
-
-            convId = existingConv?.id
-
-            if (!existingConv) {
-              // Create new conversation
-              const { data: newConv, error: createError } = await supabase
-                .from('conversations')
-                .insert({
-                  session_id: session.session.user.id,
-                  persona_id: persona.id || null,
-                  persona_type: persona.slug,
-                  persona_slug: persona.slug,
-                  title: `Chat with ${persona.name}`,
-                  is_active: true,
-                  is_guest_session: false
-                })
-                .select()
-                .single()
-
-              if (!createError && newConv) {
-                convId = newConv.id
-                // Update URL to include conversation ID
-                router.replace(`/chat/${persona.slug}?conversationId=${newConv.id}`, undefined, { shallow: true })
-              }
-            } else if (!urlConversationId) {
-              // Update URL to include conversation ID
-              router.replace(`/chat/${persona.slug}?conversationId=${convId}`, undefined, { shallow: true })
-            }
-          }
-
-          if (convId) {
-            setConversationId(convId)
-
-            // Load messages
-            const { data: msgs, error: msgsError } = await supabase
-              .from('messages')
-              .select('*')
-              .eq('conversation_id', convId)
-              .eq('is_deleted', false)
-              .order('created_at', { ascending: true })
-
-            if (!msgsError && msgs) {
-              setMessages(msgs.map(m => ({
-                role: m.role,
-                content: m.content
-              })))
-            }
-          }
+          const { messages: savedMessages, count } = JSON.parse(guestData)
+          setMessages(savedMessages || [])
+          setGuestMessageCount(count || 0)
         } catch (error) {
-          console.error('Error loading conversation:', error)
-        }
-      } else {
-        // Guest user - load from localStorage
-        const guestData = localStorage.getItem(`esperit_guest_${persona.slug}`)
-        if (guestData) {
-          try {
-            const { messages: savedMessages, count } = JSON.parse(guestData)
-            setMessages(savedMessages || [])
-            setGuestMessageCount(count || 0)
-          } catch (error) {
-            console.error('Error loading guest data:', error)
-          }
+          console.error('Error loading data:', error)
         }
       }
     }
 
     loadConversation()
-  }, [persona?.slug, user])
+  }, [persona?.slug])
 
   // Auto-scroll to bottom
   useEffect(() => {
@@ -214,13 +116,6 @@ export default function ChatPage() {
 
     const messageText = currentInput.trim()
 
-    // Guest limit check
-    if (!user && guestMessageCount >= 10) {
-      alert('Guest limit reached! Sign up to continue chatting.')
-      router.push('/auth/signin')
-      return
-    }
-
     // Add user message
     const userMessage = { role: 'user', content: messageText }
     addMessage(userMessage)
@@ -237,7 +132,7 @@ export default function ChatPage() {
           message: messageText,
           conversationHistory: [...messages, userMessage],
           conversationId: conversationId,
-          isGuest: !user,
+          isGuest: true,
         }),
       })
 
@@ -251,49 +146,16 @@ export default function ChatPage() {
       const aiMessage = { role: 'assistant', content: data.response }
       addMessage(aiMessage)
 
-      // Save to database or localStorage
-      if (user && conversationId) {
-        // Authenticated user - save to database
-        try {
-          const { supabase } = await import('@/lib/supabase')
-
-          // Save both messages
-          await supabase.from('messages').insert([
-            {
-              conversation_id: conversationId,
-              role: 'user',
-              content: messageText
-            },
-            {
-              conversation_id: conversationId,
-              role: 'assistant',
-              content: data.response
-            }
-          ])
-
-          // Update conversation
-          await supabase
-            .from('conversations')
-            .update({
-              updated_at: new Date().toISOString(),
-              message_count: messages.length + 2
-            })
-            .eq('id', conversationId)
-        } catch (error) {
-          console.error('Error saving to database:', error)
-        }
-      } else if (!user) {
-        // Guest user - save to localStorage
-        const newCount = guestMessageCount + 1
-        setGuestMessageCount(newCount)
-        localStorage.setItem(
-          `esperit_guest_${persona.slug}`,
-          JSON.stringify({
-            messages: [...messages, userMessage, aiMessage],
-            count: newCount,
-          })
-        )
-      }
+      // Save to localStorage
+      const newCount = guestMessageCount + 1
+      setGuestMessageCount(newCount)
+      localStorage.setItem(
+        `esperit_guest_${persona.slug}`,
+        JSON.stringify({
+          messages: [...messages, userMessage, aiMessage],
+          count: newCount,
+        })
+      )
     } catch (error) {
       console.error('Error sending message:', error)
       const errorMessage = { role: 'assistant', content: "Sorry, something went wrong. Please try again." }
@@ -448,7 +310,7 @@ export default function ChatPage() {
                 </div>
                 {msg.role === 'user' && (
                   <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center font-bold">
-                    {user?.email?.[0]?.toUpperCase() || 'U'}
+                    U
                   </div>
                 )}
               </div>
@@ -521,12 +383,6 @@ export default function ChatPage() {
               These are AI generated responses and not from real person
             </div>
 
-            {/* Guest message counter */}
-            {!user && (
-              <div className="text-center text-xs text-black mt-2">
-                Guest mode: {guestMessageCount}/10 messages used
-              </div>
-            )}
           </footer>
         </div>
       </div>
