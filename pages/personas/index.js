@@ -130,7 +130,7 @@ export default function Personas() {
 
       <div className="flex h-screen bg-white">
         {/* Side Panel */}
-        <SidePanelNew onBack={handleBack} backButtonText="Back to Home" showPastChats={false} />
+        <SidePanelNew onBack={handleBack} backButtonText="Back to Home" showPastChats={true} />
 
         {/* Main Content */}
         <main className="flex-1 p-6 md:p-10 overflow-y-auto md:ml-64">
@@ -251,9 +251,30 @@ export default function Personas() {
                   </svg>
                 </button>
 
-                {/* Past Chats Header */}
+                {/* Past Chats Section */}
                 <h2 className="text-lg font-semibold mb-4 text-black">Past Chats</h2>
-                <p className="text-sm text-gray-500">No past chats yet</p>
+                {(() => {
+                  const conversationsList = JSON.parse(localStorage.getItem('esperit_conversations') || '[]')
+                  return conversationsList.length > 0 ? (
+                    <ul className="space-y-2">
+                      {conversationsList.map(chat => (
+                        <li key={chat.id}>
+                          <button
+                            onClick={() => {
+                              setIsMobileSidePanelOpen(false)
+                              router.push(`/chat/${chat.personaSlug}?conversationId=${chat.id}`)
+                            }}
+                            className="block w-full text-left p-2 rounded-md text-sm text-gray-700 hover:bg-gray-200 truncate transition-colors"
+                          >
+                            {chat.title}
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="text-sm text-gray-500">No past chats yet</p>
+                  )
+                })()}
               </div>
 
               {/* Back to Home Button */}
