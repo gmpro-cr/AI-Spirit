@@ -21,6 +21,17 @@ export default function Personas() {
   const [isMobileSidePanelOpen, setIsMobileSidePanelOpen] = useState(false)
   const [likedPersonaSlugs, setLikedPersonaSlugs] = useState([])
 
+  // Default featured personas for "For You" section
+  const FEATURED_PERSONAS = [
+    'life-coach',
+    'career-mentor',
+    'travel-guide',
+    'fitness-coach',
+    'money-manager',
+    'venting-buddy',
+    'astro-guide'
+  ]
+
   // Load liked personas from localStorage
   useEffect(() => {
     const loadLikedPersonas = () => {
@@ -105,8 +116,10 @@ export default function Personas() {
 
     // Filter by category
     if (selectedCategory === 'For You') {
-      // For You category - show liked personas
-      filtered = personas.filter(p => likedPersonaSlugs.includes(p.slug))
+      // For You category - show featured personas + liked personas
+      filtered = personas.filter(p =>
+        FEATURED_PERSONAS.includes(p.slug) || likedPersonaSlugs.includes(p.slug)
+      )
     } else if (selectedCategory && selectedCategory !== 'All') {
       filtered = filtered.filter(p => p.category === selectedCategory)
     }
