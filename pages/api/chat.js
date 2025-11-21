@@ -2,7 +2,8 @@ import { supabaseAdmin } from '@/lib/supabase'
 import { generatePersonaResponse } from '@/lib/gemini'
 import { generateGroqResponse } from '@/lib/groq'
 import { moderateContent } from '@/lib/moderation'
-import { chatRateLimiter, getClientIdentifier } from '@/lib/rate-limit'
+// Rate limiting disabled for now - will enable when userbase grows
+// import { chatRateLimiter, getClientIdentifier } from '@/lib/rate-limit'
 import { logApiCall, checkCostThreshold } from '@/lib/cost-tracking'
 
 // List of alive personas (use Gemini API)
@@ -27,24 +28,7 @@ export default async function handler(req, res) {
   try {
     const { conversationId, personaId, persona: personaObj, message, conversationHistory, isGuest } = req.body
 
-    // Get session for rate limiting
-    const { data: { session } } = await supabaseAdmin.auth.getSession()
-    const clientId = getClientIdentifier(req, session)
-
-    // Rate limiting check
-    const rateLimitResult = chatRateLimiter.check(clientId)
-    if (!rateLimitResult.allowed) {
-      return res.status(429).json({
-        error: `Too many requests. Please try again in ${rateLimitResult.retryAfter} seconds.`,
-        retryAfter: rateLimitResult.retryAfter,
-        remaining: 0
-      })
-    }
-
-    // Add rate limit headers
-    res.setHeader('X-RateLimit-Limit', '10')
-    res.setHeader('X-RateLimit-Remaining', rateLimitResult.remaining.toString())
-    res.setHeader('X-RateLimit-Reset', new Date(rateLimitResult.resetTime).toISOString())
+    // Rate limiting disabled - will enable when userbase grows
 
     // Validate input - basic checks
     if (!message || (!personaId && !personaObj)) {
