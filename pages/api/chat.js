@@ -140,7 +140,7 @@ export default async function handler(req, res) {
     // Log API call for cost tracking
     logApiCall({
       conversationId,
-      userId: session?.user?.id || 'guest',
+      userId: 'guest',
       input: messageHistory.map(m => m.content).join('\n'),
       output: result.response,
       inputTokens: result.metadata?.inputTokens,
