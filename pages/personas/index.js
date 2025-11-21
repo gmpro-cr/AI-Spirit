@@ -28,7 +28,6 @@ export default function Personas() {
     'travel-guide',
     'fitness-coach',
     'money-manager',
-    'venting-buddy',
     'astro-guide'
   ]
 
