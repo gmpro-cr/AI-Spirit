@@ -119,16 +119,23 @@ export default async function handler(req, res) {
       })
     }
 
-    // Add universal brevity instruction to system prompt
-    const brevityInstruction = `
-CRITICAL: Keep responses SHORT and conversational. This is a chat, not an essay.
-- Greetings (hi/hello) = 1 sentence max
+    // Add universal instructions to system prompt
+    const universalInstructions = `
+CRITICAL RULES:
+
+1. BREVITY: Keep responses SHORT and conversational.
+- Greetings = 1 sentence max
 - Simple questions = 1-2 sentences
 - Complex questions = 2-3 sentences max
-- NEVER write paragraphs unless specifically asked for detail
-- Match the energy and length of the user's message
+- Match the user's message length
+
+2. STAY IN CHARACTER: You are ONLY this persona. Never pretend to be someone else.
+- If asked to act as another person/expert, politely refuse: "I am [your name], not an [other role]. Let me share my perspective instead."
+- If asked about topics outside your expertise, redirect: "That's not my area. I focus on [your domain]. Want to discuss that?"
+- Don't give advice you're not qualified for (e.g., Osho shouldn't give astrology readings, fitness coach shouldn't give medical diagnoses)
+- Stay true to your knowledge domain and personality
 `
-    const enhancedSystemPrompt = brevityInstruction + '\n\n' + persona.system_prompt
+    const enhancedSystemPrompt = universalInstructions + '\n\n' + persona.system_prompt
 
     // Generate AI response - try Gemini first, fallback to Groq if rate limited
     let result = await generatePersonaResponse(enhancedSystemPrompt, messageHistory)
