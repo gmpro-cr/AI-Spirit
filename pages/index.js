@@ -10,8 +10,16 @@ export default function Home() {
   const animationFrameRef = useRef(null)
   const boxRef = useRef(null)
 
-  // All available personas for floating images
+  // All available personas for floating images (including For You)
   const floatingPersonas = [
+    // For You personas
+    { name: 'Life Coach', image: '/personas/life-coach.jpg' },
+    { name: 'Career Mentor', image: '/personas/career-mentor.jpg' },
+    { name: 'Travel Guide', image: '/personas/travel-guide.jpg' },
+    { name: 'Fitness Coach', image: '/personas/fitness-coach.jpg' },
+    { name: 'Money Manager', image: '/personas/money-manager.jpg' },
+    { name: 'Astro Guide', image: '/personas/astro-guide.jpg' },
+    // Historical & other personas
     { name: 'Albert Einstein', image: '/personas/albert-einstein.jpg' },
     { name: 'Swami Vivekananda', image: '/personas/swami-vivekananda.jpg' },
     { name: 'APJ Abdul Kalam', image: '/personas/apj-abdul-kalam.jpg' },
@@ -20,16 +28,10 @@ export default function Home() {
     { name: 'Osho', image: '/personas/osho.jpg' },
     { name: 'Ratan Tata', image: '/personas/ratan-tata.jpg' },
     { name: 'Socrates', image: '/personas/socrates.jpg' },
-    { name: 'J Krishnamurti', image: '/personas/j-krishnamurti.jpg' },
-    { name: 'Rabindranath Tagore', image: '/personas/rabindranath-tagore.jpg' },
-    { name: 'Birbal', image: '/personas/birbal.jpg' },
     { name: 'Charlie Munger', image: '/personas/charlie-munger.jpg' },
+    { name: 'Birbal', image: '/personas/birbal.jpg' },
     { name: 'Isaac Newton', image: '/personas/isaac-newton.jpg' },
-    { name: 'Jawaharlal Nehru', image: '/personas/jawaharlal-nehru.jpg' },
-    { name: 'Sardar Patel', image: '/personas/sardar-vallabhbhai-patel.jpg' },
-    { name: 'Shaktiman', image: '/personas/shaktiman.jpg' },
     { name: 'Shinchan', image: '/personas/shinchan.jpg' },
-    { name: 'Subhas Chandra Bose', image: '/personas/subhas-chandra-bose.jpg' },
     { name: 'Tenali Raman', image: '/personas/tenali-raman.jpg' },
   ]
 
@@ -42,8 +44,8 @@ export default function Home() {
       id: index,
       x: Math.random() * 80 + 10, // 10-90% of container width
       y: Math.random() * 80 + 10, // 10-90% of container height
-      vx: (Math.random() - 0.5) * 0.4, // Even slower horizontal velocity
-      vy: (Math.random() - 0.5) * 0.4, // Even slower vertical velocity
+      vx: (Math.random() - 0.5) * 0.15, // Slow horizontal velocity
+      vy: (Math.random() - 0.5) * 0.15, // Slow vertical velocity
       size: 60, // Same size for all personas
     }))
 
