@@ -13,7 +13,7 @@ export default function Personas() {
   const [personas, setPersonas] = useState([])
   const [filteredPersonas, setFilteredPersonas] = useState([])
   const [searchQuery, setSearchQuery] = useState('')
-  const [selectedCategory, setSelectedCategory] = useState('For You')
+  const [selectedCategory, setSelectedCategory] = useState('All')
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
   const [personaToEdit, setPersonaToEdit] = useState(null)
@@ -108,7 +108,7 @@ export default function Personas() {
   }
 
   // Get unique categories
-  const categories = ['For You', 'All', ...new Set(personas.map(p => p.category).filter(Boolean))]
+  const categories = ['All', 'For You', ...new Set(personas.map(p => p.category).filter(Boolean))]
 
   useEffect(() => {
     let filtered = personas
