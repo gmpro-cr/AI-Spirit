@@ -113,19 +113,30 @@ export default async function handler(req, res) {
     // Validate persona has system_prompt
     if (!persona.system_prompt) {
       console.error('Missing system_prompt for persona:', persona)
-      return res.status(500).json({ 
+      return res.status(500).json({
         error: 'Persona configuration error: missing system prompt',
         debug: { personaSlug: persona.slug, personaKeys: Object.keys(persona) }
       })
     }
 
+    // Add universal brevity instruction to system prompt
+    const brevityInstruction = `
+CRITICAL: Keep responses SHORT and conversational. This is a chat, not an essay.
+- Greetings (hi/hello) = 1 sentence max
+- Simple questions = 1-2 sentences
+- Complex questions = 2-3 sentences max
+- NEVER write paragraphs unless specifically asked for detail
+- Match the energy and length of the user's message
+`
+    const enhancedSystemPrompt = brevityInstruction + '\n\n' + persona.system_prompt
+
     // Generate AI response - try Gemini first, fallback to Groq if rate limited
-    let result = await generatePersonaResponse(persona.system_prompt, messageHistory)
+    let result = await generatePersonaResponse(enhancedSystemPrompt, messageHistory)
 
     // If Gemini fails with rate limit, try Groq
     if (!result.success && result.error?.includes('busy')) {
       console.log('[Fallback] Gemini rate limited, trying Groq...')
-      result = await generateGroqResponse(persona.system_prompt, messageHistory)
+      result = await generateGroqResponse(enhancedSystemPrompt, messageHistory)
     }
 
     if (!result.success) {
