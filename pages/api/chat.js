@@ -114,8 +114,7 @@ export default async function handler(req, res) {
     if (!persona.system_prompt) {
       console.error('Missing system_prompt for persona:', persona)
       return res.status(500).json({
-        error: 'Persona configuration error: missing system prompt',
-        debug: { personaSlug: persona.slug, personaKeys: Object.keys(persona) }
+        error: 'Persona configuration error: missing system prompt'
       })
     }
 
