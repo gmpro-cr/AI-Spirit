@@ -160,7 +160,7 @@ export default function Home() {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/auth/callback?returnTo=/personas`
+          redirectTo: 'https://ai-spirit.in/auth/v1/callback'
         }
       })
       if (error) {
