@@ -39,7 +39,7 @@ export default async function handler(req, res) {
         code,
         client_id: process.env.GOOGLE_CLIENT_ID,
         client_secret: process.env.GOOGLE_CLIENT_SECRET,
-        redirect_uri: 'https://ai-spirit.in/api/auth/google-callback',
+        redirect_uri: 'https://www.ai-spirit.in/api/auth/google-callback',
         grant_type: 'authorization_code',
       }),
     })
@@ -80,7 +80,7 @@ export default async function handler(req, res) {
     // Set the session cookie
     // We need to pass the session to the client
     // Redirect with session info in URL (will be picked up by client)
-    const redirectUrl = new URL('/auth/callback', 'https://ai-spirit.in')
+    const redirectUrl = new URL('/auth/callback', 'https://www.ai-spirit.in')
     redirectUrl.searchParams.set('access_token', data.session.access_token)
     redirectUrl.searchParams.set('refresh_token', data.session.refresh_token)
     redirectUrl.searchParams.set('returnTo', '/personas')

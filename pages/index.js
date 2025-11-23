@@ -158,7 +158,7 @@ export default function Home() {
       // Redirect to Google OAuth directly (bypasses Supabase to show our domain)
       const googleAuthUrl = new URL('https://accounts.google.com/o/oauth2/v2/auth')
       googleAuthUrl.searchParams.set('client_id', process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID)
-      googleAuthUrl.searchParams.set('redirect_uri', 'https://ai-spirit.in/api/auth/google-callback')
+      googleAuthUrl.searchParams.set('redirect_uri', 'https://www.ai-spirit.in/api/auth/google-callback')
       googleAuthUrl.searchParams.set('response_type', 'code')
       googleAuthUrl.searchParams.set('scope', 'openid email profile')
       googleAuthUrl.searchParams.set('access_type', 'offline')
