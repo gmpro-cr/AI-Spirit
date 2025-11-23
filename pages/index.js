@@ -2,9 +2,12 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useState, useEffect, useRef } from 'react'
 import ContactModal from '@/components/ContactModal'
+import { useAuth } from '@/context/AuthContext'
+import { supabase } from '@/lib/supabase'
 
 export default function Home() {
   const router = useRouter()
+  const { user } = useAuth()
   const [isContactModalOpen, setIsContactModalOpen] = useState(false)
   const [personas, setPersonas] = useState([])
   const animationFrameRef = useRef(null)
@@ -148,8 +151,22 @@ export default function Home() {
     }
   }, [personas.length])
 
-  const handleStartChatting = () => {
-    router.push('/personas')
+  const handleStartChatting = async () => {
+    if (user) {
+      // User is already signed in, go to personas
+      router.push('/personas')
+    } else {
+      // Trigger Google sign-in
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: `${window.location.origin}/auth/callback?returnTo=/personas`
+        }
+      })
+      if (error) {
+        console.error('Sign in error:', error)
+      }
+    }
   }
 
   return (
