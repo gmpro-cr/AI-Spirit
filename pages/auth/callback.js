@@ -10,30 +10,7 @@ export default function AuthCallback() {
   useEffect(() => {
     const handleAuthCallback = async () => {
       try {
-        const searchParams = new URLSearchParams(window.location.search)
-        const accessToken = searchParams.get('access_token')
-        const refreshToken = searchParams.get('refresh_token')
-        const returnTo = searchParams.get('returnTo') || router.query.returnTo || '/personas'
-
-        // If we have tokens from custom OAuth flow, set the session
-        if (accessToken && refreshToken) {
-          const { error } = await supabase.auth.setSession({
-            access_token: accessToken,
-            refresh_token: refreshToken,
-          })
-
-          if (error) {
-            console.error('Error setting session:', error)
-            router.push('/auth/signin')
-            return
-          }
-
-          console.log('Session set successfully, redirecting to:', returnTo)
-          router.replace(returnTo)
-          return
-        }
-
-        // Handle standard Supabase OAuth callback
+        // Handle the OAuth callback
         const { data, error } = await supabase.auth.getSession()
 
         if (error) {
@@ -43,6 +20,10 @@ export default function AuthCallback() {
         }
 
         if (data.session) {
+          // Get returnTo from query params, with fallback to /personas
+          const searchParams = new URLSearchParams(window.location.search)
+          const returnTo = searchParams.get('returnTo') || router.query.returnTo || '/personas'
+
           console.log('Auth successful, redirecting to:', returnTo)
           router.replace(returnTo)
         } else {

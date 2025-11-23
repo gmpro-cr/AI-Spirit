@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import { useState, useEffect, useRef } from 'react'
 import ContactModal from '@/components/ContactModal'
 import { useAuth } from '@/context/AuthContext'
+import { supabase } from '@/lib/supabase'
 
 export default function Home() {
   const router = useRouter()
@@ -150,21 +151,21 @@ export default function Home() {
     }
   }, [personas.length])
 
-  const handleStartChatting = () => {
+  const handleStartChatting = async () => {
     if (user) {
       // User is already signed in, go to personas
       router.push('/personas')
     } else {
-      // Redirect to Google OAuth directly (bypasses Supabase to show our domain)
-      const googleAuthUrl = new URL('https://accounts.google.com/o/oauth2/v2/auth')
-      googleAuthUrl.searchParams.set('client_id', process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID)
-      googleAuthUrl.searchParams.set('redirect_uri', 'https://www.ai-spirit.in/api/auth/google-callback')
-      googleAuthUrl.searchParams.set('response_type', 'code')
-      googleAuthUrl.searchParams.set('scope', 'openid email profile')
-      googleAuthUrl.searchParams.set('access_type', 'offline')
-      googleAuthUrl.searchParams.set('prompt', 'consent')
-
-      window.location.href = googleAuthUrl.toString()
+      // Trigger Google sign-in via Supabase
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: `${window.location.origin}/auth/callback?returnTo=/personas`
+        }
+      })
+      if (error) {
+        console.error('Sign in error:', error)
+      }
     }
   }
 
