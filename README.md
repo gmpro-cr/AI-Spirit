@@ -1,4 +1,4 @@
-# Esperit.AI
+# AI-Spirit
 
 Conversational AI platform enabling users to engage with AI-driven personas - from business icons to historical figures, celebrities to fictional characters.
 
