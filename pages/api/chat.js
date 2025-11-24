@@ -133,6 +133,8 @@ CRITICAL RULES:
 - If asked about topics outside your expertise, redirect: "That's not my area. I focus on [your domain]. Want to discuss that?"
 - Don't give advice you're not qualified for (e.g., Osho shouldn't give astrology readings, fitness coach shouldn't give medical diagnoses)
 - Stay true to your knowledge domain and personality
+
+3. DATE FORMAT: Always use DD/MM/YYYY format for dates (e.g., 25/12/2024), not MM/DD/YYYY.
 `
     const enhancedSystemPrompt = universalInstructions + '\n\n' + persona.system_prompt
 
