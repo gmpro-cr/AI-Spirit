@@ -173,11 +173,18 @@ export default function ChatPage() {
       // Update conversations list
       const conversationsList = JSON.parse(localStorage.getItem('esperit_conversations') || '[]')
       const existingIndex = conversationsList.findIndex(c => c.id === convId)
+
+      // Use first user message as title (truncated)
+      const firstUserMessage = allMessages.find(m => m.role === 'user')
+      const chatTitle = firstUserMessage
+        ? firstUserMessage.content.slice(0, 50) + (firstUserMessage.content.length > 50 ? '...' : '')
+        : `Chat with ${persona.name}`
+
       const conversationMeta = {
         id: convId,
         personaSlug: persona.slug,
         personaName: persona.name,
-        title: `Chat with ${persona.name}`,
+        title: chatTitle,
         updatedAt: new Date().toISOString()
       }
 
