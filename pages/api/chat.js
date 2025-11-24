@@ -5,6 +5,7 @@ import { moderateContent } from '@/lib/moderation'
 // Rate limiting disabled for now - will enable when userbase grows
 // import { chatRateLimiter, getClientIdentifier } from '@/lib/rate-limit'
 import { logApiCall, checkCostThreshold } from '@/lib/cost-tracking'
+import { getContextIfNeeded } from '@/lib/contextProvider'
 
 // Fallback system: Gemini first, then Groq if rate limited
 
@@ -138,8 +139,19 @@ CRITICAL RULES:
 `
     const enhancedSystemPrompt = universalInstructions + '\n\n' + persona.system_prompt
 
+    // Get context if this is first message
+    const contextString = await getContextIfNeeded(conversationId)
+
+    // Log context injection
+    if (contextString) {
+      console.log('[Chat API] Injecting context for first message', {
+        conversationId,
+        hasContext: true
+      })
+    }
+
     // Generate AI response - try Gemini first, fallback to Groq if rate limited
-    let result = await generatePersonaResponse(enhancedSystemPrompt, messageHistory)
+    let result = await generatePersonaResponse(enhancedSystemPrompt, messageHistory, {}, contextString)
 
     // If Gemini fails with rate limit, try Groq
     if (!result.success && result.error?.includes('busy')) {
