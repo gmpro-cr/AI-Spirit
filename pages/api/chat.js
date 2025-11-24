@@ -139,8 +139,10 @@ CRITICAL RULES:
 `
     const enhancedSystemPrompt = universalInstructions + '\n\n' + persona.system_prompt
 
-    // Get context if this is first message
-    const contextString = await getContextIfNeeded(conversationId)
+    // Get context if this is first message (works for both authenticated and guest users)
+    const contextString = isGuest
+      ? ((!conversationHistory || conversationHistory.length === 0) ? await getContextIfNeeded(null) : null)
+      : await getContextIfNeeded(conversationId)
 
     // Log context injection
     if (contextString) {
