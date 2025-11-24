@@ -50,3 +50,4 @@ backups/
 
 .env.vercel
 .env.production
+.worktrees/
