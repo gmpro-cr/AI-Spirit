@@ -367,7 +367,7 @@ export default function Home() {
                 </div>
                 <h4 className="text-xl font-bold text-black mb-3">Start Chatting</h4>
                 <p className="text-gray-600 leading-relaxed">
-                  Ask questions, seek advice, or just have a conversation. It's that simple.
+                  Ask questions, seek advice, or just have a conversation. It&apos;s that simple.
                 </p>
               </div>
 
@@ -383,7 +383,7 @@ export default function Home() {
                 </div>
                 <h4 className="text-xl font-bold text-black mb-3">Get Insights</h4>
                 <p className="text-gray-600 leading-relaxed">
-                  Receive wisdom and perspectives from history's greatest thinkers.
+                  Receive wisdom and perspectives from history&apos;s greatest thinkers.
                 </p>
               </div>
             </div>
