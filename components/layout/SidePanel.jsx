@@ -33,19 +33,19 @@ export default function SidePanel({ onBack, backButtonText, showPastChats = true
   }
 
   return (
-    <aside className="w-64 bg-gray-50 border-r border-gray-200 p-4 flex flex-col justify-between hidden md:flex h-screen fixed left-0 top-0">
+    <aside className="w-64 bg-gray-50 border-r border-gray-200 p-6 flex flex-col justify-between hidden md:flex h-screen fixed left-0 top-0">
       {/* Top Section */}
       <div className="flex flex-col flex-1 overflow-hidden">
         {/* Back Navigation */}
         {onBack && (
-          <div className="mb-4 pb-4 border-b border-gray-300">
+          <div className="mb-6 pb-5 border-b border-gray-300">
             <button
               onClick={onBack}
-              className="flex items-center text-sm text-gray-600 hover:text-black transition-colors"
+              className="flex items-center text-sm font-medium text-gray-700 hover:text-black transition-colors"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-4 w-4 mr-2"
+                className="h-5 w-5 mr-2"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -63,7 +63,9 @@ export default function SidePanel({ onBack, backButtonText, showPastChats = true
         )}
 
         {/* Past Chats Header */}
-        <h2 className="text-lg font-semibold mb-4 text-black">Past Chats</h2>
+        <div className="mb-6">
+          <h2 className="text-xl font-bold text-black">Past Chats</h2>
+        </div>
 
         {/* Past Chats List */}
         {showPastChats && (
@@ -71,23 +73,23 @@ export default function SidePanel({ onBack, backButtonText, showPastChats = true
             {loading ? (
               <p className="text-sm text-gray-500">Loading...</p>
             ) : pastChats.length > 0 ? (
-              <ul className="space-y-2">
+              <ul className="space-y-3">
                 {pastChats.map(chat => (
                   <li key={chat.id}>
                     <button
                       onClick={() => router.push(`/chat/${chat.personaSlug}?conversationId=${chat.id}`)}
-                      className="flex items-center gap-2 w-full text-left p-2 rounded-md text-sm text-gray-700 hover:bg-gray-200 transition-colors"
+                      className="flex items-center gap-3 w-full text-left p-3 rounded-lg text-sm text-gray-700 hover:bg-gray-200 transition-colors"
                     >
                       {chat.personaImage && (
                         <img
                           src={chat.personaImage}
                           alt={chat.personaName}
-                          className="w-8 h-8 rounded-full object-cover flex-shrink-0"
+                          className="w-10 h-10 rounded-full object-cover flex-shrink-0"
                         />
                       )}
                       <div className="flex-1 min-w-0">
-                        <p className="text-xs text-gray-500 truncate">{chat.personaName}</p>
-                        <p className="truncate">{chat.title}</p>
+                        <p className="text-xs font-medium text-gray-600 truncate mb-0.5">{chat.personaName}</p>
+                        <p className="text-sm truncate">{chat.title}</p>
                       </div>
                     </button>
                   </li>
@@ -102,29 +104,29 @@ export default function SidePanel({ onBack, backButtonText, showPastChats = true
 
       {/* Bottom Section - User Info & Logout */}
       {user && (
-        <div className="mt-4 pt-4 border-t border-gray-300">
+        <div className="mt-6 pt-6 border-t border-gray-300">
           <div className="flex items-center justify-between">
             <div className="flex items-center min-w-0">
               {user.user_metadata?.avatar_url ? (
                 <img
                   src={user.user_metadata.avatar_url}
                   alt="Profile"
-                  className="w-8 h-8 rounded-full mr-2 flex-shrink-0"
+                  className="w-10 h-10 rounded-full mr-3 flex-shrink-0"
                 />
               ) : (
-                <div className="w-8 h-8 rounded-full bg-gray-300 mr-2 flex-shrink-0 flex items-center justify-center">
-                  <span className="text-xs font-semibold text-gray-600">
+                <div className="w-10 h-10 rounded-full bg-gray-300 mr-3 flex-shrink-0 flex items-center justify-center">
+                  <span className="text-sm font-semibold text-gray-600">
                     {user.email?.[0]?.toUpperCase() || '?'}
                   </span>
                 </div>
               )}
-              <span className="text-sm text-gray-700 truncate">
+              <span className="text-sm font-medium text-gray-700 truncate">
                 {user.user_metadata?.full_name || user.email?.split('@')[0] || 'User'}
               </span>
             </div>
             <button
               onClick={handleSignOut}
-              className="ml-2 p-1.5 text-gray-500 hover:text-red-600 transition-colors flex-shrink-0"
+              className="ml-2 p-2 text-gray-500 hover:text-red-600 transition-colors flex-shrink-0"
               title="Sign out"
             >
               <svg
