@@ -25,8 +25,31 @@ Conversational AI platform enabling users to engage with AI-driven personas - fr
 - Content moderation with multiple safety layers
 - Response caching for improved performance
 - Cost tracking and monitoring
+- **Current Awareness**: Personas know the current date/time and today's news headlines (auto-injected on first message)
 - Dark theme with glassmorphism design
 - Mobile responsive
+
+### Current Awareness Feature
+
+Personas automatically receive context about the current date/time and top news headlines on the first message of each conversation. This enables more relevant, timely responses without requiring users to ask explicitly.
+
+**How it works:**
+- **Session-level injection**: Context injected only on first message (90% token savings)
+- **News source**: Google News RSS (free, no API key required)
+- **Caching**: 1-hour cache for headlines (reduces API calls)
+- **Graceful degradation**: Chat continues even if news fetch fails
+- **Both modes**: Works for authenticated users and guest users
+
+**Example context provided to personas:**
+```
+CURRENT AWARENESS:
+Date/Time: Monday, 25 November, 2025, 3:30 PM IST
+
+TODAY'S TOP HEADLINES:
+• [BBC News] Volcanic eruption in Ethiopia affects India... (2 hours ago)
+• [The Hindu] PM Modi to visit Ayodhya for Ram Temple... (4 hours ago)
+• [Reuters] Markets react to interest rate decision... (1 hour ago)
+```
 
 ## Personas
 
@@ -73,6 +96,12 @@ Required credentials:
 - `SUPABASE_SERVICE_ROLE_KEY`: From Supabase project settings
 - `GEMINI_API_KEY`: From Google AI Studio
 - `GROQ_API_KEY`: From Groq Console (optional fallback)
+
+Optional configuration (news service):
+- `NEWS_RSS_URL`: Google News RSS feed URL (default: India English)
+- `NEWS_CACHE_DURATION`: Cache duration in ms (default: 3600000 = 1 hour)
+- `NEWS_FETCH_TIMEOUT`: Fetch timeout in ms (default: 5000)
+- `NEWS_HEADLINE_COUNT`: Number of headlines to fetch (default: 5)
 
 4. Set up Supabase database
 

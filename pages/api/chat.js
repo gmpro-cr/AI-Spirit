@@ -139,9 +139,19 @@ CRITICAL RULES:
 `
     const enhancedSystemPrompt = universalInstructions + '\n\n' + persona.system_prompt
 
+    // DEBUG: Check what we're working with
+    console.log('[DEBUG] Context injection check:', {
+      isGuest,
+      conversationId,
+      hasConversationHistory: !!conversationHistory,
+      conversationHistoryLength: conversationHistory?.length
+    })
+
     // Get context if this is first message (works for both authenticated and guest users)
+    // Note: Frontend sends conversationHistory with current user message already included
+    // So first message for guest = length 1, not 0
     const contextString = isGuest
-      ? ((!conversationHistory || conversationHistory.length === 0) ? await getContextIfNeeded(null) : null)
+      ? ((conversationHistory?.length === 1) ? await getContextIfNeeded(null) : null)
       : await getContextIfNeeded(conversationId)
 
     // Log context injection
@@ -158,7 +168,9 @@ CRITICAL RULES:
     // If Gemini fails with rate limit, try Groq
     if (!result.success && result.error?.includes('busy')) {
       console.log('[Fallback] Gemini rate limited, trying Groq...')
-      result = await generateGroqResponse(enhancedSystemPrompt, messageHistory)
+      // Prepend context to system prompt for Groq as well
+      const groqSystemPrompt = contextString ? contextString + enhancedSystemPrompt : enhancedSystemPrompt
+      result = await generateGroqResponse(groqSystemPrompt, messageHistory)
     }
 
     if (!result.success) {
