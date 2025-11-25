@@ -184,6 +184,7 @@ export default function ChatPage() {
         id: convId,
         personaSlug: persona.slug,
         personaName: persona.name,
+        personaImage: persona.image,
         title: chatTitle,
         updatedAt: new Date().toISOString()
       }

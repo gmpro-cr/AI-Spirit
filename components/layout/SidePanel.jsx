@@ -76,9 +76,19 @@ export default function SidePanel({ onBack, backButtonText, showPastChats = true
                   <li key={chat.id}>
                     <button
                       onClick={() => router.push(`/chat/${chat.personaSlug}?conversationId=${chat.id}`)}
-                      className="block w-full text-left p-2 rounded-md text-sm text-gray-700 hover:bg-gray-200 truncate transition-colors"
+                      className="flex items-center gap-2 w-full text-left p-2 rounded-md text-sm text-gray-700 hover:bg-gray-200 transition-colors"
                     >
-                      {chat.title}
+                      {chat.personaImage && (
+                        <img
+                          src={chat.personaImage}
+                          alt={chat.personaName}
+                          className="w-8 h-8 rounded-full object-cover flex-shrink-0"
+                        />
+                      )}
+                      <div className="flex-1 min-w-0">
+                        <p className="text-xs text-gray-500 truncate">{chat.personaName}</p>
+                        <p className="truncate">{chat.title}</p>
+                      </div>
                     </button>
                   </li>
                 ))}
