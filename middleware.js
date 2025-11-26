@@ -9,8 +9,10 @@ export async function middleware(req) {
   const { data: { session } } = await supabase.auth.getSession()
 
   // Public routes that don't require authentication
-  const publicRoutes = ['/auth/signin', '/auth/callback']
-  const isPublicRoute = publicRoutes.some(route => req.nextUrl.pathname.startsWith(route))
+  const publicRoutes = ['/', '/auth/signin', '/auth/callback']
+  const isPublicRoute = publicRoutes.some(route =>
+    route === '/' ? req.nextUrl.pathname === '/' : req.nextUrl.pathname.startsWith(route)
+  )
 
   // If user is not signed in and trying to access a protected route
   if (!session && !isPublicRoute) {
