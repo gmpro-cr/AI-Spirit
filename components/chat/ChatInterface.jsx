@@ -95,7 +95,12 @@ export default function ChatInterface({ persona, onSendMessage, onNewChat, onMen
         )}
 
         {messages.map((message, idx) => (
-          <MessageBubble key={idx} message={message} language={persona.language} personaName={persona.name} />
+          <MessageBubble
+            key={`${message.role}-${idx}-${message.content.substring(0, 30)}`}
+            message={message}
+            language={persona.language}
+            personaName={persona.name}
+          />
         ))}
 
         {isLoading && (
