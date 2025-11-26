@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 
 // Typing speeds (milliseconds per word) based on persona talking style
+// Each persona has a unique speed that matches their character
 const TYPING_SPEEDS = {
   'Osho': 180,              // Slow, contemplative
   'Albert Einstein': 150,    // Thoughtful, measured
@@ -51,6 +52,7 @@ export default function MessageBubble({ message, language, personaName }) {
 
     const words = message.content.split(' ')
     const typingSpeed = TYPING_SPEEDS[personaName] || TYPING_SPEEDS['default']
+    console.log('[MessageBubble] Starting animation:', { personaName, typingSpeed, wordCount: words.length })
     let currentWordIndex = 0
 
     setDisplayedText('')
