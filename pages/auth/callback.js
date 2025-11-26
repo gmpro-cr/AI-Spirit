@@ -10,8 +10,12 @@ export default function AuthCallback() {
   useEffect(() => {
     const handleAuthCallback = async () => {
       try {
-        // Handle the OAuth callback
-        const { data, error } = await supabase.auth.getSession()
+        // Check if there's a code in the URL (OAuth callback)
+        const hashParams = new URLSearchParams(window.location.hash.substring(1))
+        const searchParams = new URLSearchParams(window.location.search)
+
+        // Supabase automatically handles the OAuth callback, we just need to wait for the session
+        const { data: { session }, error } = await supabase.auth.getSession()
 
         if (error) {
           console.error('Auth callback error:', error)
@@ -19,14 +23,17 @@ export default function AuthCallback() {
           return
         }
 
-        if (data.session) {
+        if (session) {
           // Get returnTo from query params, with fallback to /personas
-          const searchParams = new URLSearchParams(window.location.search)
           const returnTo = searchParams.get('returnTo') || router.query.returnTo || '/personas'
 
           console.log('Auth successful, redirecting to:', returnTo)
-          router.replace(returnTo)
+
+          // Use window.location for hard redirect to ensure cookies are properly read
+          window.location.href = returnTo
         } else {
+          // No session yet, might still be processing
+          console.log('No session found, redirecting to sign in')
           router.push('/auth/signin')
         }
       } catch (error) {
