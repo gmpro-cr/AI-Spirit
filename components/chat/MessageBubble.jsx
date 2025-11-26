@@ -23,10 +23,16 @@ const TYPING_SPEEDS = {
 export default function MessageBubble({ message, language, personaName }) {
   const isUser = message.role === 'user'
   const [copied, setCopied] = useState(false)
-  const [displayedText, setDisplayedText] = useState(isUser ? message.content : '')
-  const [isTyping, setIsTyping] = useState(!isUser)
+  const [displayedText, setDisplayedText] = useState(message.content) // Start with full text for SSR
+  const [isTyping, setIsTyping] = useState(false)
   const [liked, setLiked] = useState(null) // null, 'like', or 'dislike'
   const animationRef = useRef(null)
+  const [mounted, setMounted] = useState(false)
+
+  // Detect client-side mount
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   const handleCopy = async () => {
     try {
@@ -50,7 +56,7 @@ export default function MessageBubble({ message, language, personaName }) {
 
   // Word-by-word streaming animation for AI messages
   useEffect(() => {
-    if (isUser) return
+    if (isUser || !mounted) return // Only run on client-side for AI messages
 
     const words = message.content.split(' ')
     const typingSpeed = TYPING_SPEEDS[personaName] || TYPING_SPEEDS['default']
@@ -80,7 +86,7 @@ export default function MessageBubble({ message, language, personaName }) {
         clearTimeout(animationRef.current)
       }
     }
-  }, [message.content, isUser, personaName])
+  }, [message.content, isUser, personaName, mounted])
 
   return (
     <div className={`flex ${isUser ? 'justify-end' : 'justify-start'} mb-6 animate-fadeIn`}>
