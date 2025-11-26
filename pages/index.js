@@ -281,12 +281,11 @@ export default function Home() {
             </h3>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
               {featuredPersonas.map((persona, index) => (
-                <button
+                <div
                   key={index}
-                  onClick={() => router.push('/personas')}
-                  className="group flex flex-col items-center text-center hover:-translate-y-2 transition-transform duration-300"
+                  className="flex flex-col items-center text-center"
                 >
-                  <div className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full overflow-hidden mb-2 sm:mb-3 md:mb-4 shadow-lg group-hover:shadow-2xl transition-shadow">
+                  <div className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full overflow-hidden mb-2 sm:mb-3 md:mb-4 shadow-lg">
                     <img
                       src={persona.image}
                       alt={persona.name}
@@ -294,7 +293,7 @@ export default function Home() {
                     />
                   </div>
                   <p className="font-semibold text-black text-sm sm:text-base md:text-lg">{persona.name}</p>
-                </button>
+                </div>
               ))}
             </div>
           </div>
