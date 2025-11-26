@@ -1,3 +1,5 @@
+'use client'
+
 import { useState, useEffect, useRef } from 'react'
 
 // Typing speeds (milliseconds per word) based on persona talking style
