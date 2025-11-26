@@ -2,12 +2,9 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
 import ContactModal from '@/components/ContactModal'
-import { useAuth } from '@/context/AuthContext'
-import { supabase } from '@/lib/supabase'
 
 export default function Home() {
   const router = useRouter()
-  const { user } = useAuth()
   const [isContactModalOpen, setIsContactModalOpen] = useState(false)
   const [typingText, setTypingText] = useState('')
   const [showTyping, setShowTyping] = useState(false)
@@ -132,20 +129,10 @@ export default function Home() {
     }
   }, [currentPersonaIndex, currentMessageIndex])
 
-  const handleStartChatting = async () => {
-    if (user) {
-      router.push('/personas')
-    } else {
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-          redirectTo: `${window.location.origin}/auth/callback?returnTo=/personas`
-        }
-      })
-      if (error) {
-        console.error('Sign in error:', error)
-      }
-    }
+  const handleStartChatting = () => {
+    // Navigate to personas page
+    // If user is not authenticated, middleware will redirect to sign-in
+    router.push('/personas')
   }
 
   return (
