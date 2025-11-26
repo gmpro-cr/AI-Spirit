@@ -177,25 +177,27 @@ export default function Home() {
         {/* Hero Section */}
         <section className="pt-20 sm:pt-24 md:pt-32 lg:pt-40 pb-12 sm:pb-16 md:pb-20 lg:pb-24 px-4 sm:px-6">
           <div className="max-w-7xl mx-auto">
-            <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
-              {/* Left Column - Content */}
+            <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-start">
+              {/* Left Column - Content (Desktop) / Title Only (Mobile) */}
               <div className="lg:col-span-1">
-                <h2 className="text-3xl sm:text-4xl md:text-4xl lg:text-5xl font-bold text-black mb-8 md:mb-12 lg:mb-16 leading-tight lg:whitespace-nowrap">
+                <h2 className="text-3xl sm:text-4xl md:text-4xl lg:text-5xl font-bold text-black mb-6 lg:mb-12 leading-tight lg:whitespace-nowrap">
                   Enter the world of AI Personas
                 </h2>
-                <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-10 md:mb-16 lg:mb-20 max-w-xl leading-relaxed text-justify">
+                {/* Tagline - Hidden on mobile, visible on desktop */}
+                <p className="hidden lg:block text-base sm:text-lg md:text-xl text-gray-600 mb-10 md:mb-16 lg:mb-20 max-w-xl leading-relaxed text-justify">
                   Chat with legendary thinkers like Einstein and Gandhi, or get personalized guidance from an Astro Guide, Fitness Coach, Life Coach, and more. All powered by AI.
                 </p>
+                {/* Button - Hidden on mobile, shown on desktop */}
                 <button
                   onClick={handleStartChatting}
-                  className="inline-block px-10 py-4 bg-black text-white text-lg font-semibold rounded-full hover:scale-105 transition-transform shadow-lg hover:shadow-xl"
+                  className="hidden lg:inline-block px-10 py-4 bg-black text-white text-lg font-semibold rounded-full hover:scale-105 transition-transform shadow-lg hover:shadow-xl"
                 >
                   Start Chatting
                 </button>
               </div>
 
               {/* Right Column - Chat Preview */}
-              <div className="lg:col-span-1 flex justify-center lg:justify-end">
+              <div className="lg:col-span-1 flex justify-center lg:justify-end order-2 lg:order-none">
                 <div className="bg-white rounded-2xl shadow-2xl p-4 sm:p-6 md:p-8 border border-gray-100 transition-all duration-500 w-full max-w-md h-[400px] sm:h-[450px] md:h-[500px] flex flex-col">
                   <div className="flex items-center gap-3 sm:gap-4 mb-4 sm:mb-6 md:mb-8 pb-4 sm:pb-5 md:pb-6 border-b border-gray-100 flex-shrink-0">
                     <img
@@ -257,6 +259,16 @@ export default function Home() {
                   </div>
                 </div>
               </div>
+            </div>
+
+            {/* Mobile-only Start Chatting Button - Below Chat Preview */}
+            <div className="lg:hidden flex justify-center mt-8">
+              <button
+                onClick={handleStartChatting}
+                className="px-10 py-4 bg-black text-white text-lg font-semibold rounded-full hover:scale-105 transition-transform shadow-lg hover:shadow-xl"
+              >
+                Start Chatting
+              </button>
             </div>
           </div>
         </section>
