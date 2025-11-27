@@ -10,34 +10,52 @@ export default function AuthCallback() {
   useEffect(() => {
     const handleAuthCallback = async () => {
       try {
-        // Check if there's a code in the URL (OAuth callback)
-        const hashParams = new URLSearchParams(window.location.hash.substring(1))
         const searchParams = new URLSearchParams(window.location.search)
+        const code = searchParams.get('code')
 
-        // Supabase automatically handles the OAuth callback, we just need to wait for the session
+        // Get returnTo parameter
+        const returnTo = searchParams.get('returnTo') || router.query.returnTo || '/personas'
+
+        console.log('[Auth Callback] Starting authentication flow', { code: !!code, returnTo })
+
+        if (code) {
+          // Exchange the code for a session
+          console.log('[Auth Callback] Exchanging code for session...')
+          const { data, error } = await supabase.auth.exchangeCodeForSession(code)
+
+          if (error) {
+            console.error('[Auth Callback] Code exchange error:', error)
+            router.push('/auth/signin')
+            return
+          }
+
+          if (data.session) {
+            console.log('[Auth Callback] Session established successfully')
+            // Use window.location for hard redirect to ensure cookies are set
+            console.log('[Auth Callback] Redirecting to:', returnTo)
+            window.location.href = returnTo
+            return
+          }
+        }
+
+        // Fallback: check if there's already a session
         const { data: { session }, error } = await supabase.auth.getSession()
 
         if (error) {
-          console.error('Auth callback error:', error)
+          console.error('[Auth Callback] Session check error:', error)
           router.push('/auth/signin')
           return
         }
 
         if (session) {
-          // Get returnTo from query params, with fallback to /personas
-          const returnTo = searchParams.get('returnTo') || router.query.returnTo || '/personas'
-
-          console.log('Auth successful, redirecting to:', returnTo)
-
-          // Use window.location for hard redirect to ensure cookies are properly read
+          console.log('[Auth Callback] Existing session found, redirecting to:', returnTo)
           window.location.href = returnTo
         } else {
-          // No session yet, might still be processing
-          console.log('No session found, redirecting to sign in')
+          console.log('[Auth Callback] No session or code found, redirecting to sign in')
           router.push('/auth/signin')
         }
       } catch (error) {
-        console.error('Unexpected error during auth callback:', error)
+        console.error('[Auth Callback] Unexpected error:', error)
         router.push('/auth/signin')
       }
     }
