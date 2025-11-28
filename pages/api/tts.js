@@ -28,7 +28,7 @@ export default async function handler(req, res) {
     const voiceMapping = {
       // English - Male (Authoritative/Older)
       'Albert Einstein': 'pqHfZKP75CvOlQylNhV4', // Bill - old, American, wise
-      'APJ Abdul Kalam': 'pqHfZKP75CvOlQylNhV4', // Bill - old, American, inspirational
+
       'Isaac Newton': 'JBFqnCBsd6RMkjVDRZzb', // George - British, mature, intellectual
       'Charlie Munger': 'pqHfZKP75CvOlQylNhV4', // Bill - old, American, wise
       'Mahatma Gandhi': 'pqHfZKP75CvOlQylNhV4', // Bill - old, calm, gentle

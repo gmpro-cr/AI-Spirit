@@ -9,7 +9,7 @@ const ELEVENLABS_API_KEY = process.env.ELEVENLABS_API_KEY
 const personaCharacteristics = {
   // English - Male (Authoritative/Older)
   'Albert Einstein': { age: 'old', accent: 'german', tone: 'wise', gender: 'male' },
-  'APJ Abdul Kalam': { age: 'old', accent: 'indian', tone: 'inspirational', gender: 'male' },
+
   'Isaac Newton': { age: 'middle_aged', accent: 'british', tone: 'intellectual', gender: 'male' },
   'Charlie Munger': { age: 'old', accent: 'american', tone: 'wise', gender: 'male' },
   'Mahatma Gandhi': { age: 'old', accent: 'indian', tone: 'calm', gender: 'male' },

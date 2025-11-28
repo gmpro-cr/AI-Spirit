@@ -90,7 +90,6 @@ Complete redesign of AI-Spirit homepage with Apple-inspired minimalist aesthetic
 3. Osho - "Spiritual Teacher"
 4. Mahatma Gandhi - "Leader"
 5. Ratan Tata - "Business Icon"
-6. APJ Abdul Kalam - "Visionary"
 7. Swami Vivekananda - "Philosopher"
 8. Socrates - "Philosopher"
 

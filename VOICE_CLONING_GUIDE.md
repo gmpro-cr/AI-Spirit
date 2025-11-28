@@ -34,7 +34,7 @@ Browse ElevenLabs Voice Library for matching voices:
 
 ### Real People (with public audio):
 - **Elon Musk**: Interviews, podcasts, presentations
-- **APJ Abdul Kalam**: Speeches, lectures
+
 - **Mahatma Gandhi**: Historical recordings (if available)
 - **Virat Kohli**: Interviews, press conferences
 - **Shah Rukh Khan**: Movie dialogues, interviews

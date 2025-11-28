@@ -19,7 +19,7 @@ export default function SignIn() {
   const floatingPersonas = [
     { name: 'Albert Einstein', image: '/personas/albert-einstein.jpg' },
     { name: 'Swami Vivekananda', image: '/personas/swami-vivekananda.jpg' },
-    { name: 'APJ Abdul Kalam', image: '/personas/apj-abdul-kalam.jpg' },
+
     { name: 'Elon Musk', image: '/personas/elon-musk.jpg' },
     { name: 'Mahatma Gandhi', image: '/personas/mahatma-gandhi.jpg' },
     { name: 'Osho', image: '/personas/osho.jpg' },

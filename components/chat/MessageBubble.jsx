@@ -9,7 +9,7 @@ const TYPING_SPEEDS = {
   'Albert Einstein': 150,    // Thoughtful, measured
   'Elon Musk': 80,          // Fast, energetic
   'Mahatma Gandhi': 160,    // Calm, deliberate
-  'APJ Abdul Kalam': 140,   // Inspirational, steady
+
   'Swami Vivekananda': 130, // Passionate, flowing
   'Socrates': 170,          // Questioning, reflective
   'Astro Guide': 120,       // Mystical, moderate
@@ -92,11 +92,10 @@ export default function MessageBubble({ message, language, personaName }) {
     <div className={`flex ${isUser ? 'justify-end' : 'justify-start'} mb-6 animate-fadeIn`}>
       <div className="relative max-w-[90%] sm:max-w-[75%] group">
         <div
-          className={`relative px-4 sm:px-5 py-3 sm:py-4 rounded-3xl transition-smooth ${
-            isUser
+          className={`relative px-4 sm:px-5 py-3 sm:py-4 rounded-3xl transition-smooth ${isUser
               ? 'bg-gradient-to-br from-white via-white/98 to-white/95 text-black font-medium shadow-glass hover:shadow-glass-hover hover:scale-[1.01]'
               : 'bg-gradient-to-br from-white/15 via-white/10 to-white/5 backdrop-blur-2xl border border-white/30 text-white shadow-glass hover:shadow-glass-hover hover:from-white/18 hover:via-white/12 hover:to-white/8 hover:border-white/35 hover:scale-[1.01] before:absolute before:inset-0 before:rounded-3xl before:bg-gradient-to-tr before:from-white/15 before:via-transparent before:to-transparent before:opacity-0 before:group-hover:opacity-100 before:transition-opacity before:duration-500 before:pointer-events-none after:absolute after:inset-[1px] after:rounded-3xl after:bg-gradient-to-br after:from-transparent after:via-white/5 after:to-white/10 after:pointer-events-none'
-          } ${language === 'hi' ? 'font-hindi' : ''}`}
+            } ${language === 'hi' ? 'font-hindi' : ''}`}
         >
           <p className="relative z-10 whitespace-pre-wrap leading-relaxed tracking-wide font-light break-words">
             {displayedText}
@@ -133,18 +132,16 @@ export default function MessageBubble({ message, language, personaName }) {
             {/* Like Button */}
             <button
               onClick={handleLike}
-              className={`group/like flex items-center gap-1 px-2 py-1 rounded-full transition-all ${
-                liked === 'like'
+              className={`group/like flex items-center gap-1 px-2 py-1 rounded-full transition-all ${liked === 'like'
                   ? 'bg-green-500/20 border border-green-400/40'
                   : 'bg-white/10 border border-white/20 hover:bg-white/15 hover:border-white/30'
-              }`}
+                }`}
               title="Like this response"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className={`h-4 w-4 transition-colors ${
-                  liked === 'like' ? 'text-green-400 fill-green-400' : 'text-white/70 group-hover/like:text-white'
-                }`}
+                className={`h-4 w-4 transition-colors ${liked === 'like' ? 'text-green-400 fill-green-400' : 'text-white/70 group-hover/like:text-white'
+                  }`}
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -156,18 +153,16 @@ export default function MessageBubble({ message, language, personaName }) {
             {/* Dislike Button */}
             <button
               onClick={handleDislike}
-              className={`group/dislike flex items-center gap-1 px-2 py-1 rounded-full transition-all ${
-                liked === 'dislike'
+              className={`group/dislike flex items-center gap-1 px-2 py-1 rounded-full transition-all ${liked === 'dislike'
                   ? 'bg-red-500/20 border border-red-400/40'
                   : 'bg-white/10 border border-white/20 hover:bg-white/15 hover:border-white/30'
-              }`}
+                }`}
               title="Dislike this response"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className={`h-4 w-4 transition-colors ${
-                  liked === 'dislike' ? 'text-red-400 fill-red-400' : 'text-white/70 group-hover/dislike:text-white'
-                }`}
+                className={`h-4 w-4 transition-colors ${liked === 'dislike' ? 'text-red-400 fill-red-400' : 'text-white/70 group-hover/dislike:text-white'
+                  }`}
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"

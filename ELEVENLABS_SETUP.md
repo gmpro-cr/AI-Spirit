@@ -29,7 +29,7 @@ Each persona is mapped to a specific ElevenLabs voice that matches their charact
 
 ### Pre-configured Voices
 
-- **Adam** (deep, authoritative): Einstein, APJ Kalam, Sardar Patel, Swami Vivekananda
+- **Adam** (deep, authoritative): Einstein, Sardar Patel, Swami Vivekananda
 - **Bill** (calm, gentle): Gandhi, Osho, Krishnamurti, Ratan Tata, Tagore
 - **Josh** (British, intellectual): Isaac Newton, Socrates, Nehru
 - **Sam** (energetic): Virat Kohli, Shah Rukh Khan, Chhota Bheem

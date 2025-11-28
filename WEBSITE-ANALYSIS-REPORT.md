@@ -170,7 +170,7 @@ Logo | About | Personas | Contact | FAQ | [User Avatar ▼]
 - Background colors vary widely
 
 **Examples of Issues**:
-- APJ Abdul Kalam: Blue background with official photo
+
 - Birbal: Illustrated character on orange background
 - Chhota Bheem: Cartoon on turquoise background
 - Mix creates unprofessional appearance

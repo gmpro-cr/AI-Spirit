@@ -12,7 +12,7 @@ const personas = [
   { name: 'Deepika Padukone', filename: 'deepika-padukone.jpg', wikipediaTitle: 'Deepika_Padukone' },
   { name: 'Virat Kohli', filename: 'virat-kohli.jpg', wikipediaTitle: 'Virat_Kohli' },
   { name: 'PV Sindhu', filename: 'pv-sindhu.jpg', wikipediaTitle: 'P._V._Sindhu' },
-  { name: 'APJ Abdul Kalam', filename: 'apj-abdul-kalam.jpg', wikipediaTitle: 'A._P._J._Abdul_Kalam' },
+
   { name: 'Swami Vivekananda', filename: 'swami-vivekananda.jpg', wikipediaTitle: 'Swami_Vivekananda' },
   { name: 'Tenali Raman', filename: 'tenali-raman.jpg', wikipediaTitle: 'Tenali_Ramakrishna' },
   { name: 'Birbal', filename: 'birbal.jpg', wikipediaTitle: 'Birbal' }
