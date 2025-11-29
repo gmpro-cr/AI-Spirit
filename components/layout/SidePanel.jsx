@@ -2,7 +2,7 @@ import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
 import { useAuth } from '@/context/AuthContext'
 
-export default function SidePanel({ onBack, backButtonText, showPastChats = true }) {
+export default function SidePanel({ onBack, backButtonText, showPastChats = true, onCreatePersona }) {
   const router = useRouter()
   const { user, signOut } = useAuth()
   const [pastChats, setPastChats] = useState([])
@@ -58,6 +58,32 @@ export default function SidePanel({ onBack, backButtonText, showPastChats = true
                 />
               </svg>
               {backButtonText || 'Back'}
+            </button>
+          </div>
+        )}
+
+        {/* Create Persona Button */}
+        {onCreatePersona && (
+          <div className="mb-6">
+            <button
+              onClick={onCreatePersona}
+              className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg hover:from-indigo-700 hover:to-purple-700 transition-all duration-200 shadow-lg hover:shadow-xl font-medium group"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5 group-hover:rotate-90 transition-transform duration-200"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 4v16m8-8H4"
+                />
+              </svg>
+              Create Persona
             </button>
           </div>
         )}

@@ -141,7 +141,12 @@ export default function Personas() {
 
       <div className="flex h-screen bg-white">
         {/* Side Panel */}
-        <SidePanelNew onBack={handleBack} backButtonText="Back to Home" showPastChats={true} />
+        <SidePanelNew
+          onBack={handleBack}
+          backButtonText="Back to Home"
+          showPastChats={true}
+          onCreatePersona={() => setIsModalOpen(true)}
+        />
 
         {/* Main Content */}
         <main className="flex-1 p-6 md:p-10 overflow-y-auto md:ml-64">
@@ -153,8 +158,8 @@ export default function Personas() {
                   key={category}
                   onClick={() => setSelectedCategory(category)}
                   className={`px-4 py-2 rounded-full text-sm font-medium transition-colors whitespace-nowrap flex-shrink-0 ${selectedCategory === category
-                      ? 'bg-black text-white'
-                      : 'bg-white text-black border border-gray-300 hover:bg-gray-100'
+                    ? 'bg-black text-white'
+                    : 'bg-white text-black border border-gray-300 hover:bg-gray-100'
                     }`}
                 >
                   {category}
@@ -260,6 +265,33 @@ export default function Personas() {
                     />
                   </svg>
                 </button>
+
+                {/* Create Persona Button */}
+                <div className="mb-6">
+                  <button
+                    onClick={() => {
+                      setIsMobileSidePanelOpen(false)
+                      setIsModalOpen(true)
+                    }}
+                    className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg hover:from-indigo-700 hover:to-purple-700 transition-all duration-200 shadow-lg hover:shadow-xl font-medium group"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-5 w-5 group-hover:rotate-90 transition-transform duration-200"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 4v16m8-8H4"
+                      />
+                    </svg>
+                    Create Persona
+                  </button>
+                </div>
 
                 {/* Past Chats Section */}
                 <h2 className="text-lg font-semibold mb-4 text-black">Past Chats</h2>
