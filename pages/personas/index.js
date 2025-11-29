@@ -53,35 +53,56 @@ export default function Personas() {
   }, [router.query])
 
   const loadAllPersonas = async () => {
+    console.log('=== LOADING ALL PERSONAS ===')
     setLoadingPersonas(true)
 
     // Filter out hidden personas
     let allPersonas = INITIAL_PERSONAS.filter(p => !p.hidden)
+    console.log('Initial personas (non-hidden):', allPersonas.length)
 
     // Load custom personas from localStorage (for guests)
     const localCustom = JSON.parse(localStorage.getItem('esperit_custom_personas') || '[]')
+    console.log('Custom personas from localStorage:', localCustom.length)
     allPersonas = [...allPersonas, ...localCustom]
 
     // Load custom personas from database
     try {
+      console.log('Fetching custom personas from database...')
       const { data, error } = await supabase
         .from('personas')
         .select('*')
         .eq('is_custom', true)
         .order('created_at', { ascending: false })
 
-      if (!error && data) {
-        allPersonas = [...allPersonas, ...data]
+      if (error) {
+        console.error('❌ Error loading custom personas from database:', error)
+        console.error('Error details:', {
+          message: error.message,
+          details: error.details,
+          hint: error.hint,
+          code: error.code
+        })
+      } else {
+        console.log('✅ Custom personas from database:', data?.length || 0)
+        if (data && data.length > 0) {
+          console.log('Database personas:', data.map(p => ({ name: p.name, slug: p.slug })))
+        }
+        if (data) {
+          allPersonas = [...allPersonas, ...data]
+        }
       }
     } catch (error) {
-      console.error('Error loading custom personas:', error)
+      console.error('❌ Exception loading custom personas:', error)
+      console.error('Error stack:', error.stack)
     }
 
+    console.log('Total personas loaded:', allPersonas.length)
     // Preserve the order from INITIAL_PERSONAS (priority personas first)
     // Custom personas from localStorage and database are appended after
     setPersonas(allPersonas)
     setFilteredPersonas(allPersonas)
     setLoadingPersonas(false)
+    console.log('=== PERSONAS LOADING COMPLETE ===')
   }
 
   const handlePersonaCreated = () => {

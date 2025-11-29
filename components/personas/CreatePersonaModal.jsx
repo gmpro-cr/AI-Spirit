@@ -51,6 +51,12 @@ export default function CreatePersonaModal({ isOpen, onClose, onPersonaCreated }
   const handleSubmit = async (e) => {
     e.preventDefault()
 
+    console.log('=== CREATE PERSONA SUBMIT STARTED ===')
+    console.log('Form data:', formData)
+    console.log('Uploaded image:', uploadedImage?.name)
+    console.log('Image preview length:', imagePreview?.length)
+    console.log('User:', user)
+
     if (!formData.name || !formData.description || !formData.systemPrompt) {
       alert('Please fill in all required fields (Name, Description, and System Prompt)')
       return
@@ -61,21 +67,11 @@ export default function CreatePersonaModal({ isOpen, onClose, onPersonaCreated }
     try {
       const slug = formData.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')
 
-      const newPersona = {
-        name: formData.name,
-        slug: `custom-${slug}-${Date.now()}`,
-        category: 'Custom',
-        description: formData.description,
-        avatar_url: formData.avatarUrl || null,
-        system_prompt: formData.systemPrompt,
-        language: 'en',
-        is_custom: true,
-        created_at: new Date().toISOString()
-      }
-
       // Use uploaded image preview or URL, or generate default avatar
       const avatarUrl = imagePreview || formData.avatarUrl ||
         `https://ui-avatars.com/api/?name=${encodeURIComponent(formData.name)}&size=400&background=4F46E5&color=fff&bold=true&format=png`
+
+      console.log('Generated avatar URL:', avatarUrl?.substring(0, 100) + '...')
 
       // Generate bio from system prompt (required field)
       const bio = formData.systemPrompt.length > 200
@@ -86,16 +82,22 @@ export default function CreatePersonaModal({ isOpen, onClose, onPersonaCreated }
       console.log(user ? 'Saving to database for authenticated user' : 'Saving to database for guest user')
 
       const personaData = {
-        name: newPersona.name,
-        slug: newPersona.slug,
-        category: newPersona.category,
-        short_description: newPersona.description,
+        name: formData.name,
+        slug: `custom-${slug}-${Date.now()}`,
+        category: 'Custom',
+        short_description: formData.description,
         bio: bio,
         avatar_url: avatarUrl,
-        system_prompt: newPersona.system_prompt,
+        system_prompt: formData.systemPrompt,
         is_custom: true,
         user_id: user?.id || null  // null for guest users
       }
+
+      console.log('Persona data to insert:', {
+        ...personaData,
+        avatar_url: personaData.avatar_url?.substring(0, 100) + '...',
+        system_prompt: personaData.system_prompt?.substring(0, 50) + '...'
+      })
 
       const { data, error } = await supabase
         .from('personas')
@@ -104,21 +106,37 @@ export default function CreatePersonaModal({ isOpen, onClose, onPersonaCreated }
         .single()
 
       if (error) {
-        console.error('Database error:', error)
+        console.error('❌ Database error:', error)
+        console.error('Error details:', {
+          message: error.message,
+          details: error.details,
+          hint: error.hint,
+          code: error.code
+        })
         throw new Error(`Database error: ${error.message}`)
       }
 
-      console.log('Persona saved to database:', data)
+      console.log('✅ Persona saved to database:', data)
 
       // Also save to localStorage for guest users as backup
       if (!user) {
-        const customPersonas = JSON.parse(localStorage.getItem('esperit_custom_personas') || '[]')
-        customPersonas.push(newPersona)
-        localStorage.setItem('esperit_custom_personas', JSON.stringify(customPersonas))
-        console.log('Persona also saved to localStorage backup')
+        try {
+          const newPersona = {
+            ...personaData,
+            created_at: new Date().toISOString()
+          }
+          const customPersonas = JSON.parse(localStorage.getItem('esperit_custom_personas') || '[]')
+          customPersonas.push(newPersona)
+          localStorage.setItem('esperit_custom_personas', JSON.stringify(customPersonas))
+          console.log('✅ Persona also saved to localStorage backup')
+        } catch (localStorageError) {
+          console.error('⚠️ localStorage save failed:', localStorageError)
+        }
       }
 
-      onPersonaCreated(data)
+      if (onPersonaCreated) {
+        onPersonaCreated(data)
+      }
 
       // Reset form and close
       setFormData({ name: '', description: '', avatarUrl: '', systemPrompt: '' })
@@ -127,10 +145,12 @@ export default function CreatePersonaModal({ isOpen, onClose, onPersonaCreated }
       alert('Persona created successfully!')
       onClose()
     } catch (error) {
-      console.error('Error creating persona:', error)
-      alert(`Failed to create persona: ${error.message || 'Unknown error'}`)
+      console.error('❌ Error creating persona:', error)
+      console.error('Error stack:', error.stack)
+      alert(`Failed to create persona: ${error.message || 'Unknown error'}. Check console for details.`)
     } finally {
       setLoading(false)
+      console.log('=== CREATE PERSONA SUBMIT ENDED ===')
     }
   }
 
