@@ -49,7 +49,7 @@ IMPORTANT GUIDELINES:
       "Tell me about your business success"
     ],
     language: "en"
-  },,
+  },
   {
     name: "Elon Musk",
     slug: "elon-musk",
@@ -90,7 +90,7 @@ IMPORTANT GUIDELINES:
       "What advice for young entrepreneurs?"
     ],
     language: "en"
-  },,
+  },
   {
     name: "Osho",
     slug: "osho",
@@ -164,7 +164,7 @@ IMPORTANT GUIDELINES:
       "What is your view on love and relationships?"
     ],
     language: "en"
-  },,
+  },
   {
     name: "Astro Guide",
     slug: "astro-guide",
@@ -313,7 +313,7 @@ IMPORTANT GUIDELINES:
       "How do I transition to a new industry?"
     ],
     language: "en"
-  },,
+  },
   {
     name: "Fitness Coach",
     slug: "fitness-coach",
@@ -389,7 +389,7 @@ IMPORTANT GUIDELINES:
       "I have no time to exercise - help!"
     ],
     language: "en"
-  },,
+  },
   {
     name: "Albert Einstein",
     slug: "albert-einstein",
@@ -454,7 +454,7 @@ IMPORTANT GUIDELINES:
       "How did you come up with E=mc²?"
     ],
     language: "en"
-  },,
+  },
   {
     name: "Birbal",
     slug: "birbal",
@@ -482,7 +482,7 @@ IMPORTANT GUIDELINES:
       "मुझे कोई पहेली दीजिए"
     ],
     language: "hi"
-  },,
+  },
   {
     name: "Charlie Munger",
     slug: "charlie-munger",
@@ -542,7 +542,7 @@ IMPORTANT GUIDELINES:
       "Tell me about working with Warren Buffett"
     ],
     language: "en"
-  },,
+  },
   {
     name: "Gajanan Maharaj",
     slug: "gajanan-maharaj",
@@ -593,7 +593,7 @@ IMPORTANT GUIDELINES:
       "मी भगवान दत्तात्रेयाची उपासना कशी करू?"
     ],
     language: "mr"
-  },,
+  },
   {
     name: "Isaac Newton",
     slug: "isaac-newton",
@@ -644,7 +644,7 @@ IMPORTANT GUIDELINES:
       "What inspired your scientific work?"
     ],
     language: "en"
-  },,
+  },
   {
     name: "J. Krishnamurti",
     slug: "j-krishnamurti",
@@ -727,7 +727,7 @@ CORE THEMES TO EMPHASIZE:
       "Why do you say truth is a pathless land?"
     ],
     language: "en"
-  },,
+  },
   {
     name: "Jawaharlal Nehru",
     slug: "jawaharlal-nehru",
@@ -781,7 +781,7 @@ IMPORTANT GUIDELINES:
       "आप बच्चों से इतना प्यार क्यों करते हैं?"
     ],
     language: "hi"
-  },,
+  },
   {
     name: "Mahatma Gandhi",
     slug: "mahatma-gandhi",
@@ -834,7 +834,7 @@ IMPORTANT GUIDELINES:
       "सत्य का अर्थ क्या है?"
     ],
     language: "hi"
-  },,
+  },
   {
     name: "PV Sindhu",
     slug: "pv-sindhu",
@@ -863,7 +863,7 @@ IMPORTANT GUIDELINES:
       "Message for young athletes?"
     ],
     language: "en"
-  },,
+  },
   {
     name: "Rabindranath Tagore",
     slug: "rabindranath-tagore",
@@ -914,7 +914,7 @@ IMPORTANT GUIDELINES:
       "आपके नोबेल पुरस्कार के काम को क्या प्रेरित किया?"
     ],
     language: "hi"
-  },,
+  },
   {
     name: "Ratan Tata",
     slug: "ratan-tata",
@@ -945,7 +945,7 @@ IMPORTANT GUIDELINES:
       "Advice for building a lasting business?"
     ],
     language: "en"
-  },,
+  },
   {
     name: "Sardar Patel",
     slug: "sardar-vallabhbhai-patel",
@@ -999,7 +999,7 @@ IMPORTANT GUIDELINES:
       "नेतृत्व के प्रति आपका दृष्टिकोण क्या है?"
     ],
     language: "hi"
-  },,
+  },
   {
     name: "Shaktiman",
     slug: "shaktiman",
@@ -1048,7 +1048,7 @@ IMPORTANT GUIDELINES:
       "तमराज किलविश के साथ अपनी सबसे बड़ी लड़ाई के बारे में बताएं"
     ],
     language: "hi"
-  },,
+  },
   {
     name: "Shinchan",
     slug: "shinchan",
@@ -1105,7 +1105,7 @@ IMPORTANT GUIDELINES:
       "अपने परिवार के बारे में बताओ"
     ],
     language: "hi"
-  },,
+  },
   {
     name: "Socrates",
     slug: "socrates",
@@ -1195,7 +1195,7 @@ YOUR FAMOUS SAYINGS & IDEAS:
       "What does it mean to know thyself?"
     ],
     language: "en"
-  },,
+  },
   {
     name: "Subhas Chandra Bose",
     slug: "subhas-chandra-bose",
@@ -1249,7 +1249,7 @@ IMPORTANT GUIDELINES:
       "स्वतंत्र भारत के लिए आपका दृष्टिकोण क्या है?"
     ],
     language: "hi"
-  },,
+  },
   {
     name: "Swami Samarth",
     slug: "swami-samarth",
@@ -1300,7 +1300,7 @@ IMPORTANT GUIDELINES:
       "मी अध्यात्म कसे साधावे?"
     ],
     language: "mr"
-  },,
+  },
   {
     name: "Swami Vivekananda",
     slug: "swami-vivekananda",
@@ -1328,7 +1328,7 @@ IMPORTANT GUIDELINES:
       "समाज की प्रभावी सेवा कैसे करें?"
     ],
     language: "hi"
-  },,
+  },
   {
     name: "Tenali Raman",
     slug: "tenali-raman",
@@ -1349,7 +1349,7 @@ IMPORTANT GUIDELINES:
       "तेज़ सोच का रहस्य क्या है?"
     ],
     language: "hi"
-  },,
+  },
   {
     name: "Plato",
     slug: "plato",
@@ -1413,7 +1413,7 @@ IMPORTANT GUIDELINES:
       "What is the nature of love?"
     ],
     language: "en"
-  },,
+  },
   {
     name: "William Shakespeare",
     slug: "william-shakespeare",
@@ -1467,7 +1467,7 @@ IMPORTANT GUIDELINES:
       "What makes a great tragedy?"
     ],
     language: "en"
-  },,
+  },
   {
     name: "Life Coach",
     slug: "life-coach",
@@ -1530,7 +1530,7 @@ IMPORTANT GUIDELINES:
       "I need help making a big decision"
     ],
     language: "en"
-  },,
+  },
   {
     name: "Travel Guide",
     slug: "travel-guide",
@@ -1607,7 +1607,7 @@ IMPORTANT GUIDELINES:
       "I have 5 days - where should I go?"
     ],
     language: "en"
-  },,
+  },
   {
     name: "Money Manager",
     slug: "money-manager",

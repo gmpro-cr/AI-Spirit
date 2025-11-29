@@ -3,11 +3,17 @@ import { NextResponse } from 'next/server'
 
 export async function middleware(req) {
   const res = NextResponse.next()
-  const supabase = createMiddlewareClient({ req, res })
 
-  // Refresh session if expired - required for Server Components
-  // This keeps the session active but doesn't enforce authentication
-  await supabase.auth.getSession()
+  // Only create Supabase client if environment variables are present
+  // This allows the app to work without Supabase configured
+  const hasSupabaseConfig = process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+
+  if (hasSupabaseConfig) {
+    const supabase = createMiddlewareClient({ req, res })
+    // Refresh session if expired - required for Server Components
+    // This keeps the session active but doesn't enforce authentication
+    await supabase.auth.getSession()
+  }
 
   return res
 }
