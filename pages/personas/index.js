@@ -77,9 +77,8 @@ export default function Personas() {
       console.error('Error loading custom personas:', error)
     }
 
-    // Sort personas alphabetically by name
-    allPersonas.sort((a, b) => a.name.localeCompare(b.name))
-
+    // Preserve the order from INITIAL_PERSONAS (priority personas first)
+    // Custom personas from localStorage and database are appended after
     setPersonas(allPersonas)
     setFilteredPersonas(allPersonas)
     setLoadingPersonas(false)
@@ -153,11 +152,10 @@ export default function Personas() {
                 <button
                   key={category}
                   onClick={() => setSelectedCategory(category)}
-                  className={`px-4 py-2 rounded-full text-sm font-medium transition-colors whitespace-nowrap flex-shrink-0 ${
-                    selectedCategory === category
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition-colors whitespace-nowrap flex-shrink-0 ${selectedCategory === category
                       ? 'bg-black text-white'
                       : 'bg-white text-black border border-gray-300 hover:bg-gray-100'
-                  }`}
+                    }`}
                 >
                   {category}
                 </button>
