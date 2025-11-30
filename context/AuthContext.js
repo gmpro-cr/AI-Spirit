@@ -9,8 +9,8 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true)
   const [profileLoading, setProfileLoading] = useState(false)
 
-  // Load user profile from database
-  const loadUserProfile = async (userId) => {
+  // Load user profile from database (or create if doesn't exist)
+  const loadUserProfile = async (userId, userMetadata) => {
     if (!userId) {
       setUserProfile(null)
       return
@@ -27,7 +27,29 @@ export const AuthProvider = ({ children }) => {
       if (error) {
         // Profile doesn't exist yet (first-time user)
         if (error.code === 'PGRST116') {
-          setUserProfile(null)
+          // Auto-create profile from Google sign-in data
+          const fullName = userMetadata?.full_name || userMetadata?.name || ''
+          const preferredName = fullName.split(' ')[0] || userMetadata?.email?.split('@')[0] || 'User'
+
+          const { data: newProfile, error: createError } = await supabase
+            .from('user_profiles')
+            .insert({
+              user_id: userId,
+              full_name: fullName,
+              preferred_name: preferredName,
+              interests: [],
+              goals: []
+            })
+            .select()
+            .single()
+
+          if (createError) {
+            console.error('Error creating profile:', createError)
+            setUserProfile(null)
+          } else {
+            console.log('✅ Auto-created profile for:', preferredName)
+            setUserProfile(newProfile)
+          }
         } else {
           console.error('Error loading user profile:', error)
         }
@@ -47,7 +69,7 @@ export const AuthProvider = ({ children }) => {
       .then(({ data: { session } }) => {
         setUser(session?.user ?? null)
         if (session?.user) {
-          loadUserProfile(session.user.id)
+          loadUserProfile(session.user.id, session.user.user_metadata)
         }
         setLoading(false)
       })
@@ -68,7 +90,7 @@ export const AuthProvider = ({ children }) => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null)
       if (session?.user) {
-        loadUserProfile(session.user.id)
+        loadUserProfile(session.user.id, session.user.user_metadata)
       } else {
         setUserProfile(null)
       }

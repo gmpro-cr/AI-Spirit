@@ -5,7 +5,6 @@ import SidePanelNew from '@/components/layout/SidePanel'
 import PersonaCardNew from '@/components/personas/PersonaCard'
 import CreatePersonaModal from '@/components/personas/CreatePersonaModal'
 import EditPersonaModal from '@/components/personas/EditPersonaModal'
-import UserProfileModal from '@/components/profile/UserProfileModal'
 import { INITIAL_PERSONAS } from '@/data/personas'
 import { supabase } from '@/lib/supabase'
 import { withAuth } from '@/middleware/withAuth'
@@ -13,14 +12,13 @@ import { useAuth } from '@/context/AuthContext'
 
 function Personas() {
   const router = useRouter()
-  const { user, userProfile, profileLoading, refreshProfile } = useAuth()
+  const { user, userProfile } = useAuth()
   const [personas, setPersonas] = useState([])
   const [filteredPersonas, setFilteredPersonas] = useState([])
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('All')
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
-  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false)
   const [personaToEdit, setPersonaToEdit] = useState(null)
   const [loadingPersonas, setLoadingPersonas] = useState(true)
   const [isMobileSidePanelOpen, setIsMobileSidePanelOpen] = useState(false)
@@ -56,14 +54,6 @@ function Personas() {
       router.replace('/personas', undefined, { shallow: true })
     }
   }, [router.query])
-
-  // Check if user needs to set up profile (first-time user)
-  useEffect(() => {
-    if (!profileLoading && user && userProfile === null) {
-      // User is authenticated but has no profile - show profile setup
-      setIsProfileModalOpen(true)
-    }
-  }, [user, userProfile, profileLoading])
 
   const loadAllPersonas = async () => {
     console.log('=== LOADING ALL PERSONAS ===')
@@ -399,18 +389,6 @@ function Personas() {
         }}
         persona={personaToEdit}
         onPersonaUpdated={handlePersonaUpdated}
-      />
-
-      {/* User Profile Setup Modal - shown for first-time users */}
-      <UserProfileModal
-        isOpen={isProfileModalOpen}
-        onClose={(profileCreated) => {
-          setIsProfileModalOpen(false)
-          if (profileCreated) {
-            refreshProfile() // Reload the profile
-          }
-        }}
-        user={user}
       />
     </>
   )
