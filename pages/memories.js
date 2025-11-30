@@ -240,7 +240,7 @@ function MemoriesPage() {
                             <div className="text-6xl mb-4">🧠</div>
                             <h3 className="text-lg font-semibold text-black mb-2">No Memories Yet</h3>
                             <p className="text-gray-600 mb-6">
-                                Start chatting with personas and they'll remember details about you!
+                                Start chatting with personas and they&apos;ll remember details about you!
                             </p>
                             <button
                                 onClick={() => router.push('/personas')}
@@ -271,7 +271,7 @@ function MemoriesPage() {
                                             </div>
                                             <p className="text-black font-medium mb-1">{memory.content}</p>
                                             {memory.context && (
-                                                <p className="text-sm text-gray-500 italic">"{memory.context}"</p>
+                                                <p className="text-sm text-gray-500 italic">&quot;{memory.context}&quot;</p>
                                             )}
                                             <p className="text-xs text-gray-400 mt-2">
                                                 Created: {new Date(memory.created_at).toLocaleDateString()}

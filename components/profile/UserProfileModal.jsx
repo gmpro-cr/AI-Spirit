@@ -64,7 +64,7 @@ export default function UserProfileModal({ isOpen, onClose, user }) {
                     <div className="p-6 border-b border-gray-200">
                         <h2 className="text-2xl font-bold text-black">Welcome to AI-Spirit! 👋</h2>
                         <p className="text-gray-600 mt-2">
-                            Let's personalize your experience. Tell us a bit about yourself so our AI personas can remember you.
+                            Let&apos;s personalize your experience. Tell us a bit about yourself so our AI personas can remember you.
                         </p>
                     </div>
 
@@ -132,7 +132,7 @@ export default function UserProfileModal({ isOpen, onClose, user }) {
                                     <p className="font-semibold mb-1">How this helps:</p>
                                     <ul className="list-disc list-inside space-y-1 text-blue-800">
                                         <li>Personas will remember your name across all conversations</li>
-                                        <li>They'll reference your interests and goals in discussions</li>
+                                        <li>They&apos;ll reference your interests and goals in discussions</li>
                                         <li>Conversations feel more personal and continuous</li>
                                         <li>You can update this anytime in your profile settings</li>
                                     </ul>
