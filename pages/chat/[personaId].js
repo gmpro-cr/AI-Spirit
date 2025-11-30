@@ -154,13 +154,21 @@ function ChatPage() {
       const aiMessage = { role: 'assistant', content: data.response }
       addMessage(aiMessage)
 
-      // Save conversation to localStorage
+      // For authenticated users, use conversation ID from API response
+      // For guest users, generate locally
       let convId = conversationId
-      if (!convId) {
-        // Create new conversation ID
+
+      if (user && data.conversationId) {
+        // Authenticated: use conversation ID from API
+        convId = data.conversationId
+        if (!conversationId) {
+          setConversationId(convId)
+          router.replace(`/chat/${personaId}?conversationId=${convId}`, undefined, { shallow: true })
+        }
+      } else if (!convId) {
+        // Guest: generate new conversation ID locally
         convId = `conv_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
         setConversationId(convId)
-        // Update URL with conversation ID
         router.replace(`/chat/${personaId}?conversationId=${convId}`, undefined, { shallow: true })
       }
 

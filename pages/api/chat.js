@@ -226,11 +226,45 @@ Remember these details in your responses. Address the user by name and reference
     }
 
     // Save to database (if authenticated)
-    if (!isGuest && conversationId) {
+    if (!isGuest && userId) {
+      // Create conversation record if it doesn't exist
+      let finalConversationId = conversationId
+
+      if (!conversationId) {
+        // Generate new conversation ID
+        finalConversationId = `conv_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+
+        // Create conversation record
+        const { error: convError } = await supabaseAdmin
+          .from('conversations')
+          .insert({
+            id: finalConversationId,
+            user_id: userId,
+            persona_slug: persona.slug,
+            title: message.substring(0, 100), // First message as title
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
+          })
+
+        if (convError) {
+          console.error('Error creating conversation:', convError)
+        } else {
+          console.log('✅ Created new conversation:', finalConversationId)
+        }
+      }
+
+      // Save messages to database
       await supabaseAdmin.from('messages').insert([
-        { conversation_id: conversationId, role: 'user', content: message },
-        { conversation_id: conversationId, role: 'assistant', content: result.response }
+        { conversation_id: finalConversationId, role: 'user', content: message },
+        { conversation_id: finalConversationId, role: 'assistant', content: result.response }
       ])
+
+      // Return conversation ID to frontend
+      return res.status(200).json({
+        response: result.response,
+        success: true,
+        conversationId: finalConversationId
+      })
     }
 
     // Extract and save memories from this conversation (for authenticated users)
