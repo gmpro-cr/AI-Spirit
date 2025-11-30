@@ -12,11 +12,25 @@ export default function AuthCallback() {
       try {
         const searchParams = new URLSearchParams(window.location.search)
         const code = searchParams.get('code')
+        const error_code = searchParams.get('error_code')
+        const error_description = searchParams.get('error_description')
 
         // Get returnTo parameter
         const returnTo = searchParams.get('returnTo') || router.query.returnTo || '/personas'
 
-        console.log('[Auth Callback] Starting authentication flow', { code: !!code, returnTo })
+        console.log('[Auth Callback] Starting authentication flow', {
+          code: !!code,
+          returnTo,
+          hasError: !!error_code
+        })
+
+        // Handle OAuth errors
+        if (error_code) {
+          console.error('[Auth Callback] OAuth error:', error_code, error_description)
+          alert(`Authentication failed: ${error_description || 'Unknown error'}`)
+          router.push('/auth/signin')
+          return
+        }
 
         if (code) {
           // Exchange the code for a session
@@ -25,6 +39,16 @@ export default function AuthCallback() {
 
           if (error) {
             console.error('[Auth Callback] Code exchange error:', error)
+            // Retry once if it's a network error
+            if (error.message?.includes('network') || error.message?.includes('fetch')) {
+              console.log('[Auth Callback] Retrying code exchange...')
+              const { data: retryData, error: retryError } = await supabase.auth.exchangeCodeForSession(code)
+              if (!retryError && retryData.session) {
+                console.log('[Auth Callback] Retry successful')
+                window.location.href = returnTo
+                return
+              }
+            }
             router.push('/auth/signin')
             return
           }
