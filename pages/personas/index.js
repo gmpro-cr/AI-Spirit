@@ -7,8 +7,9 @@ import CreatePersonaModal from '@/components/personas/CreatePersonaModal'
 import EditPersonaModal from '@/components/personas/EditPersonaModal'
 import { INITIAL_PERSONAS } from '@/data/personas'
 import { supabase } from '@/lib/supabase'
+import { withAuth } from '@/middleware/withAuth'
 
-export default function Personas() {
+function Personas() {
   const router = useRouter()
   const [personas, setPersonas] = useState([])
   const [filteredPersonas, setFilteredPersonas] = useState([])
@@ -390,3 +391,5 @@ export default function Personas() {
     </>
   )
 }
+
+export default withAuth(Personas)

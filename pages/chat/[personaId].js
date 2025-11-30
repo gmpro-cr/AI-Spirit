@@ -5,8 +5,10 @@ import DOMPurify from 'isomorphic-dompurify'
 import SidePanelNew from '@/components/layout/SidePanel'
 import { useChat } from '@/context/ChatContext'
 import { INITIAL_PERSONAS } from '@/data/personas'
+import { withAuth } from '@/middleware/withAuth'
 
-export default function ChatPage() {
+
+function ChatPage() {
   const router = useRouter()
   const { personaId, conversationId: urlConversationId } = router.query
   const { messages, setMessages, isLoading, setIsLoading, addMessage, clearMessages } = useChat()
@@ -17,11 +19,11 @@ export default function ChatPage() {
 
   // Format message content with bold text
   const formatMessage = (content) => {
-  // Replace **text** with <strong>text</strong>
-  const formatted = content.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-  // Sanitize HTML to prevent XSS attacks
-  return DOMPurify.sanitize(formatted)
-}
+    // Replace **text** with <strong>text</strong>
+    const formatted = content.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    // Sanitize HTML to prevent XSS attacks
+    return DOMPurify.sanitize(formatted)
+  }
 
   // Load persona
   useEffect(() => {
@@ -339,11 +341,10 @@ export default function ChatPage() {
                   />
                 )}
                 <div
-                  className={`max-w-md lg:max-w-lg p-3 rounded-2xl ${
-                    msg.role === 'user'
+                  className={`max-w-md lg:max-w-lg p-3 rounded-2xl ${msg.role === 'user'
                       ? 'bg-black text-white rounded-br-none'
                       : 'bg-gray-100 text-black rounded-bl-none'
-                  }`}
+                    }`}
                 >
                   <p
                     className="whitespace-pre-wrap"
@@ -431,3 +432,5 @@ export default function ChatPage() {
     </>
   )
 }
+
+export default withAuth(ChatPage)

@@ -2,9 +2,11 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
 import ContactModal from '@/components/ContactModal'
+import { useAuth } from '@/context/AuthContext'
 
 export default function Home() {
   const router = useRouter()
+  const { user } = useAuth()
   const [isContactModalOpen, setIsContactModalOpen] = useState(false)
   const [typingText, setTypingText] = useState('')
   const [showTyping, setShowTyping] = useState(false)
@@ -83,7 +85,7 @@ export default function Home() {
   // Progressive message loading with typing animation
   useEffect(() => {
     const messages = chatPersonas[currentPersonaIndex].messages
-    
+
     if (currentMessageIndex >= messages.length) {
       // All messages shown, wait then rotate to next persona
       const rotateTimer = setTimeout(() => {
@@ -93,7 +95,7 @@ export default function Home() {
     }
 
     const currentMessage = messages[currentMessageIndex]
-    
+
     if (currentMessage.type === 'user') {
       // User messages appear instantly
       setDisplayedMessages(prev => [...prev, currentMessage])
@@ -106,7 +108,7 @@ export default function Home() {
       let charIndex = 0
       setShowTyping(true)
       setTypingText('')
-      
+
       const typingInterval = setInterval(() => {
         if (charIndex <= currentMessage.text.length) {
           setTypingText(currentMessage.text.slice(0, charIndex))
@@ -130,9 +132,13 @@ export default function Home() {
   }, [currentPersonaIndex, currentMessageIndex])
 
   const handleStartChatting = () => {
-    // Navigate to personas page
-    // If user is not authenticated, middleware will redirect to sign-in
-    router.push('/personas')
+    if (!user) {
+      // User is not authenticated, redirect to sign-in with return URL
+      router.push('/auth/signin?returnTo=/personas')
+    } else {
+      // User is authenticated, go directly to personas
+      router.push('/personas')
+    }
   }
 
   return (
@@ -224,25 +230,25 @@ export default function Home() {
                         )}
                       </div>
                     ))}
-                    
+
                     {/* Show currently typing message */}
                     {currentMessageIndex < chatPersonas[currentPersonaIndex].messages.length &&
-                     chatPersonas[currentPersonaIndex].messages[currentMessageIndex].type === 'ai' &&
-                     typingText && (
-                      <div className="flex gap-1.5 sm:gap-2">
-                        <img
-                          src={chatPersonas[currentPersonaIndex].image}
-                          alt={chatPersonas[currentPersonaIndex].name}
-                          className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 rounded-full object-cover flex-shrink-0"
-                        />
-                        <div className="bg-gray-100 text-black px-3 py-2 sm:px-4 sm:py-2.5 rounded-2xl rounded-bl-sm max-w-[85%]">
-                          <p className="text-xs sm:text-sm">{typingText}</p>
-                          {showTyping && (
-                            <span className="inline-block w-1 h-3 sm:h-4 bg-black ml-1 animate-pulse" />
-                          )}
+                      chatPersonas[currentPersonaIndex].messages[currentMessageIndex].type === 'ai' &&
+                      typingText && (
+                        <div className="flex gap-1.5 sm:gap-2">
+                          <img
+                            src={chatPersonas[currentPersonaIndex].image}
+                            alt={chatPersonas[currentPersonaIndex].name}
+                            className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 rounded-full object-cover flex-shrink-0"
+                          />
+                          <div className="bg-gray-100 text-black px-3 py-2 sm:px-4 sm:py-2.5 rounded-2xl rounded-bl-sm max-w-[85%]">
+                            <p className="text-xs sm:text-sm">{typingText}</p>
+                            {showTyping && (
+                              <span className="inline-block w-1 h-3 sm:h-4 bg-black ml-1 animate-pulse" />
+                            )}
+                          </div>
                         </div>
-                      </div>
-                    )}
+                      )}
                   </div>
                 </div>
               </div>
