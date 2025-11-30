@@ -6,6 +6,7 @@ import { moderateContent } from '@/lib/moderation'
 // import { chatRateLimiter, getClientIdentifier } from '@/lib/rate-limit'
 import { logApiCall, checkCostThreshold } from '@/lib/cost-tracking'
 import { getContextIfNeeded } from '@/lib/contextProvider'
+import { extractAndSaveMemories, getUserMemories, formatMemoriesForContext } from '@/lib/memorySystem'
 
 // Fallback system: Gemini first, then Groq if rate limited
 
@@ -19,7 +20,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { conversationId, personaId, persona: personaObj, message, conversationHistory, isGuest } = req.body
+    const { conversationId, personaId, persona: personaObj, message, conversationHistory, isGuest, userId, userProfile } = req.body
 
     // Rate limiting disabled - will enable when userbase grows
 
@@ -67,7 +68,7 @@ export default async function handler(req, res) {
       persona = personaObj
     } else {
       // Query database (for custom personas)
-      const { data, error: personaError} = await supabaseAdmin
+      const { data, error: personaError } = await supabaseAdmin
         .from('personas')
         .select('*')
         .eq('slug', personaId)
@@ -162,14 +163,40 @@ CRITICAL RULES:
       })
     }
 
+    // Get user memories for authenticated users
+    let memoryContext = ''
+    if (userId && !isGuest) {
+      const memories = await getUserMemories(userId, persona.slug)
+      memoryContext = formatMemoriesForContext(memories, userProfile)
+
+      if (memoryContext) {
+        console.log('[Memory System] Injecting user memories:', {
+          userId,
+          personaSlug: persona.slug,
+          memoriesCount: memories.length
+        })
+      }
+    }
+
+    // Build final system prompt with memory context
+    let finalSystemPrompt = enhancedSystemPrompt
+    if (memoryContext) {
+      finalSystemPrompt = `${enhancedSystemPrompt}
+
+IMPORTANT - WHAT YOU KNOW ABOUT THIS USER:
+${memoryContext}
+
+Remember these details in your responses. Address the user by name and reference their interests/goals when relevant.`
+    }
+
     // Generate AI response - try Gemini first, fallback to Groq if rate limited
-    let result = await generatePersonaResponse(enhancedSystemPrompt, messageHistory, {}, contextString)
+    let result = await generatePersonaResponse(finalSystemPrompt, messageHistory, {}, contextString)
 
     // If Gemini fails with rate limit, try Groq
     if (!result.success && result.error?.includes('busy')) {
       console.log('[Fallback] Gemini rate limited, trying Groq...')
       // Prepend context to system prompt for Groq as well
-      const groqSystemPrompt = contextString ? contextString + enhancedSystemPrompt : enhancedSystemPrompt
+      const groqSystemPrompt = contextString ? contextString + finalSystemPrompt : finalSystemPrompt
       result = await generateGroqResponse(groqSystemPrompt, messageHistory)
     }
 
@@ -204,6 +231,13 @@ CRITICAL RULES:
         { conversation_id: conversationId, role: 'user', content: message },
         { conversation_id: conversationId, role: 'assistant', content: result.response }
       ])
+    }
+
+    // Extract and save memories from this conversation (for authenticated users)
+    if (userId && !isGuest) {
+      // Run memory extraction in background (don't wait for it)
+      extractAndSaveMemories(userId, persona.slug, conversationId, message, result.response)
+        .catch(err => console.error('[Memory Extraction Error]:', err))
     }
 
     return res.status(200).json({

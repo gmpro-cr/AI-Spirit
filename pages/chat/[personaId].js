@@ -6,12 +6,13 @@ import SidePanelNew from '@/components/layout/SidePanel'
 import { useChat } from '@/context/ChatContext'
 import { INITIAL_PERSONAS } from '@/data/personas'
 import { withAuth } from '@/middleware/withAuth'
-
+import { useAuth } from '@/context/AuthContext'
 
 function ChatPage() {
   const router = useRouter()
   const { personaId, conversationId: urlConversationId } = router.query
   const { messages, setMessages, isLoading, setIsLoading, addMessage, clearMessages } = useChat()
+  const { user, userProfile } = useAuth()
   const [persona, setPersona] = useState(null)
   const [currentInput, setCurrentInput] = useState('')
   const [conversationId, setConversationId] = useState(null)
@@ -137,7 +138,9 @@ function ChatPage() {
           message: messageText,
           conversationHistory: [...messages, userMessage],
           conversationId: conversationId,
-          isGuest: true,
+          isGuest: !user, // Not guest if user is authenticated
+          userId: user?.id || null,
+          userProfile: userProfile || null,
         }),
       })
 
@@ -342,8 +345,8 @@ function ChatPage() {
                 )}
                 <div
                   className={`max-w-md lg:max-w-lg p-3 rounded-2xl ${msg.role === 'user'
-                      ? 'bg-black text-white rounded-br-none'
-                      : 'bg-gray-100 text-black rounded-bl-none'
+                    ? 'bg-black text-white rounded-br-none'
+                    : 'bg-gray-100 text-black rounded-bl-none'
                     }`}
                 >
                   <p
