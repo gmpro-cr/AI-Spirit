@@ -73,11 +73,6 @@ export default function CreatePersonaModal({ isOpen, onClose, onPersonaCreated }
 
       console.log('Generated avatar URL:', avatarUrl?.substring(0, 100) + '...')
 
-      // Generate bio from system prompt (required field)
-      const bio = formData.systemPrompt.length > 200
-        ? formData.systemPrompt.substring(0, 200) + '...'
-        : formData.systemPrompt
-
       // Save to database for ALL users (authenticated and guest)
       console.log(user ? 'Saving to database for authenticated user' : 'Saving to database for guest user')
 
@@ -86,7 +81,6 @@ export default function CreatePersonaModal({ isOpen, onClose, onPersonaCreated }
         slug: `custom-${slug}-${Date.now()}`,
         category: 'Custom',
         short_description: formData.description,
-        bio: bio,
         avatar_url: avatarUrl,
         system_prompt: formData.systemPrompt,
         is_custom: true,
