@@ -1,4 +1,5 @@
 import { supabaseAdmin } from '@/lib/supabase'
+import crypto from 'crypto'
 import { generatePersonaResponse } from '@/lib/gemini'
 import { generateGroqResponse } from '@/lib/groq'
 import { moderateContent } from '@/lib/moderation'
@@ -21,6 +22,14 @@ export default async function handler(req, res) {
 
   try {
     const { conversationId, personaId, persona: personaObj, message, conversationHistory, isGuest, userId, userProfile } = req.body
+
+    console.log('[Chat API] Request received:', {
+      conversationId,
+      personaId,
+      isGuest,
+      userId,
+      hasUserProfile: !!userProfile
+    })
 
     // Rate limiting disabled - will enable when userbase grows
 
@@ -175,7 +184,7 @@ CRITICAL RULES:
     // Get user memories for authenticated users
     let memoryContext = ''
     if (userId && !isGuest) {
-      const memories = await getUserMemories(userId, persona.slug)
+      const memories = await getUserMemories(userId, persona.slug, supabaseAdmin)
       memoryContext = formatMemoriesForContext(memories, userProfile)
 
       if (memoryContext) {
@@ -240,18 +249,20 @@ Remember these details in your responses. Address the user by name and reference
       let finalConversationId = conversationId
 
       if (!conversationId) {
-        // Generate new conversation ID
-        finalConversationId = `conv_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+        // Generate new conversation ID (UUID)
+        finalConversationId = crypto.randomUUID()
 
         // Create conversation record
         const { error: convError } = await supabaseAdmin
           .from('conversations')
           .insert({
             id: finalConversationId,
-            user_id: userId,
+            user_id: userId || null,
             persona_slug: persona.slug,
-            title: message.substring(0, 100), // First message as title
-            created_at: new Date().toISOString(),
+            title: message.substring(0, 50) + '...',
+            session_id: crypto.randomUUID(),
+            persona_type: persona.type || 'default', // Required by schema
+            is_guest_session: isGuest,
             updated_at: new Date().toISOString()
           })
 
@@ -269,7 +280,7 @@ Remember these details in your responses. Address the user by name and reference
       ])
 
       // Extract and save memories from this conversation (use finalConversationId)
-      extractAndSaveMemories(userId, persona.slug, finalConversationId, message, result.response)
+      extractAndSaveMemories(userId, persona.slug, finalConversationId, message, result.response, supabaseAdmin)
         .catch(err => console.error('[Memory Extraction Error]:', err))
 
       // Return conversation ID to frontend
@@ -282,7 +293,7 @@ Remember these details in your responses. Address the user by name and reference
 
     // For guest users, still try to extract memories if they somehow have userId
     if (userId && isGuest && conversationId) {
-      extractAndSaveMemories(userId, persona.slug, conversationId, message, result.response)
+      extractAndSaveMemories(userId, persona.slug, conversationId, message, result.response, supabaseAdmin)
         .catch(err => console.error('[Memory Extraction Error]:', err))
     }
 
