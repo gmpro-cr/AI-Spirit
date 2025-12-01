@@ -91,19 +91,28 @@ export default async function handler(req, res) {
       ]
       // Limit to last 20 messages for performance
       messageHistory = messageHistory.slice(-20)
+      console.log('[Chat API] Guest mode - using frontend history:', messageHistory.length, 'messages')
     } else {
       // Load conversation history from database
       if (conversationId) {
-        const { data: history } = await supabaseAdmin
+        console.log('[Chat API] Loading history from database for conversationId:', conversationId)
+        const { data: history, error: historyError } = await supabaseAdmin
           .from('messages')
           .select('role, content')
           .eq('conversation_id', conversationId)
           .order('created_at', { ascending: true })
           .limit(20)
 
+        if (historyError) {
+          console.error('[Chat API] Error loading history:', historyError)
+        }
+
+        console.log('[Chat API] Loaded', (history || []).length, 'messages from database')
         messageHistory = [...(history || []), { role: 'user', content: message }]
+        console.log('[Chat API] Total message history:', messageHistory.length, 'messages')
       } else {
         // Fallback: use conversation history from frontend (for authenticated users without conversationId)
+        console.log('[Chat API] No conversationId - using frontend history')
         messageHistory = [
           ...(conversationHistory || []),
           { role: 'user', content: message }
