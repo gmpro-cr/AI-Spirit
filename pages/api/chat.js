@@ -259,6 +259,10 @@ Remember these details in your responses. Address the user by name and reference
         { conversation_id: finalConversationId, role: 'assistant', content: result.response }
       ])
 
+      // Extract and save memories from this conversation (use finalConversationId)
+      extractAndSaveMemories(userId, persona.slug, finalConversationId, message, result.response)
+        .catch(err => console.error('[Memory Extraction Error]:', err))
+
       // Return conversation ID to frontend
       return res.status(200).json({
         response: result.response,
@@ -267,9 +271,8 @@ Remember these details in your responses. Address the user by name and reference
       })
     }
 
-    // Extract and save memories from this conversation (for authenticated users)
-    if (userId && !isGuest) {
-      // Run memory extraction in background (don't wait for it)
+    // For guest users, still try to extract memories if they somehow have userId
+    if (userId && isGuest && conversationId) {
       extractAndSaveMemories(userId, persona.slug, conversationId, message, result.response)
         .catch(err => console.error('[Memory Extraction Error]:', err))
     }
