@@ -204,7 +204,7 @@ CRITICAL RULES:
 IMPORTANT - WHAT YOU KNOW ABOUT THIS USER:
 ${memoryContext}
 
-Remember these details in your responses. Address the user by name and reference their interests/goals when relevant.`
+Remember these details. Address the user by name ONLY when natural or for emphasis (not in every message). Reference their interests/goals when relevant.`
     }
 
     // Generate AI response - try Gemini first, fallback to Groq if rate limited
