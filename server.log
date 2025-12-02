@@ -1,0 +1,82 @@
+
+> esperit@0.1.0 dev
+> next dev
+
+  ▲ Next.js 14.2.33
+  - Local:        http://localhost:3000
+  - Environments: .env.local
+
+ ✓ Starting...
+ ✓ Ready in 1360ms
+ ✓ Compiled /middleware in 275ms (271 modules)
+ ✓ Compiled /api/chat in 97ms (87 modules)
+[Chat API] Request received: {
+  conversationId: undefined,
+  personaId: 'astro-guide',
+  isGuest: false,
+  userId: 'f7ddbd3c-089b-4068-8722-de0fea30d335',
+  hasUserProfile: true
+}
+[Chat API] No conversationId - using frontend history
+[DEBUG] Context injection check: {
+  isGuest: false,
+  conversationId: undefined,
+  hasConversationHistory: true,
+  conversationHistoryLength: 0
+}
+Gemini API Error: {
+  message: '[GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent: [404 Not Found] models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.',
+  status: 404
+}
+[Fallback] Gemini rate limited, trying Groq...
+[Groq API] {
+  duration: '398ms',
+  inputTokens: 270,
+  outputTokens: 48,
+  totalTokens: 318,
+  model: 'llama-3.3-70b-versatile'
+}
+[API Cost] {
+  userId: 'guest',
+  tokens: 318,
+  cost: '$0.0000',
+  timestamp: '2025-12-01T14:49:29.290Z'
+}
+✅ Created new conversation: db071dd3-931e-4067-b2f6-97112c9b747d
+ POST /api/chat 200 in 1648ms
+[Chat API] Request received: {
+  conversationId: 'db071dd3-931e-4067-b2f6-97112c9b747d',
+  personaId: 'astro-guide',
+  isGuest: false,
+  userId: 'f7ddbd3c-089b-4068-8722-de0fea30d335',
+  hasUserProfile: true
+}
+[Chat API] Loading history from database for conversationId: db071dd3-931e-4067-b2f6-97112c9b747d
+[Chat API] Loaded 2 messages from database
+[Chat API] Total message history: 3 messages
+[DEBUG] Context injection check: {
+  isGuest: false,
+  conversationId: 'db071dd3-931e-4067-b2f6-97112c9b747d',
+  hasConversationHistory: true,
+  conversationHistoryLength: 2
+}
+[Context] Error checking message count: { message: '' }
+Gemini API Error: {
+  message: '[GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent: [404 Not Found] models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.',
+  status: 404
+}
+[Fallback] Gemini rate limited, trying Groq...
+[Groq API] {
+  duration: '153ms',
+  inputTokens: 333,
+  outputTokens: 13,
+  totalTokens: 346,
+  model: 'llama-3.3-70b-versatile'
+}
+[API Cost] {
+  userId: 'guest',
+  tokens: 346,
+  cost: '$0.0000',
+  timestamp: '2025-12-01T14:49:30.269Z'
+}
+ POST /api/chat 200 in 846ms
