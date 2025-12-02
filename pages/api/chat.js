@@ -166,16 +166,13 @@ CRITICAL RULES:
       conversationHistoryLength: conversationHistory?.length
     })
 
-    // Get context if this is first message (works for both authenticated and guest users)
-    // Note: Frontend sends conversationHistory with current user message already included
-    // So first message for guest = length 1, not 0
-    const contextString = isGuest
-      ? ((conversationHistory?.length === 1) ? await getContextIfNeeded(null) : null)
-      : await getContextIfNeeded(conversationId)
+    // ALWAYS inject current context (date/time + latest news) so personas have up-to-date information
+    // This ensures they can discuss recent events and know the current date/time
+    const contextString = await getContextIfNeeded(null) // Pass null to always get context
 
     // Log context injection
     if (contextString) {
-      console.log('[Chat API] Injecting context for first message', {
+      console.log('[Chat API] Injecting current context', {
         conversationId,
         hasContext: true
       })
