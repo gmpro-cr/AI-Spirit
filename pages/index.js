@@ -1,4 +1,4 @@
-import { NextSeo, SoftwareApplicationJsonLd } from 'next-seo'
+import { NextSeo, SoftwareAppJsonLd } from 'next-seo'
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
 import ContactModal from '@/components/ContactModal'
@@ -148,7 +148,7 @@ export default function Home() {
         description="Have meaningful conversations with AI personas of legendary figures. Get wisdom, guidance, and perspectives from history's greatest thinkers."
         canonical="https://ai-spirit.in/"
       />
-      <SoftwareApplicationJsonLd
+      <SoftwareAppJsonLd
         name="AI-Spirit"
         price="0"
         priceCurrency="USD"
