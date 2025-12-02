@@ -157,7 +157,7 @@ export default function Dashboard() {
 
                         {stats.personaRelationships.length === 0 ? (
                             <div className="text-center py-12">
-                                <p className="text-purple-200 text-lg mb-4">You haven't started any conversations yet</p>
+                                <p className="text-purple-200 text-lg mb-4">You haven&apos;t started any conversations yet</p>
                                 <button
                                     onClick={() => router.push('/personas')}
                                     className="px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-lg font-semibold transition-colors"
