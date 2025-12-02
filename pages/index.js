@@ -153,7 +153,7 @@ export default function Home() {
         {/* Header */}
         <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
           <div className="max-w-7xl mx-auto px-0 md:px-2 py-4 flex justify-between items-center">
-            <h1 className="text-xl md:text-2xl font-bold text-black border-2 border-black px-4 py-2 rounded-lg">
+            <h1 className="text-xl md:text-2xl font-bold text-black">
               <span className="italic">AI</span> - Spirit
             </h1>
             <nav className="flex items-center pr-3 md:pr-6">
