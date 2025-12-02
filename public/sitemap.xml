@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://ai-spirit.vercel.app/</loc>
+    <loc>https://ai-spirit.in/</loc>
     <lastmod>2025-12-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://ai-spirit.vercel.app/personas</loc>
+    <loc>https://ai-spirit.in/personas</loc>
     <lastmod>2025-12-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ai-spirit.vercel.app/auth/signin</loc>
+    <loc>https://ai-spirit.in/auth/signin</loc>
     <lastmod>2025-12-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://ai-spirit.vercel.app/auth/signup</loc>
+    <loc>https://ai-spirit.in/auth/signup</loc>
     <lastmod>2025-12-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>

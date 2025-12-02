@@ -146,7 +146,7 @@ export default function Home() {
       <NextSeo
         title="Enter the world of AI Personas"
         description="Have meaningful conversations with AI personas of legendary figures. Get wisdom, guidance, and perspectives from history's greatest thinkers."
-        canonical="https://ai-spirit.vercel.app/"
+        canonical="https://ai-spirit.in/"
       />
       <SoftwareAppJsonLd
         name="AI-Spirit"

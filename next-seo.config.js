@@ -6,11 +6,11 @@ export default {
     openGraph: {
         type: 'website',
         locale: 'en_IE',
-        url: 'https://ai-spirit.vercel.app/',
+        url: 'https://ai-spirit.in/',
         siteName: 'AI-Spirit',
         images: [
             {
-                url: 'https://ai-spirit.vercel.app/og-image.jpg',
+                url: 'https://ai-spirit.in/og-image.jpg',
                 width: 1200,
                 height: 630,
                 alt: 'AI-Spirit - Chat with Legendary Personas',
