@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
+import Image from 'next/image'
 import MessageBubble from './MessageBubble'
 import InputBox from './InputBox'
 import { useChat } from '@/context/ChatContext'
@@ -45,9 +46,11 @@ export default function ChatInterface({ persona, onSendMessage, onNewChat, onMen
 
         <div className="relative z-10 w-11 h-11 sm:w-14 sm:h-14 rounded-full bg-gradient-to-br from-white/22 via-white/14 to-white/10 backdrop-blur-md border border-white/35 flex items-center justify-center overflow-hidden text-lg sm:text-xl text-white font-bold shadow-[0_6px_20px_-2px_rgba(0,0,0,0.4),inset_0_2px_1px_rgba(255,255,255,0.18),inset_0_-2px_1px_rgba(0,0,0,0.1)]">
           {persona.avatar_url ? (
-            <img
+            <Image
               src={persona.avatar_url}
               alt={persona.name}
+              width={56}
+              height={56}
               className="w-full h-full object-cover"
             />
           ) : (
@@ -83,7 +86,7 @@ export default function ChatInterface({ persona, onSendMessage, onNewChat, onMen
                   key={idx}
                   onClick={() => onSendMessage(starter)}
                   className="group relative block w-full bg-gradient-to-br from-white/15 via-white/10 to-white/5 backdrop-blur-2xl border border-white/30 rounded-2xl sm:rounded-3xl p-3 sm:p-3.5 hover:from-white/20 hover:via-white/14 hover:to-white/10 hover:border-white/40 shadow-glass hover:shadow-glass-hover transition-smooth text-left text-white text-sm sm:text-base overflow-hidden hover:scale-[1.01] active:scale-[0.99] animate-fadeIn"
-                  style={{animationDelay: `${idx * 80}ms`, animationFillMode: 'both'}}
+                  style={{ animationDelay: `${idx * 80}ms`, animationFillMode: 'both' }}
                 >
                   <div className="absolute inset-0 rounded-2xl sm:rounded-3xl bg-gradient-to-tr from-white/15 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
                   <div className="absolute inset-[1px] rounded-2xl sm:rounded-3xl bg-gradient-to-br from-transparent via-white/5 to-white/8 pointer-events-none" />

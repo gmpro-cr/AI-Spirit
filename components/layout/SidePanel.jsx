@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router'
+import Image from 'next/image'
 import { useState, useEffect } from 'react'
 import { useAuth } from '@/context/AuthContext'
 
@@ -107,9 +108,11 @@ export default function SidePanel({ onBack, backButtonText, showPastChats = true
                       className="flex items-center gap-3 w-full text-left p-3 rounded-lg text-sm text-gray-700 hover:bg-gray-200 transition-colors"
                     >
                       {chat.personaImage && (
-                        <img
+                        <Image
                           src={chat.personaImage}
                           alt={chat.personaName}
+                          width={40}
+                          height={40}
                           className="w-10 h-10 rounded-full object-cover flex-shrink-0"
                         />
                       )}
@@ -134,9 +137,11 @@ export default function SidePanel({ onBack, backButtonText, showPastChats = true
           <div className="flex items-center justify-between">
             <div className="flex items-center min-w-0">
               {user.user_metadata?.avatar_url ? (
-                <img
+                <Image
                   src={user.user_metadata.avatar_url}
                   alt="Profile"
+                  width={40}
+                  height={40}
                   className="w-10 h-10 rounded-full mr-3 flex-shrink-0"
                 />
               ) : (

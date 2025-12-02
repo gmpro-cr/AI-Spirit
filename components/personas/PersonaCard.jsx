@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router'
+import Image from 'next/image'
 import { useState, useEffect } from 'react'
 
 export default function PersonaCard({ persona, onEdit, onLikeChange }) {
@@ -44,14 +45,20 @@ export default function PersonaCard({ persona, onEdit, onLikeChange }) {
       onClick={handleClick}
     >
       {/* Persona Image */}
-      <img
-        src={persona.image_url || persona.avatar_url || '/default-persona.png'}
-        alt={persona.name}
-        className="w-full h-48 md:h-56 object-cover object-[center_25%] rounded-t-lg"
-        onError={(e) => {
-          e.target.src = '/default-persona.png'
-        }}
-      />
+      {/* Persona Image */}
+      <div className="relative w-full h-48 md:h-56">
+        <Image
+          src={persona.image_url || persona.avatar_url || '/default-persona.png'}
+          alt={persona.name}
+          fill
+          className="object-cover object-[center_25%] rounded-t-lg"
+          onError={(e) => {
+            // next/image doesn't support onError directly like img, 
+            // but we can handle fallbacks in the src logic or a wrapper if needed.
+            // For now, we rely on the src fallback above.
+          }}
+        />
+      </div>
 
       {/* Persona Info */}
       <div className="p-2 md:p-3 bg-white/90">

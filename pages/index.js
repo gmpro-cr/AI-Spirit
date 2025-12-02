@@ -1,4 +1,5 @@
 import { NextSeo, SoftwareAppJsonLd } from 'next-seo'
+import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
 import ContactModal from '@/components/ContactModal'
@@ -202,9 +203,11 @@ export default function Home() {
               <div className="lg:col-span-1 flex justify-center lg:justify-end order-2 lg:order-none">
                 <div className="bg-white rounded-2xl shadow-2xl p-4 sm:p-6 md:p-8 border border-gray-100 transition-all duration-500 w-full max-w-md h-[400px] sm:h-[450px] md:h-[500px] flex flex-col">
                   <div className="flex items-center gap-3 sm:gap-4 mb-4 sm:mb-6 md:mb-8 pb-4 sm:pb-5 md:pb-6 border-b border-gray-100 flex-shrink-0">
-                    <img
+                    <Image
                       src={chatPersonas[currentPersonaIndex].image}
                       alt={chatPersonas[currentPersonaIndex].name}
+                      width={56}
+                      height={56}
                       className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-full object-cover"
                     />
                     <div>
@@ -227,9 +230,11 @@ export default function Home() {
                         ) : (
                           /* AI response */
                           <div className="flex gap-1.5 sm:gap-2">
-                            <img
+                            <Image
                               src={chatPersonas[currentPersonaIndex].image}
                               alt={chatPersonas[currentPersonaIndex].name}
+                              width={32}
+                              height={32}
                               className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 rounded-full object-cover flex-shrink-0"
                             />
                             <div className="bg-gray-100 text-black px-3 py-2 sm:px-4 sm:py-2.5 rounded-2xl rounded-bl-sm max-w-[85%]">
@@ -245,9 +250,11 @@ export default function Home() {
                       chatPersonas[currentPersonaIndex].messages[currentMessageIndex].type === 'ai' &&
                       typingText && (
                         <div className="flex gap-1.5 sm:gap-2">
-                          <img
+                          <Image
                             src={chatPersonas[currentPersonaIndex].image}
                             alt={chatPersonas[currentPersonaIndex].name}
+                            width={32}
+                            height={32}
                             className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 rounded-full object-cover flex-shrink-0"
                           />
                           <div className="bg-gray-100 text-black px-3 py-2 sm:px-4 sm:py-2.5 rounded-2xl rounded-bl-sm max-w-[85%]">
@@ -288,9 +295,11 @@ export default function Home() {
                   className="flex flex-col items-center text-center"
                 >
                   <div className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full overflow-hidden mb-2 sm:mb-3 md:mb-4 shadow-lg">
-                    <img
+                    <Image
                       src={persona.image}
                       alt={persona.name}
+                      width={128}
+                      height={128}
                       className="w-full h-full object-cover"
                     />
                   </div>

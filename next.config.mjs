@@ -5,19 +5,15 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'en.wikipedia.org',
+        hostname: 'lh3.googleusercontent.com',
       },
       {
         protocol: 'https',
-        hostname: 'upload.wikimedia.org',
+        hostname: 'avatars.githubusercontent.com',
       },
       {
         protocol: 'https',
-        hostname: '**.wikimedia.org',
-      },
-      {
-        protocol: 'https',
-        hostname: '**',
+        hostname: 'placehold.co',
       },
     ],
   },
