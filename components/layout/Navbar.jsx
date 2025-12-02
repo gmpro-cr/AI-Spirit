@@ -48,9 +48,19 @@ export default function Navbar({ onMenuToggle, showMenuButton = false }) {
             )}
           </div>
 
-          {/* Sign In/User Info - Upper Right (only on homepage) */}
+          {/* Right Side - Dashboard + Sign In/User Info */}
           {isHomePage && (
-            <>
+            <div className="flex items-center gap-3">
+              {user && (
+                <Link
+                  href="/dashboard"
+                  className="group relative bg-gradient-to-br from-purple-500/25 via-purple-600/18 to-purple-700/12 backdrop-blur-xl border border-purple-400/40 text-white font-medium px-4 sm:px-6 py-2 sm:py-2.5 text-sm sm:text-base rounded-full hover:from-purple-500/35 hover:via-purple-600/28 hover:to-purple-700/20 hover:border-purple-400/60 transition-smooth hover:scale-[1.02] active:scale-[0.98] shadow-glass hover:shadow-glass-hover overflow-hidden"
+                >
+                  <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-purple-400/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400 pointer-events-none" />
+                  <span className="relative z-10 tracking-wide drop-shadow-[0_2px_4px_rgba(0,0,0,0.4)]">📊 Dashboard</span>
+                </Link>
+              )}
+
               {!user ? (
                 <Link
                   href="/auth/signin"
@@ -66,7 +76,7 @@ export default function Navbar({ onMenuToggle, showMenuButton = false }) {
                   Welcome, {user.user_metadata?.full_name || user.email?.split('@')[0] || 'User'}
                 </div>
               )}
-            </>
+            </div>
           )}
         </div>
       </div>

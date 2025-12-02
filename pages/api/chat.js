@@ -183,6 +183,7 @@ CRITICAL RULES:
 
     // Get user memories for authenticated users
     let memoryContext = ''
+    let relationshipContext = ''
     if (userId && !isGuest) {
       const memories = await getUserMemories(userId, persona.slug, supabaseAdmin)
       memoryContext = formatMemoriesForContext(memories, userProfile)
@@ -194,9 +195,23 @@ CRITICAL RULES:
           memoriesCount: memories.length
         })
       }
+
+      // Get relationship level and context
+      const { getPersonaRelationship, getRelationshipContext } = await import('@/lib/relationshipSystem')
+      const relationship = await getPersonaRelationship(userId, persona.slug, supabaseAdmin)
+
+      if (relationship) {
+        relationshipContext = getRelationshipContext(relationship.relationship_level, relationship.conversation_count)
+        console.log('[Relationship System] Injecting relationship context:', {
+          userId,
+          personaSlug: persona.slug,
+          level: relationship.relationship_level,
+          conversations: relationship.conversation_count
+        })
+      }
     }
 
-    // Build final system prompt with memory context
+    // Build final system prompt with memory and relationship context
     let finalSystemPrompt = enhancedSystemPrompt
     if (memoryContext) {
       finalSystemPrompt = `${enhancedSystemPrompt}
@@ -205,6 +220,13 @@ IMPORTANT - WHAT YOU KNOW ABOUT THIS USER:
 ${memoryContext}
 
 Remember these details. Address the user by name ONLY when natural or for emphasis (not in every message). Reference their interests/goals when relevant.`
+    }
+
+    if (relationshipContext) {
+      finalSystemPrompt = `${finalSystemPrompt}
+
+RELATIONSHIP CONTEXT:
+${relationshipContext}`
     }
 
     // Generate AI response - try Gemini first, fallback to Groq if rate limited
