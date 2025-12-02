@@ -482,3 +482,10 @@ export default function Home() {
     </>
   )
 }
+
+// Disable static generation to avoid SSR issues
+export async function getServerSideProps() {
+  return {
+    props: {},
+  }
+}
