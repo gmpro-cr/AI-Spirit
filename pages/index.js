@@ -1,4 +1,4 @@
-import Head from 'next/head'
+import { NextSeo, SoftwareAppJsonLd } from 'next-seo'
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
 import ContactModal from '@/components/ContactModal'
@@ -143,11 +143,20 @@ export default function Home() {
 
   return (
     <>
-      <Head>
-        <title>AI-Spirit - Enter the world of AI Personas</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="description" content="Have meaningful conversations with AI personas of legendary figures. Get wisdom, guidance, and perspectives from history's greatest thinkers." />
-      </Head>
+      <NextSeo
+        title="Enter the world of AI Personas"
+        description="Have meaningful conversations with AI personas of legendary figures. Get wisdom, guidance, and perspectives from history's greatest thinkers."
+        canonical="https://ai-spirit.vercel.app/"
+      />
+      <SoftwareAppJsonLd
+        name="AI-Spirit"
+        price="0"
+        priceCurrency="USD"
+        applicationCategory="LifestyleApplication"
+        operatingSystem="Web"
+        ratingValue="4.8"
+        reviewCount="120"
+      />
 
       <div className="min-h-screen bg-white">
         {/* Header */}
