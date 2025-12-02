@@ -64,6 +64,12 @@ export const AuthProvider = ({ children }) => {
   }
 
   useEffect(() => {
+    // Only run on client side
+    if (typeof window === 'undefined') {
+      setLoading(false)
+      return
+    }
+
     // Check active sessions and sets the user
     supabase.auth.getSession()
       .then(({ data: { session } }) => {
