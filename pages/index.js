@@ -131,13 +131,7 @@ export default function Home() {
   }, [currentPersonaIndex, currentMessageIndex])
 
   const handleStartChatting = () => {
-    if (!user) {
-      // User is not authenticated, redirect to sign-in with return URL
-      router.push('/auth/signin?returnTo=/personas')
-    } else {
-      // User is authenticated, go directly to personas
-      router.push('/personas')
-    }
+    router.push('/personas')
   }
 
 
