@@ -1,13 +1,12 @@
-import { NextSeo } from 'next-seo'
+import Head from 'next/head'
 import Image from 'next/image'
+
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
 import ContactModal from '@/components/ContactModal'
-import { useAuth } from '@/context/AuthContext'
 
 export default function Home() {
   const router = useRouter()
-  const { user } = useAuth()
   const [isContactModalOpen, setIsContactModalOpen] = useState(false)
   const [typingText, setTypingText] = useState('')
   const [showTyping, setShowTyping] = useState(false)
@@ -142,23 +141,15 @@ export default function Home() {
     }
   }
 
-  // Only render on client side to avoid SSR issues
-  const [mounted, setMounted] = useState(false)
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-
-  if (!mounted) {
-    return null
-  }
 
   return (
     <>
-      <NextSeo
-        title="Enter the world of AI Personas"
-        description="Have meaningful conversations with AI personas of legendary figures. Get wisdom, guidance, and perspectives from history's greatest thinkers."
-        canonical="https://ai-spirit.in/"
-      />
+      <Head>
+        <title>AI-Spirit - Enter the world of AI Personas</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="description" content="Have meaningful conversations with AI personas of legendary figures. Get wisdom, guidance, and perspectives from history's greatest thinkers." />
+        <link rel="canonical" href="https://ai-spirit.in/" />
+      </Head>
 
       <div className="min-h-screen bg-white">
         {/* Header */}
@@ -482,4 +473,11 @@ export default function Home() {
       />
     </>
   )
+}
+
+// Disable static generation to avoid SSR issues with auth context
+export async function getServerSideProps() {
+  return {
+    props: {},
+  }
 }
