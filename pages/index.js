@@ -1,4 +1,4 @@
-import { NextSeo, SoftwareAppJsonLd } from 'next-seo'
+import { NextSeo } from 'next-seo'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
@@ -142,21 +142,22 @@ export default function Home() {
     }
   }
 
+  // Only render on client side to avoid SSR issues
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  if (!mounted) {
+    return null
+  }
+
   return (
     <>
       <NextSeo
         title="Enter the world of AI Personas"
         description="Have meaningful conversations with AI personas of legendary figures. Get wisdom, guidance, and perspectives from history's greatest thinkers."
         canonical="https://ai-spirit.in/"
-      />
-      <SoftwareAppJsonLd
-        name="AI-Spirit"
-        price="0"
-        priceCurrency="USD"
-        applicationCategory="LifestyleApplication"
-        operatingSystem="Web"
-        ratingValue="4.8"
-        reviewCount="120"
       />
 
       <div className="min-h-screen bg-white">
@@ -481,11 +482,4 @@ export default function Home() {
       />
     </>
   )
-}
-
-// Disable static generation to avoid SSR issues
-export async function getServerSideProps() {
-  return {
-    props: {},
-  }
 }
