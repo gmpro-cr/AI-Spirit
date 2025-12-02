@@ -210,9 +210,10 @@ Remember these details. Address the user by name ONLY when natural or for emphas
     // Generate AI response - try Gemini first, fallback to Groq if rate limited
     let result = await generatePersonaResponse(finalSystemPrompt, messageHistory, {}, contextString)
 
-    // If Gemini fails with rate limit, try Groq
-    if (!result.success && result.error?.includes('busy')) {
-      console.log('[Fallback] Gemini rate limited, trying Groq...')
+    // If Gemini fails (rate limit, overload, or any technical error), try Groq
+    // We only skip fallback if it was a safety/moderation block
+    if (!result.success && !result.error?.includes('appropriate')) {
+      console.log('[Fallback] Gemini failed (rate limit or error), trying Groq...')
       // Prepend context to system prompt for Groq as well
       const groqSystemPrompt = contextString ? contextString + finalSystemPrompt : finalSystemPrompt
       result = await generateGroqResponse(groqSystemPrompt, messageHistory)
