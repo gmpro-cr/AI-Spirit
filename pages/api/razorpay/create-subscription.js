@@ -1,5 +1,5 @@
 import { supabaseAdmin } from '@/lib/supabase'
-import { createCustomer, getRazorpayInstance, PREMIUM_PLAN } from '@/lib/razorpay'
+import { createCustomer, createSubscription, PREMIUM_PLAN } from '@/lib/razorpay'
 
 export default async function handler(req, res) {
     if (req.method !== 'POST') {
@@ -61,19 +61,18 @@ export default async function handler(req, res) {
             razorpayCustomerId = customerResult.customer.id
         }
 
-        // Create Razorpay subscription
-        const razorpay = getRazorpayInstance()
+        // Create Razorpay subscription using direct API
+        const subscriptionResult = await createSubscription(
+            razorpayCustomerId,
+            process.env.RAZORPAY_PLAN_ID || 'plan_premium_monthly'
+        )
 
-        const subscription = await razorpay.subscriptions.create({
-            plan_id: process.env.RAZORPAY_PLAN_ID || 'plan_premium_monthly',
-            customer_id: razorpayCustomerId,
-            customer_notify: 1,
-            total_count: 12,
-            quantity: 1,
-            notes: {
-                user_id: userId,
-            },
-        })
+        if (!subscriptionResult.success) {
+            console.error('Failed to create Razorpay subscription:', subscriptionResult.error)
+            return res.status(500).json({ error: 'Failed to create subscription' })
+        }
+
+        const subscription = subscriptionResult.subscription
 
         // Store subscription in database
         const { data: dbSubscription, error: dbError } = await supabaseAdmin
