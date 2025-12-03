@@ -27,7 +27,10 @@ export default function Pricing() {
     }
 
     async function handleSubscribe() {
+        console.log('handleSubscribe called', { user: !!user, userProfile: !!userProfile })
+
         if (!user) {
+            console.log('No user found, redirecting to signin')
             router.push('/auth/signin?returnTo=/pricing')
             return
         }
@@ -35,6 +38,7 @@ export default function Pricing() {
         setLoading(true)
 
         try {
+            console.log('Creating subscription for user:', user.id)
             // Create subscription
             const res = await fetch('/api/razorpay/create-subscription', {
                 method: 'POST',
@@ -46,10 +50,21 @@ export default function Pricing() {
                 }),
             })
 
+            console.log('Subscription creation response status:', res.status)
             const data = await res.json()
+            console.log('Subscription creation data:', data)
 
             if (!data.success) {
+                console.error('Subscription creation failed:', data.error)
                 alert(data.error || 'Failed to create subscription')
+                setLoading(false)
+                return
+            }
+
+            // Check if Razorpay is loaded
+            if (typeof window.Razorpay === 'undefined') {
+                console.error('Razorpay script not loaded')
+                alert('Payment system is loading. Please wait a moment and try again.')
                 setLoading(false)
                 return
             }
@@ -61,6 +76,7 @@ export default function Pricing() {
                 name: 'AI-Spirit Premium',
                 description: 'Monthly Subscription - ₹499/month',
                 handler: async function (response) {
+                    console.log('Payment response:', response)
                     // Verify payment
                     const verifyRes = await fetch('/api/razorpay/verify-payment', {
                         method: 'POST',
@@ -74,6 +90,7 @@ export default function Pricing() {
                     })
 
                     const verifyData = await verifyRes.json()
+                    console.log('Verification response:', verifyData)
 
                     if (verifyData.success) {
                         alert('🎉 Welcome to Premium! Your subscription is now active.')
@@ -92,11 +109,13 @@ export default function Pricing() {
                 },
                 modal: {
                     ondismiss: function () {
+                        console.log('Payment modal dismissed')
                         setLoading(false)
                     },
                 },
             }
 
+            console.log('Opening Razorpay with options:', { ...options, key: '***' })
             const razorpay = new window.Razorpay(options)
             razorpay.open()
         } catch (error) {
@@ -113,7 +132,9 @@ export default function Pricing() {
             </Head>
             <Script
                 src="https://checkout.razorpay.com/v1/checkout.js"
-                strategy="lazyOnload"
+                strategy="beforeInteractive"
+                onLoad={() => console.log('Razorpay script loaded')}
+                onError={() => console.error('Failed to load Razorpay script')}
             />
             <div className="min-h-screen bg-black text-white font-sans selection:bg-white selection:text-black">
                 {/* Header */}
