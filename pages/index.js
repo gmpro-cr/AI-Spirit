@@ -151,10 +151,17 @@ export default function Home() {
             <h1 className="text-xl md:text-2xl font-bold text-black">
               <span className="italic">AI</span> - Spirit
             </h1>
-            <nav className="flex items-center pr-3 md:pr-6">
+            <nav className="flex items-center gap-6 pr-3 md:pr-6">
+              <button
+                onClick={() => router.push('/pricing')}
+                className="text-base md:text-lg font-semibold text-black hover:text-gray-600 transition-colors flex items-center gap-2"
+              >
+                <span className="text-xl">✨</span>
+                <span>Pricing</span>
+              </button>
               <button
                 onClick={() => setIsContactModalOpen(true)}
-                className="text-xl md:text-2xl font-bold text-black hover:text-gray-600 transition-colors"
+                className="text-base md:text-lg font-semibold text-black hover:text-gray-600 transition-colors"
               >
                 Contact Us
               </button>
@@ -279,6 +286,123 @@ export default function Home() {
                   <p className="font-semibold text-black text-sm sm:text-base md:text-lg">{persona.name}</p>
                 </div>
               ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Free vs Premium Section */}
+        <section className="py-12 sm:py-16 md:py-20 lg:py-24 px-4 sm:px-6 bg-gradient-to-b from-white to-gray-50">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-12 sm:mb-16">
+              <h3 className="text-3xl sm:text-4xl md:text-5xl font-bold text-black mb-4">
+                Choose Your Experience
+              </h3>
+              <p className="text-lg sm:text-xl text-gray-600">
+                Start free, upgrade when you're ready for more
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-6 sm:gap-8">
+              {/* Free Tier */}
+              <div className="bg-white rounded-2xl p-6 sm:p-8 border-2 border-gray-200 hover:border-gray-300 transition-all">
+                <div className="flex items-center justify-between mb-6">
+                  <h4 className="text-2xl sm:text-3xl font-bold text-black">Free</h4>
+                  <span className="px-4 py-1.5 bg-gray-100 text-gray-700 text-sm font-semibold rounded-full">
+                    CURRENT
+                  </span>
+                </div>
+                <p className="text-3xl sm:text-4xl font-bold text-black mb-6">₹0<span className="text-lg text-gray-500">/month</span></p>
+                <ul className="space-y-4 mb-8">
+                  <li className="flex items-start gap-3">
+                    <svg className="w-6 h-6 text-green-500 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span className="text-gray-700"><span className="font-semibold">20 messages per day</span> to explore AI personas</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <svg className="w-6 h-6 text-green-500 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span className="text-gray-700"><span className="font-semibold">Access to 8+ personas</span> including Einstein, Gandhi, Osho</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <svg className="w-6 h-6 text-green-500 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span className="text-gray-700">Save chat history</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <svg className="w-6 h-6 text-gray-400 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                    <span className="text-gray-400 line-through">Unlimited messages</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <svg className="w-6 h-6 text-gray-400 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                    <span className="text-gray-400 line-through">Faster responses</span>
+                  </li>
+                </ul>
+                <button
+                  onClick={handleStartChatting}
+                  className="w-full py-3 sm:py-4 rounded-xl border-2 border-gray-300 text-gray-700 font-semibold hover:bg-gray-50 transition-all"
+                >
+                  Get Started Free
+                </button>
+              </div>
+
+              {/* Premium Tier */}
+              <div className="bg-gradient-to-br from-black to-gray-800 rounded-2xl p-6 sm:p-8 border-2 border-black relative transform md:scale-105 shadow-2xl">
+                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                  <span className="px-4 py-1.5 bg-gradient-to-r from-yellow-400 to-orange-500 text-black text-xs font-bold rounded-full shadow-lg">
+                    RECOMMENDED
+                  </span>
+                </div>
+                <div className="flex items-center justify-between mb-6">
+                  <h4 className="text-2xl sm:text-3xl font-bold text-white">Premium</h4>
+                  <span className="text-2xl">✨</span>
+                </div>
+                <p className="text-3xl sm:text-4xl font-bold text-white mb-6">₹499<span className="text-lg text-gray-300">/month</span></p>
+                <ul className="space-y-4 mb-8">
+                  <li className="flex items-start gap-3">
+                    <svg className="w-6 h-6 text-yellow-400 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span className="text-white"><span className="font-semibold">Unlimited messages</span> - chat as much as you want</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <svg className="w-6 h-6 text-yellow-400 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span className="text-white"><span className="font-semibold">Access ALL personas</span> including exclusive ones</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <svg className="w-6 h-6 text-yellow-400 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span className="text-white"><span className="font-semibold">Priority responses</span> - 3x faster AI</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <svg className="w-6 h-6 text-yellow-400 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span className="text-white">Ad-free experience</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <svg className="w-6 h-6 text-yellow-400 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span className="text-white">Priority support</span>
+                  </li>
+                </ul>
+                <button
+                  onClick={() => router.push('/pricing')}
+                  className="w-full py-3 sm:py-4 rounded-xl bg-white text-black font-bold hover:bg-gray-100 transition-all shadow-lg"
+                >
+                  Upgrade to Premium
+                </button>
+              </div>
             </div>
           </div>
         </section>
@@ -425,6 +549,9 @@ export default function Home() {
 
               {/* Center - Navigation (horizontal) */}
               <nav className="flex items-center gap-6">
+                <button onClick={() => router.push('/pricing')} className="text-sm text-black hover:text-gray-600 transition-colors">
+                  Pricing
+                </button>
                 <button onClick={() => setIsContactModalOpen(true)} className="text-sm text-black hover:text-gray-600 transition-colors">
                   Contact Us
                 </button>
