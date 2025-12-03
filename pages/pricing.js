@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import Head from 'next/head'
+import Script from 'next/script'
 import { useRouter } from 'next/router'
 import { useAuth } from '@/context/AuthContext'
 
@@ -109,8 +110,11 @@ export default function Pricing() {
         <>
             <Head>
                 <title>Pricing - AI-Spirit Premium</title>
-                <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
             </Head>
+            <Script
+                src="https://checkout.razorpay.com/v1/checkout.js"
+                strategy="lazyOnload"
+            />
 
             <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-blue-50">
                 {/* Header */}
@@ -243,6 +247,7 @@ export default function Pricing() {
                             </button>
                         </div>
                     </div>
+
 
                     {/* FAQ/Info */}
                     <div className="mt-16 text-center text-gray-600">
