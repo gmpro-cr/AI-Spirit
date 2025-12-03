@@ -298,7 +298,7 @@ export default function Home() {
                 Choose Your Experience
               </h3>
               <p className="text-lg sm:text-xl text-gray-600">
-                Start free, upgrade when you're ready for more
+                Start free, upgrade when you&apos;re ready for more
               </p>
             </div>
 
