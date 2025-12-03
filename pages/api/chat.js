@@ -62,6 +62,53 @@ export default async function handler(req, res) {
       })
     }
 
+    // Check Premium Status & Message Limits
+    if (userId) {
+      // 1. Check if user is premium
+      const { data: subscription } = await supabaseAdmin
+        .from('subscriptions')
+        .select('status, current_period_end')
+        .eq('user_id', userId)
+        .eq('status', 'active')
+        .gt('current_period_end', new Date().toISOString())
+        .single()
+
+      const isPremium = !!subscription
+
+      if (!isPremium) {
+        // 2. Count messages sent today by this user
+        const today = new Date()
+        today.setHours(0, 0, 0, 0)
+
+        // We need to join conversations to get user's messages
+        // But Supabase JS client join syntax can be complex, so we'll use a two-step approach or RPC if available
+        // Simpler approach: Get all conversation IDs for this user
+        const { data: conversations } = await supabaseAdmin
+          .from('conversations')
+          .select('id')
+          .eq('user_id', userId)
+
+        if (conversations && conversations.length > 0) {
+          const conversationIds = conversations.map(c => c.id)
+
+          const { count, error: countError } = await supabaseAdmin
+            .from('messages')
+            .select('*', { count: 'exact', head: true })
+            .in('conversation_id', conversationIds)
+            .eq('role', 'user')
+            .gte('created_at', today.toISOString())
+
+          if (!countError && count >= 20) {
+            return res.status(403).json({
+              error: 'Daily message limit reached (20 messages). Upgrade to Premium for unlimited access.',
+              isLimitReached: true,
+              limit: 20
+            })
+          }
+        }
+      }
+    }
+
     // Content moderation
     const moderationResult = moderateContent(message)
     if (moderationResult.blocked) {

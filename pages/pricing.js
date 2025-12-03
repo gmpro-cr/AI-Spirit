@@ -115,144 +115,133 @@ export default function Pricing() {
                 src="https://checkout.razorpay.com/v1/checkout.js"
                 strategy="lazyOnload"
             />
-
-            <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-blue-50">
+            <div className="min-h-screen bg-black text-white font-sans selection:bg-white selection:text-black">
                 {/* Header */}
-                <header className="p-4 border-b bg-white/80 backdrop-blur-sm">
-                    <div className="max-w-6xl mx-auto flex justify-between items-center">
-                        <h1 className="text-2xl font-bold text-black">AI-Spirit</h1>
+                <header className="fixed top-0 w-full z-50 bg-black/80 backdrop-blur-md border-b border-white/10">
+                    <div className="max-w-6xl mx-auto px-6 h-20 flex justify-between items-center">
+                        <h1 className="text-2xl font-bold tracking-tighter">AI-Spirit</h1>
                         <button
                             onClick={() => router.push('/dashboard')}
-                            className="px-4 py-2 text-black hover:bg-gray-100 rounded-lg transition"
+                            className="px-6 py-2 text-sm font-medium text-white border border-white/20 rounded-full hover:bg-white hover:text-black transition-all duration-300"
                         >
-                            Dashboard
+                            Back to Dashboard
                         </button>
                     </div>
                 </header>
 
-                {/* Pricing Content */}
-                <div className="max-w-6xl mx-auto px-4 py-16">
-                    <div className="text-center mb-16">
-                        <h2 className="text-4xl md:text-5xl font-bold text-black mb-4">
-                            Choose Your Plan
-                        </h2>
-                        <p className="text-xl text-gray-600">
-                            Unlock unlimited conversations with AI personas
-                        </p>
-                    </div>
+                {/* Hero Section */}
+                <div className="pt-32 pb-20 px-6 text-center">
+                    <h2 className="text-5xl md:text-7xl font-bold mb-6 tracking-tight">
+                        Unlock <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-500">Limitless</span> Potential
+                    </h2>
+                    <p className="text-xl text-gray-400 max-w-2xl mx-auto mb-12">
+                        Experience AI conversations without boundaries. Upgrade to Premium for unlimited access and exclusive features.
+                    </p>
+                </div>
 
-                    <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                {/* Pricing Cards */}
+                <div className="max-w-5xl mx-auto px-6 pb-24">
+                    <div className="grid md:grid-cols-2 gap-8">
                         {/* Free Plan */}
-                        <div className="bg-white rounded-2xl shadow-lg p-8 border-2 border-gray-200">
-                            <div className="mb-6">
-                                <h3 className="text-2xl font-bold text-black mb-2">Free</h3>
-                                <div className="text-4xl font-bold text-black mb-4">
-                                    ₹0<span className="text-lg text-gray-600">/month</span>
+                        <div className="relative p-8 rounded-3xl border border-white/10 bg-white/5 backdrop-blur-sm hover:border-white/20 transition-all duration-300">
+                            <div className="mb-8">
+                                <h3 className="text-xl font-medium text-gray-300 mb-2">Starter</h3>
+                                <div className="flex items-baseline gap-1">
+                                    <span className="text-4xl font-bold">Free</span>
                                 </div>
+                                <p className="text-sm text-gray-500 mt-2">Perfect for getting started</p>
                             </div>
 
                             <ul className="space-y-4 mb-8">
-                                <li className="flex items-start gap-3">
-                                    <svg className="w-6 h-6 text-green-500 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <li className="flex items-center gap-3 text-gray-300">
+                                    <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                                     </svg>
-                                    <span className="text-gray-700">20 messages per day</span>
+                                    <span>20 messages per day</span>
                                 </li>
-                                <li className="flex items-start gap-3">
-                                    <svg className="w-6 h-6 text-green-500 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <li className="flex items-center gap-3 text-gray-300">
+                                    <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                                     </svg>
-                                    <span className="text-gray-700">Access to select personas</span>
+                                    <span>Access to basic personas</span>
                                 </li>
-                                <li className="flex items-start gap-3">
-                                    <svg className="w-6 h-6 text-gray-400 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <li className="flex items-center gap-3 text-gray-500">
+                                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                                     </svg>
-                                    <span className="text-gray-400">Standard response time</span>
-                                </li>
-                                <li className="flex items-start gap-3">
-                                    <svg className="w-6 h-6 text-gray-400 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                                    </svg>
-                                    <span className="text-gray-400">Limited chat history</span>
+                                    <span>Standard response speed</span>
                                 </li>
                             </ul>
 
                             <button
-                                className="w-full py-3 px-6 bg-gray-200 text-gray-700 rounded-lg font-semibold cursor-not-allowed"
                                 disabled
+                                className="w-full py-4 rounded-xl border border-white/10 text-gray-400 font-medium cursor-not-allowed"
                             >
                                 Current Plan
                             </button>
                         </div>
 
                         {/* Premium Plan */}
-                        <div className="bg-gradient-to-br from-purple-600 to-blue-600 rounded-2xl shadow-2xl p-8 border-2 border-purple-400 relative overflow-hidden">
-                            <div className="absolute top-4 right-4 bg-yellow-400 text-black px-3 py-1 rounded-full text-sm font-bold">
-                                POPULAR
+                        <div className="relative p-8 rounded-3xl border border-white bg-white text-black transform md:-translate-y-4 shadow-2xl shadow-white/10">
+                            <div className="absolute top-0 right-0 bg-black text-white text-xs font-bold px-3 py-1 rounded-bl-xl rounded-tr-2xl">
+                                MOST POPULAR
                             </div>
 
-                            <div className="mb-6">
-                                <h3 className="text-2xl font-bold text-white mb-2">Premium</h3>
-                                <div className="text-4xl font-bold text-white mb-4">
-                                    ₹499<span className="text-lg text-purple-200">/month</span>
+                            <div className="mb-8">
+                                <h3 className="text-xl font-medium mb-2">Premium</h3>
+                                <div className="flex items-baseline gap-1">
+                                    <span className="text-5xl font-bold">₹499</span>
+                                    <span className="text-gray-600 font-medium">/month</span>
                                 </div>
+                                <p className="text-sm text-gray-600 mt-2">For power users who want more</p>
                             </div>
 
                             <ul className="space-y-4 mb-8">
-                                <li className="flex items-start gap-3">
-                                    <svg className="w-6 h-6 text-yellow-400 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <li className="flex items-center gap-3 font-medium">
+                                    <svg className="w-5 h-5 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                                     </svg>
-                                    <span className="text-white font-semibold">Unlimited messages</span>
+                                    <span>Unlimited messages</span>
                                 </li>
-                                <li className="flex items-start gap-3">
-                                    <svg className="w-6 h-6 text-yellow-400 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <li className="flex items-center gap-3 font-medium">
+                                    <svg className="w-5 h-5 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                                     </svg>
-                                    <span className="text-white font-semibold">Access to ALL personas</span>
+                                    <span>Access to ALL personas</span>
                                 </li>
-                                <li className="flex items-start gap-3">
-                                    <svg className="w-6 h-6 text-yellow-400 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <li className="flex items-center gap-3 font-medium">
+                                    <svg className="w-5 h-5 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                                     </svg>
-                                    <span className="text-white font-semibold">Faster AI responses</span>
+                                    <span>Faster AI responses</span>
                                 </li>
-                                <li className="flex items-start gap-3">
-                                    <svg className="w-6 h-6 text-yellow-400 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <li className="flex items-center gap-3 font-medium">
+                                    <svg className="w-5 h-5 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                                     </svg>
-                                    <span className="text-white font-semibold">Ad-free experience</span>
+                                    <span>Ad-free experience</span>
                                 </li>
-                                <li className="flex items-start gap-3">
-                                    <svg className="w-6 h-6 text-yellow-400 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <li className="flex items-center gap-3 font-medium">
+                                    <svg className="w-5 h-5 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                                     </svg>
-                                    <span className="text-white font-semibold">Early access to voice chat</span>
-                                </li>
-                                <li className="flex items-start gap-3">
-                                    <svg className="w-6 h-6 text-yellow-400 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span className="text-white font-semibold">Extended chat history</span>
+                                    <span>Priority support</span>
                                 </li>
                             </ul>
 
                             <button
                                 onClick={handleSubscribe}
                                 disabled={loading || isPremium}
-                                className="w-full py-3 px-6 bg-white text-purple-600 rounded-lg font-bold text-lg hover:bg-gray-100 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                                className="w-full py-4 rounded-xl bg-black text-white font-bold text-lg hover:bg-gray-900 transition-all duration-300 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
                             >
-                                {isPremium ? '✓ Already Subscribed' : loading ? 'Processing...' : 'Subscribe Now'}
+                                {isPremium ? 'Currently Active' : loading ? 'Processing...' : 'Get Premium Access'}
                             </button>
                         </div>
                     </div>
 
-
-                    {/* FAQ/Info */}
-                    <div className="mt-16 text-center text-gray-600">
-                        <p className="mb-2">✓ Cancel anytime • ✓ Secure payment via Razorpay • ✓ Instant activation</p>
-                        <p className="text-sm">Have questions? Contact support@ai-spirit.in</p>
+                    <div className="mt-16 text-center text-gray-500 text-sm">
+                        <p className="mb-2">Secure payment via Razorpay • Cancel anytime</p>
+                        <p>Need help? Contact support@ai-spirit.in</p>
                     </div>
                 </div>
             </div>

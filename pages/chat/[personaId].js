@@ -147,12 +147,21 @@ function ChatPage() {
       const data = await response.json()
 
       if (!response.ok) {
+        // Handle message limit reached
+        if (response.status === 403 && data.isLimitReached) {
+          if (confirm('You have reached your daily message limit (20 messages). Upgrade to Premium for unlimited access?')) {
+            router.push('/pricing')
+          }
+          throw new Error(data.error)
+        }
         throw new Error(data.error || 'Failed to send message')
       }
 
-      // Add AI response
-      const aiMessage = { role: 'assistant', content: data.response }
-      addMessage(aiMessage)
+      const result = data
+
+      // Add assistant message
+      const assistantMessage = { role: 'assistant', content: result.response }
+      addMessage(assistantMessage)
 
       // For authenticated users, use conversation ID from API response
       // For guest users, generate locally

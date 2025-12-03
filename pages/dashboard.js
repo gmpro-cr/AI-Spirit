@@ -116,13 +116,24 @@ export default function Dashboard() {
 
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
                     {/* Header */}
-                    <div className="text-center mb-12">
-                        <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-                            Your Life Scorecard
-                        </h1>
-                        <p className="text-xl text-purple-200">
-                            Track your journey of growth and transformation
-                        </p>
+                    <div className="flex flex-col md:flex-row justify-between items-center mb-12">
+                        <div className="text-center md:text-left mb-6 md:mb-0">
+                            <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
+                                Your Life Scorecard
+                            </h1>
+                            <p className="text-xl text-purple-200">
+                                Track your journey of growth and transformation
+                            </p>
+                        </div>
+                        <button
+                            onClick={() => router.push('/pricing')}
+                            className="px-8 py-3 bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-black font-bold rounded-full shadow-lg transform hover:scale-105 transition-all duration-200 flex items-center gap-2"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                <path fillRule="evenodd" d="M5 2a1 1 0 011 1v1h1a1 1 0 010 2H6v1a1 1 0 01-2 0V6H3a1 1 0 010-2h1V3a1 1 0 011-1zm0 5a1 1 0 011 1v1h1a1 1 0 110 2H6v1a1 1 0 11-2 0v-1H3a1 1 0 110-2h1V8a1 1 0 011-1zm5-5a1 1 0 011 1v1h1a1 1 0 110 2h-1v1a1 1 0 11-2 0v-1h-1a1 1 0 110-2h1V3a1 1 0 011-1zm0 5a1 1 0 011 1v1h1a1 1 0 110 2h-1v1a1 1 0 11-2 0v-1h-1a1 1 0 110-2h1V8a1 1 0 011-1zm5-5a1 1 0 011 1v1h1a1 1 0 110 2h-1v1a1 1 0 11-2 0v-1h-1a1 1 0 110-2h1V3a1 1 0 011-1zm0 5a1 1 0 011 1v1h1a1 1 0 110 2h-1v1a1 1 0 11-2 0v-1h-1a1 1 0 110-2h1V8a1 1 0 011-1z" clipRule="evenodd" />
+                            </svg>
+                            Upgrade to Premium
+                        </button>
                     </div>
 
                     {/* Key Stats Grid */}
