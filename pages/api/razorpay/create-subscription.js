@@ -47,7 +47,15 @@ export default async function handler(req, res) {
 
             if (!customerResult.success) {
                 console.error('Failed to create Razorpay customer:', customerResult.error)
-                return res.status(500).json({ error: 'Failed to create customer' })
+                return res.status(500).json({
+                    error: 'Failed to create customer',
+                    details: customerResult.error,
+                    debug: {
+                        userName: userName || 'not provided',
+                        userEmail: userEmail,
+                        hasEmail: !!userEmail
+                    }
+                })
             }
 
             razorpayCustomerId = customerResult.customer.id

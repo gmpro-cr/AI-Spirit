@@ -1,56 +1,81 @@
-import { createClient } from '@supabase/supabase-js'
-import dotenv from 'dotenv'
+#!/usr/bin/env node
 
-dotenv.config({ path: '.env.local' })
+/**
+ * Check if payment tables exist in Supabase
+ */
+
+import { createClient } from '@supabase/supabase-js'
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_KEY
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY
 
-const supabase = createClient(supabaseUrl, supabaseServiceKey)
+if (!supabaseUrl || !supabaseKey) {
+  console.log('❌ Missing environment variables!')
+  console.log('Required:')
+  console.log('  - NEXT_PUBLIC_SUPABASE_URL')
+  console.log('  - SUPABASE_SERVICE_ROLE_KEY')
+  process.exit(1)
+}
+
+const supabase = createClient(supabaseUrl, supabaseKey, {
+  auth: {
+    autoRefreshToken: false,
+    persistSession: false
+  }
+})
+
+console.log('🔍 Checking database tables...\n')
+console.log('Supabase URL:', supabaseUrl)
+console.log('')
 
 async function checkTables() {
-  console.log('🔍 Checking tables...\n')
+  try {
+    // Check subscriptions table
+    const { data: subData, error: subError } = await supabase
+      .from('subscriptions')
+      .select('count')
+      .limit(1)
 
-  // Check chats table
-  const { data: chats, error: chatsError } = await supabase
-    .from('chats')
-    .select('*')
-    .limit(1)
-
-  console.log('Chats table:')
-  if (chatsError) {
-    console.log('  ❌ Error:', chatsError.message)
-  } else {
-    console.log('  ✅ Exists')
-  }
-
-  // Check messages table
-  const { data: messages, error: messagesError } = await supabase
-    .from('messages')
-    .select('*')
-    .limit(1)
-
-  console.log('\nMessages table:')
-  if (messagesError) {
-    console.log('  ❌ Error:', messagesError.message)
-  } else {
-    console.log('  ✅ Exists')
-    if (messages && messages.length > 0) {
-      console.log('  📊 Sample record:', JSON.stringify(messages[0], null, 2))
+    if (subError) {
+      console.log('❌ Subscriptions table: NOT FOUND')
+      console.log('   Error:', subError.message)
+      console.log('   Code:', subError.code)
+    } else {
+      console.log('✅ Subscriptions table: EXISTS')
     }
-  }
 
-  // Check personas table
-  const { data: personas, error: personasError } = await supabase
-    .from('personas')
-    .select('*')
-    .limit(1)
+    // Check payments table
+    const { data: payData, error: payError } = await supabase
+      .from('payments')
+      .select('count')
+      .limit(1)
 
-  console.log('\nPersonas table:')
-  if (personasError) {
-    console.log('  ❌ Error:', personasError.message)
-  } else {
-    console.log('  ✅ Exists')
+    if (payError) {
+      console.log('❌ Payments table: NOT FOUND')
+      console.log('   Error:', payError.message)
+      console.log('   Code:', payError.code)
+    } else {
+      console.log('✅ Payments table: EXISTS')
+    }
+
+    console.log('')
+
+    if (subError || payError) {
+      console.log('⚠️  Database tables are missing!')
+      console.log('')
+      console.log('To create them, run:')
+      console.log('  node scripts/create-payment-tables.js')
+      console.log('')
+      console.log('Or create them manually in Supabase SQL Editor:')
+      console.log('  https://supabase.com/dashboard/project/exdjsvknudvfkabnifrg/sql')
+      process.exit(1)
+    } else {
+      console.log('✅ All required tables exist!')
+      process.exit(0)
+    }
+  } catch (err) {
+    console.error('❌ Error checking tables:', err.message)
+    process.exit(1)
   }
 }
 
