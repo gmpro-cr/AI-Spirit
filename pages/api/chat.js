@@ -229,20 +229,36 @@ RELATIONSHIP CONTEXT:
 ${relationshipContext}`
     }
 
+    // Log message history stats before generating response
+    console.log('[Chat API] Generating response with:', {
+      messageHistoryLength: messageHistory.length,
+      systemPromptLength: finalSystemPrompt.length,
+      hasContext: !!contextString,
+      hasMemories: !!memoryContext,
+      hasRelationship: !!relationshipContext
+    })
+
     // Generate AI response - try Gemini first, fallback to Groq if rate limited
     let result = await generatePersonaResponse(finalSystemPrompt, messageHistory, {}, contextString)
 
     // If Gemini fails (rate limit, overload, or any technical error), try Groq
     // We only skip fallback if it was a safety/moderation block
     if (!result.success && !result.error?.includes('appropriate')) {
-      console.log('[Fallback] Gemini failed (rate limit or error), trying Groq...')
+      console.log('[Fallback] Gemini failed:', result.error, '- trying Groq...')
       // Prepend context to system prompt for Groq as well
       const groqSystemPrompt = contextString ? contextString + finalSystemPrompt : finalSystemPrompt
       result = await generateGroqResponse(groqSystemPrompt, messageHistory)
+
+      // If Groq also succeeded, log that we used the fallback
+      if (result.success) {
+        console.log('[Fallback] ✅ Groq succeeded after Gemini failure')
+      }
     }
 
     if (!result.success) {
-      return res.status(500).json({ error: result.error })
+      // Return user-friendly error message
+      const errorMessage = result.userMessage || result.error || 'An error occurred while processing your message. Please try again.'
+      return res.status(500).json({ error: errorMessage })
     }
 
     // Log API call for cost tracking
