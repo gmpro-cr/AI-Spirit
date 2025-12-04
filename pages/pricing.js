@@ -1,17 +1,79 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import Head from 'next/head'
+import Script from 'next/script'
 import { useRouter } from 'next/router'
 import { useAuth } from '@/context/AuthContext'
 
 export default function Pricing() {
     const router = useRouter()
-    const { user } = useAuth()
+    const { user, userProfile } = useAuth()
+    const [loading, setLoading] = useState(false)
+
+    async function handleSubscribe() {
+        if (!user) {
+            router.push('/auth/signin?returnTo=/pricing')
+            return
+        }
+
+        setLoading(true)
+
+        try {
+            // Create subscription
+            const res = await fetch('/api/subscription/create', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    userEmail: user.email,
+                    userName: userProfile?.full_name || user.email.split('@')[0],
+                }),
+            })
+
+            const data = await res.json()
+
+            if (!data.success) {
+                alert('Failed to create subscription. Please try again.')
+                setLoading(false)
+                return
+            }
+
+            // Open Razorpay checkout
+            const options = {
+                key: data.subscription.razorpay_key,
+                subscription_id: data.subscription.id,
+                name: 'AI-Spirit Premium',
+                description: 'Monthly Subscription - ₹499/month',
+                prefill: {
+                    email: user.email,
+                    name: userProfile?.full_name || '',
+                },
+                theme: {
+                    color: '#000000',
+                },
+                modal: {
+                    ondismiss: function () {
+                        setLoading(false)
+                    },
+                },
+            }
+
+            const razorpay = new window.Razorpay(options)
+            razorpay.open()
+        } catch (error) {
+            console.error('Subscription error:', error)
+            alert('Failed to start subscription. Please try again.')
+            setLoading(false)
+        }
+    }
 
     return (
         <>
             <Head>
                 <title>Pricing - AI-Spirit Premium</title>
             </Head>
+            <Script
+                src="https://checkout.razorpay.com/v1/checkout.js"
+                strategy="beforeInteractive"
+            />
             <div className="min-h-screen bg-black text-white font-sans selection:bg-white selection:text-black">
                 {/* Header */}
                 <header className="fixed top-0 w-full z-50 bg-black/80 backdrop-blur-md border-b border-white/10">
@@ -127,17 +189,18 @@ export default function Pricing() {
                             </ul>
 
                             <button
-                                disabled
-                                className="w-full py-4 rounded-xl bg-gray-400 text-white font-bold text-lg cursor-not-allowed"
+                                onClick={handleSubscribe}
+                                disabled={loading}
+                                className="w-full py-4 rounded-xl bg-black text-white font-bold text-lg hover:bg-gray-900 transition-all duration-300 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
                             >
-                                Coming Soon
+                                {loading ? 'Processing...' : 'Get Premium Access'}
                             </button>
                         </div>
                     </div>
 
                     <div className="mt-16 text-center text-gray-500 text-sm">
-                        <p className="mb-2">Payment integration coming soon</p>
-                        <p>Have questions? Contact support@ai-spirit.in</p>
+                        <p className="mb-2">Secure payment via Razorpay • Cancel anytime</p>
+                        <p>Need help? Contact support@ai-spirit.in</p>
                     </div>
                 </div>
             </div>
