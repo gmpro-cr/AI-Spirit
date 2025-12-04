@@ -76,17 +76,25 @@ export default function Pricing() {
             />
             <div className="min-h-screen bg-white text-black font-sans">
                 {/* Header */}
-                <header className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
-                    <div className="max-w-6xl mx-auto px-6 h-20 flex justify-between items-center">
-                        <h1 className="text-2xl font-bold tracking-tight">
+                <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
+                    <div className="max-w-7xl mx-auto px-0 md:px-2 py-4 flex justify-between items-center">
+                        <h1 className="text-xl md:text-2xl font-bold text-black pl-3 md:pl-0">
                             <span className="italic">AI</span> - Spirit
                         </h1>
-                        <button
-                            onClick={() => router.push('/dashboard')}
-                            className="px-6 py-2 text-sm font-medium text-black border border-gray-200 rounded-full hover:bg-black hover:text-white transition-all duration-300"
-                        >
-                            Back to Dashboard
-                        </button>
+                        <nav className="flex items-center gap-6 pr-3 md:pr-6">
+                            <button
+                                onClick={() => router.push('/')}
+                                className="text-base md:text-lg font-semibold text-black hover:text-gray-600 transition-colors"
+                            >
+                                Home
+                            </button>
+                            <button
+                                onClick={() => router.push('/dashboard')}
+                                className="text-base md:text-lg font-semibold text-black hover:text-gray-600 transition-colors"
+                            >
+                                Dashboard
+                            </button>
+                        </nav>
                     </div>
                 </header>
 
@@ -102,9 +110,9 @@ export default function Pricing() {
 
                 {/* Pricing Cards */}
                 <div className="max-w-5xl mx-auto px-6 pb-24">
-                    <div className="grid md:grid-cols-2 gap-8">
+                    <div className="grid md:grid-cols-2 gap-8 items-stretch">
                         {/* Free Plan */}
-                        <div className="relative p-8 rounded-3xl border border-gray-200 bg-gray-50 hover:border-gray-300 transition-all duration-300 shadow-sm">
+                        <div className="relative p-8 rounded-3xl border border-gray-200 bg-gray-50 hover:border-gray-300 transition-all duration-300 shadow-sm flex flex-col">
                             <div className="mb-8">
                                 <h3 className="text-xl font-medium text-gray-700 mb-2">Starter</h3>
                                 <div className="flex items-baseline gap-1">
@@ -113,21 +121,21 @@ export default function Pricing() {
                                 <p className="text-sm text-gray-600 mt-2">Perfect for getting started</p>
                             </div>
 
-                            <ul className="space-y-4 mb-8">
+                            <ul className="space-y-4 mb-8 flex-grow">
                                 <li className="flex items-center gap-3 text-black">
-                                    <svg className="w-5 h-5 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <svg className="w-5 h-5 text-black flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                                     </svg>
                                     <span>20 messages per day</span>
                                 </li>
                                 <li className="flex items-center gap-3 text-black">
-                                    <svg className="w-5 h-5 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <svg className="w-5 h-5 text-black flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                                     </svg>
                                     <span>Access to basic personas</span>
                                 </li>
                                 <li className="flex items-center gap-3 text-gray-400">
-                                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <svg className="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                                     </svg>
                                     <span>Standard response speed</span>
@@ -136,14 +144,14 @@ export default function Pricing() {
 
                             <button
                                 disabled
-                                className="w-full py-4 rounded-xl border border-gray-300 text-gray-500 font-medium cursor-not-allowed bg-white"
+                                className="w-full py-4 rounded-xl border border-gray-300 text-gray-500 font-medium cursor-not-allowed bg-white mt-auto"
                             >
                                 Current Plan
                             </button>
                         </div>
 
                         {/* Premium Plan */}
-                        <div className="relative p-8 rounded-3xl border-2 border-black bg-white text-black transform md:-translate-y-4 shadow-2xl">
+                        <div className="relative p-8 rounded-3xl border-2 border-black bg-white text-black shadow-2xl flex flex-col">
                             <div className="absolute top-0 right-0 bg-black text-white text-xs font-bold px-3 py-1 rounded-bl-xl rounded-tr-2xl">
                                 MOST POPULAR
                             </div>
@@ -157,33 +165,33 @@ export default function Pricing() {
                                 <p className="text-sm text-gray-600 mt-2">For power users who want more</p>
                             </div>
 
-                            <ul className="space-y-4 mb-8">
+                            <ul className="space-y-4 mb-8 flex-grow">
                                 <li className="flex items-center gap-3 font-medium">
-                                    <svg className="w-5 h-5 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <svg className="w-5 h-5 text-black flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                                     </svg>
                                     <span>Unlimited messages</span>
                                 </li>
                                 <li className="flex items-center gap-3 font-medium">
-                                    <svg className="w-5 h-5 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <svg className="w-5 h-5 text-black flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                                     </svg>
                                     <span>Access to ALL personas</span>
                                 </li>
                                 <li className="flex items-center gap-3 font-medium">
-                                    <svg className="w-5 h-5 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <svg className="w-5 h-5 text-black flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                                     </svg>
                                     <span>Faster AI responses</span>
                                 </li>
                                 <li className="flex items-center gap-3 font-medium">
-                                    <svg className="w-5 h-5 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <svg className="w-5 h-5 text-black flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                                     </svg>
                                     <span>Ad-free experience</span>
                                 </li>
                                 <li className="flex items-center gap-3 font-medium">
-                                    <svg className="w-5 h-5 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <svg className="w-5 h-5 text-black flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                                     </svg>
                                     <span>Priority support</span>
@@ -193,7 +201,7 @@ export default function Pricing() {
                             <button
                                 onClick={handleSubscribe}
                                 disabled={loading}
-                                className="w-full py-4 rounded-xl bg-black text-white font-bold text-lg hover:bg-gray-800 hover:scale-105 transition-all duration-300 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                                className="w-full py-4 rounded-xl bg-black text-white font-bold text-lg hover:bg-gray-800 hover:scale-105 transition-all duration-300 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed mt-auto"
                             >
                                 {loading ? 'Processing...' : 'Get Premium Access'}
                             </button>
