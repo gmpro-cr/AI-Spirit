@@ -181,7 +181,7 @@ function ChatPage() {
         router.replace(`/chat/${personaId}?conversationId=${convId}`, undefined, { shallow: true })
       }
 
-      const allMessages = [...messages, userMessage, aiMessage]
+      const allMessages = [...messages, userMessage, assistantMessage]
 
       // Save conversation
       localStorage.setItem(`esperit_conversation_${convId}`, JSON.stringify({
