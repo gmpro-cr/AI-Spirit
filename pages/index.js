@@ -401,20 +401,12 @@ export default function Home() {
             <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-6 sm:mb-8">
               Join thousands exploring AI personas
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button
-                onClick={handleStartChatting}
-                className="inline-block px-8 sm:px-10 py-3 sm:py-4 bg-black text-white text-base sm:text-lg font-semibold rounded-full hover:scale-105 transition-transform shadow-lg hover:shadow-xl"
-              >
-                Start Chatting
-              </button>
-              <button
-                onClick={() => router.push('/debate')}
-                className="inline-block px-8 sm:px-10 py-3 sm:py-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white text-base sm:text-lg font-semibold rounded-full hover:scale-105 transition-transform shadow-lg hover:shadow-xl"
-              >
-                ⚔️ Watch Debates
-              </button>
-            </div>
+            <button
+              onClick={handleStartChatting}
+              className="inline-block px-8 sm:px-10 py-3 sm:py-4 bg-black text-white text-base sm:text-lg font-semibold rounded-full hover:scale-105 transition-transform shadow-lg hover:shadow-xl"
+            >
+              Start Chatting
+            </button>
           </div>
         </section>
 
