@@ -16,8 +16,15 @@ export default async function handler(req, res) {
         const keySecret = process.env.RAZORPAY_KEY_SECRET
         const planId = process.env.RAZORPAY_PLAN_ID
 
+        console.log('🔑 Razorpay credentials check:', {
+            hasKeyId: !!keyId,
+            hasKeySecret: !!keySecret,
+            hasPlanId: !!planId,
+            keyIdPrefix: keyId?.substring(0, 8)
+        })
+
         if (!keyId || !keySecret || !planId) {
-            console.error('Missing Razorpay configuration')
+            console.error('❌ Missing Razorpay configuration')
             return res.status(500).json({ error: 'Payment system not configured' })
         }
 
@@ -39,8 +46,15 @@ export default async function handler(req, res) {
 
         if (!customerResponse.ok) {
             const error = await customerResponse.json()
-            console.error('Customer creation failed:', error)
-            return res.status(500).json({ error: 'Failed to create customer' })
+            console.error('❌ Customer creation failed:', {
+                status: customerResponse.status,
+                statusText: customerResponse.statusText,
+                error: error
+            })
+            return res.status(500).json({
+                error: 'Failed to create customer',
+                details: error
+            })
         }
 
         const customer = await customerResponse.json()
@@ -62,8 +76,15 @@ export default async function handler(req, res) {
 
         if (!subscriptionResponse.ok) {
             const error = await subscriptionResponse.json()
-            console.error('Subscription creation failed:', error)
-            return res.status(500).json({ error: 'Failed to create subscription' })
+            console.error('❌ Subscription creation failed:', {
+                status: subscriptionResponse.status,
+                statusText: subscriptionResponse.statusText,
+                error: error
+            })
+            return res.status(500).json({
+                error: 'Failed to create subscription',
+                details: error
+            })
         }
 
         const subscription = await subscriptionResponse.json()
