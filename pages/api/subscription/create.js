@@ -44,20 +44,45 @@ export default async function handler(req, res) {
             }),
         })
 
+        let customer
         if (!customerResponse.ok) {
             const error = await customerResponse.json()
-            console.error('❌ Customer creation failed:', {
-                status: customerResponse.status,
-                statusText: customerResponse.statusText,
-                error: error
-            })
-            return res.status(500).json({
-                error: 'Failed to create customer',
-                details: error
-            })
-        }
 
-        const customer = await customerResponse.json()
+            // Check if customer already exists
+            if (error.error?.description?.includes('Customer already exists')) {
+                console.log('ℹ️  Customer already exists, fetching existing customer...')
+
+                // Fetch existing customer by email
+                const fetchResponse = await fetch(`https://api.razorpay.com/v1/customers?email=${encodeURIComponent(userEmail)}`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Basic ${auth}`,
+                    },
+                })
+
+                const fetchData = await fetchResponse.json()
+                if (fetchData.items && fetchData.items.length > 0) {
+                    customer = fetchData.items[0]
+                    console.log('✅ Found existing customer:', customer.id)
+                } else {
+                    console.error('❌ Could not find existing customer')
+                    return res.status(500).json({ error: 'Customer lookup failed' })
+                }
+            } else {
+                console.error('❌ Customer creation failed:', {
+                    status: customerResponse.status,
+                    statusText: customerResponse.statusText,
+                    error: error
+                })
+                return res.status(500).json({
+                    error: 'Failed to create customer',
+                    details: error
+                })
+            }
+        } else {
+            customer = await customerResponse.json()
+            console.log('✅ New customer created:', customer.id)
+        }
 
         // Step 2: Create subscription
         const subscriptionResponse = await fetch('https://api.razorpay.com/v1/subscriptions', {
