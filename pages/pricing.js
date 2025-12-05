@@ -3,11 +3,13 @@ import Head from 'next/head'
 import Script from 'next/script'
 import { useRouter } from 'next/router'
 import { useAuth } from '@/context/AuthContext'
+import ContactModal from '@/components/ContactModal'
 
 export default function Pricing() {
     const router = useRouter()
     const { user, userProfile } = useAuth()
     const [loading, setLoading] = useState(false)
+    const [isContactModalOpen, setIsContactModalOpen] = useState(false)
 
     async function handleSubscribe() {
         if (!user) {
@@ -78,21 +80,18 @@ export default function Pricing() {
                 {/* Header */}
                 <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
                     <div className="max-w-7xl mx-auto px-0 md:px-2 py-4 flex justify-between items-center">
-                        <h1 className="text-xl md:text-2xl font-bold text-black pl-3 md:pl-0">
+                        <button
+                            onClick={() => router.push('/')}
+                            className="text-xl md:text-2xl font-bold text-black pl-3 md:pl-0 hover:text-gray-600 transition-colors"
+                        >
                             <span className="italic">AI</span> - Spirit
-                        </h1>
+                        </button>
                         <nav className="flex items-center gap-6 pr-3 md:pr-6">
                             <button
-                                onClick={() => router.push('/')}
+                                onClick={() => setIsContactModalOpen(true)}
                                 className="text-base md:text-lg font-semibold text-black hover:text-gray-600 transition-colors"
                             >
-                                Home
-                            </button>
-                            <button
-                                onClick={() => router.push('/dashboard')}
-                                className="text-base md:text-lg font-semibold text-black hover:text-gray-600 transition-colors"
-                            >
-                                Dashboard
+                                Contact Us
                             </button>
                         </nav>
                     </div>
@@ -214,6 +213,12 @@ export default function Pricing() {
                     </div>
                 </div>
             </div>
+
+            {/* Contact Modal */}
+            <ContactModal
+                isOpen={isContactModalOpen}
+                onClose={() => setIsContactModalOpen(false)}
+            />
         </>
     )
 }
