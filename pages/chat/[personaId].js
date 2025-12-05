@@ -16,6 +16,10 @@ function ChatPage() {
   const [persona, setPersona] = useState(null)
   const [currentInput, setCurrentInput] = useState('')
   const [conversationId, setConversationId] = useState(null)
+  const [editingMessageIndex, setEditingMessageIndex] = useState(null)
+  const [editedMessageText, setEditedMessageText] = useState('')
+  const [messageFeedback, setMessageFeedback] = useState({}) // Store like/dislike per message index
+  const [copiedMessageIndex, setCopiedMessageIndex] = useState(null)
   const chatContainerRef = useRef(null)
 
   // Format message content with bold text
@@ -24,6 +28,103 @@ function ChatPage() {
     const formatted = content.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
     // Sanitize HTML to prevent XSS attacks
     return DOMPurify.sanitize(formatted)
+  }
+
+  // Copy message to clipboard
+  const handleCopyMessage = async (content, index) => {
+    try {
+      // Strip HTML tags before copying
+      const tempDiv = document.createElement('div')
+      tempDiv.innerHTML = formatMessage(content)
+      const plainText = tempDiv.textContent || tempDiv.innerText || ''
+
+      await navigator.clipboard.writeText(plainText)
+      setCopiedMessageIndex(index)
+      setTimeout(() => setCopiedMessageIndex(null), 2000)
+    } catch (error) {
+      console.error('Failed to copy:', error)
+    }
+  }
+
+  // Handle like/dislike feedback
+  const handleFeedback = (index, type) => {
+    setMessageFeedback(prev => ({
+      ...prev,
+      [index]: prev[index] === type ? null : type // Toggle if same, set if different
+    }))
+  }
+
+  // Start editing user message
+  const handleStartEdit = (index, content) => {
+    setEditingMessageIndex(index)
+    setEditedMessageText(content)
+  }
+
+  // Cancel editing
+  const handleCancelEdit = () => {
+    setEditingMessageIndex(null)
+    setEditedMessageText('')
+  }
+
+  // Save edited message and regenerate response
+  const handleSaveEdit = async (index) => {
+    if (!editedMessageText.trim() || isLoading) return
+
+    const newMessages = [...messages]
+    newMessages[index].content = editedMessageText.trim()
+
+    // Remove all messages after the edited one (including assistant response)
+    const messagesToKeep = newMessages.slice(0, index + 1)
+    setMessages(messagesToKeep)
+
+    setEditingMessageIndex(null)
+    setEditedMessageText('')
+    setIsLoading(true)
+
+    try {
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          persona: persona,
+          personaId: persona.id || persona.slug,
+          message: editedMessageText.trim(),
+          conversationHistory: messagesToKeep,
+          conversationId: conversationId,
+          isGuest: !user,
+          userId: user?.id || null,
+          userProfile: userProfile || null,
+        }),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to send message')
+      }
+
+      // Add new assistant response
+      const assistantMessage = { role: 'assistant', content: data.response }
+      addMessage(assistantMessage)
+
+      // Update localStorage
+      const allMessages = [...messagesToKeep, assistantMessage]
+      if (conversationId) {
+        localStorage.setItem(`esperit_conversation_${conversationId}`, JSON.stringify({
+          id: conversationId,
+          personaSlug: persona.slug,
+          personaName: persona.name,
+          messages: allMessages,
+          updatedAt: new Date().toISOString()
+        }))
+      }
+    } catch (error) {
+      console.error('Error regenerating response:', error)
+      const errorMessage = { role: 'assistant', content: "Sorry, something went wrong. Please try again." }
+      addMessage(errorMessage)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   // Load persona
@@ -346,36 +447,130 @@ function ChatPage() {
             )}
 
             {messages.map((msg, index) => (
-              <div
-                key={index}
-                className={`flex items-center gap-4 ${msg.role === 'user' ? 'justify-end' : ''}`}
-              >
-                {msg.role === 'assistant' && (
-                  <img
-                    src={persona.image_url || '/default-persona.png'}
-                    alt={persona.name}
-                    className="w-8 h-8 rounded-full object-cover object-top"
-                    onError={(e) => {
-                      e.target.src = '/default-persona.png'
-                    }}
-                  />
-                )}
+              <div key={index} className="space-y-2">
                 <div
-                  className={`max-w-md lg:max-w-lg p-3 rounded-2xl ${msg.role === 'user'
-                    ? 'bg-black text-white rounded-br-none'
-                    : 'bg-gray-100 text-black rounded-bl-none'
-                    }`}
+                  className={`flex items-start gap-4 ${msg.role === 'user' ? 'justify-end' : ''}`}
                 >
-                  <p
-                    className="whitespace-pre-wrap"
-                    dangerouslySetInnerHTML={{ __html: formatMessage(msg.content) }}
-                  />
-                </div>
-                {msg.role === 'user' && (
-                  <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center font-bold">
-                    U
+                  {msg.role === 'assistant' && (
+                    <img
+                      src={persona.image_url || '/default-persona.png'}
+                      alt={persona.name}
+                      className="w-8 h-8 rounded-full object-cover object-top flex-shrink-0"
+                      onError={(e) => {
+                        e.target.src = '/default-persona.png'
+                      }}
+                    />
+                  )}
+
+                  <div className="flex flex-col gap-2">
+                    {/* Message Bubble */}
+                    {editingMessageIndex === index && msg.role === 'user' ? (
+                      // Edit mode for user message
+                      <div className="flex flex-col gap-2">
+                        <textarea
+                          value={editedMessageText}
+                          onChange={(e) => setEditedMessageText(e.target.value)}
+                          className="p-3 border border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-black text-black resize-none min-h-[60px]"
+                          autoFocus
+                        />
+                        <div className="flex gap-2 justify-end">
+                          <button
+                            onClick={handleCancelEdit}
+                            className="px-3 py-1 text-sm bg-gray-200 hover:bg-gray-300 rounded-lg transition-colors"
+                          >
+                            Cancel
+                          </button>
+                          <button
+                            onClick={() => handleSaveEdit(index)}
+                            disabled={!editedMessageText.trim() || isLoading}
+                            className="px-3 py-1 text-sm bg-black text-white hover:bg-gray-800 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                          >
+                            Save & Regenerate
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      // Normal display
+                      <div
+                        className={`max-w-md lg:max-w-lg p-3 rounded-2xl ${msg.role === 'user'
+                          ? 'bg-black text-white rounded-br-none'
+                          : 'bg-gray-100 text-black rounded-bl-none'
+                          }`}
+                      >
+                        <p
+                          className="whitespace-pre-wrap"
+                          dangerouslySetInnerHTML={{ __html: formatMessage(msg.content) }}
+                        />
+                      </div>
+                    )}
+
+                    {/* Action Buttons */}
+                    {editingMessageIndex !== index && (
+                      <div className={`flex items-center gap-2 ${msg.role === 'user' ? 'justify-end' : ''}`}>
+                        {/* Copy Button */}
+                        <button
+                          onClick={() => handleCopyMessage(msg.content, index)}
+                          className="p-1.5 hover:bg-gray-100 rounded-lg transition-colors group"
+                          title="Copy message"
+                        >
+                          {copiedMessageIndex === index ? (
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-green-600" viewBox="0 0 20 20" fill="currentColor">
+                              <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                            </svg>
+                          ) : (
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-500 group-hover:text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                            </svg>
+                          )}
+                        </button>
+
+                        {/* Edit Button - Only for user messages */}
+                        {msg.role === 'user' && (
+                          <button
+                            onClick={() => handleStartEdit(index, msg.content)}
+                            disabled={isLoading}
+                            className="p-1.5 hover:bg-gray-100 rounded-lg transition-colors group disabled:opacity-50 disabled:cursor-not-allowed"
+                            title="Edit message"
+                          >
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-500 group-hover:text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                            </svg>
+                          </button>
+                        )}
+
+                        {/* Like/Dislike - Only for assistant messages */}
+                        {msg.role === 'assistant' && (
+                          <>
+                            <button
+                              onClick={() => handleFeedback(index, 'like')}
+                              className="p-1.5 hover:bg-gray-100 rounded-lg transition-colors group"
+                              title="Like response"
+                            >
+                              <svg xmlns="http://www.w3.org/2000/svg" className={`h-4 w-4 ${messageFeedback[index] === 'like' ? 'text-green-600 fill-current' : 'text-gray-500 group-hover:text-gray-700'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" />
+                              </svg>
+                            </button>
+                            <button
+                              onClick={() => handleFeedback(index, 'dislike')}
+                              className="p-1.5 hover:bg-gray-100 rounded-lg transition-colors group"
+                              title="Dislike response"
+                            >
+                              <svg xmlns="http://www.w3.org/2000/svg" className={`h-4 w-4 ${messageFeedback[index] === 'dislike' ? 'text-red-600 fill-current' : 'text-gray-500 group-hover:text-gray-700'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 14H5.236a2 2 0 01-1.789-2.894l3.5-7A2 2 0 018.736 3h4.018a2 2 0 01.485.06l3.76.94m-7 10v5a2 2 0 002 2h.096c.5 0 .905-.405.905-.904 0-.715.211-1.413.608-2.008L17 13V4m-7 10h2m5-10h2a2 2 0 012 2v6a2 2 0 01-2 2h-2.5" />
+                              </svg>
+                            </button>
+                          </>
+                        )}
+                      </div>
+                    )}
                   </div>
-                )}
+
+                  {msg.role === 'user' && (
+                    <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center font-bold flex-shrink-0">
+                      U
+                    </div>
+                  )}
+                </div>
               </div>
             ))}
 
