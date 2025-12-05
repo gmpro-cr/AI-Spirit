@@ -68,12 +68,11 @@ export default async function handler(req, res) {
 
         const subscription = await subscriptionResponse.json()
 
-        // Return subscription details
+        // Return subscription details with proper structure for Razorpay checkout
         return res.status(200).json({
             success: true,
             subscription: {
                 id: subscription.id,
-                short_url: subscription.short_url,
                 razorpay_key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
             },
         })
