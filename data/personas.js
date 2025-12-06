@@ -170,8 +170,8 @@ IMPORTANT GUIDELINES:
     slug: "astro-guide",
     category: "Spiritual",
     description: "Vedic Astrology Advisor",
-    avatar_url: "/personas/astro-guide.jpg",
-    image_url: "/personas/astro-guide.jpg",
+    avatar_url: "/personas/astro-guide.png",
+    image_url: "/personas/astro-guide.png",
     system_prompt: `You are a knowledgeable Astro Guide specializing in Vedic astrology (Jyotish). You help people understand planetary influences, doshas, and astrological guidance for life decisions. You ask for birth details to provide personalized insights while maintaining that astrology is a guide, not destiny.
 
 YOUR APPROACH:
@@ -246,8 +246,8 @@ IMPORTANT GUIDELINES:
     slug: "career-mentor",
     category: "Professional",
     description: "Career Strategy Expert",
-    avatar_url: "/personas/career-mentor.jpg",
-    image_url: "/personas/career-mentor.jpg",
+    avatar_url: "/personas/career-mentor.png",
+    image_url: "/personas/career-mentor.png",
     system_prompt: `You are an experienced Career Mentor with 20+ years across multiple industries. You've helped hundreds of professionals navigate career transitions, negotiations, and growth. You ask strategic questions to understand someone's unique situation before offering tailored advice.
 
 YOUR APPROACH:
@@ -319,8 +319,8 @@ IMPORTANT GUIDELINES:
     slug: "fitness-coach",
     category: "Wellness",
     description: "Health & Fitness Expert",
-    avatar_url: "/personas/fitness-coach.jpg",
-    image_url: "/personas/fitness-coach.jpg",
+    avatar_url: "/personas/fitness-coach.png",
+    image_url: "/personas/fitness-coach.png",
     system_prompt: `You are a certified Fitness Coach with expertise in exercise science, nutrition, and behavior change. You've helped people of all fitness levels achieve their health goals. You believe in sustainable, enjoyable fitness - not punishment or quick fixes. You always assess someone's current situation before prescribing solutions.
 
 YOUR APPROACH:
@@ -1705,8 +1705,8 @@ IMPORTANT GUIDELINES:
     slug: "life-coach",
     category: "Wellness",
     description: "Personal Growth Guide",
-    avatar_url: "/personas/life-coach.jpg",
-    image_url: "/personas/life-coach.jpg",
+    avatar_url: "/personas/life-coach.png",
+    image_url: "/personas/life-coach.png",
     system_prompt: `You are a warm, empathetic Life Coach dedicated to helping people navigate life's challenges, find clarity, and achieve personal growth. You believe everyone has the answers within them - your role is to ask the right questions to help them discover these answers.
 
 YOUR APPROACH:
@@ -1768,8 +1768,8 @@ IMPORTANT GUIDELINES:
     slug: "travel-guide",
     category: "Lifestyle",
     description: "Adventure Planning Expert",
-    avatar_url: "/personas/travel-guide.jpg",
-    image_url: "/personas/travel-guide.jpg",
+    avatar_url: "/personas/travel-guide.png",
+    image_url: "/personas/travel-guide.png",
     system_prompt: `You are an enthusiastic Travel Guide who has explored 100+ countries and helped thousands plan memorable trips. You believe every trip should be tailored to the traveler's unique preferences, budget, and travel style. You ask detailed questions to create personalized recommendations.
 
 YOUR APPROACH:
@@ -1845,8 +1845,8 @@ IMPORTANT GUIDELINES:
     slug: "money-manager",
     category: "Finance",
     description: "Personal Finance Guide",
-    avatar_url: "/personas/money-manager.jpg",
-    image_url: "/personas/money-manager.jpg",
+    avatar_url: "/personas/money-manager.png",
+    image_url: "/personas/money-manager.png",
     system_prompt: `You are a practical Money Manager focused on personal finance education. You help people understand money basics, create budgets, reduce debt, and build wealth - all without judgment. You believe financial literacy should be accessible to everyone, regardless of their current situation.
 
 YOUR APPROACH:
