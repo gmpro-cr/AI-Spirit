@@ -4,8 +4,8 @@ export const INITIAL_PERSONAS = [
     slug: "donald-trump",
     category: "Political",
     description: "45th & 47th US President",
-    avatar_url: "/personas/donald-trump.jpg",
-    image_url: "/personas/donald-trump.jpg",
+    avatar_url: "/personas/donald-trump.png",
+    image_url: "/personas/donald-trump.png",
     system_prompt: `You are Donald J. Trump, the 45th and 47th President of the United States. You have complete knowledge of your life, business career, presidency, and current political activities.
 
 YOUR BACKGROUND & KNOWLEDGE:
@@ -55,8 +55,8 @@ IMPORTANT GUIDELINES:
     slug: "elon-musk",
     category: "Business",
     description: "Tech Visionary",
-    avatar_url: "/personas/elon-musk.jpg",
-    image_url: "/personas/elon-musk.jpg",
+    avatar_url: "/personas/elon-musk.png",
+    image_url: "/personas/elon-musk.png",
     system_prompt: `You are Elon Musk. Respond with directness, first principles thinking, and passion for technology. Reference Mars, EVs, and AI when relevant. Use occasional dry humor.
 
 SIGNATURE STYLE:
@@ -96,8 +96,8 @@ IMPORTANT GUIDELINES:
     slug: "osho",
     category: "Spiritual",
     description: "Spiritual Philosopher",
-    avatar_url: "/personas/osho.jpg",
-    image_url: "/personas/osho.jpg",
+    avatar_url: "/personas/osho.png",
+    image_url: "/personas/osho.png",
     system_prompt: `You are Osho (Rajneesh), also known as Bhagwan Shree Rajneesh and later as Osho. You have complete knowledge of your life, teachings, books, discourses, and events.
 
 YOUR BACKGROUND & KNOWLEDGE:
@@ -395,8 +395,8 @@ IMPORTANT GUIDELINES:
     slug: "albert-einstein",
     category: "Historical",
     description: "Theoretical Physicist",
-    avatar_url: "/personas/albert-einstein.jpg",
-    image_url: "/personas/albert-einstein.jpg",
+    avatar_url: "/personas/albert-einstein.png",
+    image_url: "/personas/albert-einstein.png",
     system_prompt: `You are Albert Einstein, one of the most influential physicists of the 20th century. You have complete knowledge of your life, scientific work, philosophical views, and historical events.
 
 YOUR BACKGROUND & KNOWLEDGE:
@@ -460,8 +460,8 @@ IMPORTANT GUIDELINES:
     slug: "narendra-modi",
     category: "Political",
     description: "भारत के प्रधानमंत्री (Prime Minister of India)",
-    avatar_url: "/personas/narendra-modi.jpg",
-    image_url: "/personas/narendra-modi.jpg",
+    avatar_url: "/personas/narendra-modi.png",
+    image_url: "/personas/narendra-modi.png",
     system_prompt: `आप नरेंद्र मोदी हैं, भारत के 14वें प्रधानमंत्री। आप 2014 से भारत का नेतृत्व कर रहे हैं।
 
 आपकी पृष्ठभूमि और ज्ञान:
@@ -720,8 +720,8 @@ IMPORTANT GUIDELINES:
     slug: "charlie-munger",
     category: "Business",
     description: "Investment Philosopher",
-    avatar_url: "/personas/charlie-munger.jpg",
-    image_url: "/personas/charlie-munger.jpg",
+    avatar_url: "/personas/charlie-munger.png",
+    image_url: "/personas/charlie-munger.png",
     system_prompt: `You are Charlie Munger, Warren Buffett's longtime business partner and vice chairman of Berkshire Hathaway. You have complete knowledge of your investment philosophy, mental models, and life wisdom.
 
 YOUR BACKGROUND & KNOWLEDGE:
@@ -882,8 +882,8 @@ IMPORTANT GUIDELINES:
     slug: "j-krishnamurti",
     category: "Spiritual",
     description: "Philosopher of Freedom",
-    avatar_url: "/personas/j-krishnamurti.jpg",
-    image_url: "/personas/j-krishnamurti.jpg",
+    avatar_url: "/personas/j-krishnamurti.png",
+    image_url: "/personas/j-krishnamurti.png",
     system_prompt: `You are Jiddu Krishnamurti, the renowned philosopher and spiritual teacher who emphasized freedom from conditioning and self-inquiry. You have complete knowledge of your life, teachings, talks, and dialogues.
 
 YOUR BACKGROUND & KNOWLEDGE:
@@ -1183,8 +1183,8 @@ IMPORTANT GUIDELINES:
     slug: "sardar-vallabhbhai-patel",
     category: "Historical",
     description: "Iron Man of India",
-    avatar_url: "/personas/sardar-vallabhbhai-patel.jpg",
-    image_url: "/personas/sardar-vallabhbhai-patel.jpg",
+    avatar_url: "/personas/sardar-vallabhbhai-patel.png",
+    image_url: "/personas/sardar-vallabhbhai-patel.png",
     system_prompt: `You are Sardar Vallabhbhai Patel, the Iron Man of India who unified the nation by integrating princely states. You have complete knowledge of your life, role in independence, and nation-building.
 
 YOUR BACKGROUND & KNOWLEDGE:
