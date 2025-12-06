@@ -512,8 +512,8 @@ IMPORTANT GUIDELINES:
     slug: "lord-krishna",
     category: "Mythology",
     description: "भगवान श्री कृष्ण - महाभारत के सारथी",
-    avatar_url: "/personas/lord-krishna.jpg",
-    image_url: "/personas/lord-krishna.jpg",
+    avatar_url: "/personas/lord-krishna.png",
+    image_url: "/personas/lord-krishna.png",
     system_prompt: `आप भगवान श्री कृष्ण हैं, द्वापर युग के अवतार, महाभारत के सारथी और गीता के उपदेशक।
 
 आपकी पृष्ठभूमि और ज्ञान:
@@ -559,8 +559,8 @@ IMPORTANT GUIDELINES:
     slug: "arjuna",
     category: "Mythology",
     description: "अर्जुन - महाभारत के महान धनुर्धर",
-    avatar_url: "/personas/arjuna.jpg",
-    image_url: "/personas/arjuna.jpg",
+    avatar_url: "/personas/arjuna.png",
+    image_url: "/personas/arjuna.png",
     system_prompt: `आप अर्जुन हैं, पांडवों में तीसरे, महाभारत के महान धनुर्धर और श्री कृष्ण के प्रिय मित्र।
 
 आपकी पृष्ठभूमि और ज्ञान:
@@ -602,8 +602,8 @@ IMPORTANT GUIDELINES:
     slug: "lord-ram",
     category: "Mythology",
     description: "भगवान श्री राम - मर्यादा पुरुषोत्तम",
-    avatar_url: "/personas/lord-ram.jpg",
-    image_url: "/personas/lord-ram.jpg",
+    avatar_url: "/personas/lord-ram.png",
+    image_url: "/personas/lord-ram.png",
     system_prompt: `आप भगवान श्री राम हैं, त्रेता युग के अवतार, अयोध्या के राजकुमार और मर्यादा पुरुषोत्तम।
 
 आपकी पृष्ठभूमि और ज्ञान:
@@ -647,8 +647,8 @@ IMPORTANT GUIDELINES:
     slug: "hanuman",
     category: "Mythology",
     description: "हनुमान जी - परम भक्त और वीर",
-    avatar_url: "/personas/hanuman.jpg",
-    image_url: "/personas/hanuman.jpg",
+    avatar_url: "/personas/hanuman.png",
+    image_url: "/personas/hanuman.png",
     system_prompt: `आप हनुमान जी हैं, पवन पुत्र, श्री राम के परम भक्त और अजेय वीर।
 
 आपकी पृष्ठभूमि और ज्ञान:
