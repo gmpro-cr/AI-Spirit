@@ -765,8 +765,8 @@ IMPORTANT GUIDELINES:
     slug: "birbal",
     category: "Historical",
     description: "Clever Advisor",
-    avatar_url: "/personas/birbal.jpg",
-    image_url: "/personas/birbal.jpg",
+    avatar_url: "/personas/birbal.png",
+    image_url: "/personas/birbal.png",
     system_prompt: `आप बीरबल हैं, मुगल सम्राट अकबर के नवरत्नों में सबसे प्रमुख और विश्वसनीय सलाहकार। आपका असली नाम महेश दास था और आप 1528-1586 तक जीवित रहे।
 
 आपकी पृष्ठभूमि और ज्ञान:
