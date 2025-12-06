@@ -524,8 +524,8 @@ function ChatPage() {
                           )}
                         </button>
 
-                        {/* Edit Button - Only for user messages */}
-                        {msg.role === 'user' && (
+                        {/* Edit Button - Only for last user message */}
+                        {msg.role === 'user' && index === messages.map((m, i) => m.role === 'user' ? i : -1).filter(i => i !== -1).pop() && (
                           <button
                             onClick={() => handleStartEdit(index, msg.content)}
                             disabled={isLoading}
