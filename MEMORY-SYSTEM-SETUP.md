@@ -1,140 +1,108 @@
-# Persona Memory System - Database Setup
+# Memory System Setup Guide
 
-## Step 1: Create Database Tables
+## Problem
+The memory system code is already implemented in the application, but it's not working because the database tables don't exist yet.
 
-Run this SQL in your Supabase SQL Editor:
+## Solution
+Run the database migration to create the required tables.
 
-```sql
--- ============================================
--- 1. USER PROFILES TABLE
--- ============================================
+## Method 1: Using Supabase SQL Editor (RECOMMENDED)
 
-CREATE TABLE IF NOT EXISTS user_profiles (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
-  full_name TEXT,
-  preferred_name TEXT,
-  bio TEXT,
-  interests TEXT[] DEFAULT '{}',
-  goals TEXT[] DEFAULT '{}',
-  metadata JSONB DEFAULT '{}',
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-  UNIQUE(user_id)
-);
+1. Go to your Supabase Dashboard: https://supabase.com/dashboard
+2. Select your project (exdjsvknudvfkabnifrg)
+3. Navigate to **SQL Editor** in the left sidebar
+4. Click **New Query**
+5. Copy the entire content from: `supabase/migrations/create_memory_and_relationship_tables.sql`
+6. Paste it into the SQL Editor
+7. Click **Run** or press `Ctrl+Enter` (Windows/Linux) / `Cmd+Enter` (Mac)
 
--- Create index for faster lookups
-CREATE INDEX IF NOT EXISTS idx_user_profiles_user_id ON user_profiles(user_id);
+## Method 2: Using psql command line
 
--- Enable RLS
-ALTER TABLE user_profiles ENABLE ROW LEVEL SECURITY;
+Run this command from your project root:
 
--- RLS Policies for user_profiles
-DROP POLICY IF EXISTS "Users can view own profile" ON user_profiles;
-CREATE POLICY "Users can view own profile" ON user_profiles
-  FOR SELECT USING (user_id = auth.uid());
-
-DROP POLICY IF EXISTS "Users can update own profile" ON user_profiles;
-CREATE POLICY "Users can update own profile" ON user_profiles
-  FOR UPDATE USING (user_id = auth.uid());
-
-DROP POLICY IF EXISTS "Users can insert own profile" ON user_profiles;
-CREATE POLICY "Users can insert own profile" ON user_profiles
-  FOR INSERT WITH CHECK (user_id = auth.uid());
-
--- ============================================
--- 2. CONVERSATION MEMORIES TABLE
--- ============================================
-
-CREATE TABLE IF NOT EXISTS conversation_memories (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
-  persona_slug TEXT NOT NULL,
-  memory_type TEXT NOT NULL, -- 'fact', 'preference', 'goal', 'event'
-  content TEXT NOT NULL,
-  context TEXT,
-  importance INTEGER DEFAULT 5 CHECK (importance >= 1 AND importance <= 10),
-  conversation_id TEXT,
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-  last_accessed_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-);
-
--- Create indexes for faster queries
-CREATE INDEX IF NOT EXISTS idx_memories_user_persona ON conversation_memories(user_id, persona_slug);
-CREATE INDEX IF NOT EXISTS idx_memories_importance ON conversation_memories(importance DESC);
-CREATE INDEX IF NOT EXISTS idx_memories_created_at ON conversation_memories(created_at DESC);
-
--- Enable RLS
-ALTER TABLE conversation_memories ENABLE ROW LEVEL SECURITY;
-
--- RLS Policies for conversation_memories
-DROP POLICY IF EXISTS "Users can view own memories" ON conversation_memories;
-CREATE POLICY "Users can view own memories" ON conversation_memories
-  FOR SELECT USING (user_id = auth.uid());
-
-DROP POLICY IF EXISTS "Users can insert own memories" ON conversation_memories;
-CREATE POLICY "Users can insert own memories" ON conversation_memories
-  FOR INSERT WITH CHECK (user_id = auth.uid());
-
-DROP POLICY IF EXISTS "Users can update own memories" ON conversation_memories;
-CREATE POLICY "Users can update own memories" ON conversation_memories
-  FOR UPDATE USING (user_id = auth.uid());
-
-DROP POLICY IF EXISTS "Users can delete own memories" ON conversation_memories;
-CREATE POLICY "Users can delete own memories" ON conversation_memories
-  FOR DELETE USING (user_id = auth.uid());
-
--- ============================================
--- 3. HELPER FUNCTIONS
--- ============================================
-
--- Function to update updated_at timestamp
-CREATE OR REPLACE FUNCTION update_updated_at_column()
-RETURNS TRIGGER AS $$
-BEGIN
-  NEW.updated_at = NOW();
-  RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
--- Trigger for user_profiles
-DROP TRIGGER IF EXISTS update_user_profiles_updated_at ON user_profiles;
-CREATE TRIGGER update_user_profiles_updated_at
-  BEFORE UPDATE ON user_profiles
-  FOR EACH ROW
-  EXECUTE FUNCTION update_updated_at_column();
-
--- ============================================
--- 4. VERIFICATION QUERIES
--- ============================================
-
--- Verify tables were created
-SELECT table_name 
-FROM information_schema.tables 
-WHERE table_schema = 'public' 
-  AND table_name IN ('user_profiles', 'conversation_memories');
-
--- Verify RLS is enabled
-SELECT tablename, rowsecurity 
-FROM pg_tables 
-WHERE schemaname = 'public' 
-  AND tablename IN ('user_profiles', 'conversation_memories');
-
--- Verify policies exist
-SELECT tablename, policyname 
-FROM pg_policies 
-WHERE tablename IN ('user_profiles', 'conversation_memories')
-ORDER BY tablename, policyname;
+```bash
+PGPASSWORD='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV4ZGpzdmtudWR2ZmthYm5pZnJnIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2MDg5MjgwNiwiZXhwIjoyMDc2NDY4ODA2fQ.1y7gUdkNObsMDiiFinPOEnyxJV0Ikb8oeRGD8gJgSDA' \
+psql -h aws-0-ap-south-1.pooler.supabase.com \
+     -p 6543 \
+     -U postgres.exdjsvknudvfkabnifrg \
+     -d postgres \
+     -f supabase/migrations/create_memory_and_relationship_tables.sql
 ```
 
-## Step 2: Verify Tables
+## What This Migration Creates
 
-After running the SQL, you should see:
-- ✅ `user_profiles` table created
-- ✅ `conversation_memories` table created
-- ✅ RLS enabled on both tables
-- ✅ Policies created for user access
+### 1. **conversation_memories** Table
+Stores user information extracted from conversations:
+- User's name, interests, goals, profession, location
+- Family details, hobbies, preferences
+- Birth details, health info, languages, beliefs
+- Age, challenges, and more
 
-## Next Steps
+### 2. **persona_relationships** Table
+Tracks the relationship level between users and personas:
+- Stranger → Acquaintance → Friend → Close Friend → Confidant
+- Conversation count tracking
+- Last conversation timestamp
 
-Once you've run this SQL in Supabase, let me know and I'll proceed with implementing the user profile modal and memory extraction logic.
+## How It Works
+
+### For Authenticated Users:
+1. When a user chats with a persona, the AI automatically extracts relevant personal information
+2. Information is saved to the conversation_memories table
+3. In future conversations, this information is injected into the AI's context
+4. The AI can remember and reference these details naturally
+
+### 17 Memory Types Extracted:
+- name, interest, goal, profession, location
+- birth_details, family, health, education, hobby
+- career, food_preference, pet, language, belief
+- age, challenge
+
+### For Guest Users:
+- Memory system doesn't work for guest users
+- Only authenticated users get personalized memory
+
+## Verification
+
+After running the migration, you can verify it worked by:
+
+1. Checking tables exist:
+```sql
+SELECT table_name FROM information_schema.tables
+WHERE table_schema = 'public'
+AND table_name IN ('conversation_memories', 'persona_relationships');
+```
+
+2. Checking table structure:
+```sql
+\d conversation_memories
+\d persona_relationships
+```
+
+## Testing
+
+1. Sign in to AI-Spirit (not as guest)
+2. Start a conversation with any persona
+3. Share some personal information (e.g., "My name is John and I love programming")
+4. Have a few more messages in the conversation
+5. Start a NEW conversation with the same persona
+6. The persona should remember details you shared before
+
+## Files Involved
+
+- **Migration SQL**: `supabase/migrations/create_memory_and_relationship_tables.sql`
+- **Memory Extraction Logic**: `lib/memorySystem.js`
+- **Memory Integration**: `pages/api/chat.js` (lines 232-269, 368-383)
+- **Relationship System**: `lib/relationshipSystem.js`
+
+## Troubleshooting
+
+If memories still don't work after migration:
+
+1. Check browser console for errors
+2. Check Vercel function logs for memory extraction errors
+3. Verify you're signed in (not using guest mode)
+4. Check if data is being inserted:
+```sql
+SELECT * FROM conversation_memories LIMIT 10;
+```
