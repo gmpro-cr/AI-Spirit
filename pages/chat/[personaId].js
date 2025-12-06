@@ -20,6 +20,8 @@ function ChatPage() {
   const [editedMessageText, setEditedMessageText] = useState('')
   const [messageFeedback, setMessageFeedback] = useState({}) // Store like/dislike per message index
   const [copiedMessageIndex, setCopiedMessageIndex] = useState(null)
+  const [isListening, setIsListening] = useState(false)
+  const [recognition, setRecognition] = useState(null)
   const chatContainerRef = useRef(null)
 
   // Format message content with bold text
@@ -124,6 +126,51 @@ function ChatPage() {
       addMessage(errorMessage)
     } finally {
       setIsLoading(false)
+    }
+  }
+
+  // Initialize speech recognition
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+      if (SpeechRecognition) {
+        const recognitionInstance = new SpeechRecognition()
+        recognitionInstance.continuous = false
+        recognitionInstance.interimResults = false
+        recognitionInstance.lang = 'en-US'
+
+        recognitionInstance.onresult = (event) => {
+          const transcript = event.results[0][0].transcript
+          setCurrentInput(prev => prev + (prev ? ' ' : '') + transcript)
+        }
+
+        recognitionInstance.onerror = (event) => {
+          console.error('Speech recognition error:', event.error)
+          setIsListening(false)
+        }
+
+        recognitionInstance.onend = () => {
+          setIsListening(false)
+        }
+
+        setRecognition(recognitionInstance)
+      }
+    }
+  }, [])
+
+  // Toggle speech recognition
+  const toggleSpeechRecognition = () => {
+    if (!recognition) {
+      alert('Speech recognition is not supported in your browser. Please use Chrome, Edge, or Safari.')
+      return
+    }
+
+    if (isListening) {
+      recognition.stop()
+      setIsListening(false)
+    } else {
+      recognition.start()
+      setIsListening(true)
     }
   }
 
@@ -606,6 +653,36 @@ function ChatPage() {
                 className="flex-1 p-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-black text-black"
                 disabled={isLoading}
               />
+
+              {/* Microphone Button */}
+              <button
+                type="button"
+                onClick={toggleSpeechRecognition}
+                className={`p-3 rounded-full transition-colors ${
+                  isListening
+                    ? 'bg-red-500 text-white animate-pulse'
+                    : 'bg-gray-100 text-black hover:bg-gray-200'
+                }`}
+                disabled={isLoading}
+                title={isListening ? 'Stop recording' : 'Start voice input'}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"
+                  />
+                </svg>
+              </button>
+
+              {/* Send Button */}
               <button
                 type="submit"
                 className="bg-black text-white p-3 rounded-full disabled:bg-gray-400 hover:bg-gray-800 transition-colors"
