@@ -76,9 +76,20 @@ export default async function handler(req, res) {
       const isPremium = !!subscription
 
       if (!isPremium) {
-        // 2. Count messages sent today by this user (using UTC time)
+        // 2. Count messages sent today by this user (using IST timezone UTC+5:30)
         const now = new Date()
-        const todayUTC = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 0, 0, 0, 0))
+
+        // Get IST midnight (subtract 5:30 from UTC to get IST midnight in UTC)
+        const istOffset = 5.5 * 60 * 60 * 1000 // 5 hours 30 minutes in milliseconds
+        const nowIST = new Date(now.getTime() + istOffset)
+        const istMidnight = new Date(Date.UTC(
+          nowIST.getUTCFullYear(),
+          nowIST.getUTCMonth(),
+          nowIST.getUTCDate(),
+          0, 0, 0, 0
+        ))
+        // Convert IST midnight back to UTC
+        const todayISTinUTC = new Date(istMidnight.getTime() - istOffset)
 
         // We need to join conversations to get user's messages
         // But Supabase JS client join syntax can be complex, so we'll use a two-step approach or RPC if available
@@ -96,7 +107,7 @@ export default async function handler(req, res) {
             .select('*', { count: 'exact', head: true })
             .in('conversation_id', conversationIds)
             .eq('role', 'user')
-            .gte('created_at', todayUTC.toISOString())
+            .gte('created_at', todayISTinUTC.toISOString())
 
           if (!countError && count >= 20) {
             return res.status(403).json({
