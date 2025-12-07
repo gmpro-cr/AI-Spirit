@@ -289,6 +289,7 @@ function ChatPage() {
     setIsLoading(true)
 
     try {
+      // Use streaming for better UX
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -298,89 +299,170 @@ function ChatPage() {
           message: messageText,
           conversationHistory: [...messages, userMessage],
           conversationId: conversationId,
-          isGuest: !user, // Not guest if user is authenticated
+          isGuest: !user,
           userId: user?.id || null,
           userProfile: userProfile || null,
+          stream: true, // Enable streaming
         }),
       })
 
-      const data = await response.json()
+      // Check if we got a streaming response
+      if (response.headers.get('Content-Type')?.includes('text/event-stream')) {
+        const reader = response.body.getReader()
+        const decoder = new TextDecoder()
+        let streamedContent = ''
 
-      if (!response.ok) {
-        // Handle message limit reached
-        if (response.status === 403 && data.isLimitReached) {
-          if (confirm('You have reached your daily message limit (20 messages). Upgrade to Premium for unlimited access?')) {
-            // Redirect to premium page
-            router.push('/premium')
+        // Add empty assistant message that we'll update as chunks arrive
+        const assistantMessage = { role: 'assistant', content: '' }
+        addMessage(assistantMessage)
+
+        while (true) {
+          const { done, value } = await reader.read()
+          if (done) break
+
+          const chunk = decoder.decode(value)
+          const lines = chunk.split('\n')
+
+          for (const line of lines) {
+            if (line.startsWith('data: ')) {
+              try {
+                const data = JSON.parse(line.slice(6))
+
+                if (data.error) {
+                  throw new Error(data.error)
+                }
+
+                if (!data.done && data.chunk) {
+                  streamedContent += data.chunk
+                  // Update the last message with accumulated content
+                  setMessages(prev => {
+                    const updated = [...prev]
+                    updated[updated.length - 1] = { role: 'assistant', content: streamedContent }
+                    return updated
+                  })
+                }
+              } catch (parseError) {
+                console.error('Error parsing SSE data:', parseError)
+              }
+            }
           }
-          throw new Error(data.error)
         }
-        throw new Error(data.error || 'Failed to send message')
-      }
 
-      const result = data
+        const finalResponse = streamedContent
 
-      // Add assistant message
-      const assistantMessage = { role: 'assistant', content: result.response }
-      addMessage(assistantMessage)
+        // For authenticated users, conversation is saved on server
+        // For guest users, generate locally and save to localStorage
+        let convId = conversationId
 
-      // For authenticated users, use conversation ID from API response
-      // For guest users, generate locally
-      let convId = conversationId
+        if (!convId) {
+          // Generate new conversation ID locally
+          convId = user ? null : `conv_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+          if (convId) {
+            setConversationId(convId)
+            router.replace(`/chat/${personaId}?conversationId=${convId}`, undefined, { shallow: true })
+          }
+        }
 
-      if (user && data.conversationId) {
-        // Authenticated: use conversation ID from API
-        convId = data.conversationId
-        if (!conversationId) {
+        const allMessages = [...messages, userMessage, { role: 'assistant', content: finalResponse }]
+
+        // Save conversation to localStorage for guest users
+        if (convId) {
+          localStorage.setItem(`esperit_conversation_${convId}`, JSON.stringify({
+            id: convId,
+            personaSlug: persona.slug,
+            personaName: persona.name,
+            messages: allMessages,
+            updatedAt: new Date().toISOString()
+          }))
+
+          // Update conversations list
+          const conversationsList = JSON.parse(localStorage.getItem('esperit_conversations') || '[]')
+          const existingIndex = conversationsList.findIndex(c => c.id === convId)
+
+          const chatTitle = messageText.slice(0, 50) + (messageText.length > 50 ? '...' : '')
+
+          const conversationMeta = {
+            id: convId,
+            personaSlug: persona.slug,
+            personaName: persona.name,
+            personaImage: persona.image_url,
+            title: chatTitle,
+            updatedAt: new Date().toISOString()
+          }
+
+          if (existingIndex >= 0) {
+            conversationsList[existingIndex] = conversationMeta
+          } else {
+            conversationsList.unshift(conversationMeta)
+          }
+
+          const trimmedList = conversationsList.slice(0, 50)
+          localStorage.setItem('esperit_conversations', JSON.stringify(trimmedList))
+        }
+      } else {
+        // Fallback to non-streaming (shouldn't happen normally)
+        const data = await response.json()
+
+        if (!response.ok) {
+          if (response.status === 403 && data.isLimitReached) {
+            if (confirm('You have reached your daily message limit (20 messages). Upgrade to Premium for unlimited access?')) {
+              router.push('/premium')
+            }
+            throw new Error(data.error)
+          }
+          throw new Error(data.error || 'Failed to send message')
+        }
+
+        const assistantMessage = { role: 'assistant', content: data.response }
+        addMessage(assistantMessage)
+
+        let convId = conversationId
+
+        if (user && data.conversationId) {
+          convId = data.conversationId
+          if (!conversationId) {
+            setConversationId(convId)
+            router.replace(`/chat/${personaId}?conversationId=${convId}`, undefined, { shallow: true })
+          }
+        } else if (!convId) {
+          convId = `conv_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
           setConversationId(convId)
           router.replace(`/chat/${personaId}?conversationId=${convId}`, undefined, { shallow: true })
         }
-      } else if (!convId) {
-        // Guest: generate new conversation ID locally
-        convId = `conv_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
-        setConversationId(convId)
-        router.replace(`/chat/${personaId}?conversationId=${convId}`, undefined, { shallow: true })
+
+        const allMessages = [...messages, userMessage, assistantMessage]
+
+        localStorage.setItem(`esperit_conversation_${convId}`, JSON.stringify({
+          id: convId,
+          personaSlug: persona.slug,
+          personaName: persona.name,
+          messages: allMessages,
+          updatedAt: new Date().toISOString()
+        }))
+
+        const conversationsList = JSON.parse(localStorage.getItem('esperit_conversations') || '[]')
+        const existingIndex = conversationsList.findIndex(c => c.id === convId)
+
+        const chatTitle = messageText.slice(0, 50) + (messageText.length > 50 ? '...' : '')
+
+        const conversationMeta = {
+          id: convId,
+          personaSlug: persona.slug,
+          personaName: persona.name,
+          personaImage: persona.image_url,
+          title: chatTitle,
+          updatedAt: new Date().toISOString()
+        }
+
+        if (existingIndex >= 0) {
+          conversationsList[existingIndex] = conversationMeta
+        } else {
+          conversationsList.unshift(conversationMeta)
+        }
+
+        const trimmedList = conversationsList.slice(0, 50)
+        localStorage.setItem('esperit_conversations', JSON.stringify(trimmedList))
       }
-
-      const allMessages = [...messages, userMessage, assistantMessage]
-
-      // Save conversation
-      localStorage.setItem(`esperit_conversation_${convId}`, JSON.stringify({
-        id: convId,
-        personaSlug: persona.slug,
-        personaName: persona.name,
-        messages: allMessages,
-        updatedAt: new Date().toISOString()
-      }))
-
-      // Update conversations list
-      const conversationsList = JSON.parse(localStorage.getItem('esperit_conversations') || '[]')
-      const existingIndex = conversationsList.findIndex(c => c.id === convId)
-
-      // Use first user message as title (truncated)
-      const firstUserMessage = allMessages.find(m => m.role === 'user')
-      const chatTitle = firstUserMessage
-        ? firstUserMessage.content.slice(0, 50) + (firstUserMessage.content.length > 50 ? '...' : '')
-        : `Chat with ${persona.name}`
-
-      const conversationMeta = {
-        id: convId,
-        personaSlug: persona.slug,
-        personaName: persona.name,
-        personaImage: persona.image,
-        title: chatTitle,
-        updatedAt: new Date().toISOString()
-      }
-
-      if (existingIndex >= 0) {
-        conversationsList[existingIndex] = conversationMeta
-      } else {
-        conversationsList.unshift(conversationMeta)
-      }
-
-      // Keep only last 50 conversations
-      const trimmedList = conversationsList.slice(0, 50)
-      localStorage.setItem('esperit_conversations', JSON.stringify(trimmedList))
 
     } catch (error) {
       console.error('Error sending message:', error)

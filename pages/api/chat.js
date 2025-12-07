@@ -1,6 +1,6 @@
 import { supabaseAdmin } from '@/lib/supabase'
 import crypto from 'crypto'
-import { generatePersonaResponse } from '@/lib/gemini'
+import { generatePersonaResponse, generatePersonaResponseStream } from '@/lib/gemini'
 import { generateGroqResponse } from '@/lib/groq'
 import { moderateContent } from '@/lib/moderation'
 // Rate limiting disabled for now - will enable when userbase grows
@@ -21,7 +21,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { conversationId, personaId, persona: personaObj, message, conversationHistory, isGuest, userId, userProfile } = req.body
+    const { conversationId, personaId, persona: personaObj, message, conversationHistory, isGuest, userId, userProfile, stream } = req.body
 
     console.log('[Chat API] Request received:', {
       conversationId,
@@ -293,8 +293,73 @@ ${relationshipContext}`
       systemPromptLength: finalSystemPrompt.length,
       hasContext: !!contextString,
       hasMemories: !!memoryContext,
-      hasRelationship: !!relationshipContext
+      hasRelationship: !!relationshipContext,
+      streaming: !!stream
     })
+
+    // If streaming is requested, use SSE
+    if (stream) {
+      res.writeHead(200, {
+        'Content-Type': 'text/event-stream',
+        'Cache-Control': 'no-cache, no-transform',
+        'Connection': 'keep-alive',
+      })
+
+      try {
+        let fullResponse = ''
+
+        for await (const chunk of generatePersonaResponseStream(finalSystemPrompt, messageHistory, contextString)) {
+          fullResponse += chunk
+          res.write(`data: ${JSON.stringify({ chunk, done: false })}\n\n`)
+        }
+
+        // Send done signal
+        res.write(`data: ${JSON.stringify({ chunk: '', done: true, fullResponse })}\n\n`)
+        res.end()
+
+        // Save to database after streaming completes (if authenticated)
+        if (!isGuest && userId) {
+          let finalConversationId = conversationId
+
+          if (!conversationId) {
+            finalConversationId = crypto.randomUUID()
+            const { error: convError } = await supabaseAdmin
+              .from('conversations')
+              .insert({
+                id: finalConversationId,
+                user_id: userId || null,
+                persona_slug: persona.slug,
+                title: message.substring(0, 50) + '...',
+                session_id: crypto.randomUUID(),
+                persona_type: persona.type || 'default',
+                is_guest_session: isGuest,
+                updated_at: new Date().toISOString()
+              })
+
+            if (convError) {
+              console.error('Error creating conversation:', convError)
+            }
+          }
+
+          // Save messages
+          await supabaseAdmin.from('messages').insert([
+            { conversation_id: finalConversationId, role: 'user', content: message },
+            { conversation_id: finalConversationId, role: 'assistant', content: fullResponse }
+          ])
+
+          // Extract memories
+          extractAndSaveMemories(userId, persona.slug, finalConversationId, message, fullResponse, supabaseAdmin)
+            .catch(err => console.error('[Memory Extraction Error]:', err))
+        }
+
+        return
+      } catch (error) {
+        console.error('[Streaming Error]:', error)
+        res.write(`data: ${JSON.stringify({ error: error.message || 'Streaming failed', done: true })}\n\n`)
+        res.end()
+        return
+      }
+    }
 
     // Generate AI response - try Gemini first, fallback to Groq if rate limited
     let result = await generatePersonaResponse(finalSystemPrompt, messageHistory, {}, contextString)
