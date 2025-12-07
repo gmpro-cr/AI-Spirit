@@ -22,6 +22,7 @@ function ChatPage() {
   const [copiedMessageIndex, setCopiedMessageIndex] = useState(null)
   const [isListening, setIsListening] = useState(false)
   const [recognition, setRecognition] = useState(null)
+  const [shareLinkCopied, setShareLinkCopied] = useState(false)
   const chatContainerRef = useRef(null)
 
   // Format message content with bold text
@@ -208,6 +209,17 @@ function ChatPage() {
 
       if (found) {
         setPersona(found)
+
+        // Track persona view
+        try {
+          fetch('/api/persona-views', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ personaSlug: found.slug })
+          })
+        } catch (error) {
+          console.error('Error tracking view:', error)
+        }
 
         // Track recent personas
         const recentPersonas = JSON.parse(localStorage.getItem('esperit_recent_personas') || '[]')
@@ -469,6 +481,40 @@ function ChatPage() {
               </svg>
               <span className="hidden md:inline font-medium">New Chat</span>
             </button>
+
+            {/* Share Button */}
+            {messages.length > 0 && conversationId && (
+              <button
+                onClick={async () => {
+                  const shareUrl = `${window.location.origin}/chat/${personaId}?conversationId=${conversationId}`
+                  try {
+                    await navigator.clipboard.writeText(shareUrl)
+                    setShareLinkCopied(true)
+                    setTimeout(() => setShareLinkCopied(false), 2000)
+                  } catch (error) {
+                    console.error('Failed to copy:', error)
+                  }
+                }}
+                className={`flex items-center gap-2 px-4 py-2 rounded-full transition-all hover:shadow-lg ${shareLinkCopied
+                  ? 'bg-green-600 text-white'
+                  : 'bg-gray-100 text-black hover:bg-gray-200'
+                  }`}
+                title="Share conversation"
+              >
+                {shareLinkCopied ? (
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                ) : (
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                  </svg>
+                )}
+                <span className="hidden md:inline font-medium">
+                  {shareLinkCopied ? 'Copied!' : 'Share'}
+                </span>
+              </button>
+            )}
           </header>
 
           {/* Messages */}
@@ -633,10 +679,13 @@ function ChatPage() {
                   }}
                 />
                 <div className="max-w-md lg:max-w-lg p-3 rounded-2xl bg-gray-100 text-black rounded-bl-none">
-                  <div className="flex items-center space-x-2">
-                    <div className="w-2 h-2 bg-gray-500 rounded-full animate-pulse"></div>
-                    <div className="w-2 h-2 bg-gray-500 rounded-full animate-pulse" style={{ animationDelay: '0.2s' }}></div>
-                    <div className="w-2 h-2 bg-gray-500 rounded-full animate-pulse" style={{ animationDelay: '0.4s' }}></div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm text-gray-600">{persona.name} is thinking</span>
+                    <div className="flex items-center space-x-1">
+                      <div className="w-1.5 h-1.5 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+                      <div className="w-1.5 h-1.5 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
+                      <div className="w-1.5 h-1.5 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -660,8 +709,8 @@ function ChatPage() {
                 type="button"
                 onClick={toggleSpeechRecognition}
                 className={`p-3 rounded-full transition-colors ${isListening
-                    ? 'bg-red-500 text-white animate-pulse'
-                    : 'bg-gray-100 text-black hover:bg-gray-200'
+                  ? 'bg-red-500 text-white animate-pulse'
+                  : 'bg-gray-100 text-black hover:bg-gray-200'
                   }`}
                 disabled={isLoading}
                 title={isListening ? 'Stop recording' : 'Start voice input'}

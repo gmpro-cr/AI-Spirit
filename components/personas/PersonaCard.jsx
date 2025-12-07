@@ -1,9 +1,11 @@
 import { useRouter } from 'next/router'
 import Image from 'next/image'
 import { useState, useEffect } from 'react'
+import { useAuth } from '@/context/AuthContext'
 
 export default function PersonaCard({ persona, onEdit, onLikeChange }) {
   const router = useRouter()
+  const { user } = useAuth()
   const [isLiked, setIsLiked] = useState(false)
 
   useEffect(() => {
@@ -14,6 +16,23 @@ export default function PersonaCard({ persona, onEdit, onLikeChange }) {
 
   const handleClick = () => {
     router.push(`/chat/${persona.slug}`)
+  }
+
+  const syncToServer = async (newLikedPersonas) => {
+    if (!user) return
+
+    try {
+      await fetch('/api/user/liked-personas', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          userId: user.id,
+          likedPersonas: newLikedPersonas
+        })
+      })
+    } catch (error) {
+      console.error('Error syncing likes:', error)
+    }
   }
 
   const handleLike = (e) => {
@@ -32,6 +51,9 @@ export default function PersonaCard({ persona, onEdit, onLikeChange }) {
 
     localStorage.setItem('esperit_liked_personas', JSON.stringify(newLikedPersonas))
     setIsLiked(!isLiked)
+
+    // Sync to server for logged-in users
+    syncToServer(newLikedPersonas)
 
     // Notify parent component about the change
     if (onLikeChange) {

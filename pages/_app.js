@@ -5,16 +5,19 @@ import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import { DefaultSeo } from 'next-seo'
 import SEO from '../next-seo.config'
+import ErrorBoundary from '@/components/ErrorBoundary'
 
 export default function App({ Component, pageProps }) {
   return (
-    <AuthProvider>
-      <ChatProvider>
-        <DefaultSeo {...SEO} />
-        <Component {...pageProps} />
-        <Analytics />
-        <SpeedInsights />
-      </ChatProvider>
-    </AuthProvider>
+    <ErrorBoundary>
+      <AuthProvider>
+        <ChatProvider>
+          <DefaultSeo {...SEO} />
+          <Component {...pageProps} />
+          <Analytics />
+          <SpeedInsights />
+        </ChatProvider>
+      </AuthProvider>
+    </ErrorBoundary>
   )
 }
