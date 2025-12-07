@@ -68,7 +68,7 @@ export default function SidePanel({ onBack, backButtonText, showPastChats = true
           <div className="mb-6">
             <button
               onClick={onCreatePersona}
-              className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg hover:from-indigo-700 hover:to-purple-700 transition-all duration-200 shadow-lg hover:shadow-xl font-medium group"
+              className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-black text-white rounded-lg hover:bg-gray-800 transition-all duration-200 shadow-lg hover:shadow-xl font-medium group"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
