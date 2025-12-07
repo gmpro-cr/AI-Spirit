@@ -33,7 +33,8 @@ function Personas() {
     'money-manager',
     'astro-guide',
     'legal-advisor',
-    'medical-advisor'
+    'medical-advisor',
+    'numerology-expert'
   ]
 
   // Load liked personas from localStorage
