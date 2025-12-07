@@ -60,12 +60,12 @@ export default function AccountSettingsModal({ isOpen, onClose }) {
         <>
             {/* Backdrop */}
             <div
-                className="fixed inset-0 bg-black/50 z-[100]"
+                className="fixed inset-0 bg-black/50 z-[9998]"
                 onClick={onClose}
             />
 
             {/* Modal */}
-            <div className="fixed bottom-20 left-4 md:left-72 w-80 bg-white rounded-xl shadow-2xl z-[101] overflow-hidden border border-gray-200">
+            <div className="fixed bottom-20 left-4 md:left-72 w-80 bg-white rounded-xl shadow-2xl z-[9999] overflow-hidden border border-gray-200">
                 {/* Header */}
                 <div className="p-4 border-b border-gray-200 bg-gray-50">
                     <div className="flex items-center gap-3">
