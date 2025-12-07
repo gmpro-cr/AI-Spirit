@@ -70,7 +70,13 @@ export default function Premium() {
     return (
         <>
             <Head>
-                <title>Premium - AI-Spirit</title>
+                <title>Premium Membership - Unlimited AI Conversations | AI-Spirit</title>
+                <meta name="description" content="Get unlimited conversations with AI personas. Premium membership at ₹99/month. Talk to Parenting Coach, Wellness Coach, Relationship Counselor without limits." />
+                <meta name="keywords" content="premium membership, unlimited AI chat, AI-Spirit premium, parenting coach, wellness coach" />
+                <link rel="canonical" href="https://ai-spirit.in/premium" />
+                <meta property="og:title" content="Premium Membership | AI-Spirit" />
+                <meta property="og:description" content="Get unlimited AI conversations for just ₹99/month." />
+                <meta property="og:url" content="https://ai-spirit.in/premium" />
             </Head>
             <Script
                 src="https://checkout.razorpay.com/v1/checkout.js"

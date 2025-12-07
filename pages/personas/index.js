@@ -163,7 +163,13 @@ function Personas() {
   return (
     <>
       <Head>
-        <title>Select a Persona - AI-Spirit</title>
+        <title>Browse AI Personas - Parenting, Wellness, Relationships | AI-Spirit</title>
+        <meta name="description" content="Explore 40+ AI personas for parenting advice, mental wellness, relationship counseling, cooking tips, and more. Chat with expert AI coaches available 24/7." />
+        <meta name="keywords" content="AI personas, parenting coach, wellness coach, relationship advisor, home chef, AI chat, expert advice" />
+        <link rel="canonical" href="https://ai-spirit.in/personas" />
+        <meta property="og:title" content="Browse AI Personas | AI-Spirit" />
+        <meta property="og:description" content="Explore 40+ AI personas for parenting, wellness, relationships and more." />
+        <meta property="og:url" content="https://ai-spirit.in/personas" />
       </Head>
 
       <div className="flex h-screen bg-white">

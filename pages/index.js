@@ -138,10 +138,18 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>AI-Spirit - Enter the world of AI Personas</title>
+        <title>AI-Spirit - AI Coaches for Parenting, Wellness, Relationships & More</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="description" content="Have meaningful conversations with AI personas of legendary figures. Get wisdom, guidance, and perspectives from history's greatest thinkers." />
+        <meta name="description" content="Talk to AI personas for guidance on parenting, mental wellness, relationships, and cooking. Get instant support from expert AI coaches. Free, available 24/7." />
+        <meta name="keywords" content="AI chat, parenting advice, mental wellness, relationship counseling, cooking recipes, AI coach, parenting coach, wellness coach, Indian recipes, family advice" />
         <link rel="canonical" href="https://ai-spirit.in/" />
+        <meta property="og:title" content="AI-Spirit - Your Personal AI Coach" />
+        <meta property="og:description" content="Get instant guidance from AI experts on parenting, wellness, relationships, and cooking. Free to use, available 24/7." />
+        <meta property="og:url" content="https://ai-spirit.in/" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="AI-Spirit - AI Coaches for Parenting, Wellness & More" />
+        <meta name="twitter:description" content="Talk to AI personas for parenting, wellness, relationships, and cooking advice." />
       </Head>
 
       <div className="min-h-screen bg-white">
