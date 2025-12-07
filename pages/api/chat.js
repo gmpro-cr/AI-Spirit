@@ -76,9 +76,9 @@ export default async function handler(req, res) {
       const isPremium = !!subscription
 
       if (!isPremium) {
-        // 2. Count messages sent today by this user
-        const today = new Date()
-        today.setHours(0, 0, 0, 0)
+        // 2. Count messages sent today by this user (using UTC time)
+        const now = new Date()
+        const todayUTC = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 0, 0, 0, 0))
 
         // We need to join conversations to get user's messages
         // But Supabase JS client join syntax can be complex, so we'll use a two-step approach or RPC if available
@@ -96,7 +96,7 @@ export default async function handler(req, res) {
             .select('*', { count: 'exact', head: true })
             .in('conversation_id', conversationIds)
             .eq('role', 'user')
-            .gte('created_at', today.toISOString())
+            .gte('created_at', todayUTC.toISOString())
 
           if (!countError && count >= 20) {
             return res.status(403).json({

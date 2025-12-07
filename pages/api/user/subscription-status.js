@@ -30,9 +30,37 @@ export default async function handler(req, res) {
 
         const isPremium = !!data
 
+        // Count messages sent today (using UTC time)
+        let messagesUsedToday = 0
+        if (!isPremium && userId) {
+            const now = new Date()
+            const todayUTC = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 0, 0, 0, 0))
+
+            // Get all conversation IDs for this user
+            const { data: conversations } = await supabaseAdmin
+                .from('conversations')
+                .select('id')
+                .eq('user_id', userId)
+
+            if (conversations && conversations.length > 0) {
+                const conversationIds = conversations.map(c => c.id)
+
+                const { count } = await supabaseAdmin
+                    .from('messages')
+                    .select('*', { count: 'exact', head: true })
+                    .in('conversation_id', conversationIds)
+                    .eq('role', 'user')
+                    .gte('created_at', todayUTC.toISOString())
+
+                messagesUsedToday = count || 0
+            }
+        }
+
         return res.status(200).json({
             isPremium,
+            status: isPremium ? 'premium' : 'free',
             subscription: data || null,
+            messagesUsedToday
         })
     } catch (error) {
         console.error('Subscription status error:', error)
