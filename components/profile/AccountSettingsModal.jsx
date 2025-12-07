@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { createPortal } from 'react-dom'
 import { useAuth } from '@/context/AuthContext'
 import Image from 'next/image'
 
@@ -8,6 +9,12 @@ export default function AccountSettingsModal({ isOpen, onClose }) {
     const [messagesUsedToday, setMessagesUsedToday] = useState(0)
     const [loading, setLoading] = useState(true)
     const [darkMode, setDarkMode] = useState(false)
+    const [mounted, setMounted] = useState(false)
+
+    useEffect(() => {
+        setMounted(true)
+        return () => setMounted(false)
+    }, [])
 
     useEffect(() => {
         if (isOpen && user) {
@@ -54,9 +61,9 @@ export default function AccountSettingsModal({ isOpen, onClose }) {
         onClose()
     }
 
-    if (!isOpen) return null
+    if (!isOpen || !mounted) return null
 
-    return (
+    return createPortal(
         <>
             {/* Backdrop */}
             <div
@@ -170,6 +177,7 @@ export default function AccountSettingsModal({ isOpen, onClose }) {
                     </button>
                 </div>
             </div>
-        </>
+        </>,
+        document.body
     )
 }
