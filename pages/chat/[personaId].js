@@ -298,7 +298,8 @@ function ChatPage() {
         // Handle message limit reached
         if (response.status === 403 && data.isLimitReached) {
           if (confirm('You have reached your daily message limit (20 messages). Upgrade to Premium for unlimited access?')) {
-            router.push('/pricing')
+            // Redirect to premium page
+            router.push('/premium')
           }
           throw new Error(data.error)
         }
@@ -658,11 +659,10 @@ function ChatPage() {
               <button
                 type="button"
                 onClick={toggleSpeechRecognition}
-                className={`p-3 rounded-full transition-colors ${
-                  isListening
+                className={`p-3 rounded-full transition-colors ${isListening
                     ? 'bg-red-500 text-white animate-pulse'
                     : 'bg-gray-100 text-black hover:bg-gray-200'
-                }`}
+                  }`}
                 disabled={isLoading}
                 title={isListening ? 'Stop recording' : 'Start voice input'}
               >

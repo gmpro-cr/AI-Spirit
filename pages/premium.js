@@ -5,7 +5,7 @@ import { useRouter } from 'next/router'
 import { useAuth } from '@/context/AuthContext'
 import ContactModal from '@/components/ContactModal'
 
-export default function Pricing() {
+export default function Premium() {
     const router = useRouter()
     const { user, userProfile } = useAuth()
     const [loading, setLoading] = useState(false)
@@ -13,7 +13,7 @@ export default function Pricing() {
 
     async function handleSubscribe() {
         if (!user) {
-            router.push('/auth/signin?returnTo=/pricing')
+            router.push('/auth/signin?returnTo=/premium')
             return
         }
 
@@ -70,7 +70,7 @@ export default function Pricing() {
     return (
         <>
             <Head>
-                <title>Pricing - AI-Spirit Premium</title>
+                <title>Premium - AI-Spirit</title>
             </Head>
             <Script
                 src="https://checkout.razorpay.com/v1/checkout.js"

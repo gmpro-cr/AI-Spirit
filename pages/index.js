@@ -153,10 +153,10 @@ export default function Home() {
             </h1>
             <nav className="flex items-center gap-6 pr-3 md:pr-6">
               <button
-                onClick={() => router.push('/pricing')}
+                onClick={() => router.push('/premium')}
                 className="text-base md:text-lg font-semibold text-black hover:text-gray-600 transition-colors"
               >
-                Pricing
+                Premium
               </button>
               <button
                 onClick={() => setIsContactModalOpen(true)}
@@ -423,8 +423,8 @@ export default function Home() {
 
               {/* Center - Navigation (horizontal) */}
               <nav className="flex items-center gap-6">
-                <button onClick={() => router.push('/pricing')} className="text-sm text-black hover:text-gray-600 transition-colors">
-                  Pricing
+                <button onClick={() => router.push('/premium')} className="text-sm text-black hover:text-gray-600 transition-colors">
+                  Premium
                 </button>
                 <button onClick={() => setIsContactModalOpen(true)} className="text-sm text-black hover:text-gray-600 transition-colors">
                   Contact Us
