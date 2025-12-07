@@ -1,4 +1,5 @@
 import React from 'react'
+import Link from 'next/link'
 
 class ErrorBoundary extends React.Component {
     constructor(props) {
@@ -70,12 +71,12 @@ class ErrorBoundary extends React.Component {
                         </div>
 
                         {/* Back to Home */}
-                        <a
+                        <Link
                             href="/"
                             className="inline-block mt-6 text-sm text-gray-500 hover:text-black transition-colors"
                         >
                             ← Back to Home
-                        </a>
+                        </Link>
                     </div>
                 </div>
             )
