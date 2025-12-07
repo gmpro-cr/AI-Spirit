@@ -154,10 +154,9 @@ export default function Home() {
             <nav className="flex items-center gap-6 pr-3 md:pr-6">
               <button
                 onClick={() => router.push('/pricing')}
-                className="text-base md:text-lg font-semibold text-black hover:text-gray-600 transition-colors flex items-center gap-2"
+                className="text-base md:text-lg font-semibold text-black hover:text-gray-600 transition-colors"
               >
-                <span className="text-xl">✨</span>
-                <span>Pricing</span>
+                Pricing
               </button>
               <button
                 onClick={() => setIsContactModalOpen(true)}
