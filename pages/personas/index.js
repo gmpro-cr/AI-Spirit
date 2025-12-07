@@ -31,7 +31,9 @@ function Personas() {
     'travel-guide',
     'fitness-coach',
     'money-manager',
-    'astro-guide'
+    'astro-guide',
+    'legal-advisor',
+    'medical-advisor'
   ]
 
   // Load liked personas from localStorage
