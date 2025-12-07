@@ -134,7 +134,7 @@ function Personas() {
   }
 
   // Get unique categories
-  const categories = ['All', 'For You', ...new Set(personas.map(p => p.category).filter(Boolean))]
+  const categories = ['For You', 'All', ...new Set(personas.map(p => p.category).filter(Boolean))]
 
   useEffect(() => {
     let filtered = personas
