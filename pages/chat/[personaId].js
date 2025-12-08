@@ -8,7 +8,9 @@ import { INITIAL_PERSONAS } from '@/data/personas'
 import { useAuth } from '@/context/AuthContext'
 import {
   incrementGuestMessageCount,
-  shouldShowSignInPrompt,
+  shouldShowTimeBasedPrompt,
+  updateLastPromptTime,
+  isSignInRequired,
   shouldShowPremiumPrompt,
   canSendMessage
 } from '@/lib/guestMessageTracking'
@@ -281,6 +283,20 @@ function ChatPage() {
     }
   }, [messages])
 
+  // 30-second recurring sign-in prompt for guests
+  useEffect(() => {
+    if (user) return // Only for guests
+
+    const checkInterval = setInterval(() => {
+      if (shouldShowTimeBasedPrompt()) {
+        setShowSignInPrompt(true)
+        updateLastPromptTime()
+      }
+    }, 5000) // Check every 5 seconds
+
+    return () => clearInterval(checkInterval)
+  }, [user])
+
   const handleBack = () => {
     router.push('/')
   }
@@ -488,12 +504,11 @@ function ChatPage() {
       if (!user) {
         incrementGuestMessageCount()
 
-        // Check if we should show prompts
+        // Check if we should show premium prompt (50 messages)
         if (shouldShowPremiumPrompt()) {
           setShowPremiumPrompt(true)
-        } else if (shouldShowSignInPrompt()) {
-          setShowSignInPrompt(true)
         }
+        // Sign-in prompts are handled by time-based timer (every 30 seconds)
       }
 
     } catch (error) {
