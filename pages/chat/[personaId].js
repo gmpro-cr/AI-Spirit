@@ -5,8 +5,13 @@ import DOMPurify from 'isomorphic-dompurify'
 import SidePanelNew from '@/components/layout/SidePanel'
 import { useChat } from '@/context/ChatContext'
 import { INITIAL_PERSONAS } from '@/data/personas'
-import { withAuth } from '@/middleware/withAuth'
 import { useAuth } from '@/context/AuthContext'
+import {
+  incrementGuestMessageCount,
+  shouldShowSignInPrompt,
+  shouldShowPremiumPrompt,
+  canSendMessage
+} from '@/lib/guestMessageTracking'
 
 function ChatPage() {
   const router = useRouter()
@@ -23,6 +28,8 @@ function ChatPage() {
   const [isListening, setIsListening] = useState(false)
   const [recognition, setRecognition] = useState(null)
   const [shareLinkCopied, setShareLinkCopied] = useState(false)
+  const [showSignInPrompt, setShowSignInPrompt] = useState(false)
+  const [showPremiumPrompt, setShowPremiumPrompt] = useState(false)
   const chatContainerRef = useRef(null)
 
   // Format message content with bold text
@@ -282,6 +289,17 @@ function ChatPage() {
 
     const messageText = currentInput.trim()
 
+    // Guest message tracking - check if guest can send message
+    if (!user) {
+      const sendCheck = canSendMessage()
+      if (!sendCheck.canSend) {
+        // Premium limit reached - hard block
+        alert(sendCheck.message)
+        setShowPremiumPrompt(true)
+        return
+      }
+    }
+
     // Add user message
     const userMessage = { role: 'user', content: messageText }
     addMessage(userMessage)
@@ -462,6 +480,18 @@ function ChatPage() {
 
         const trimmedList = conversationsList.slice(0, 50)
         localStorage.setItem('esperit_conversations', JSON.stringify(trimmedList))
+      }
+
+      // Guest message tracking - increment counter after successful send
+      if (!user) {
+        incrementGuestMessageCount()
+
+        // Check if we should show prompts
+        if (shouldShowPremiumPrompt()) {
+          setShowPremiumPrompt(true)
+        } else if (shouldShowSignInPrompt()) {
+          setShowSignInPrompt(true)
+        }
       }
 
     } catch (error) {
@@ -856,4 +886,4 @@ function ChatPage() {
   )
 }
 
-export default withAuth(ChatPage)
+export default ChatPage

@@ -16,7 +16,7 @@ function Personas() {
   const [personas, setPersonas] = useState([])
   const [filteredPersonas, setFilteredPersonas] = useState([])
   const [searchQuery, setSearchQuery] = useState('')
-  const [selectedCategory, setSelectedCategory] = useState('For You')
+  const [selectedCategory, setSelectedCategory] = useState('All')
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
   const [personaToEdit, setPersonaToEdit] = useState(null)
@@ -470,4 +470,4 @@ function Personas() {
   )
 }
 
-export default withAuth(Personas)
+export default Personas
