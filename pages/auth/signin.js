@@ -16,7 +16,7 @@ export default function SignIn() {
   useEffect(() => {
     if (user) {
       // Redirect to the returnTo URL if provided, otherwise go to personas
-      const redirectUrl = returnTo || '/personas'
+      const redirectUrl = returnTo || '/'
       router.push(redirectUrl)
     }
   }, [user, router, returnTo])

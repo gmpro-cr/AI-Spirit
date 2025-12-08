@@ -160,7 +160,7 @@ function MemoriesPage() {
                                 </p>
                             </div>
                             <button
-                                onClick={() => router.push('/personas')}
+                                onClick={() => router.push('/')}
                                 className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-black transition-colors"
                             >
                                 ← Back to Personas
@@ -243,7 +243,7 @@ function MemoriesPage() {
                                 Start chatting with personas and they&apos;ll remember details about you!
                             </p>
                             <button
-                                onClick={() => router.push('/personas')}
+                                onClick={() => router.push('/')}
                                 className="px-6 py-3 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors"
                             >
                                 Start Chatting

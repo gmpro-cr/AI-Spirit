@@ -12,6 +12,8 @@ import {
   shouldShowPremiumPrompt,
   canSendMessage
 } from '@/lib/guestMessageTracking'
+import SignInPromptModal from '@/components/modals/SignInPromptModal'
+import PremiumPromptModal from '@/components/modals/PremiumPromptModal'
 
 function ChatPage() {
   const router = useRouter()
@@ -280,7 +282,7 @@ function ChatPage() {
   }, [messages])
 
   const handleBack = () => {
-    router.push('/personas')
+    router.push('/')
   }
 
   const handleSendMessage = async (e) => {
@@ -882,6 +884,16 @@ function ChatPage() {
           </footer>
         </div>
       </div>
+
+      {/* Guest Message Limit Modals */}
+      <SignInPromptModal
+        isOpen={showSignInPrompt}
+        onClose={() => setShowSignInPrompt(false)}
+      />
+      <PremiumPromptModal
+        isOpen={showPremiumPrompt}
+        onClose={() => setShowPremiumPrompt(false)}
+      />
     </>
   )
 }

@@ -16,7 +16,7 @@ export default function AuthCallback() {
         const error_description = searchParams.get('error_description')
 
         // Get returnTo parameter
-        const returnTo = searchParams.get('returnTo') || router.query.returnTo || '/personas'
+        const returnTo = searchParams.get('returnTo') || router.query.returnTo || '/'
 
         console.log('[Auth Callback] Starting authentication flow', {
           code: !!code,
