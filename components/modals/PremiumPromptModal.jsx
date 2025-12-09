@@ -20,7 +20,7 @@ export default function PremiumPromptModal({ isOpen, onClose }) {
         <div className="text-center mb-6">
           <div className="text-5xl mb-4">⚡</div>
           <h2 className="text-2xl font-bold text-black mb-2">
-            You've reached your 50 message limit!
+            You&apos;ve reached your 50 message limit!
           </h2>
           <p className="text-gray-700">
             Time to unlock unlimited access
