@@ -28,7 +28,7 @@ export default async function handler(req, res) {
 
   // Strict email validation (prevent header injection)
   if (!email.match(/^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/) ||
-      email.includes('\n') || email.includes('\r')) {
+    email.includes('\n') || email.includes('\r')) {
     return res.status(400).json({ error: 'Invalid email address' })
   }
 
@@ -40,10 +40,10 @@ export default async function handler(req, res) {
   try {
     // Send email using Resend
     const { data, error } = await resend.emails.send({
-      from: 'AI-Spirit <onboarding@resend.dev>', // Use Resend's test domain
+      from: 'AI - Spirit <onboarding@resend.dev>', // Use Resend's test domain
       to: 'mahalegauravk@gmail.com',
       replyTo: email,
-      subject: `AI-Spirit Contact Form: Message from ${safeName}`,
+      subject: `AI - Spirit Contact Form: Message from ${safeName}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <h2 style="color: #333;">New Contact Form Submission</h2>
@@ -61,7 +61,7 @@ export default async function handler(req, res) {
           <hr style="border: none; border-top: 1px solid #ddd; margin: 20px 0;">
 
           <p style="color: #888; font-size: 12px;">
-            This message was sent from the AI-Spirit contact form.
+            This message was sent from the AI - Spirit contact form.
           </p>
         </div>
       `

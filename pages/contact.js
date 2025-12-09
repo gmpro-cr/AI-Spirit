@@ -50,8 +50,8 @@ export default function ContactPage() {
     return (
         <>
             <Head>
-                <title>Contact Us - AI-Spirit</title>
-                <meta name="description" content="Get in touch with AI-Spirit. We'd love to hear from you!" />
+                <title>Contact Us - AI - Spirit</title>
+                <meta name="description" content="Get in touch with AI - Spirit. We'd love to hear from you!" />
             </Head>
 
             <Navbar />

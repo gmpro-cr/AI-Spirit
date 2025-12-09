@@ -531,7 +531,7 @@ function ChatPage() {
   return (
     <>
       <Head>
-        <title>Chat with {persona.name} - AI-Spirit</title>
+        <title>Chat with {persona.name} - AI - Spirit</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 

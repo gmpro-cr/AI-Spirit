@@ -62,7 +62,7 @@ export default function UserProfileModal({ isOpen, onClose, user }) {
                 <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
                     {/* Header */}
                     <div className="p-6 border-b border-gray-200">
-                        <h2 className="text-2xl font-bold text-black">Welcome to AI-Spirit! 👋</h2>
+                        <h2 className="text-2xl font-bold text-black">Welcome to AI - Spirit! 👋</h2>
                         <p className="text-gray-600 mt-2">
                             Let&apos;s personalize your experience. Tell us a bit about yourself so our AI personas can remember you.
                         </p>
@@ -147,7 +147,7 @@ export default function UserProfileModal({ isOpen, onClose, user }) {
                                 disabled={loading || !formData.preferredName}
                                 className="flex-1 px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold rounded-lg hover:from-indigo-700 hover:to-purple-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                             >
-                                {loading ? 'Creating Profile...' : 'Continue to AI-Spirit'}
+                                {loading ? 'Creating Profile...' : 'Continue to AI - Spirit'}
                             </button>
                         </div>
                     </form>

@@ -5,7 +5,7 @@ export default function TermsOfService() {
   return (
     <>
       <Head>
-        <title>Terms of Service - AI-Spirit</title>
+        <title>Terms of Service - AI - Spirit</title>
       </Head>
 
       <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -24,14 +24,14 @@ export default function TermsOfService() {
             <section className="mb-8">
               <h2 className="text-2xl font-semibold text-gray-900 mb-4">1. Acceptance of Terms</h2>
               <p className="text-gray-700">
-                By accessing and using AI-Spirit (&quot;the Service&quot;), you accept and agree to be bound by the terms and provision of this agreement. If you do not agree to these Terms of Service, please do not use the Service.
+                By accessing and using AI - Spirit (&quot;the Service&quot;), you accept and agree to be bound by the terms and provision of this agreement. If you do not agree to these Terms of Service, please do not use the Service.
               </p>
             </section>
 
             <section className="mb-8">
               <h2 className="text-2xl font-semibold text-gray-900 mb-4">2. Description of Service</h2>
               <p className="text-gray-700">
-                AI-Spirit provides an AI-powered platform where users can engage in conversations with AI personas simulating historical figures, celebrities, and fictional characters. The Service uses artificial intelligence to generate responses and does not represent the actual views or statements of real individuals.
+                AI - Spirit provides an AI-powered platform where users can engage in conversations with AI personas simulating historical figures, celebrities, and fictional characters. The Service uses artificial intelligence to generate responses and does not represent the actual views or statements of real individuals.
               </p>
             </section>
 
@@ -98,7 +98,7 @@ export default function TermsOfService() {
                 <strong>Your Content:</strong> You retain ownership of the messages you send. By using the Service, you grant us a license to store, process, and display your content solely for providing the Service.
               </p>
               <p className="text-gray-700 mt-2">
-                <strong>Our Content:</strong> The Service, including its design, features, and AI models, is owned by AI-Spirit and protected by copyright and intellectual property laws.
+                <strong>Our Content:</strong> The Service, including its design, features, and AI models, is owned by AI - Spirit and protected by copyright and intellectual property laws.
               </p>
             </section>
 

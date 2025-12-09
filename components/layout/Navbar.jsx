@@ -36,25 +36,31 @@ export default function Navbar({ onMenuToggle, showMenuButton = false }) {
             {isHomePage ? (
               <Link href="/" className="flex items-center space-x-2 group">
                 <span className="text-xl sm:text-2xl font-bold text-black tracking-tight group-hover:scale-[1.02] transition-transform">
-                  <span className="italic">AI</span> Spirit
+                  <span className="italic">AI</span> - Spirit
                 </span>
               </Link>
             ) : (
               <Link href="/personas" className="flex items-center space-x-2 group">
                 <span className="text-xl sm:text-2xl font-bold text-black tracking-tight group-hover:scale-[1.02] transition-transform">
-                  <span className="italic">AI</span> Spirit
+                  <span className="italic">AI</span> - Spirit
                 </span>
               </Link>
             )}
           </div>
 
-          {/* Right Side - Contact Us */}
-          <div className="flex items-center gap-3">
+          {/* Right Side - Premium + Contact Us */}
+          <div className="flex items-center gap-2 sm:gap-3">
+            <Link
+              href="/premium"
+              className="text-black font-medium px-3 sm:px-5 py-2 sm:py-2.5 text-sm sm:text-base rounded-full border border-gray-300 hover:bg-gray-100 transition-all hover:scale-[1.02] active:scale-[0.98]"
+            >
+              Premium
+            </Link>
             <Link
               href="/contact"
-              className="bg-black text-white font-medium px-5 sm:px-7 py-2 sm:py-2.5 text-sm sm:text-base rounded-full hover:bg-gray-800 transition-all hover:scale-[1.02] active:scale-[0.98]"
+              className="bg-black text-white font-medium px-3 sm:px-5 py-2 sm:py-2.5 text-sm sm:text-base rounded-full hover:bg-gray-800 transition-all hover:scale-[1.02] active:scale-[0.98]"
             >
-              Contact Us
+              Contact
             </Link>
           </div>
         </div>

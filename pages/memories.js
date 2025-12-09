@@ -145,7 +145,7 @@ function MemoriesPage() {
     return (
         <>
             <Head>
-                <title>My Memories - AI-Spirit</title>
+                <title>My Memories - AI - Spirit</title>
             </Head>
 
             <div className="min-h-screen bg-gray-50">

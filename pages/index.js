@@ -3,13 +3,16 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import SidePanelNew from '@/components/layout/SidePanel'
 import Navbar from '@/components/layout/Navbar'
+import MobileBottomNav from '@/components/layout/MobileBottomNav'
 import PersonaCardNew from '@/components/personas/PersonaCard'
+import { PersonaGridSkeleton } from '@/components/personas/PersonaCardSkeleton'
 import CreatePersonaModal from '@/components/personas/CreatePersonaModal'
 import EditPersonaModal from '@/components/personas/EditPersonaModal'
 import { INITIAL_PERSONAS } from '@/data/personas'
 import { supabase } from '@/lib/supabase'
 import { withAuth } from '@/middleware/withAuth'
 import { useAuth } from '@/context/AuthContext'
+import { WebsiteSchema, SoftwareApplicationSchema } from '@/components/seo/StructuredData'
 
 function Personas() {
   const router = useRouter()
@@ -24,6 +27,7 @@ function Personas() {
   const [loadingPersonas, setLoadingPersonas] = useState(true)
   const [isMobileSidePanelOpen, setIsMobileSidePanelOpen] = useState(false)
   const [likedPersonaSlugs, setLikedPersonaSlugs] = useState([])
+  const [showWelcomeTip, setShowWelcomeTip] = useState(false)
 
   // Default featured personas for "For You" section
   const FEATURED_PERSONAS = [
@@ -45,7 +49,18 @@ function Personas() {
       setLikedPersonaSlugs(liked)
     }
     loadLikedPersonas()
+
+    // Check if first-time user for welcome tip
+    const hasSeenWelcome = localStorage.getItem('esperit_seen_welcome')
+    if (!hasSeenWelcome) {
+      setShowWelcomeTip(true)
+    }
   }, [])
+
+  const dismissWelcomeTip = () => {
+    setShowWelcomeTip(false)
+    localStorage.setItem('esperit_seen_welcome', 'true')
+  }
 
   useEffect(() => {
     loadAllPersonas()
@@ -164,19 +179,23 @@ function Personas() {
   return (
     <>
       <Head>
-        <title>Browse AI Personas - Parenting, Wellness, Relationships | AI-Spirit</title>
+        <title>Browse AI Personas - Parenting, Wellness, Relationships | AI - Spirit</title>
         <meta name="description" content="Explore 40+ AI personas for parenting advice, mental wellness, relationship counseling, cooking tips, and more. Chat with expert AI coaches available 24/7." />
         <meta name="keywords" content="AI personas, parenting coach, wellness coach, relationship advisor, home chef, AI chat, expert advice" />
         <link rel="canonical" href="https://ai-spirit.in/personas" />
-        <meta property="og:title" content="Browse AI Personas | AI-Spirit" />
+        <meta property="og:title" content="Browse AI Personas | AI - Spirit" />
         <meta property="og:description" content="Explore 40+ AI personas for parenting, wellness, relationships and more." />
         <meta property="og:url" content="https://ai-spirit.in/personas" />
       </Head>
 
+      {/* Structured Data for SEO */}
+      <WebsiteSchema />
+      <SoftwareApplicationSchema />
+
       {/* Navbar */}
       <Navbar />
 
-      <div className="flex h-screen bg-white pt-16">
+      <div className="flex h-screen bg-white pt-16 pb-16 md:pb-0">
         {/* Side Panel */}
         <SidePanelNew
           showPastChats={true}
@@ -236,11 +255,28 @@ function Personas() {
             />
           </div>
 
-          {/* Loading State */}
-          {loadingPersonas ? (
-            <div className="text-center py-20">
-              <p className="text-black text-lg">Loading personas...</p>
+          {/* First-time User Welcome Tip */}
+          {showWelcomeTip && (
+            <div className="mb-6 bg-black text-white rounded-2xl p-4 relative animate-fadeIn">
+              <button
+                onClick={dismissWelcomeTip}
+                className="absolute top-3 right-3 text-gray-400 hover:text-white transition-colors"
+                aria-label="Dismiss"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+              <h3 className="font-semibold text-lg mb-1">👋 Welcome to <span className="italic">AI</span> - Spirit!</h3>
+              <p className="text-gray-300 text-sm">
+                Click on any persona below to start a conversation. You can also create your own custom persona!
+              </p>
             </div>
+          )}
+
+          {/* Loading State with Skeleton */}
+          {loadingPersonas ? (
+            <PersonaGridSkeleton count={10} />
           ) : (
             <>
               {/* Personas Grid */}
@@ -469,6 +505,9 @@ function Personas() {
         persona={personaToEdit}
         onPersonaUpdated={handlePersonaUpdated}
       />
+
+      {/* Mobile Bottom Navigation */}
+      <MobileBottomNav onCreatePersona={() => setIsModalOpen(true)} />
     </>
   )
 }

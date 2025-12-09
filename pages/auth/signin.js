@@ -24,7 +24,7 @@ export default function SignIn() {
   return (
     <>
       <Head>
-        <title>Sign In - AI-Spirit</title>
+        <title>Sign In - AI - Spirit</title>
       </Head>
 
       <div className="min-h-screen bg-white text-black flex flex-col">

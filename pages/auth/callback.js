@@ -92,7 +92,7 @@ export default function AuthCallback() {
   return (
     <>
       <Head>
-        <title>Authenticating - AI-Spirit</title>
+        <title>Authenticating - AI - Spirit</title>
       </Head>
 
       <ParticlesBackground />
