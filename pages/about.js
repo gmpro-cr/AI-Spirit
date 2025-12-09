@@ -45,12 +45,12 @@ export default function About() {
                                 thoughtful guidance and support, regardless of time, location, or budget.
                             </p>
                             <p>
-                                We've built a collection of AI personas—each designed to provide helpful,
+                                We&apos;ve built a collection of AI personas—each designed to provide helpful,
                                 empathetic conversations on topics ranging from parenting and mental wellness
                                 to relationships, career guidance, and everyday life challenges.
                             </p>
                             <p>
-                                Whether you're a first-time parent looking for advice at 2 AM, someone
+                                Whether you&apos;re a first-time parent looking for advice at 2 AM, someone
                                 seeking wellness tips, or just want to explore new recipes, our AI personas
                                 are here to help—24/7, with no judgment.
                             </p>
@@ -106,7 +106,7 @@ export default function About() {
                             Ready to Get Started?
                         </h2>
                         <p className="text-gray-300 mb-8">
-                            Start chatting with our AI personas—it's free to try.
+                            Start chatting with our AI personas—it&apos;s free to try.
                         </p>
                         <Link
                             href="/"
