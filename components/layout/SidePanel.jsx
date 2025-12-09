@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { useAuth } from '@/context/AuthContext'
 import AccountSettingsModal from '@/components/profile/AccountSettingsModal'
 
-export default function SidePanel({ onBack, backButtonText, showPastChats = true, onCreatePersona }) {
+export default function SidePanel({ onBack, backButtonText, showPastChats = true, onCreatePersona, hasNavbar = true }) {
   const router = useRouter()
   const { user, signOut } = useAuth()
   const [pastChats, setPastChats] = useState([])
@@ -36,7 +36,7 @@ export default function SidePanel({ onBack, backButtonText, showPastChats = true
   }
 
   return (
-    <aside className="w-64 bg-gray-50 border-r border-gray-200 p-6 flex flex-col justify-between hidden md:flex h-[calc(100vh-4rem)] fixed left-0 top-16">
+    <aside className={`w-64 bg-gray-50 border-r border-gray-200 p-6 flex flex-col justify-between hidden md:flex fixed left-0 ${hasNavbar ? 'h-[calc(100vh-4rem)] top-16' : 'h-screen top-0'}`}>
       {/* Top Section */}
       <div className="flex flex-col flex-1 overflow-hidden">
         {/* Back Navigation */}

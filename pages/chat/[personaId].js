@@ -3,7 +3,6 @@ import { useState, useEffect, useRef } from 'react'
 import Head from 'next/head'
 import DOMPurify from 'isomorphic-dompurify'
 import SidePanelNew from '@/components/layout/SidePanel'
-import Navbar from '@/components/layout/Navbar'
 import { useChat } from '@/context/ChatContext'
 import { INITIAL_PERSONAS } from '@/data/personas'
 import { useAuth } from '@/context/AuthContext'
@@ -536,14 +535,12 @@ function ChatPage() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
-      <Navbar />
-
-      <div className="flex h-screen bg-white pt-16">
+      <div className="flex h-screen bg-white">
         {/* Side Panel */}
-        <SidePanelNew onBack={handleBack} backButtonText="Back to Personas" />
+        <SidePanelNew onBack={handleBack} backButtonText="Back to Personas" hasNavbar={false} />
 
         {/* Chat Area */}
-        <div className="flex flex-col flex-1 h-[calc(100vh-4rem)] md:ml-64">
+        <div className="flex flex-col flex-1 h-screen md:ml-64">
           {/* Header */}
           <header className="flex items-center justify-between p-4 border-b border-gray-200 sticky top-0 bg-white/80 backdrop-blur-sm z-10">
             <div className="flex items-center flex-1">
