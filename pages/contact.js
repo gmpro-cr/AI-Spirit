@@ -61,14 +61,14 @@ export default function ContactPage() {
                     {/* Header */}
                     <div className="text-center mb-8">
                         <h1 className="text-3xl font-bold text-black mb-2">Contact Us</h1>
-                        <p className="text-gray-600">We'd love to hear from you. Send us a message!</p>
+                        <p className="text-gray-600">We&apos;d love to hear from you. Send us a message!</p>
                     </div>
 
                     {/* Status Message */}
                     {status.message && (
                         <div className={`mb-6 p-4 rounded-lg ${status.type === 'success'
-                                ? 'bg-green-100 text-green-800'
-                                : 'bg-red-100 text-red-800'
+                            ? 'bg-green-100 text-green-800'
+                            : 'bg-red-100 text-red-800'
                             }`}>
                             {status.message}
                         </div>
