@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import SidePanelNew from '@/components/layout/SidePanel'
+import Navbar from '@/components/layout/Navbar'
 import PersonaCardNew from '@/components/personas/PersonaCard'
 import CreatePersonaModal from '@/components/personas/CreatePersonaModal'
 import EditPersonaModal from '@/components/personas/EditPersonaModal'
@@ -172,11 +173,12 @@ function Personas() {
         <meta property="og:url" content="https://ai-spirit.in/personas" />
       </Head>
 
-      <div className="flex h-screen bg-white">
+      {/* Navbar */}
+      <Navbar />
+
+      <div className="flex h-screen bg-white pt-16">
         {/* Side Panel */}
         <SidePanelNew
-          onBack={handleBack}
-          backButtonText="Back to Home"
           showPastChats={true}
           onCreatePersona={() => setIsModalOpen(true)}
         />
@@ -278,11 +280,11 @@ function Personas() {
           <div className="fixed inset-y-0 left-0 w-64 bg-gray-50 border-r border-gray-200 z-[70] md:hidden transform transition-transform duration-300 ease-in-out">
             <div className="flex flex-col h-full p-6 justify-between">
               <div className="flex flex-col flex-1 overflow-hidden">
-                {/* Close Button & Back Navigation */}
+                {/* Close Button */}
                 <div className="mb-6 pb-5 border-b border-gray-300">
                   <button
                     onClick={() => setIsMobileSidePanelOpen(false)}
-                    className="p-2 hover:bg-gray-200 rounded-lg transition-colors mb-4 -ml-2"
+                    className="p-2 hover:bg-gray-200 rounded-lg transition-colors -ml-2"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -298,29 +300,6 @@ function Personas() {
                         d="M6 18L18 6M6 6l12 12"
                       />
                     </svg>
-                  </button>
-                  <button
-                    onClick={() => {
-                      setIsMobileSidePanelOpen(false)
-                      handleBack()
-                    }}
-                    className="flex items-center text-sm font-medium text-gray-700 hover:text-black transition-colors"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5 mr-2"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M15 19l-7-7 7-7"
-                      />
-                    </svg>
-                    Back to Home
                   </button>
                 </div>
 
@@ -393,9 +372,9 @@ function Personas() {
                 </div>
               </div>
 
-              {/* Bottom Section - User Info */}
-              {user && (
-                <div className="mt-6 pt-6 border-t border-gray-300">
+              {/* Bottom Section - User Info or Sign In */}
+              <div className="mt-6 pt-6 border-t border-gray-300">
+                {user ? (
                   <button
                     onClick={() => {
                       setIsMobileSidePanelOpen(false)
@@ -443,8 +422,32 @@ function Personas() {
                       />
                     </svg>
                   </button>
-                </div>
-              )}
+                ) : (
+                  <button
+                    onClick={() => {
+                      setIsMobileSidePanelOpen(false)
+                      router.push('/auth/signin')
+                    }}
+                    className="flex items-center justify-center w-full gap-2 px-4 py-3 bg-black text-white rounded-lg hover:bg-gray-800 transition-all duration-200 font-medium"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-5 w-5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"
+                      />
+                    </svg>
+                    Sign In
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         </>

@@ -36,7 +36,7 @@ export default function SidePanel({ onBack, backButtonText, showPastChats = true
   }
 
   return (
-    <aside className="w-64 bg-gray-50 border-r border-gray-200 p-6 flex flex-col justify-between hidden md:flex h-screen fixed left-0 top-0">
+    <aside className="w-64 bg-gray-50 border-r border-gray-200 p-6 flex flex-col justify-between hidden md:flex h-[calc(100vh-4rem)] fixed left-0 top-16">
       {/* Top Section */}
       <div className="flex flex-col flex-1 overflow-hidden">
         {/* Back Navigation */}
@@ -133,9 +133,9 @@ export default function SidePanel({ onBack, backButtonText, showPastChats = true
         )}
       </div>
 
-      {/* Bottom Section - User Info */}
-      {user && (
-        <div className="mt-6 pt-6 border-t border-gray-300">
+      {/* Bottom Section - User Info or Sign In */}
+      <div className="mt-6 pt-6 border-t border-gray-300">
+        {user ? (
           <button
             onClick={() => setIsSettingsOpen(true)}
             className="flex items-center w-full hover:bg-gray-100 rounded-lg p-2 -m-2 transition-colors"
@@ -182,8 +182,29 @@ export default function SidePanel({ onBack, backButtonText, showPastChats = true
               />
             </svg>
           </button>
-        </div>
-      )}
+        ) : (
+          <button
+            onClick={() => router.push('/auth/signin')}
+            className="flex items-center justify-center w-full gap-2 px-4 py-3 bg-black text-white rounded-lg hover:bg-gray-800 transition-all duration-200 font-medium"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"
+              />
+            </svg>
+            Sign In
+          </button>
+        )}
+      </div>
 
       {/* Account Settings Modal */}
       <AccountSettingsModal
