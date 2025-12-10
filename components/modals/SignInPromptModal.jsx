@@ -49,9 +49,7 @@ export default function SignInPromptModal({ isOpen, onClose }) {
         >
           Sign In with Google
         </button>
-        <p className="text-xs text-gray-500 text-center mt-4">
-          You can continue as guest - this reminder will show again in 30 seconds
-        </p>
+
       </div>
     </div>
   )
