@@ -35,13 +35,13 @@ export default function Navbar({ onMenuToggle, showMenuButton = false }) {
             {/* Logo */}
             {isHomePage ? (
               <Link href="/" className="flex items-center space-x-2 group">
-                <span className="text-xl sm:text-2xl font-bold text-black tracking-tight group-hover:scale-[1.02] transition-transform">
+                <span className="font-display text-xl sm:text-2xl font-bold text-black tracking-tight group-hover:scale-[1.02] transition-transform">
                   <span className="italic">AI</span> - Spirit
                 </span>
               </Link>
             ) : (
               <Link href="/personas" className="flex items-center space-x-2 group">
-                <span className="text-xl sm:text-2xl font-bold text-black tracking-tight group-hover:scale-[1.02] transition-transform">
+                <span className="font-display text-xl sm:text-2xl font-bold text-black tracking-tight group-hover:scale-[1.02] transition-transform">
                   <span className="italic">AI</span> - Spirit
                 </span>
               </Link>

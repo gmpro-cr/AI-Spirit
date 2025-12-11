@@ -29,6 +29,26 @@ function Personas() {
   const [likedPersonaSlugs, setLikedPersonaSlugs] = useState([])
   const [showWelcomeTip, setShowWelcomeTip] = useState(false)
 
+  // Time-based greeting
+  const getGreeting = () => {
+    const hour = new Date().getHours()
+    if (hour >= 5 && hour < 12) return { text: 'Good morning', emoji: '☀️', subtext: 'Start your day with a meaningful conversation' }
+    if (hour >= 12 && hour < 17) return { text: 'Good afternoon', emoji: '🌤️', subtext: 'Taking a break? Let\'s chat.' }
+    if (hour >= 17 && hour < 21) return { text: 'Good evening', emoji: '🌅', subtext: 'Wind down with some good advice' }
+    return { text: 'Late night thoughts?', emoji: '🌙', subtext: 'We\'re here when you need us' }
+  }
+
+  const greeting = getGreeting()
+
+  // Rotating search placeholders
+  const searchPrompts = [
+    'Who do you need to talk to today?',
+    'Find your perfect advisor...',
+    'Looking for some guidance?',
+    'Search for a conversation partner...'
+  ]
+  const [searchPlaceholder] = useState(() => searchPrompts[Math.floor(Math.random() * searchPrompts.length)])
+
   // Default featured personas for "For You" section
   const FEATURED_PERSONAS = [
     'life-coach',
@@ -248,16 +268,26 @@ function Personas() {
             {/* Search Input */}
             <input
               type="text"
-              placeholder="Search personas..."
+              placeholder={searchPlaceholder}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="flex-1 p-3 text-base text-black border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black h-12"
             />
           </div>
 
+          {/* Time-based Greeting */}
+          {selectedCategory === 'All' && !searchQuery && (
+            <div className="mb-8">
+              <h2 className="font-display text-2xl md:text-3xl font-bold text-black mb-1">
+                {greeting.emoji} {greeting.text}
+              </h2>
+              <p className="text-gray-600">{greeting.subtext}</p>
+            </div>
+          )}
+
           {/* First-time User Welcome Tip */}
           {showWelcomeTip && (
-            <div className="mb-6 bg-black text-white rounded-2xl p-4 relative animate-fadeIn">
+            <div className="mb-6 bg-black text-white rounded-2xl p-5 relative animate-fadeIn">
               <button
                 onClick={dismissWelcomeTip}
                 className="absolute top-3 right-3 text-gray-400 hover:text-white transition-colors"
@@ -267,9 +297,9 @@ function Personas() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
-              <h3 className="font-semibold text-lg mb-1">👋 Welcome to <span className="italic">AI</span> - Spirit!</h3>
-              <p className="text-gray-300 text-sm">
-                Click on any persona below to start a conversation. You can also create your own custom persona!
+              <h3 className="font-display font-bold text-xl mb-2">Hey there! 👋</h3>
+              <p className="text-gray-300 text-sm leading-relaxed">
+                You're about to chat with AI personalities who actually get you. Pick anyone below—they're here 24/7, judgment-free.
               </p>
             </div>
           )}
@@ -279,9 +309,55 @@ function Personas() {
             <PersonaGridSkeleton count={10} />
           ) : (
             <>
+              {/* Featured Personas Section - Only show when on "All" with no search */}
+              {selectedCategory === 'All' && !searchQuery && (
+                <div className="mb-10">
+                  <div className="flex items-center gap-2 mb-4">
+                    <span className="text-xl">✨</span>
+                    <h3 className="font-display text-lg font-semibold text-black">Popular right now</h3>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {filteredPersonas.slice(0, 3).map((persona, index) => (
+                      <div
+                        key={persona.slug}
+                        className="group relative bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl p-5 border border-gray-200 hover:border-gray-400 hover:shadow-lg transition-all cursor-pointer"
+                        onClick={() => router.push(`/chat/${persona.slug}`)}
+                        style={{ animationDelay: `${index * 100}ms` }}
+                      >
+                        <div className="flex items-start gap-4">
+                          <img
+                            src={persona.image}
+                            alt={persona.name}
+                            className="w-16 h-16 rounded-xl object-cover shadow-md group-hover:scale-105 transition-transform"
+                          />
+                          <div className="flex-1 min-w-0">
+                            <h4 className="font-display font-semibold text-black text-lg truncate">{persona.name}</h4>
+                            <p className="text-gray-500 text-sm mb-2">{persona.category}</p>
+                            <p className="text-gray-600 text-sm line-clamp-2">{persona.bio || persona.description}</p>
+                          </div>
+                        </div>
+                        <div className="absolute top-3 right-3">
+                          <span className="inline-flex items-center gap-1 text-xs bg-white/80 backdrop-blur px-2 py-1 rounded-full text-gray-600">
+                            💬 Chat now
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Section Header for Grid */}
+              {selectedCategory === 'All' && !searchQuery && (
+                <div className="flex items-center gap-2 mb-4">
+                  <span className="text-lg">🎭</span>
+                  <h3 className="font-display text-lg font-semibold text-black">All personas</h3>
+                </div>
+              )}
+
               {/* Personas Grid */}
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
-                {filteredPersonas.map((persona) => (
+                {(selectedCategory === 'All' && !searchQuery ? filteredPersonas.slice(3) : filteredPersonas).map((persona) => (
                   <PersonaCardNew
                     key={persona.slug}
                     persona={persona}
@@ -291,11 +367,12 @@ function Personas() {
                 ))}
               </div>
 
-              {/* No Results */}
+              {/* No Results - Playful Empty State */}
               {filteredPersonas.length === 0 && (
                 <div className="text-center py-20">
-                  <p className="text-black text-lg">No personas found</p>
-                  <p className="text-black text-sm mt-2">Try a different search</p>
+                  <p className="text-4xl mb-4">🔍</p>
+                  <p className="font-display text-black text-xl font-semibold">Hmm, couldn't find that one</p>
+                  <p className="text-gray-500 text-sm mt-2">Did you spell it right? Or try a different category 🤔</p>
                 </div>
               )}
             </>

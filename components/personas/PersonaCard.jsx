@@ -8,6 +8,22 @@ export default function PersonaCard({ persona, onEdit, onLikeChange }) {
   const { user } = useAuth()
   const [isLiked, setIsLiked] = useState(false)
 
+  // Category-based subtle accent colors
+  const getCategoryAccent = (category) => {
+    const accents = {
+      'Relationships': 'hover:border-pink-300',
+      'Wellness': 'hover:border-green-300',
+      'Career': 'hover:border-blue-300',
+      'Lifestyle': 'hover:border-purple-300',
+      'Finance': 'hover:border-emerald-300',
+      'Health': 'hover:border-teal-300',
+      'Spiritual': 'hover:border-amber-300',
+      'Parenting': 'hover:border-orange-300',
+      'Legal': 'hover:border-slate-400'
+    }
+    return accents[category] || 'hover:border-gray-400'
+  }
+
   useEffect(() => {
     // Check if persona is liked from localStorage
     const likedPersonas = JSON.parse(localStorage.getItem('esperit_liked_personas') || '[]')
@@ -63,7 +79,7 @@ export default function PersonaCard({ persona, onEdit, onLikeChange }) {
 
   return (
     <div
-      className="bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-xl transition-shadow duration-300 cursor-pointer group relative"
+      className={`bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer group relative ${getCategoryAccent(persona.category)}`}
       onClick={handleClick}
     >
       {/* Persona Image */}
@@ -83,9 +99,9 @@ export default function PersonaCard({ persona, onEdit, onLikeChange }) {
       </div>
 
       {/* Persona Info */}
-      <div className="p-2 md:p-3 bg-white/90">
+      <div className="p-2.5 md:p-3 bg-white">
         <div className="flex items-start justify-between gap-2">
-          <h3 className="text-base md:text-lg font-bold text-black group-hover:text-blue-600 transition-colors flex-1 min-w-0">
+          <h3 className="font-display text-base md:text-lg font-semibold text-black group-hover:text-gray-600 transition-colors flex-1 min-w-0 truncate">
             {persona.name}
           </h3>
           {/* Like Button (Heart) */}
