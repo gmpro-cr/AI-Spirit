@@ -84,7 +84,7 @@ export default function PersonaCard({ persona, onEdit, onLikeChange }) {
     >
       {/* Persona Image */}
       {/* Persona Image */}
-      <div className="relative w-full h-48 md:h-56">
+      <div className="relative w-full h-32 md:h-40">
         <Image
           src={persona.image_url || persona.avatar_url || '/default-persona.png'}
           alt={persona.name}

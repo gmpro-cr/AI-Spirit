@@ -1,7 +1,7 @@
 export default {
     title: 'AI - Spirit',
     titleTemplate: '%s | AI - Spirit',
-    defaultTitle: 'AI - Spirit - Chat with AI Personas | Parenting, Wellness, Relationships',
+    defaultTitle: 'AI - Spirit - Chat with Anyone',
     description: "Talk to AI personas for guidance on parenting, mental wellness, relationships, and cooking. Get instant support from Parenting Coach, Mental Wellness Coach, Relationship Counselor, and more. Free to use, 24/7 available.",
     canonical: 'https://ai-spirit.in/',
     additionalMetaTags: [
@@ -43,7 +43,7 @@ export default {
         locale: 'en_IN',
         url: 'https://ai-spirit.in/',
         siteName: 'AI - Spirit',
-        title: 'AI - Spirit - Your Personal AI Coach for Parenting, Wellness & More',
+        title: 'AI - Spirit - Chat with Anyone',
         description: 'Get instant guidance from AI experts on parenting, mental wellness, relationships, and cooking. Available 24/7, free to use.',
         images: [
             {
