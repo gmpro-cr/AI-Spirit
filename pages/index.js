@@ -309,55 +309,9 @@ function Personas() {
             <PersonaGridSkeleton count={10} />
           ) : (
             <>
-              {/* Featured Personas Section - Only show when on "All" with no search */}
-              {selectedCategory === 'All' && !searchQuery && (
-                <div className="mb-10">
-                  <div className="flex items-center gap-2 mb-4">
-                    <span className="text-xl">✨</span>
-                    <h3 className="font-display text-lg font-semibold text-black">Popular right now</h3>
-                  </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {filteredPersonas.slice(0, 3).map((persona, index) => (
-                      <div
-                        key={persona.slug}
-                        className="group relative bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl p-5 border border-gray-200 hover:border-gray-400 hover:shadow-lg transition-all cursor-pointer"
-                        onClick={() => router.push(`/chat/${persona.slug}`)}
-                        style={{ animationDelay: `${index * 100}ms` }}
-                      >
-                        <div className="flex items-start gap-4">
-                          <img
-                            src={persona.image}
-                            alt={persona.name}
-                            className="w-16 h-16 rounded-xl object-cover shadow-md group-hover:scale-105 transition-transform"
-                          />
-                          <div className="flex-1 min-w-0">
-                            <h4 className="font-display font-semibold text-black text-lg truncate">{persona.name}</h4>
-                            <p className="text-gray-500 text-sm mb-2">{persona.category}</p>
-                            <p className="text-gray-600 text-sm line-clamp-2">{persona.bio || persona.description}</p>
-                          </div>
-                        </div>
-                        <div className="absolute top-3 right-3">
-                          <span className="inline-flex items-center gap-1 text-xs bg-white/80 backdrop-blur px-2 py-1 rounded-full text-gray-600">
-                            💬 Chat now
-                          </span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Section Header for Grid */}
-              {selectedCategory === 'All' && !searchQuery && (
-                <div className="flex items-center gap-2 mb-4">
-                  <span className="text-lg">🎭</span>
-                  <h3 className="font-display text-lg font-semibold text-black">All personas</h3>
-                </div>
-              )}
-
               {/* Personas Grid */}
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
-                {(selectedCategory === 'All' && !searchQuery ? filteredPersonas.slice(3) : filteredPersonas).map((persona) => (
+                {filteredPersonas.map((persona) => (
                   <PersonaCardNew
                     key={persona.slug}
                     persona={persona}
