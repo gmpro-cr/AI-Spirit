@@ -99,9 +99,9 @@ export default function PersonaCard({ persona, onEdit, onLikeChange }) {
       </div>
 
       {/* Persona Info */}
-      <div className="p-2.5 md:p-3 bg-white">
-        <div className="flex items-start justify-between gap-2">
-          <h3 className="font-display text-base md:text-lg font-semibold text-black group-hover:text-gray-600 transition-colors flex-1 min-w-0 truncate">
+      <div className="p-2">
+        <div className="flex items-start justify-between gap-1">
+          <h3 className="font-display text-sm md:text-base font-semibold text-black group-hover:text-gray-600 transition-colors flex-1 min-w-0 truncate">
             {persona.name}
           </h3>
           {/* Like Button (Heart) */}
@@ -112,7 +112,7 @@ export default function PersonaCard({ persona, onEdit, onLikeChange }) {
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5 md:h-6 md:w-6 transition-colors"
+              className="h-4 w-4 md:h-5 md:w-5 transition-colors"
               fill={isLiked ? "red" : "none"}
               viewBox="0 0 24 24"
               stroke={isLiked ? "red" : "black"}
@@ -126,7 +126,7 @@ export default function PersonaCard({ persona, onEdit, onLikeChange }) {
             </svg>
           </button>
         </div>
-        <p className="text-black text-xs mt-1 line-clamp-1 md:line-clamp-2">
+        <p className="text-black text-[10px] md:text-xs mt-0.5 line-clamp-1">
           {persona.description || persona.bio}
         </p>
       </div>
