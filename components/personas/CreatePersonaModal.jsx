@@ -324,7 +324,7 @@ export default function CreatePersonaModal({ isOpen, onClose, onPersonaCreated }
               <button
                 type="submit"
                 disabled={loading || !formData.name || !formData.description || !formData.systemPrompt}
-                className="flex-1 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold px-6 py-3.5 rounded-lg hover:from-indigo-700 hover:to-purple-700 shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:scale-[1.02] active:scale-[0.98]"
+                className="flex-1 bg-black text-white font-semibold px-6 py-3.5 rounded-lg hover:bg-gray-800 shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:scale-[1.02] active:scale-[0.98]"
               >
                 {loading ? 'Creating...' : 'Create Persona'}
               </button>
