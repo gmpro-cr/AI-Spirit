@@ -299,7 +299,7 @@ function Personas() {
               </button>
               <h3 className="font-display font-bold text-xl mb-2">Hey there! 👋</h3>
               <p className="text-gray-300 text-sm leading-relaxed">
-                You're about to chat with AI personalities who actually get you. Pick anyone below—they're here 24/7, judgment-free.
+                You&apos;re about to chat with AI personalities who actually get you. Pick anyone below—they&apos;re here 24/7, judgment-free.
               </p>
             </div>
           )}
@@ -371,7 +371,7 @@ function Personas() {
               {filteredPersonas.length === 0 && (
                 <div className="text-center py-20">
                   <p className="text-4xl mb-4">🔍</p>
-                  <p className="font-display text-black text-xl font-semibold">Hmm, couldn't find that one</p>
+                  <p className="font-display text-black text-xl font-semibold">Hmm, couldn&apos;t find that one</p>
                   <p className="text-gray-500 text-sm mt-2">Did you spell it right? Or try a different category 🤔</p>
                 </div>
               )}
