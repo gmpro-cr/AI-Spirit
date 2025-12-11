@@ -29,17 +29,6 @@ function Personas() {
   const [likedPersonaSlugs, setLikedPersonaSlugs] = useState([])
   const [showWelcomeTip, setShowWelcomeTip] = useState(false)
 
-  // Time-based greeting
-  const getGreeting = () => {
-    const hour = new Date().getHours()
-    if (hour >= 5 && hour < 12) return { text: 'Good morning', emoji: '☀️', subtext: 'Start your day with a meaningful conversation' }
-    if (hour >= 12 && hour < 17) return { text: 'Good afternoon', emoji: '🌤️', subtext: 'Taking a break? Let\'s chat.' }
-    if (hour >= 17 && hour < 21) return { text: 'Good evening', emoji: '🌅', subtext: 'Wind down with some good advice' }
-    return { text: 'Late night thoughts?', emoji: '🌙', subtext: 'We\'re here when you need us' }
-  }
-
-  const greeting = getGreeting()
-
   // Rotating search placeholders
   const searchPrompts = [
     'Who do you need to talk to today?',
@@ -274,16 +263,6 @@ function Personas() {
               className="flex-1 p-3 text-base text-black border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black h-12"
             />
           </div>
-
-          {/* Time-based Greeting */}
-          {selectedCategory === 'All' && !searchQuery && (
-            <div className="mb-8">
-              <h2 className="font-display text-2xl md:text-3xl font-bold text-black mb-1">
-                {greeting.emoji} {greeting.text}
-              </h2>
-              <p className="text-gray-600">{greeting.subtext}</p>
-            </div>
-          )}
 
           {/* First-time User Welcome Tip */}
           {showWelcomeTip && (
