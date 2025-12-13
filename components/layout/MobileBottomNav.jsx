@@ -19,14 +19,14 @@ export default function MobileBottomNav({ onCreatePersona }) {
             isActive: currentPath === '/',
         },
         {
-            name: 'Explore',
-            href: '/blog',
+            name: 'Chats',
+            href: '/#chats',
             icon: (
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                 </svg>
             ),
-            isActive: currentPath === '/blog',
+            isActive: false,
         },
         {
             name: 'Create',
@@ -59,11 +59,10 @@ export default function MobileBottomNav({ onCreatePersona }) {
                             <button
                                 key={item.name}
                                 onClick={item.onClick}
-                                className="flex flex-col items-center justify-center flex-1 py-2 group"
+                                className="flex flex-col items-center justify-center flex-1 py-2 transition-colors text-gray-400 hover:text-gray-600"
                             >
-                                <div className="p-2 rounded-full bg-black text-white group-active:scale-95 transition-transform">
-                                    {item.icon}
-                                </div>
+                                {item.icon}
+                                <span className="text-xs mt-1 font-medium">{item.name}</span>
                             </button>
                         )
                     }
