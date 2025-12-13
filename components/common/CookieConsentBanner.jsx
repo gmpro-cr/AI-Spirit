@@ -14,6 +14,7 @@ export default function CookieConsentBanner() {
             style={{
                 background: '#000000',
                 padding: '16px 24px',
+                paddingBottom: typeof window !== 'undefined' && window.innerWidth < 768 ? '80px' : '16px', // Extra padding on mobile for bottom nav
                 alignItems: 'center',
                 borderTop: '1px solid rgba(255, 255, 255, 0.1)',
                 zIndex: 9999,
