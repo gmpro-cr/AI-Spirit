@@ -10,6 +10,9 @@ export default function ChatsPage() {
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
+        // Only run on client side
+        if (typeof window === 'undefined') return
+
         try {
             const conversationsList = JSON.parse(localStorage.getItem('esperit_conversations') || '[]')
             setPastChats(conversationsList)
