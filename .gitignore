@@ -51,3 +51,8 @@ backups/
 .env.vercel
 .env.production
 .worktrees/
+
+# PWA files
+public/sw.js
+public/workbox-*.js
+public/worker-*.js
