@@ -12,8 +12,8 @@ export default function MobileBottomNav({ onCreatePersona }) {
 
     return (
         <>
-            <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-[9999] safe-area-bottom">
-                <div className="flex justify-around items-center h-16 px-2">
+            <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-[9999] safe-area-bottom" style={{ touchAction: 'manipulation' }}>
+                <div className="flex justify-around items-center h-18 px-2" style={{ minHeight: '72px' }}>
                     {/* Home */}
                     <Link
                         href="/"
@@ -38,8 +38,9 @@ export default function MobileBottomNav({ onCreatePersona }) {
 
                     {/* Create */}
                     <button
+                        type="button"
                         onClick={onCreatePersona}
-                        className="flex flex-col items-center justify-center flex-1 py-2 transition-colors text-gray-400 hover:text-gray-600"
+                        className="flex flex-col items-center justify-center flex-1 py-2 min-h-[44px] transition-colors text-gray-400 hover:text-gray-600 active:text-black"
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -50,8 +51,9 @@ export default function MobileBottomNav({ onCreatePersona }) {
                     {/* Account */}
                     {user ? (
                         <button
+                            type="button"
                             onClick={() => setIsAccountOpen(true)}
-                            className={`flex flex-col items-center justify-center flex-1 py-2 transition-colors text-gray-400 hover:text-gray-600`}
+                            className={`flex flex-col items-center justify-center flex-1 py-2 min-h-[44px] transition-colors text-gray-400 hover:text-gray-600 active:text-black`}
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
@@ -61,7 +63,7 @@ export default function MobileBottomNav({ onCreatePersona }) {
                     ) : (
                         <Link
                             href="/auth/signin"
-                            className={`flex flex-col items-center justify-center flex-1 py-2 transition-colors ${currentPath === '/auth/signin' ? 'text-black' : 'text-gray-400 hover:text-gray-600'}`}
+                            className={`flex flex-col items-center justify-center flex-1 py-2 min-h-[44px] transition-colors ${currentPath === '/auth/signin' ? 'text-black' : 'text-gray-400 hover:text-gray-600 active:text-black'}`}
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
