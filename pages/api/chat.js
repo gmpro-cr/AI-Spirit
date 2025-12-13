@@ -242,6 +242,14 @@ CRITICAL RULES:
     // Get user memories for authenticated users
     let memoryContext = ''
     let relationshipContext = ''
+    
+    // DEBUG: Log memory system check
+    console.log('[Memory System] Pre-check:', {
+      userId,
+      isGuest,
+      willFetchMemories: userId && !isGuest
+    })
+    
     if (userId && !isGuest) {
       const memories = await getUserMemories(userId, persona.slug, supabaseAdmin)
       memoryContext = formatMemoriesForContext(memories, userProfile)
