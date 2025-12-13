@@ -96,6 +96,13 @@ function ChatPage() {
     setIsLoading(true)
 
     try {
+      // DEBUG: Log auth state before API call (edit mode)
+      console.log('[Chat Page - Edit] Sending to API:', {
+        hasUser: !!user,
+        userId: user?.id || null,
+        isGuest: !user
+      })
+
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -325,6 +332,16 @@ function ChatPage() {
     setIsLoading(true)
 
     try {
+      // DEBUG: Log auth state before API call
+      const authDebug = {
+        hasUser: !!user,
+        userId: user?.id || null,
+        userEmail: user?.email || null,
+        isGuest: !user,
+        hasProfile: !!userProfile
+      }
+      console.log('[Chat Page] Sending to API:', authDebug)
+
       // Use streaming for better UX
       const response = await fetch('/api/chat', {
         method: 'POST',
