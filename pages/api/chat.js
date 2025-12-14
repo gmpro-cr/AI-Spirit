@@ -77,9 +77,6 @@ export default async function handler(req, res) {
 
       if (!isPremium) {
         // 2. Count messages sent today by this user (using IST timezone UTC+5:30)
-        // Get user's message limit from profile (default to 20 if not set)
-        const messageLimit = userProfile.message_limit || 20
-
         const now = new Date()
 
         // Get IST midnight (subtract 5:30 from UTC to get IST midnight in UTC)
@@ -112,11 +109,11 @@ export default async function handler(req, res) {
             .eq('role', 'user')
             .gte('created_at', todayISTinUTC.toISOString())
 
-          if (!countError && count >= messageLimit) {
+          if (!countError && count >= 20) {
             return res.status(403).json({
-              error: `Daily message limit reached (${messageLimit} messages). Upgrade to Premium for unlimited access.`,
+              error: 'Daily message limit reached (20 messages). Upgrade to Premium for unlimited access.',
               isLimitReached: true,
-              limit: messageLimit
+              limit: 20
             })
           }
         }
