@@ -97,11 +97,12 @@ function ChatPage() {
 
     try {
       // DEBUG: Log auth state before API call (edit mode)
-      console.log('[Chat Page - Edit] Sending to API:', {
+      const authDebug = {
         hasUser: !!user,
         userId: user?.id || null,
         isGuest: !user
-      })
+      }
+      console.log('[Chat Page - Edit] Sending to API:', JSON.stringify(authDebug, null, 2))
 
       const response = await fetch('/api/chat', {
         method: 'POST',
@@ -340,7 +341,7 @@ function ChatPage() {
         isGuest: !user,
         hasProfile: !!userProfile
       }
-      console.log('[Chat Page] Sending to API:', authDebug)
+      console.log('[Chat Page] Sending to API:', JSON.stringify(authDebug, null, 2))
 
       // Use streaming for better UX
       const response = await fetch('/api/chat', {
