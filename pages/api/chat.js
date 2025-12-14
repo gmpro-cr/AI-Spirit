@@ -18,8 +18,15 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' })
   }
 
+  // Declare variables outside try block so they're accessible in catch
+  let conversationId, personaId, isGuest
+
   try {
-    const { conversationId, personaId, persona: personaObj, message, conversationHistory, isGuest } = req.body
+    const requestBody = req.body
+    conversationId = requestBody.conversationId
+    personaId = requestBody.personaId
+    isGuest = requestBody.isGuest
+    const { persona: personaObj, message, conversationHistory } = requestBody
 
     // Rate limiting disabled - will enable when userbase grows
 

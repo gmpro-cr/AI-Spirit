@@ -1,7 +1,8 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase'
 
-const AuthContext = createContext({})
+// Use undefined as default to properly detect usage outside provider
+const AuthContext = createContext(undefined)
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null)

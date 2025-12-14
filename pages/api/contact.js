@@ -54,7 +54,7 @@ export default async function handler(req, res) {
     // Email content
     const mailOptions = {
       from: process.env.GMAIL_USER,
-      to: 'mahalegauravk@gmail.com',
+      to: process.env.CONTACT_EMAIL || process.env.GMAIL_USER,
       replyTo: email,
       subject: `AI-Spirit Contact Form: Message from ${safeName}`,
       html: `

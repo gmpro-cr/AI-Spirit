@@ -15,10 +15,8 @@ const nextConfig = {
         protocol: 'https',
         hostname: '**.wikimedia.org',
       },
-      {
-        protocol: 'https',
-        hostname: '**',
-      },
+      // Removed overly permissive wildcard pattern for security
+      // Add specific domains as needed instead of allowing all hostnames
     ],
   },
 };

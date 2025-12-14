@@ -1,6 +1,7 @@
 import { createContext, useContext, useState } from 'react'
 
-const ChatContext = createContext({})
+// Use undefined as default to properly detect usage outside provider
+const ChatContext = createContext(undefined)
 
 export const ChatProvider = ({ children }) => {
   const [activeConversation, setActiveConversation] = useState(null)
