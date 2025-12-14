@@ -242,17 +242,27 @@ CRITICAL RULES:
     // Get user memories for authenticated users
     let memoryContext = ''
     let relationshipContext = ''
-    
+
     // DEBUG: Log memory system check
     console.log('[Memory System] Pre-check:', {
       userId,
       isGuest,
       willFetchMemories: userId && !isGuest
     })
-    
+
     if (userId && !isGuest) {
       const memories = await getUserMemories(userId, persona.slug, supabaseAdmin)
+      console.log('[Memory System] Retrieved memories:', {
+        memoriesCount: memories.length,
+        userId,
+        personaSlug: persona.slug
+      })
+
       memoryContext = formatMemoriesForContext(memories, userProfile)
+      console.log('[Memory System] Formatted context:', {
+        contextLength: memoryContext.length,
+        isEmpty: !memoryContext
+      })
 
       if (memoryContext) {
         console.log('[Memory System] Injecting user memories:', {
@@ -260,6 +270,8 @@ CRITICAL RULES:
           personaSlug: persona.slug,
           memoriesCount: memories.length
         })
+      } else {
+        console.log('[Memory System] ❌ Memory context is empty despite having', memories.length, 'memories')
       }
 
       // Get relationship level and context
