@@ -3,6 +3,7 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import SidePanelNew from '@/components/layout/SidePanel'
 import Navbar from '@/components/layout/Navbar'
+import Footer from '@/components/layout/Footer'
 import MobileBottomNav from '@/components/layout/MobileBottomNav'
 import PersonaCardNew from '@/components/personas/PersonaCard'
 import { PersonaGridSkeleton } from '@/components/personas/PersonaCardSkeleton'
@@ -211,82 +212,87 @@ function Personas() {
         />
 
         {/* Main Content */}
-        <main className="flex-1 p-6 md:p-10 overflow-y-auto md:ml-64">
-          {/* Category Filter */}
-          <div className="mb-4 overflow-x-auto scrollbar-hide">
-            <div className="flex gap-2 pb-2">
-              {categories.map(category => (
-                <button
-                  key={category}
-                  onClick={() => setSelectedCategory(category)}
-                  className={`px-4 py-2 rounded-full text-sm font-medium transition-colors whitespace-nowrap flex-shrink-0 ${selectedCategory === category
-                    ? 'bg-black text-white'
-                    : 'bg-white text-black border border-gray-300 hover:bg-gray-100'
-                    }`}
-                >
-                  {category}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Search Bar */}
-          <div className="mb-6">
-            <input
-              type="text"
-              placeholder={searchPlaceholder}
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full p-3 text-base text-black border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black h-12"
-            />
-          </div>
-
-          {/* First-time User Welcome Tip */}
-          {showWelcomeTip && (
-            <div className="mb-6 bg-black text-white rounded-2xl p-5 relative animate-fadeIn">
-              <button
-                onClick={dismissWelcomeTip}
-                className="absolute top-3 right-3 text-gray-400 hover:text-white transition-colors"
-                aria-label="Dismiss"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-              <h3 className="font-display font-bold text-xl mb-2">Hey there! 👋</h3>
-              <p className="text-gray-300 text-sm leading-relaxed">
-                You&apos;re about to chat with AI personalities who actually get you. Pick anyone below—they&apos;re here 24/7, judgment-free.
-              </p>
-            </div>
-          )}
-
-          {/* Loading State with Skeleton */}
-          {loadingPersonas ? (
-            <PersonaGridSkeleton count={10} />
-          ) : (
-            <>
-              {/* Personas Grid */}
-              <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 md:gap-4">
-                {filteredPersonas.map((persona) => (
-                  <PersonaCardNew
-                    key={persona.slug}
-                    persona={persona}
-                    onEdit={persona.is_custom ? handleEditPersona : undefined}
-                    onLikeChange={handleLikeChange}
-                  />
+        <main className="flex-1 overflow-y-auto md:ml-64 flex flex-col bg-gray-50/50">
+          <div className="flex-1 px-4 sm:px-6 lg:px-8 py-6 md:py-10 max-w-7xl mx-auto w-full">
+            {/* Category Filter */}
+            <div className="mb-4 overflow-x-auto scrollbar-hide">
+              <div className="flex gap-2 pb-2">
+                {categories.map(category => (
+                  <button
+                    key={category}
+                    onClick={() => setSelectedCategory(category)}
+                    className={`px-4 py-2 rounded-full text-sm font-medium transition-colors whitespace-nowrap flex-shrink-0 ${selectedCategory === category
+                      ? 'bg-black text-white'
+                      : 'bg-white text-black border border-gray-300 hover:bg-gray-100'
+                      }`}
+                  >
+                    {category}
+                  </button>
                 ))}
               </div>
+            </div>
 
-              {/* No Results - Playful Empty State */}
-              {filteredPersonas.length === 0 && (
-                <div className="text-center py-20">
-                  <p className="text-4xl mb-4">🔍</p>
-                  <p className="font-display text-black text-xl font-semibold">Hmm, couldn&apos;t find that one</p>
-                  <p className="text-gray-500 text-sm mt-2">Did you spell it right? Or try a different category 🤔</p>
+            {/* Search Bar */}
+            <div className="mb-6">
+              <input
+                type="text"
+                placeholder={searchPlaceholder}
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full p-3 text-base text-black border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black h-12 shadow-sm"
+              />
+            </div>
+
+            {/* First-time User Welcome Tip */}
+            {showWelcomeTip && (
+              <div className="mb-6 bg-black text-white rounded-2xl p-5 relative animate-fadeIn shadow-lg">
+                <button
+                  onClick={dismissWelcomeTip}
+                  className="absolute top-3 right-3 text-gray-400 hover:text-white transition-colors"
+                  aria-label="Dismiss"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+                <h3 className="font-display font-bold text-xl mb-2">Hey there! 👋</h3>
+                <p className="text-gray-300 text-sm leading-relaxed">
+                  You&apos;re about to chat with AI personalities who actually get you. Pick anyone below—they&apos;re here 24/7, judgment-free.
+                </p>
+              </div>
+            )}
+
+            {/* Loading State with Skeleton */}
+            {loadingPersonas ? (
+              <PersonaGridSkeleton count={10} />
+            ) : (
+              <>
+                {/* Personas Grid */}
+                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 md:gap-4">
+                  {filteredPersonas.map((persona) => (
+                    <PersonaCardNew
+                      key={persona.slug}
+                      persona={persona}
+                      onEdit={persona.is_custom ? handleEditPersona : undefined}
+                      onLikeChange={handleLikeChange}
+                    />
+                  ))}
                 </div>
-              )}
-            </>
-          )}
+
+                {/* No Results - Playful Empty State */}
+                {filteredPersonas.length === 0 && (
+                  <div className="text-center py-20">
+                    <p className="text-4xl mb-4">🔍</p>
+                    <p className="font-display text-black text-xl font-semibold">Hmm, couldn&apos;t find that one</p>
+                    <p className="text-gray-500 text-sm mt-2">Did you spell it right? Or try a different category 🤔</p>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+
+          {/* Footer */}
+          <Footer />
         </main>
       </div>
 
