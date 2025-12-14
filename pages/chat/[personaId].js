@@ -584,7 +584,7 @@ function ChatPage() {
               <img
                 src={persona.image_url || '/default-persona.png'}
                 alt={persona.name}
-                className="w-10 h-10 rounded-full mr-4 object-cover"
+                className="w-10 h-10 rounded-full mr-4 object-cover grayscale"
                 onError={(e) => {
                   e.target.src = '/default-persona.png'
                 }}
@@ -696,7 +696,7 @@ function ChatPage() {
                     <img
                       src={persona.image_url || '/default-persona.png'}
                       alt={persona.name}
-                      className="w-8 h-8 rounded-full object-cover object-top flex-shrink-0"
+                      className="w-8 h-8 rounded-full object-cover object-top flex-shrink-0 grayscale"
                       onError={(e) => {
                         e.target.src = '/default-persona.png'
                       }}

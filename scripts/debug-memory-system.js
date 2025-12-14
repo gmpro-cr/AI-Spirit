@@ -1,95 +1,107 @@
-import { supabaseAdmin } from '../lib/supabase.js'
+#!/usr/bin/env node
+import { createClient } from '@supabase/supabase-js'
+import dotenv from 'dotenv'
 
-async function debugMemorySystem() {
-    console.log('=== Memory System Debug ===\n')
+// Load environment variables
+dotenv.config({ path: '.env.local' })
 
-    // 1. Check if conversation_memories table exists
-    console.log('1. Checking if conversation_memories table exists...')
-    const { data: memories, error: memError } = await supabaseAdmin
-        .from('conversation_memories')
-        .select('*')
-        .limit(5)
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
 
-    if (memError) {
-        console.error('❌ Error accessing conversation_memories table:', memError.message)
-        console.log('\n⚠️  The table might not exist. Need to create it.\n')
-    } else {
-        console.log('✅ Table exists!')
-        console.log(`   Found ${memories?.length || 0} sample memories`)
-        if (memories && memories.length > 0) {
-            console.log('   Sample memory:', JSON.stringify(memories[0], null, 2))
-        }
-    }
-
-    // 2. Check conversations table
-    console.log('\n2. Checking recent conversations...')
-    const { data: conversations, error: convError } = await supabaseAdmin
-        .from('conversations')
-        .select('id, user_id, persona_slug, title, created_at')
-        .order('created_at', { ascending: false })
-        .limit(5)
-
-    if (convError) {
-        console.error('❌ Error accessing conversations:', convError.message)
-    } else {
-        console.log(`✅ Found ${conversations?.length || 0} recent conversations`)
-        if (conversations && conversations.length > 0) {
-            conversations.forEach((conv, i) => {
-                console.log(`   ${i + 1}. ${conv.persona_slug} - "${conv.title}" (${conv.created_at})`)
-            })
-        }
-    }
-
-    // 3. Check messages table
-    console.log('\n3. Checking recent messages...')
-    const { data: messages, error: msgError } = await supabaseAdmin
-        .from('messages')
-        .select('conversation_id, role, content, created_at')
-        .order('created_at', { ascending: false })
-        .limit(5)
-
-    if (msgError) {
-        console.error('❌ Error accessing messages:', msgError.message)
-    } else {
-        console.log(`✅ Found ${messages?.length || 0} recent messages`)
-        if (messages && messages.length > 0) {
-            messages.forEach((msg, i) => {
-                const preview = msg.content.substring(0, 50)
-                console.log(`   ${i + 1}. [${msg.role}] ${preview}...`)
-            })
-        }
-    }
-
-    // 4. Check if there are any users with memories
-    if (!memError && memories && memories.length > 0) {
-        console.log('\n4. Checking memory distribution by user...')
-        const { data: memStats, error: statsError } = await supabaseAdmin
-            .from('conversation_memories')
-            .select('user_id, persona_slug')
-
-        if (!statsError && memStats) {
-            const userCounts = {}
-            const personaCounts = {}
-
-            memStats.forEach(m => {
-                userCounts[m.user_id] = (userCounts[m.user_id] || 0) + 1
-                personaCounts[m.persona_slug] = (personaCounts[m.persona_slug] || 0) + 1
-            })
-
-            console.log('   Memories by user:')
-            Object.entries(userCounts).forEach(([userId, count]) => {
-                console.log(`     - ${userId}: ${count} memories`)
-            })
-
-            console.log('   Memories by persona:')
-            Object.entries(personaCounts).forEach(([persona, count]) => {
-                console.log(`     - ${persona}: ${count} memories`)
-            })
-        }
-    }
-
-    console.log('\n=== Debug Complete ===')
-    process.exit(0)
+if (!supabaseUrl || !supabaseServiceKey) {
+  console.error('❌ Missing Supabase credentials!')
+  console.error('NEXT_PUBLIC_SUPABASE_URL:', supabaseUrl ? 'present' : 'missing')
+  console.error('SUPABASE_SERVICE_ROLE_KEY:', supabaseServiceKey ? 'present' : 'missing')
+  process.exit(1)
 }
 
-debugMemorySystem()
+const supabase = createClient(supabaseUrl, supabaseServiceKey)
+
+async function checkMemoryTables() {
+  console.log('🔍 Checking Memory System Status\n')
+  console.log('=' .repeat(60))
+
+  try {
+    // Test 1: Check if conversation_memories table exists
+    console.log('\n1. Testing conversation_memories table...')
+    const { data: memories, error: memError, count } = await supabase
+      .from('conversation_memories')
+      .select('*', { count: 'exact', head: false })
+      .limit(5)
+
+    if (memError) {
+      console.error('❌ conversation_memories table ERROR:', memError.message)
+      console.error('   Code:', memError.code)
+      console.error('   Details:', memError.details)
+      console.error('   Hint:', memError.hint)
+      console.log('\n⚠️  DIAGNOSIS: The conversation_memories table likely does NOT exist!')
+      console.log('   Run: node scripts/run-memory-migration.js')
+    } else {
+      console.log('✅ conversation_memories table EXISTS')
+      console.log(`   Total memories stored: ${count || 0}`)
+      if (memories && memories.length > 0) {
+        console.log('   Sample memories:')
+        memories.forEach((mem, i) => {
+          console.log(`   ${i + 1}. [${mem.memory_type}] ${mem.content.substring(0, 60)}...`)
+        })
+      } else {
+        console.log('   No memories stored yet (this is normal for new users)')
+      }
+    }
+
+    // Test 2: Check if persona_relationships table exists
+    console.log('\n2. Testing persona_relationships table...')
+    const { data: relationships, error: relError, count: relCount } = await supabase
+      .from('persona_relationships')
+      .select('*', { count: 'exact', head: false })
+      .limit(5)
+
+    if (relError) {
+      console.error('❌ persona_relationships table ERROR:', relError.message)
+      console.log('\n⚠️  DIAGNOSIS: The persona_relationships table likely does NOT exist!')
+      console.log('   Run: node scripts/run-memory-migration.js')
+    } else {
+      console.log('✅ persona_relationships table EXISTS')
+      console.log(`   Total relationships: ${relCount || 0}`)
+      if (relationships && relationships.length > 0) {
+        console.log('   Sample relationships:')
+        relationships.forEach((rel, i) => {
+          console.log(`   ${i + 1}. Persona: ${rel.persona_slug}, Level: ${rel.relationship_level}, Chats: ${rel.conversation_count}`)
+        })
+      }
+    }
+
+    // Test 3: Check users table
+    console.log('\n3. Testing auth.users access...')
+    const { data: users, error: userError } = await supabase.auth.admin.listUsers({ page: 1, perPage: 1 })
+
+    if (userError) {
+      console.error('❌ Cannot access users:', userError.message)
+    } else {
+      console.log(`✅ Auth system accessible (${users.users?.length || 0} user(s) found in sample)`)
+    }
+
+    console.log('\n' + '=' .repeat(60))
+    console.log('\n📊 SUMMARY:')
+
+    if (memError || relError) {
+      console.log('\n❌ MEMORY SYSTEM IS NOT SET UP')
+      console.log('\n🔧 FIX: Run the migration to create tables:')
+      console.log('   node scripts/run-memory-migration.js')
+      console.log('\nOR manually run the SQL from:')
+      console.log('   supabase/migrations/create_memory_and_relationship_tables.sql')
+      console.log('   in the Supabase Dashboard → SQL Editor')
+    } else {
+      console.log('\n✅ MEMORY SYSTEM IS WORKING')
+      console.log('   Tables exist and are accessible')
+      console.log(`   ${count || 0} memories stored`)
+      console.log(`   ${relCount || 0} relationships tracked`)
+    }
+
+  } catch (error) {
+    console.error('\n❌ UNEXPECTED ERROR:', error.message)
+    console.error(error)
+  }
+}
+
+checkMemoryTables()

@@ -115,7 +115,7 @@ export default function SidePanel({ onBack, backButtonText, showPastChats = true
                           alt={chat.personaName}
                           width={40}
                           height={40}
-                          className="w-10 h-10 rounded-full object-cover flex-shrink-0"
+                          className="w-10 h-10 rounded-full object-cover flex-shrink-0 grayscale"
                         />
                       )}
                       <div className="flex-1 min-w-0">
