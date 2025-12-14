@@ -89,7 +89,7 @@ export default function PersonaCard({ persona, onEdit, onLikeChange }) {
           src={persona.image_url || persona.avatar_url || '/default-persona.png'}
           alt={persona.name}
           fill
-          className="object-cover object-[center_25%] rounded-t-lg grayscale"
+          className="object-cover object-[center_25%] rounded-t-lg"
           onError={(e) => {
             // next/image doesn't support onError directly like img, 
             // but we can handle fallbacks in the src logic or a wrapper if needed.

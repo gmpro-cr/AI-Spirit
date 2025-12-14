@@ -74,7 +74,7 @@ export default function ChatsPage() {
                                                 alt={chat.personaName}
                                                 width={48}
                                                 height={48}
-                                                className="w-12 h-12 rounded-full object-cover grayscale"
+                                                className="w-12 h-12 rounded-full object-cover"
                                             />
                                         ) : (
                                             <div className="w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center">
