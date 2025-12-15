@@ -4,11 +4,13 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
 import MobileBottomNav from '@/components/layout/MobileBottomNav'
+import CreatePersonaModal from '@/components/personas/CreatePersonaModal'
 
 export default function ChatsPage() {
     const router = useRouter()
     const [pastChats, setPastChats] = useState([])
     const [loading, setLoading] = useState(true)
+    const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
 
     useEffect(() => {
         // Only run on client side
@@ -115,8 +117,18 @@ export default function ChatsPage() {
                 </main>
 
                 {/* Mobile Bottom Nav */}
-                <MobileBottomNav />
+                <MobileBottomNav onCreatePersona={() => setIsCreateModalOpen(true)} />
             </div>
+
+            {/* Create Persona Modal */}
+            <CreatePersonaModal
+                isOpen={isCreateModalOpen}
+                onClose={() => setIsCreateModalOpen(false)}
+                onPersonaCreated={() => {
+                    setIsCreateModalOpen(false)
+                    router.push('/')
+                }}
+            />
         </>
     )
 }
