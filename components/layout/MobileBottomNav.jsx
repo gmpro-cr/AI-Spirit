@@ -39,7 +39,7 @@ export default function MobileBottomNav({ onCreatePersona }) {
                     {/* Create */}
                     <button
                         type="button"
-                        onClick={onCreatePersona}
+                        onClick={() => onCreatePersona?.()}
                         className="flex flex-col items-center justify-center flex-1 py-2 min-h-[44px] transition-colors text-gray-400 hover:text-gray-600 active:text-black"
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
