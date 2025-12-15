@@ -1,7 +1,8 @@
 import React from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 
-class ErrorBoundary extends React.Component {
+class ErrorBoundaryInner extends React.Component {
     constructor(props) {
         super(props)
         this.state = { hasError: false, error: null }
@@ -13,6 +14,13 @@ class ErrorBoundary extends React.Component {
 
     componentDidCatch(error, errorInfo) {
         console.error('ErrorBoundary caught an error:', error, errorInfo)
+    }
+
+    // Reset error state when route changes
+    componentDidUpdate(prevProps) {
+        if (prevProps.pathname !== this.props.pathname && this.state.hasError) {
+            this.setState({ hasError: false, error: null })
+        }
     }
 
     handleRetry = () => {
@@ -86,4 +94,12 @@ class ErrorBoundary extends React.Component {
     }
 }
 
-export default ErrorBoundary
+// Wrapper component to pass router pathname to the class component
+export default function ErrorBoundary({ children }) {
+    const router = useRouter()
+    return (
+        <ErrorBoundaryInner pathname={router.pathname}>
+            {children}
+        </ErrorBoundaryInner>
+    )
+}
