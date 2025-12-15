@@ -104,7 +104,7 @@ class ErrorBoundaryInner extends React.Component {
 export default function ErrorBoundary({ children }) {
     const router = useRouter()
     return (
-        <ErrorBoundaryInner pathname={router.pathname}>
+        <ErrorBoundaryInner pathname={router?.pathname || ''}>
             {children}
         </ErrorBoundaryInner>
     )
