@@ -2,17 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Cookie consent mobile positioning - z-index fix for mobile nav */
-.CookieConsent {
-  z-index: 40 !important; /* Below mobile nav which is z-99999 */
-}
-
-@media (max-width: 767px) {
-  .CookieConsent {
-    padding-bottom: 80px !important; /* Extra padding so buttons visible above cookie banner */
-  }
-}
-
 /* Typography - Space Grotesk for headings (distinctive), Inter for body */
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+Devanagari:wght@300;400;500;600;700&display=swap');
 
