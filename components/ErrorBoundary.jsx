@@ -58,9 +58,15 @@ class ErrorBoundaryInner extends React.Component {
                         <h2 className="text-2xl font-bold text-black mb-2">
                             Something went wrong
                         </h2>
-                        <p className="text-gray-600 mb-8">
+                        <p className="text-gray-600 mb-4">
                             We encountered an unexpected error. Please try again.
                         </p>
+                        {/* Debug info - remove in production */}
+                        {this.state.error && (
+                            <p className="text-xs text-red-500 mb-4 p-2 bg-red-50 rounded break-all">
+                                {this.state.error.message || String(this.state.error)}
+                            </p>
+                        )}
 
                         {/* Action Buttons */}
                         <div className="flex flex-col sm:flex-row gap-3 justify-center">
