@@ -8,7 +8,7 @@ import SEO from '../next-seo.config'
 import ErrorBoundary from '@/components/ErrorBoundary'
 import CookieConsentBanner from '@/components/common/CookieConsentBanner'
 
-export default function App({ Component, pageProps }) {
+export default function App({ Component, pageProps}) {
   return (
     <ErrorBoundary>
       <AuthProvider>
