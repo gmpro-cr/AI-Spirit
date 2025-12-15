@@ -12,7 +12,7 @@ export default function MobileBottomNav({ onCreatePersona }) {
 
     return (
         <>
-            <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-[9999] safe-area-bottom" style={{ touchAction: 'manipulation' }}>
+            <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 safe-area-bottom" style={{ touchAction: 'manipulation', zIndex: 99999 }}>
                 <div className="flex justify-around items-center h-18 px-2" style={{ minHeight: '72px' }}>
                     {/* Home */}
                     <Link

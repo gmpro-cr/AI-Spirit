@@ -2,8 +2,22 @@
 
 import CookieConsent from 'react-cookie-consent'
 import Link from 'next/link'
+import { useState, useEffect } from 'react'
 
 export default function CookieConsentBanner() {
+    const [isMobile, setIsMobile] = useState(false)
+
+    useEffect(() => {
+        const checkMobile = () => {
+            setIsMobile(window.innerWidth < 768)
+        }
+
+        checkMobile()
+        window.addEventListener('resize', checkMobile)
+
+        return () => window.removeEventListener('resize', checkMobile)
+    }, [])
+
     return (
         <CookieConsent
             location="bottom"
@@ -14,10 +28,10 @@ export default function CookieConsentBanner() {
             style={{
                 background: '#000000',
                 padding: '16px 24px',
-                paddingBottom: typeof window !== 'undefined' && window.innerWidth < 768 ? '80px' : '16px', // Extra padding on mobile for bottom nav
                 alignItems: 'center',
                 borderTop: '1px solid rgba(255, 255, 255, 0.1)',
-                zIndex: typeof window !== 'undefined' && window.innerWidth < 768 ? 40 : 9999, // Lower z-index on mobile to not block nav (z-50)
+                zIndex: 9999,
+                bottom: isMobile ? '72px' : '0px', // Position above mobile nav (72px is nav height)
             }}
             buttonStyle={{
                 background: '#ffffff',
