@@ -1,8 +1,7 @@
 import React from 'react'
 import Link from 'next/link'
-import { useRouter } from 'next/router'
 
-class ErrorBoundaryInner extends React.Component {
+class ErrorBoundary extends React.Component {
     constructor(props) {
         super(props)
         this.state = { hasError: false, error: null }
@@ -14,13 +13,6 @@ class ErrorBoundaryInner extends React.Component {
 
     componentDidCatch(error, errorInfo) {
         console.error('ErrorBoundary caught an error:', error, errorInfo)
-    }
-
-    // Reset error state when route changes
-    componentDidUpdate(prevProps) {
-        if (prevProps.pathname !== this.props.pathname && this.state.hasError) {
-            this.setState({ hasError: false, error: null })
-        }
     }
 
     handleRetry = () => {
@@ -61,7 +53,7 @@ class ErrorBoundaryInner extends React.Component {
                         <p className="text-gray-600 mb-4">
                             We encountered an unexpected error. Please try again.
                         </p>
-                        {/* Debug info - remove in production */}
+                        {/* Debug info */}
                         {this.state.error && (
                             <p className="text-xs text-red-500 mb-4 p-2 bg-red-50 rounded break-all">
                                 {this.state.error.message || String(this.state.error)}
@@ -87,6 +79,7 @@ class ErrorBoundaryInner extends React.Component {
                         {/* Back to Home */}
                         <Link
                             href="/"
+                            onClick={() => this.setState({ hasError: false, error: null })}
                             className="inline-block mt-6 text-sm text-gray-500 hover:text-black transition-colors"
                         >
                             ← Back to Home
@@ -100,12 +93,4 @@ class ErrorBoundaryInner extends React.Component {
     }
 }
 
-// Wrapper component to pass router pathname to the class component
-export default function ErrorBoundary({ children }) {
-    const router = useRouter()
-    return (
-        <ErrorBoundaryInner pathname={router?.pathname || ''}>
-            {children}
-        </ErrorBoundaryInner>
-    )
-}
+export default ErrorBoundary
