@@ -7,8 +7,6 @@ import MobileBottomNav from '@/components/layout/MobileBottomNav'
 import CreatePersonaModal from '@/components/personas/CreatePersonaModal'
 
 export default function ChatsPage() {
-    console.log('DEBUG: MobileBottomNav type:', typeof MobileBottomNav)
-    console.log('DEBUG: CreatePersonaModal type:', typeof CreatePersonaModal)
     const router = useRouter()
     const [pastChats, setPastChats] = useState([])
     const [loading, setLoading] = useState(true)
