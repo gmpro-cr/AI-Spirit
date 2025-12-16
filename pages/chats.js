@@ -3,10 +3,8 @@ import { useState, useEffect } from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
-import dynamic from 'next/dynamic'
-
-import MobileBottomNav from '../components/layout/MobileBottomNav'
-import CreatePersonaModal from '../components/personas/CreatePersonaModal'
+import MobileBottomNav from '@/components/layout/MobileBottomNav'
+import CreatePersonaModal from '@/components/personas/CreatePersonaModal'
 
 export default function ChatsPage() {
     console.log('DEBUG: MobileBottomNav type:', typeof MobileBottomNav)
