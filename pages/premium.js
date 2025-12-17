@@ -2,7 +2,9 @@ import { useState } from 'react'
 import Head from 'next/head'
 import Script from 'next/script'
 import { useRouter } from 'next/router'
+import Link from 'next/link'
 import { useAuth } from '@/context/AuthContext'
+import Navbar from '@/components/layout/Navbar'
 import ContactModal from '@/components/ContactModal'
 
 export default function Premium() {
@@ -96,37 +98,20 @@ export default function Premium() {
                 src="https://checkout.razorpay.com/v1/checkout.js"
                 strategy="beforeInteractive"
             />
-            <div className="min-h-screen bg-white text-black font-sans">
-                {/* Header */}
-                <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
-                    <div className="max-w-7xl mx-auto px-4 md:px-6 py-4 flex justify-between items-center">
-                        <button
-                            onClick={() => router.push('/')}
-                            className="font-display text-xl md:text-2xl font-bold text-black hover:text-gray-600 transition-colors"
-                        >
-                            <span className="italic">AI</span> - Spirit
-                        </button>
-                        <nav className="flex items-center gap-4">
-                            <button
-                                onClick={() => setIsContactModalOpen(true)}
-                                className="text-base font-medium text-gray-600 hover:text-black transition-colors"
-                            >
-                                Contact
-                            </button>
-                        </nav>
-                    </div>
-                </header>
+            <div className="min-h-screen bg-white text-black font-sans pb-20 md:pb-0">
+                {/* Navbar */}
+                <Navbar />
 
                 {/* Hero Section */}
                 <div className="pt-28 pb-12 px-6 text-center">
-                    <div className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-100 to-pink-100 text-purple-700 text-sm font-medium px-4 py-2 rounded-full mb-6">
+                    <div className="inline-flex items-center gap-2 bg-gradient-to-r from-indigo-100 via-purple-100 to-pink-100 text-indigo-700 text-sm font-semibold px-5 py-2.5 rounded-full mb-8 shadow-sm border border-indigo-100">
                         <span>🎙️</span>
                         <span>NEW: Voice responses now available!</span>
                     </div>
-                    <h1 className="font-display text-4xl md:text-6xl font-bold mb-6 tracking-tight text-black">
+                    <h1 className="font-display text-5xl md:text-7xl font-bold mb-6 tracking-tight bg-gradient-to-r from-black via-gray-800 to-black bg-clip-text text-transparent">
                         Hear your AI speak
                     </h1>
-                    <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+                    <p className="text-xl md:text-2xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
                         Unlimited conversations + voice responses. Your personal AI coach that actually talks to you.
                     </p>
                 </div>
@@ -135,14 +120,14 @@ export default function Premium() {
                 <div className="max-w-5xl mx-auto px-6 pb-16">
                     <div className="grid md:grid-cols-2 gap-8 items-stretch">
                         {/* Free Plan */}
-                        <div className="relative p-8 rounded-3xl border border-gray-200 bg-gray-50 hover:border-gray-300 transition-all duration-300 flex flex-col">
+                        <div className="relative p-8 rounded-3xl border-2 border-gray-200 bg-white hover:border-gray-300 hover:shadow-xl transition-all duration-300 flex flex-col group">
                             <div className="mb-6">
-                                <h3 className="text-lg font-medium text-gray-600 mb-2">Free</h3>
-                                <div className="flex items-baseline gap-1">
-                                    <span className="text-4xl font-bold text-black">₹0</span>
-                                    <span className="text-gray-500">/forever</span>
+                                <h3 className="text-lg font-semibold text-gray-600 mb-2 uppercase tracking-wide">Free</h3>
+                                <div className="flex items-baseline gap-2">
+                                    <span className="text-5xl font-bold text-black">₹0</span>
+                                    <span className="text-gray-500 font-medium">/forever</span>
                                 </div>
-                                <p className="text-sm text-gray-500 mt-2">Great for trying out AI-Spirit</p>
+                                <p className="text-sm text-gray-500 mt-3">Great for trying out AI-Spirit</p>
                             </div>
 
                             <ul className="space-y-4 mb-8 flex-grow">
@@ -174,25 +159,25 @@ export default function Premium() {
 
                             <button
                                 onClick={() => router.push('/')}
-                                className="w-full py-4 rounded-xl border border-gray-300 text-gray-700 font-medium hover:bg-white transition-colors mt-auto"
+                                className="w-full py-4 rounded-xl border-2 border-gray-300 text-gray-700 font-semibold hover:bg-gray-50 hover:border-gray-400 transition-all mt-auto shadow-sm hover:shadow"
                             >
                                 Continue Free
                             </button>
                         </div>
 
                         {/* Premium Plan */}
-                        <div className="relative p-8 rounded-3xl border-2 border-black bg-white text-black shadow-2xl flex flex-col">
-                            <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-black text-white text-xs font-bold px-4 py-1.5 rounded-full">
-                                BEST VALUE
+                        <div className="relative p-8 rounded-3xl border-2 border-black bg-gradient-to-b from-white to-gray-50 text-black shadow-2xl hover:shadow-3xl flex flex-col transition-all duration-300 hover:scale-[1.02] group">
+                            <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs font-bold px-5 py-2 rounded-full shadow-lg">
+                                ⭐ BEST VALUE
                             </div>
 
                             <div className="mb-6">
-                                <h3 className="text-lg font-medium text-gray-600 mb-2">Premium</h3>
+                                <h3 className="text-lg font-semibold text-gray-600 mb-2 uppercase tracking-wide">Premium</h3>
                                 <div className="flex items-baseline gap-2">
-                                    <span className="text-5xl font-bold">₹249</span>
-                                    <span className="text-gray-500">/month</span>
+                                    <span className="text-6xl font-bold bg-gradient-to-r from-black to-gray-700 bg-clip-text text-transparent">₹249</span>
+                                    <span className="text-gray-500 font-medium">/month</span>
                                 </div>
-                                <p className="text-sm text-gray-500 mt-2">Less than ₹9/day for unlimited AI</p>
+                                <p className="text-sm text-gray-500 mt-3 font-medium">Less than ₹9/day for unlimited AI</p>
                             </div>
 
                             <ul className="space-y-4 mb-8 flex-grow">
@@ -228,9 +213,19 @@ export default function Premium() {
                             <button
                                 onClick={handleSubscribe}
                                 disabled={loading}
-                                className="w-full py-4 rounded-xl bg-black text-white font-bold text-lg hover:bg-gray-800 transition-all duration-300 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed mt-auto"
+                                className="w-full py-5 rounded-xl bg-gradient-to-r from-black via-gray-800 to-black text-white font-bold text-lg hover:from-gray-800 hover:via-gray-700 hover:to-gray-800 transition-all duration-300 shadow-xl hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed mt-auto hover:scale-[1.02] active:scale-[0.98]"
                             >
-                                {loading ? 'Processing...' : 'Get Premium'}
+                                {loading ? (
+                                    <span className="flex items-center justify-center gap-2">
+                                        <svg className="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                        </svg>
+                                        Processing...
+                                    </span>
+                                ) : (
+                                    'Get Premium ✨'
+                                )}
                             </button>
                         </div>
                     </div>
@@ -302,6 +297,55 @@ export default function Premium() {
                         </div>
                     </div>
                 </div>
+
+                {/* Mobile Bottom Navigation */}
+                <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-gray-200 z-50 shadow-lg">
+                    <div className="flex justify-around items-center h-16 px-2">
+                        {/* Home */}
+                        <Link
+                            href="/"
+                            className="flex flex-col items-center justify-center flex-1 py-2 text-gray-500 hover:text-gray-700 transition-colors"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                            </svg>
+                            <span className="text-xs mt-1 font-medium">Home</span>
+                        </Link>
+
+                        {/* Chats */}
+                        <Link
+                            href="/chats"
+                            className="flex flex-col items-center justify-center flex-1 py-2 text-gray-500 hover:text-gray-700 transition-colors"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                            </svg>
+                            <span className="text-xs mt-1 font-medium">Chats</span>
+                        </Link>
+
+                        {/* Create */}
+                        <Link
+                            href="/personas"
+                            className="flex flex-col items-center justify-center flex-1 py-2 text-gray-500 hover:text-gray-700 transition-colors"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                            </svg>
+                            <span className="text-xs mt-1 font-medium">Create</span>
+                        </Link>
+
+                        {/* Account */}
+                        <Link
+                            href="/auth/signin"
+                            className="flex flex-col items-center justify-center flex-1 py-2 text-gray-500 hover:text-gray-700 transition-colors"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                            <span className="text-xs mt-1 font-medium">Account</span>
+                        </Link>
+                    </div>
+                </nav>
             </div>
 
             {/* Contact Modal */}
