@@ -551,6 +551,24 @@ function ChatPage() {
       <Head>
         <title>Chat with {persona.name} - AI - Spirit</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        {/* Open Graph / Social Media Preview Tags */}
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content={`Chat with ${persona.name} - AI Spirit`} />
+        <meta property="og:description" content={persona.short_description || `Talk to ${persona.name} on AI Spirit. Get instant guidance and support 24/7.`} />
+        <meta property="og:url" content={`https://ai-spirit.in/chat/${personaId}`} />
+        <meta property="og:site_name" content="AI - Spirit" />
+        <meta property="og:image" content={`https://ai-spirit.in/api/og?title=${encodeURIComponent(`Chat with ${persona.name}`)}&description=${encodeURIComponent(persona.short_description || `Talk to ${persona.name} on AI Spirit`)}&persona=${encodeURIComponent(persona.name)}&avatar=${encodeURIComponent(persona.avatar_url || '')}`} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content={`Chat with ${persona.name} on AI Spirit`} />
+
+        {/* Twitter Card Tags */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={`Chat with ${persona.name} - AI Spirit`} />
+        <meta name="twitter:description" content={persona.short_description || `Talk to ${persona.name} on AI Spirit. Get instant guidance and support 24/7.`} />
+        <meta name="twitter:image" content={`https://ai-spirit.in/api/og?title=${encodeURIComponent(`Chat with ${persona.name}`)}&description=${encodeURIComponent(persona.short_description || `Talk to ${persona.name} on AI Spirit`)}&persona=${encodeURIComponent(persona.name)}&avatar=${encodeURIComponent(persona.avatar_url || '')}`} />
+        <meta name="twitter:image:alt" content={`Chat with ${persona.name} on AI Spirit`} />
       </Head>
 
       <div className="flex h-screen bg-white">
