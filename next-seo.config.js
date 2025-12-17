@@ -47,9 +47,9 @@ export default {
         description: 'Get instant guidance from AI experts on parenting, mental wellness, relationships, and cooking. Available 24/7, free to use.',
         images: [
             {
-                url: 'https://ai-spirit.in/api/og?title=AI%20-%20Spirit&description=Chat%20with%20AI%20personas%20for%20guidance%20on%20parenting%2C%20wellness%2C%20relationships%2C%20and%20more',
+                url: 'https://ai-spirit.in/og-image.png',
                 width: 1200,
-                height: 630,
+                height: 900,
                 alt: 'AI - Spirit - Chat with AI Personas for Parenting, Wellness, Relationships',
                 type: 'image/png',
             },
