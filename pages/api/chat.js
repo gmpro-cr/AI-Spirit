@@ -229,13 +229,17 @@ CRITICAL RULES:
 
     // ALWAYS inject current context (date/time + latest news) so personas have up-to-date information
     // This ensures they can discuss recent events and know the current date/time
-    const contextString = await getContextIfNeeded(null) // Pass null to always get context
+    // Detect persona language for context formatting
+    const personaLanguage = persona.language || 'en'
+    const contextString = await getContextIfNeeded(null, personaLanguage, true) // Pass null to always get context
 
     // Log context injection
     if (contextString) {
-      console.log('[Chat API] Injecting current context', {
+      console.log('[Chat API] Injecting real-time context', {
         conversationId,
-        hasContext: true
+        language: personaLanguage,
+        hasContext: true,
+        contextLength: contextString.length
       })
     }
 
