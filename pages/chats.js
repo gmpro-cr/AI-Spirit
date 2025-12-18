@@ -74,7 +74,6 @@ export default function ChatsPage() {
                                                         alt={chat.personaName}
                                                         className="w-14 h-14 rounded-full object-cover ring-2 ring-gray-100 group-hover:ring-gray-200 transition-all"
                                                     />
-                                                    <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white"></div>
                                                 </div>
                                             ) : (
                                                 <div className="w-14 h-14 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center ring-2 ring-gray-100 group-hover:ring-gray-200 transition-all">
