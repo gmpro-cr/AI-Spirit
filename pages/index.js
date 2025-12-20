@@ -220,9 +220,9 @@ function Personas() {
                   <button
                     key={category}
                     onClick={() => setSelectedCategory(category)}
-                    className={`px-4 py-2 rounded-full text-sm font-medium transition-colors whitespace-nowrap flex-shrink-0 ${selectedCategory === category
-                      ? 'bg-black text-white'
-                      : 'bg-white text-black border border-gray-300 hover:bg-gray-100'
+                    className={`px-4 py-2 rounded-md text-sm font-medium transition-colors whitespace-nowrap flex-shrink-0 ${selectedCategory === category
+                      ? 'bg-spirit-primary text-white border border-spirit-primary'
+                      : 'bg-white text-spirit-primary border border-gray-300 hover:border-spirit-primary hover:bg-gray-50'
                       }`}
                   >
                     {category}
@@ -244,7 +244,7 @@ function Personas() {
 
             {/* First-time User Welcome Tip */}
             {showWelcomeTip && (
-              <div className="mb-6 bg-black text-white rounded-2xl p-5 relative animate-fadeIn shadow-lg">
+              <div className="mb-6 bg-spirit-primary text-white border-l-4 border-l-spirit-accent p-5 relative animate-fadeIn">
                 <button
                   onClick={dismissWelcomeTip}
                   className="absolute top-3 right-3 text-gray-400 hover:text-white transition-colors"
@@ -254,7 +254,7 @@ function Personas() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                   </svg>
                 </button>
-                <h3 className="font-display font-bold text-xl mb-2">Hey there! 👋</h3>
+                <h3 className="font-display font-bold text-xl mb-2">Hey there.</h3>
                 <p className="text-gray-300 text-sm leading-relaxed">
                   You&apos;re about to chat with AI personalities who actually get you. Pick anyone below—they&apos;re here 24/7, judgment-free.
                 </p>
@@ -278,12 +278,14 @@ function Personas() {
                   ))}
                 </div>
 
-                {/* No Results - Playful Empty State */}
+                {/* No Results - Clean Empty State */}
                 {filteredPersonas.length === 0 && (
                   <div className="text-center py-20">
-                    <p className="text-4xl mb-4">🔍</p>
+                    <svg xmlns="http://www.w3.org/2000/svg" className="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
                     <p className="font-display text-black text-xl font-semibold">Hmm, couldn&apos;t find that one</p>
-                    <p className="text-gray-500 text-sm mt-2">Did you spell it right? Or try a different category 🤔</p>
+                    <p className="text-gray-500 text-sm mt-2">Did you spell it right? Or try a different category</p>
                   </div>
                 )}
               </>

@@ -13,7 +13,7 @@ export default function Navbar({ onMenuToggle, showMenuButton = false }) {
   }
 
   return (
-    <nav className="fixed top-0 w-full bg-white/95 backdrop-blur-md border-b border-gray-200 z-50 shadow-sm">
+    <nav className="fixed top-0 w-full bg-white border-b border-gray-200 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Left Side - Menu Button + Logo */}
@@ -22,7 +22,7 @@ export default function Navbar({ onMenuToggle, showMenuButton = false }) {
             {showMenuButton && (
               <button
                 onClick={onMenuToggle}
-                className="lg:hidden group relative bg-gray-100 border border-gray-200 rounded-lg p-2 hover:bg-gray-200 active:scale-95 transition-all"
+                className="lg:hidden group relative bg-gray-100 border border-gray-200 rounded-md p-2 hover:bg-gray-200 transition-colors"
                 aria-label="Toggle menu"
               >
                 <div className="w-5 h-4 flex flex-col justify-center gap-1.5">
@@ -35,13 +35,13 @@ export default function Navbar({ onMenuToggle, showMenuButton = false }) {
             {/* Logo */}
             {isHomePage ? (
               <Link href="/" className="flex items-center space-x-2 group">
-                <span className="font-display text-xl sm:text-2xl font-bold text-black tracking-tight group-hover:scale-[1.02] transition-transform">
+                <span className="font-display text-xl sm:text-2xl font-bold text-spirit-primary tracking-tight group-hover:text-spirit-accent transition-colors">
                   <span className="italic">AI</span> - Spirit
                 </span>
               </Link>
             ) : (
               <Link href="/personas" className="flex items-center space-x-2 group">
-                <span className="font-display text-xl sm:text-2xl font-bold text-black tracking-tight group-hover:scale-[1.02] transition-transform">
+                <span className="font-display text-xl sm:text-2xl font-bold text-spirit-primary tracking-tight group-hover:text-spirit-accent transition-colors">
                   <span className="italic">AI</span> - Spirit
                 </span>
               </Link>
@@ -52,13 +52,13 @@ export default function Navbar({ onMenuToggle, showMenuButton = false }) {
           <div className="flex items-center gap-2 sm:gap-3">
             <Link
               href="/premium"
-              className="text-black font-medium px-3 sm:px-5 py-2 sm:py-2.5 text-sm sm:text-base rounded-full border border-gray-300 hover:bg-gray-100 transition-all hover:scale-[1.02] active:scale-[0.98]"
+              className="text-spirit-primary font-medium px-3 sm:px-5 py-2 sm:py-2.5 text-sm sm:text-base rounded-md border border-gray-300 hover:border-spirit-primary hover:bg-gray-50 transition-all"
             >
               Premium
             </Link>
             <Link
               href="/contact"
-              className="bg-black text-white font-medium px-3 sm:px-5 py-2 sm:py-2.5 text-sm sm:text-base rounded-full hover:bg-gray-800 transition-all hover:scale-[1.02] active:scale-[0.98]"
+              className="bg-spirit-primary text-white font-medium px-3 sm:px-5 py-2 sm:py-2.5 text-sm sm:text-base rounded-md border border-spirit-primary hover:bg-white hover:text-spirit-primary transition-all"
             >
               Contact
             </Link>

@@ -7,6 +7,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        // Legacy colors (keep for compatibility)
         'black-primary': '#000000',
         'black-secondary': '#0A0A0A',
         'black-tertiary': '#141414',
@@ -17,7 +18,24 @@ module.exports = {
         'text-primary': '#FFFFFF',
         'text-secondary': '#A0A0A0',
         'text-muted': '#666666',
-        'glass-bg': 'rgba(255, 255, 255, 0.1)',
+
+        // Spiritual Minimalism Theme
+        'spirit': {
+          primary: '#1A1A1A',     // Deep black
+          accent: '#D4AF37',      // Spiritual gold
+          secondary: '#4A5568',   // Slate gray
+        },
+
+        // Chakra-inspired category colors (subtle, grounded)
+        'chakra': {
+          'root': '#92400E',       // Earth brown - Relationships
+          'sacral': '#C2410C',     // Terracotta - Wellness
+          'solar': '#D97706',      // Goldenrod - Career
+          'heart': '#047857',      // Forest green - Health
+          'throat': '#0369A1',     // Ocean blue - Communication
+          'third-eye': '#5B21B6',  // Deep purple - Spiritual
+          'crown': '#7C3AED',      // Royal purple - Wisdom
+        },
       },
       backgroundImage: {
         'gradient-accent': 'linear-gradient(135deg, #FFFFFF 0%, #E5E5E5 50%, #CCCCCC 100%)',
@@ -29,6 +47,7 @@ module.exports = {
       },
       fontFamily: {
         sans: ['Inter', 'sans-serif'],
+        display: ['var(--font-display)', 'serif'],  // Crimson Text
         hindi: ['Noto Sans Devanagari', 'sans-serif'],
       },
       keyframes: {

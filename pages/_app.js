@@ -7,6 +7,15 @@ import { DefaultSeo } from 'next-seo'
 import SEO from '../next-seo.config'
 import ErrorBoundary from '@/components/ErrorBoundary'
 import CookieConsentBanner from '@/components/common/CookieConsentBanner'
+import { Crimson_Text } from 'next/font/google'
+
+// Spiritual Minimalism - Display Font
+const crimsonText = Crimson_Text({
+  weight: ['400', '600', '700'],
+  subsets: ['latin'],
+  variable: '--font-display',
+  display: 'swap',
+})
 
 export default function App({ Component, pageProps }) {
   return (
@@ -14,7 +23,9 @@ export default function App({ Component, pageProps }) {
       <AuthProvider>
         <ChatProvider>
           <DefaultSeo {...SEO} />
-          <Component {...pageProps} />
+          <div className={crimsonText.variable}>
+            <Component {...pageProps} />
+          </div>
           <CookieConsentBanner />
           <Analytics />
           <SpeedInsights />

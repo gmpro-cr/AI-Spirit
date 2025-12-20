@@ -8,20 +8,22 @@ export default function PersonaCard({ persona, onEdit, onLikeChange }) {
   const { user } = useAuth()
   const [isLiked, setIsLiked] = useState(false)
 
-  // Category-based subtle accent colors
-  const getCategoryAccent = (category) => {
-    const accents = {
-      'Relationships': 'hover:border-pink-300',
-      'Wellness': 'hover:border-green-300',
-      'Career': 'hover:border-blue-300',
-      'Lifestyle': 'hover:border-purple-300',
-      'Finance': 'hover:border-emerald-300',
-      'Health': 'hover:border-teal-300',
-      'Spiritual': 'hover:border-amber-300',
-      'Parenting': 'hover:border-orange-300',
-      'Legal': 'hover:border-slate-400'
+  // Chakra-inspired category colors (spiritual minimalism)
+  const getCategoryBorderColor = (category) => {
+    const colors = {
+      'Relationships': 'border-l-chakra-root',
+      'Wellness': 'border-l-chakra-sacral',
+      'Career': 'border-l-chakra-solar',
+      'Lifestyle': 'border-l-purple-600',
+      'Finance': 'border-l-green-700',
+      'Health': 'border-l-chakra-heart',
+      'Spiritual': 'border-l-chakra-third-eye',
+      'Parenting': 'border-l-orange-600',
+      'Legal': 'border-l-slate-700',
+      'Communication': 'border-l-chakra-throat',
+      'Wisdom': 'border-l-chakra-crown',
     }
-    return accents[category] || 'hover:border-gray-400'
+    return colors[category] || 'border-l-spirit-primary'
   }
 
   useEffect(() => {
@@ -79,43 +81,49 @@ export default function PersonaCard({ persona, onEdit, onLikeChange }) {
 
   return (
     <div
-      className={`bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer group relative ${getCategoryAccent(persona.category)}`}
+      className={`
+        group relative bg-white
+        border-l-4 ${getCategoryBorderColor(persona.category)}
+        border-y border-r border-gray-200
+        hover:shadow-md hover:border-l-spirit-accent
+        transition-all duration-200
+        cursor-pointer
+      `}
       onClick={handleClick}
     >
-      {/* Persona Image */}
-      {/* Persona Image */}
-      <div className="relative w-full h-32 md:h-40">
+      {/* Image Container - Clean, minimal rounding */}
+      <div className="relative w-full h-32 md:h-40 overflow-hidden bg-gray-100">
         <Image
           src={persona.image_url || persona.avatar_url || '/default-persona.png'}
           alt={persona.name}
           fill
-          className="object-cover object-[center_25%] rounded-t-lg"
-          onError={(e) => {
-            // next/image doesn't support onError directly like img, 
-            // but we can handle fallbacks in the src logic or a wrapper if needed.
-            // For now, we rely on the src fallback above.
-          }}
+          className="object-cover object-[center_25%] group-hover:scale-105 transition-transform duration-300"
         />
+        {/* Subtle overlay on hover - adds depth */}
+        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-200" />
       </div>
 
-      {/* Persona Info */}
-      <div className="p-2">
-        <div className="flex items-start justify-between gap-1">
-          <h3 className="font-display text-sm md:text-base font-semibold text-black group-hover:text-gray-600 transition-colors flex-1 min-w-0 truncate">
+      {/* Info Section - Clean typography */}
+      <div className="p-3 space-y-1">
+        <div className="flex items-start justify-between gap-2">
+          {/* Name - Uses display font */}
+          <h3 className="font-display text-sm md:text-base font-semibold text-gray-900 flex-1 min-w-0 truncate">
             {persona.name}
           </h3>
-          {/* Like Button (Heart) */}
+
+          {/* Like Button - Minimal, gold when liked */}
           <button
             onClick={handleLike}
-            className="flex-shrink-0 hover:scale-110 transition-transform mt-0.5"
+            className="flex-shrink-0 p-1 hover:opacity-70 transition-opacity"
             title={isLiked ? "Unlike persona" : "Like persona"}
+            aria-label={isLiked ? "Unlike persona" : "Like persona"}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4 md:h-5 md:w-5 transition-colors"
-              fill={isLiked ? "red" : "none"}
+              className="h-4 w-4 md:h-5 md:w-5"
+              fill={isLiked ? "#D4AF37" : "none"}
               viewBox="0 0 24 24"
-              stroke={isLiked ? "red" : "black"}
+              stroke={isLiked ? "#D4AF37" : "currentColor"}
               strokeWidth={2}
             >
               <path
@@ -126,32 +134,35 @@ export default function PersonaCard({ persona, onEdit, onLikeChange }) {
             </svg>
           </button>
         </div>
-        <p className="text-black text-[10px] md:text-xs mt-0.5 line-clamp-1">
+
+        {/* Description - Muted color for hierarchy */}
+        <p className="text-gray-600 text-[10px] md:text-xs line-clamp-2 leading-relaxed">
           {persona.description || persona.bio}
         </p>
       </div>
 
-      {/* Edit Button (if custom persona) */}
+      {/* Edit Button for Custom Personas */}
       {onEdit && (
         <button
           onClick={(e) => {
             e.stopPropagation()
             onEdit(persona)
           }}
-          className="absolute top-2 right-2 bg-white/90 hover:bg-white p-2 rounded-full shadow-md transition-all"
+          className="absolute top-2 right-2 bg-white/95 hover:bg-white p-2 border border-gray-200 transition-colors"
           title="Edit persona"
+          aria-label="Edit persona"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-4 w-4 text-black"
+            className="h-4 w-4 text-gray-700"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
+            strokeWidth={2}
           >
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
-              strokeWidth={2}
               d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
             />
           </svg>
