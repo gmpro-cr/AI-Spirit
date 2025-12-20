@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  darkMode: 'class', // Enable class-based dark mode
   content: [
     './pages/**/*.{js,ts,jsx,tsx,mdx}',
     './components/**/*.{js,ts,jsx,tsx,mdx}',
@@ -19,22 +20,30 @@ module.exports = {
         'text-secondary': '#A0A0A0',
         'text-muted': '#666666',
 
-        // Spiritual Minimalism Theme
+        // Spiritual Minimalism Theme (Light & Dark)
         'spirit': {
-          primary: '#1A1A1A',     // Deep black
-          accent: '#D4AF37',      // Spiritual gold
-          secondary: '#4A5568',   // Slate gray
+          primary: '#1A1A1A',        // Deep black (light mode)
+          'primary-dark': '#F5F5F5', // Off-white (dark mode text)
+          accent: '#D4AF37',         // Spiritual gold (same in both modes)
+          secondary: '#4A5568',      // Slate gray (light mode)
+          'secondary-dark': '#9CA3AF', // Light gray (dark mode)
+          bg: '#FFFFFF',             // White (light mode bg)
+          'bg-dark': '#0F0F0F',      // Almost black (dark mode bg)
+          'bg-secondary': '#F9FAFB', // Light gray (light mode secondary bg)
+          'bg-secondary-dark': '#1A1A1A', // Dark gray (dark mode secondary bg)
+          'border': '#E5E7EB',       // Light border
+          'border-dark': '#2D2D2D',  // Dark border
         },
 
-        // Chakra-inspired category colors (subtle, grounded)
+        // Chakra-inspired category colors (work in both modes)
         'chakra': {
-          'root': '#92400E',       // Earth brown - Relationships
-          'sacral': '#C2410C',     // Terracotta - Wellness
-          'solar': '#D97706',      // Goldenrod - Career
-          'heart': '#047857',      // Forest green - Health
-          'throat': '#0369A1',     // Ocean blue - Communication
-          'third-eye': '#5B21B6',  // Deep purple - Spiritual
-          'crown': '#7C3AED',      // Royal purple - Wisdom
+          'root': '#92400E',         // Earth brown - Relationships
+          'sacral': '#C2410C',       // Terracotta - Wellness
+          'solar': '#D97706',        // Goldenrod - Career
+          'heart': '#047857',        // Forest green - Health
+          'throat': '#0369A1',       // Ocean blue - Communication
+          'third-eye': '#5B21B6',    // Deep purple - Spiritual
+          'crown': '#7C3AED',        // Royal purple - Wisdom
         },
       },
       backgroundImage: {

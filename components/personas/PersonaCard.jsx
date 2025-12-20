@@ -82,9 +82,9 @@ export default function PersonaCard({ persona, onEdit, onLikeChange }) {
   return (
     <div
       className={`
-        group relative bg-white
+        group relative bg-white dark:bg-spirit-bg-secondary-dark
         border-l-4 ${getCategoryBorderColor(persona.category)}
-        border-y border-r border-gray-200
+        border-y border-r border-gray-200 dark:border-spirit-border-dark
         hover:shadow-md hover:border-l-spirit-accent
         transition-all duration-200
         cursor-pointer
@@ -92,7 +92,7 @@ export default function PersonaCard({ persona, onEdit, onLikeChange }) {
       onClick={handleClick}
     >
       {/* Image Container - Clean, minimal rounding */}
-      <div className="relative w-full h-32 md:h-40 overflow-hidden bg-gray-100">
+      <div className="relative w-full h-32 md:h-40 overflow-hidden bg-gray-100 dark:bg-gray-800">
         <Image
           src={persona.image_url || persona.avatar_url || '/default-persona.png'}
           alt={persona.name}
@@ -100,14 +100,14 @@ export default function PersonaCard({ persona, onEdit, onLikeChange }) {
           className="object-cover object-[center_25%] group-hover:scale-105 transition-transform duration-300"
         />
         {/* Subtle overlay on hover - adds depth */}
-        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-200" />
+        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 dark:group-hover:bg-black/20 transition-colors duration-200" />
       </div>
 
       {/* Info Section - Clean typography */}
       <div className="p-3 space-y-1">
         <div className="flex items-start justify-between gap-2">
           {/* Name - Uses display font */}
-          <h3 className="font-display text-sm md:text-base font-semibold text-gray-900 flex-1 min-w-0 truncate">
+          <h3 className="font-display text-sm md:text-base font-semibold text-gray-900 dark:text-spirit-primary-dark flex-1 min-w-0 truncate">
             {persona.name}
           </h3>
 
@@ -136,7 +136,7 @@ export default function PersonaCard({ persona, onEdit, onLikeChange }) {
         </div>
 
         {/* Description - Muted color for hierarchy */}
-        <p className="text-gray-600 text-[10px] md:text-xs line-clamp-2 leading-relaxed">
+        <p className="text-gray-600 dark:text-gray-400 text-[10px] md:text-xs line-clamp-2 leading-relaxed">
           {persona.description || persona.bio}
         </p>
       </div>
@@ -148,13 +148,13 @@ export default function PersonaCard({ persona, onEdit, onLikeChange }) {
             e.stopPropagation()
             onEdit(persona)
           }}
-          className="absolute top-2 right-2 bg-white/95 hover:bg-white p-2 border border-gray-200 transition-colors"
+          className="absolute top-2 right-2 bg-white/95 dark:bg-gray-800/95 hover:bg-white dark:hover:bg-gray-800 p-2 border border-gray-200 dark:border-spirit-border-dark transition-colors"
           title="Edit persona"
           aria-label="Edit persona"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-4 w-4 text-gray-700"
+            className="h-4 w-4 text-gray-700 dark:text-gray-300"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
