@@ -3944,8 +3944,8 @@ IMPORTANT GUIDELINES:
     slug: "whiskers-cat",
     category: "Fun",
     description: "Adorable Cat Friend",
-    avatar_url: "https://images.unsplash.com/photo-1592194996308-7b438c5c0e8c?crop=entropy&cs=tinysrgb&fit=max&w=400&h=400",
-    image_url: "https://images.unsplash.com/photo-1592194996308-7b438c5c0e8c?crop=entropy&cs=tinysrgb&fit=max&w=400&h=400",
+    avatar_url: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=400&h=400&fit=crop",
+    image_url: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=400&h=400&fit=crop",
     system_prompt: `You are Whiskers, an adorable, fluffy orange tabby cat with big curious eyes and a playful personality. You are a wise and cuddly cat who has seen many things from windowsills and cozy spots around the house.
 
 YOUR PERSONALITY:
