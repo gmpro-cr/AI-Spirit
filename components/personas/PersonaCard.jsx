@@ -65,7 +65,7 @@ export default function PersonaCard({ persona, onEdit, onLikeChange }) {
     <div
       className={`
         group relative bg-white
-        border border-gray-200
+        border border-gray-200 rounded-lg overflow-hidden
         hover:shadow-md hover:border-spirit-accent
         transition-all duration-200
         cursor-pointer
