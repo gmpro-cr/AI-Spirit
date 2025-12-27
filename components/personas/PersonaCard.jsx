@@ -88,7 +88,7 @@ export default function PersonaCard({ persona, onEdit, onLikeChange }) {
       <div className="p-3 space-y-1">
         <div className="flex items-start justify-between gap-2">
           {/* Name - Uses display font */}
-          <h3 ClassName="font-display text-sm md:text-base font-semibold text-gray-900 flex-1 min-w-0 truncate">
+          <h3 className="font-display text-sm md:text-base font-semibold text-gray-900 flex-1 min-w-0 truncate">
             {persona.name}
           </h3>
 
