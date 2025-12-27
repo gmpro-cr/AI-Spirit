@@ -36,15 +36,15 @@ export default function SidePanel({ onBack, backButtonText, showPastChats = true
   }
 
   return (
-    <aside className={`w-64 bg-gray-50 border-r border-gray-200 p-6 flex flex-col justify-between hidden md:flex fixed left-0 ${hasNavbar ? 'h-[calc(100vh-4rem)] top-16' : 'h-screen top-0'}`}>
+    <aside className={`w-64 bg-gray-50 dark:bg-spirit-bg-dark border-r border-gray-200 dark:border-spirit-border-dark p-6 flex flex-col justify-between hidden md:flex fixed left-0 transition-colors ${hasNavbar ? 'h-[calc(100vh-4rem)] top-16' : 'h-screen top-0'}`}>
       {/* Top Section */}
       <div className="flex flex-col flex-1 overflow-hidden">
         {/* Back Navigation */}
         {onBack && (
-          <div className="mb-6 pb-5 border-b border-gray-300">
+          <div className="mb-6 pb-5 border-b border-gray-300 dark:border-spirit-border-dark">
             <button
               onClick={onBack}
-              className="flex items-center text-sm font-medium text-gray-700 hover:text-black transition-colors"
+              className="flex items-center text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-spirit-primary-dark transition-colors"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -70,7 +70,7 @@ export default function SidePanel({ onBack, backButtonText, showPastChats = true
           <div className="mb-6">
             <button
               onClick={onCreatePersona}
-              className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-black text-white rounded-lg hover:bg-gray-800 transition-all duration-200 shadow-lg hover:shadow-xl font-medium group"
+              className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-black dark:bg-spirit-accent text-white rounded-lg hover:bg-gray-800 dark:hover:bg-spirit-accent/90 transition-all duration-200 shadow-lg hover:shadow-xl font-medium group"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -93,21 +93,21 @@ export default function SidePanel({ onBack, backButtonText, showPastChats = true
 
         {/* Past Chats Header */}
         <div className="mb-6">
-          <h2 className="text-xl font-bold text-black">Past Chats</h2>
+          <h2 className="text-xl font-bold text-black dark:text-spirit-primary-dark">Past Chats</h2>
         </div>
 
         {/* Past Chats List */}
         {showPastChats && (
           <div className="flex-1 overflow-y-auto">
             {loading ? (
-              <p className="text-sm text-gray-500">Loading...</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400">Loading...</p>
             ) : pastChats.length > 0 ? (
               <ul className="space-y-3">
                 {pastChats.map(chat => (
                   <li key={chat.id}>
                     <button
                       onClick={() => router.push(`/chat/${chat.personaSlug}?conversationId=${chat.id}`)}
-                      className="flex items-center gap-3 w-full text-left p-3 rounded-lg text-sm text-gray-700 hover:bg-gray-200 transition-colors"
+                      className="flex items-center gap-3 w-full text-left p-3 rounded-lg text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors"
                     >
                       {chat.personaImage && (
                         <Image
@@ -119,26 +119,26 @@ export default function SidePanel({ onBack, backButtonText, showPastChats = true
                         />
                       )}
                       <div className="flex-1 min-w-0">
-                        <p className="text-xs font-medium text-gray-600 truncate mb-0.5">{chat.personaName}</p>
-                        <p className="text-sm truncate">{chat.title}</p>
+                        <p className="text-xs font-medium text-gray-600 dark:text-gray-400 truncate mb-0.5">{chat.personaName}</p>
+                        <p className="text-sm truncate text-gray-700 dark:text-gray-300">{chat.title}</p>
                       </div>
                     </button>
                   </li>
                 ))}
               </ul>
             ) : (
-              <p className="text-sm text-gray-500">No past chats yet</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400">No past chats yet</p>
             )}
           </div>
         )}
       </div>
 
       {/* Bottom Section - User Info or Sign In */}
-      <div className="mt-6 pt-6 border-t border-gray-300">
+      <div className="mt-6 pt-6 border-t border-gray-300 dark:border-spirit-border-dark">
         {user ? (
           <button
             onClick={() => setIsSettingsOpen(true)}
-            className="flex items-center w-full hover:bg-gray-100 rounded-lg p-2 -m-2 transition-colors"
+            className="flex items-center w-full hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg p-2 -m-2 transition-colors"
           >
             <div className="flex items-center min-w-0 flex-1">
               {user.user_metadata?.avatar_url ? (
@@ -150,20 +150,20 @@ export default function SidePanel({ onBack, backButtonText, showPastChats = true
                   className="w-10 h-10 rounded-full mr-3 flex-shrink-0"
                 />
               ) : (
-                <div className="w-10 h-10 rounded-full bg-gray-300 mr-3 flex-shrink-0 flex items-center justify-center">
-                  <span className="text-sm font-semibold text-gray-600">
+                <div className="w-10 h-10 rounded-full bg-gray-300 dark:bg-gray-700 mr-3 flex-shrink-0 flex items-center justify-center">
+                  <span className="text-sm font-semibold text-gray-600 dark:text-gray-300">
                     {user.email?.[0]?.toUpperCase() || '?'}
                   </span>
                 </div>
               )}
-              <span className="text-sm font-medium text-gray-700 truncate">
+              <span className="text-sm font-medium text-gray-700 dark:text-gray-300 truncate">
                 {user.user_metadata?.full_name || user.email?.split('@')[0] || 'User'}
               </span>
             </div>
             {/* Settings cog icon */}
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5 text-gray-400 ml-2"
+              className="h-5 w-5 text-gray-400 dark:text-gray-500 ml-2"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -185,7 +185,7 @@ export default function SidePanel({ onBack, backButtonText, showPastChats = true
         ) : (
           <button
             onClick={() => router.push('/auth/signin')}
-            className="flex items-center justify-center w-full gap-2 px-4 py-3 bg-black text-white rounded-lg hover:bg-gray-800 transition-all duration-200 font-medium"
+            className="flex items-center justify-center w-full gap-2 px-4 py-3 bg-black dark:bg-spirit-accent text-white rounded-lg hover:bg-gray-800 dark:hover:bg-spirit-accent/90 transition-all duration-200 font-medium"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

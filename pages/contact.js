@@ -56,19 +56,19 @@ export default function ContactPage() {
 
             <Navbar />
 
-            <div className="min-h-screen bg-white pt-24 pb-12 px-4">
+            <div className="min-h-screen bg-white dark:bg-spirit-bg-dark pt-24 pb-12 px-4 transition-colors">
                 <div className="max-w-md mx-auto">
                     {/* Header */}
                     <div className="text-center mb-8">
-                        <h1 className="text-3xl font-bold text-black mb-2">Contact Us</h1>
-                        <p className="text-gray-600">We&apos;d love to hear from you. Send us a message!</p>
+                        <h1 className="text-3xl font-bold text-black dark:text-spirit-primary-dark mb-2">Contact Us</h1>
+                        <p className="text-gray-600 dark:text-gray-400">We&apos;d love to hear from you. Send us a message!</p>
                     </div>
 
                     {/* Status Message */}
                     {status.message && (
                         <div className={`mb-6 p-4 rounded-lg ${status.type === 'success'
-                            ? 'bg-green-100 text-green-800'
-                            : 'bg-red-100 text-red-800'
+                            ? 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300'
+                            : 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300'
                             }`}>
                             {status.message}
                         </div>
@@ -77,7 +77,7 @@ export default function ContactPage() {
                     {/* Form */}
                     <form onSubmit={handleSubmit} className="space-y-5">
                         <div>
-                            <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+                            <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                                 Name *
                             </label>
                             <input
@@ -87,13 +87,13 @@ export default function ContactPage() {
                                 required
                                 value={formData.name}
                                 onChange={handleChange}
-                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black text-black"
+                                className="w-full px-4 py-3 bg-white dark:bg-spirit-bg-secondary-dark border border-gray-300 dark:border-spirit-border-dark rounded-lg focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-spirit-accent text-black dark:text-spirit-primary-dark transition-colors"
                                 placeholder="Your name"
                             />
                         </div>
 
                         <div>
-                            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                            <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                                 Email *
                             </label>
                             <input
@@ -103,13 +103,13 @@ export default function ContactPage() {
                                 required
                                 value={formData.email}
                                 onChange={handleChange}
-                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black text-black"
+                                className="w-full px-4 py-3 bg-white dark:bg-spirit-bg-secondary-dark border border-gray-300 dark:border-spirit-border-dark rounded-lg focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-spirit-accent text-black dark:text-spirit-primary-dark transition-colors"
                                 placeholder="your@email.com"
                             />
                         </div>
 
                         <div>
-                            <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
+                            <label htmlFor="message" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                                 Message *
                             </label>
                             <textarea
@@ -119,7 +119,7 @@ export default function ContactPage() {
                                 value={formData.message}
                                 onChange={handleChange}
                                 rows={5}
-                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black text-black resize-none"
+                                className="w-full px-4 py-3 bg-white dark:bg-spirit-bg-secondary-dark border border-gray-300 dark:border-spirit-border-dark rounded-lg focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-spirit-accent text-black dark:text-spirit-primary-dark resize-none transition-colors"
                                 placeholder="Your message..."
                             />
                         </div>
@@ -127,7 +127,7 @@ export default function ContactPage() {
                         <button
                             type="submit"
                             disabled={isSubmitting}
-                            className="w-full px-6 py-3 bg-black text-white font-medium rounded-lg hover:bg-gray-800 transition-all disabled:bg-gray-400 disabled:cursor-not-allowed"
+                            className="w-full px-6 py-3 bg-black dark:bg-spirit-accent text-white font-medium rounded-lg hover:bg-gray-800 dark:hover:bg-spirit-accent/90 transition-all disabled:bg-gray-400 dark:disabled:bg-gray-600 disabled:cursor-not-allowed"
                         >
                             {isSubmitting ? 'Sending...' : 'Send Message'}
                         </button>

@@ -12,12 +12,12 @@ export default function MobileBottomNav({ onCreatePersona }) {
 
     return (
         <>
-            <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 safe-area-bottom" style={{ touchAction: 'manipulation', zIndex: 99999 }}>
+            <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-spirit-bg-dark border-t border-gray-200 dark:border-spirit-border-dark safe-area-bottom transition-colors" style={{ touchAction: 'manipulation', zIndex: 99999 }}>
                 <div className="flex justify-around items-center h-18 px-2" style={{ minHeight: '72px' }}>
                     {/* Home */}
                     <Link
                         href="/"
-                        className={`flex flex-col items-center justify-center flex-1 py-2 transition-colors ${currentPath === '/' ? 'text-black' : 'text-gray-400 hover:text-gray-600'}`}
+                        className={`flex flex-col items-center justify-center flex-1 py-2 transition-colors ${currentPath === '/' ? 'text-black dark:text-spirit-accent' : 'text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300'}`}
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
@@ -28,7 +28,7 @@ export default function MobileBottomNav({ onCreatePersona }) {
                     {/* Chats */}
                     <Link
                         href="/chats"
-                        className={`flex flex-col items-center justify-center flex-1 py-2 transition-colors ${currentPath === '/chats' ? 'text-black' : 'text-gray-400 hover:text-gray-600'}`}
+                        className={`flex flex-col items-center justify-center flex-1 py-2 transition-colors ${currentPath === '/chats' ? 'text-black dark:text-spirit-accent' : 'text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300'}`}
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
@@ -40,7 +40,7 @@ export default function MobileBottomNav({ onCreatePersona }) {
                     <button
                         type="button"
                         onClick={() => onCreatePersona?.()}
-                        className="flex flex-col items-center justify-center flex-1 py-2 min-h-[44px] transition-colors text-gray-400 hover:text-gray-600 active:text-black"
+                        className="flex flex-col items-center justify-center flex-1 py-2 min-h-[44px] transition-colors text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 active:text-black dark:active:text-spirit-accent"
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -53,7 +53,7 @@ export default function MobileBottomNav({ onCreatePersona }) {
                         <button
                             type="button"
                             onClick={() => setIsAccountOpen(true)}
-                            className={`flex flex-col items-center justify-center flex-1 py-2 min-h-[44px] transition-colors text-gray-400 hover:text-gray-600 active:text-black`}
+                            className={`flex flex-col items-center justify-center flex-1 py-2 min-h-[44px] transition-colors text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 active:text-black dark:active:text-spirit-accent`}
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
@@ -63,7 +63,7 @@ export default function MobileBottomNav({ onCreatePersona }) {
                     ) : (
                         <Link
                             href="/auth/signin"
-                            className={`flex flex-col items-center justify-center flex-1 py-2 min-h-[44px] transition-colors ${currentPath === '/auth/signin' ? 'text-black' : 'text-gray-400 hover:text-gray-600 active:text-black'}`}
+                            className={`flex flex-col items-center justify-center flex-1 py-2 min-h-[44px] transition-colors ${currentPath === '/auth/signin' ? 'text-black dark:text-spirit-accent' : 'text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 active:text-black dark:active:text-spirit-accent'}`}
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />

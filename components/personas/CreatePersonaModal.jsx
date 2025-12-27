@@ -156,7 +156,7 @@ export default function CreatePersonaModal({ isOpen, onClose, onPersonaCreated }
 
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-md flex items-center justify-center z-50 p-3 sm:p-4 animate-fadeIn">
-      <div className="relative bg-white rounded-3xl shadow-2xl max-w-2xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-hidden border border-gray-100">
+      <div className="relative bg-white dark:bg-spirit-bg-secondary-dark rounded-3xl shadow-2xl max-w-2xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-hidden border border-gray-100">
         {/* Gradient accent bar */}
         <div className="h-1.5 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"></div>
 
@@ -164,12 +164,12 @@ export default function CreatePersonaModal({ isOpen, onClose, onPersonaCreated }
           <div className="relative z-10 p-5 sm:p-7">
             <div className="flex justify-between items-center mb-6 sm:mb-8">
               <div>
-                <h2 className="text-2xl sm:text-3xl font-bold text-black tracking-tight">Create Persona</h2>
+                <h2 className="text-2xl sm:text-3xl font-bold text-black dark:text-spirit-primary-dark tracking-tight">Create Persona</h2>
                 <p className="text-sm text-gray-500 mt-1">Design your own AI companion</p>
               </div>
               <button
                 onClick={onClose}
-                className="text-gray-400 hover:text-gray-700 transition-all duration-300 hover:scale-110 hover:rotate-90 w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100"
+                className="text-gray-400 hover:text-gray-700 dark:text-gray-300 transition-all duration-300 hover:scale-110 hover:rotate-90 w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -189,7 +189,7 @@ export default function CreatePersonaModal({ isOpen, onClose, onPersonaCreated }
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 placeholder="e.g., Albert Einstein, My Life Coach, Tech Expert"
-                className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 text-gray-900 placeholder-gray-400 focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 focus:outline-none transition-all duration-200 hover:border-gray-300"
+                className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 text-gray-900 placeholder-gray-400 focus:bg-white dark:bg-spirit-bg-secondary-dark focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 focus:outline-none transition-all duration-200 hover:border-gray-300 dark:border-spirit-border-dark"
               />
             </div>
 
@@ -208,7 +208,7 @@ export default function CreatePersonaModal({ isOpen, onClose, onPersonaCreated }
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                 placeholder="e.g., Physics Genius, Life Coach, Tech Expert"
                 maxLength={50}
-                className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 text-gray-900 placeholder-gray-400 focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 focus:outline-none transition-all duration-200 hover:border-gray-300"
+                className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 text-gray-900 placeholder-gray-400 focus:bg-white dark:bg-spirit-bg-secondary-dark focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 focus:outline-none transition-all duration-200 hover:border-gray-300 dark:border-spirit-border-dark"
               />
             </div>
 
@@ -291,7 +291,7 @@ export default function CreatePersonaModal({ isOpen, onClose, onPersonaCreated }
                 }}
                 placeholder="https://example.com/image.jpg"
                 disabled={!!uploadedImage}
-                className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 text-gray-900 placeholder-gray-400 focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 focus:outline-none transition-all duration-200 hover:border-gray-300 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 text-gray-900 placeholder-gray-400 focus:bg-white dark:bg-spirit-bg-secondary-dark focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 focus:outline-none transition-all duration-200 hover:border-gray-300 dark:border-spirit-border-dark disabled:bg-gray-100 disabled:cursor-not-allowed"
               />
               <p className="text-xs text-gray-500 mt-2">
                 💡 Upload an image or paste a URL. Leave blank to use initials.
@@ -312,7 +312,7 @@ export default function CreatePersonaModal({ isOpen, onClose, onPersonaCreated }
                 onChange={(e) => setFormData({ ...formData, systemPrompt: e.target.value })}
                 placeholder="Example: You are Albert Einstein. Respond with wisdom about physics, curiosity about the universe, and occasional humor. Keep responses thoughtful and encouraging. Reference relativity and scientific thinking when relevant."
                 rows={8}
-                className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 text-gray-900 placeholder-gray-400 focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 focus:outline-none resize-none transition-all duration-200 hover:border-gray-300 leading-relaxed"
+                className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 text-gray-900 placeholder-gray-400 focus:bg-white dark:bg-spirit-bg-secondary-dark focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 focus:outline-none resize-none transition-all duration-200 hover:border-gray-300 dark:border-spirit-border-dark leading-relaxed"
               />
               <p className="text-xs text-gray-500 mt-2">
                 💡 Be specific about personality, knowledge areas, and response style
@@ -359,7 +359,7 @@ export default function CreatePersonaModal({ isOpen, onClose, onPersonaCreated }
               <button
                 type="button"
                 onClick={onClose}
-                className="px-7 py-4 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 font-semibold transition-all hover:scale-[1.02] active:scale-[0.98]"
+                className="px-7 py-4 bg-gray-100 text-gray-700 dark:text-gray-300 rounded-xl hover:bg-gray-200 font-semibold transition-all hover:scale-[1.02] active:scale-[0.98]"
               >
                 Cancel
               </button>

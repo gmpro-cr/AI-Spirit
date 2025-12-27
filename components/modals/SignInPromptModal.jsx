@@ -11,11 +11,11 @@ export default function SignInPromptModal({ isOpen, onClose }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
-      <div className="bg-white border-2 border-black rounded-lg shadow-2xl p-8 max-w-md w-full mx-4 relative">
+      <div className="bg-white dark:bg-spirit-bg-secondary-dark border-2 border-black rounded-lg shadow-2xl p-8 max-w-md w-full mx-4 relative">
         {/* Close button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-gray-400 hover:text-black transition-colors"
+          className="absolute top-4 right-4 text-gray-400 hover:text-black dark:text-spirit-primary-dark transition-colors"
           aria-label="Close"
         >
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -23,7 +23,7 @@ export default function SignInPromptModal({ isOpen, onClose }) {
           </svg>
         </button>
 
-        <h2 className="text-2xl font-bold text-black mb-3">
+        <h2 className="text-2xl font-bold text-black dark:text-spirit-primary-dark mb-3">
           Enjoying your conversations?
         </h2>
         <p className="text-gray-700 mb-6">
@@ -31,15 +31,15 @@ export default function SignInPromptModal({ isOpen, onClose }) {
         </p>
         <ul className="mb-6 space-y-3 text-gray-800">
           <li className="flex items-start">
-            <span className="text-black font-bold mr-2">✓</span>
+            <span className="text-black dark:text-spirit-primary-dark font-bold mr-2">✓</span>
             <span>Save your chat history across devices</span>
           </li>
           <li className="flex items-start">
-            <span className="text-black font-bold mr-2">✓</span>
+            <span className="text-black dark:text-spirit-primary-dark font-bold mr-2">✓</span>
             <span>Access personas from anywhere</span>
           </li>
           <li className="flex items-start">
-            <span className="text-black font-bold mr-2">✓</span>
+            <span className="text-black dark:text-spirit-primary-dark font-bold mr-2">✓</span>
             <span>Get personalized recommendations</span>
           </li>
         </ul>

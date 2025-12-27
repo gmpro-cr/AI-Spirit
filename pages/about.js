@@ -20,26 +20,26 @@ export default function About() {
 
             <Navbar />
 
-            <main className="min-h-screen bg-white pt-16">
+            <main className="min-h-screen bg-white dark:bg-spirit-bg-dark pt-16 transition-colors">
                 {/* Hero Section */}
                 <section className="py-16 md:py-24 px-4 sm:px-6 lg:px-8">
                     <div className="max-w-3xl mx-auto text-center">
-                        <h1 className="text-4xl md:text-5xl font-bold text-black tracking-tight mb-6">
+                        <h1 className="text-4xl md:text-5xl font-bold text-black dark:text-spirit-primary-dark tracking-tight mb-6">
                             About <span className="italic">AI</span> - Spirit
                         </h1>
-                        <p className="text-xl text-gray-600 leading-relaxed">
+                        <p className="text-xl text-gray-600 dark:text-gray-400 leading-relaxed">
                             Making expert guidance accessible to everyone, anytime.
                         </p>
                     </div>
                 </section>
 
                 {/* Mission Section */}
-                <section className="py-12 px-4 sm:px-6 lg:px-8 bg-gray-50">
+                <section className="py-12 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-spirit-bg-secondary-dark transition-colors">
                     <div className="max-w-3xl mx-auto">
-                        <h2 className="text-2xl md:text-3xl font-bold text-black mb-6">
+                        <h2 className="text-2xl md:text-3xl font-bold text-black dark:text-spirit-primary-dark mb-6">
                             Our Mission
                         </h2>
-                        <div className="prose prose-lg text-gray-600 space-y-4">
+                        <div className="prose prose-lg text-gray-600 dark:text-gray-400 space-y-4">
                             <p>
                                 AI - Spirit was created with a simple belief: everyone deserves access to
                                 thoughtful guidance and support, regardless of time, location, or budget.
@@ -61,7 +61,7 @@ export default function About() {
                 {/* What We Offer Section */}
                 <section className="py-12 px-4 sm:px-6 lg:px-8">
                     <div className="max-w-3xl mx-auto">
-                        <h2 className="text-2xl md:text-3xl font-bold text-black mb-8">
+                        <h2 className="text-2xl md:text-3xl font-bold text-black dark:text-spirit-primary-dark mb-8">
                             What We Offer
                         </h2>
                         <div className="grid md:grid-cols-2 gap-6">
@@ -85,12 +85,12 @@ export default function About() {
                             ].map((feature) => (
                                 <div
                                     key={feature.title}
-                                    className="bg-gray-50 rounded-2xl p-6 border border-gray-200"
+                                    className="bg-gray-50 dark:bg-spirit-bg-secondary-dark rounded-2xl p-6 border border-gray-200 dark:border-spirit-border-dark transition-colors"
                                 >
-                                    <h3 className="text-lg font-semibold text-black mb-2">
+                                    <h3 className="text-lg font-semibold text-black dark:text-spirit-primary-dark mb-2">
                                         {feature.title}
                                     </h3>
-                                    <p className="text-gray-600 text-sm">
+                                    <p className="text-gray-600 dark:text-gray-400 text-sm">
                                         {feature.description}
                                     </p>
                                 </div>
@@ -100,17 +100,17 @@ export default function About() {
                 </section>
 
                 {/* CTA Section */}
-                <section className="py-12 px-4 sm:px-6 lg:px-8 bg-black text-white">
+                <section className="py-12 px-4 sm:px-6 lg:px-8 bg-black dark:bg-spirit-accent text-white transition-colors">
                     <div className="max-w-3xl mx-auto text-center">
                         <h2 className="text-2xl md:text-3xl font-bold mb-4">
                             Ready to Get Started?
                         </h2>
-                        <p className="text-gray-300 mb-8">
+                        <p className="text-gray-300 dark:text-gray-200 mb-8">
                             Start chatting with our AI personas—it&apos;s free to try.
                         </p>
                         <Link
                             href="/"
-                            className="inline-block bg-white text-black font-semibold px-8 py-3 rounded-full hover:bg-gray-100 transition-all hover:scale-[1.02] active:scale-[0.98]"
+                            className="inline-block bg-white dark:bg-spirit-bg-dark text-black dark:text-spirit-accent font-semibold px-8 py-3 rounded-full hover:bg-gray-100 dark:hover:bg-gray-900 transition-all hover:scale-[1.02] active:scale-[0.98]"
                         >
                             Browse Personas
                         </Link>

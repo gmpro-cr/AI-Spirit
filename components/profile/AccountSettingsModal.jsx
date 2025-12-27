@@ -72,7 +72,7 @@ export default function AccountSettingsModal({ isOpen, onClose }) {
             />
 
             {/* Modal */}
-            <div className="fixed bottom-20 left-4 md:left-72 w-80 bg-white rounded-xl shadow-2xl z-[9999] overflow-hidden border border-gray-200">
+            <div className="fixed bottom-20 left-4 md:left-72 w-80 bg-white dark:bg-spirit-bg-secondary-dark rounded-xl shadow-2xl z-[9999] overflow-hidden border border-gray-200">
                 {/* Header */}
                 <div className="p-4 border-b border-gray-200 bg-gray-50">
                     <div className="flex items-center gap-3">
@@ -92,7 +92,7 @@ export default function AccountSettingsModal({ isOpen, onClose }) {
                             </div>
                         )}
                         <div className="flex-1 min-w-0">
-                            <p className="font-semibold text-black truncate">
+                            <p className="font-semibold text-black dark:text-spirit-primary-dark truncate">
                                 {user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'User'}
                             </p>
                             <p className="text-xs text-gray-500 truncate">{user?.email}</p>
@@ -112,7 +112,7 @@ export default function AccountSettingsModal({ isOpen, onClose }) {
                 <div className="p-4 space-y-4">
                     {/* Subscription Status */}
                     <div className="flex items-center justify-between">
-                        <span className="text-sm text-gray-600">Subscription</span>
+                        <span className="text-sm text-gray-600 dark:text-gray-400">Subscription</span>
                         <span className={`text-sm font-medium px-2 py-1 rounded-full ${subscriptionStatus === 'premium'
                                 ? 'bg-black text-white'
                                 : 'bg-gray-100 text-gray-700'
@@ -124,7 +124,7 @@ export default function AccountSettingsModal({ isOpen, onClose }) {
                     {/* Messages Used */}
                     {subscriptionStatus !== 'premium' && (
                         <div className="flex items-center justify-between">
-                            <span className="text-sm text-gray-600">Messages Today</span>
+                            <span className="text-sm text-gray-600 dark:text-gray-400">Messages Today</span>
                             <span className="text-sm font-medium text-gray-900">
                                 {loading ? '...' : `${messagesUsedToday}/20`}
                             </span>
@@ -136,14 +136,14 @@ export default function AccountSettingsModal({ isOpen, onClose }) {
 
                     {/* Dark Mode Toggle */}
                     <div className="flex items-center justify-between">
-                        <span className="text-sm text-gray-600">Dark Mode</span>
+                        <span className="text-sm text-gray-600 dark:text-gray-400">Dark Mode</span>
                         <button
                             onClick={toggleDarkMode}
                             className={`relative w-11 h-6 rounded-full transition-colors ${darkMode ? 'bg-black' : 'bg-gray-300'
                                 }`}
                         >
                             <span
-                                className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform ${darkMode ? 'translate-x-5' : ''
+                                className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white dark:bg-spirit-bg-secondary-dark rounded-full shadow transition-transform ${darkMode ? 'translate-x-5' : ''
                                     }`}
                             />
                         </button>

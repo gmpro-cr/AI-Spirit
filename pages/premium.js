@@ -98,20 +98,20 @@ export default function Premium() {
                 src="https://checkout.razorpay.com/v1/checkout.js"
                 strategy="beforeInteractive"
             />
-            <div className="min-h-screen bg-white text-black font-sans pb-20 md:pb-0">
+            <div className="min-h-screen bg-white dark:bg-spirit-bg-dark text-black dark:text-spirit-primary-dark font-sans pb-20 md:pb-0 transition-colors">
                 {/* Navbar */}
                 <Navbar />
 
                 {/* Hero Section */}
                 <div className="pt-28 pb-12 px-6 text-center">
-                    <div className="inline-flex items-center gap-2 bg-gradient-to-r from-indigo-100 via-purple-100 to-pink-100 text-indigo-700 text-sm font-semibold px-5 py-2.5 rounded-full mb-8 shadow-sm border border-indigo-100">
+                    <div className="inline-flex items-center gap-2 bg-gradient-to-r from-indigo-100 via-purple-100 to-pink-100 dark:from-indigo-900/30 dark:via-purple-900/30 dark:to-pink-900/30 text-indigo-700 dark:text-indigo-300 text-sm font-semibold px-5 py-2.5 rounded-full mb-8 shadow-sm border border-indigo-100 dark:border-indigo-800">
                         <span>🎙️</span>
                         <span>NEW: Voice responses now available!</span>
                     </div>
-                    <h1 className="font-display text-5xl md:text-7xl font-bold mb-6 tracking-tight bg-gradient-to-r from-black via-gray-800 to-black bg-clip-text text-transparent">
+                    <h1 className="font-display text-5xl md:text-7xl font-bold mb-6 tracking-tight bg-gradient-to-r from-black via-gray-800 to-black dark:from-spirit-primary-dark dark:via-gray-300 dark:to-spirit-primary-dark bg-clip-text text-transparent">
                         Hear your AI speak
                     </h1>
-                    <p className="text-xl md:text-2xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
+                    <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto leading-relaxed">
                         Unlimited conversations + voice responses. Your personal AI coach that actually talks to you.
                     </p>
                 </div>
@@ -120,38 +120,38 @@ export default function Premium() {
                 <div className="max-w-5xl mx-auto px-6 pb-16">
                     <div className="grid md:grid-cols-2 gap-8 items-stretch">
                         {/* Free Plan */}
-                        <div className="relative p-8 rounded-3xl border-2 border-gray-200 bg-white hover:border-gray-300 hover:shadow-xl transition-all duration-300 flex flex-col group">
+                        <div className="relative p-8 rounded-3xl border-2 border-gray-200 dark:border-spirit-border-dark bg-white dark:bg-spirit-bg-secondary-dark hover:border-gray-300 dark:hover:border-gray-600 hover:shadow-xl transition-all duration-300 flex flex-col group">
                             <div className="mb-6">
-                                <h3 className="text-lg font-semibold text-gray-600 mb-2 uppercase tracking-wide">Free</h3>
+                                <h3 className="text-lg font-semibold text-gray-600 dark:text-gray-400 mb-2 uppercase tracking-wide">Free</h3>
                                 <div className="flex items-baseline gap-2">
-                                    <span className="text-5xl font-bold text-black">₹0</span>
-                                    <span className="text-gray-500 font-medium">/forever</span>
+                                    <span className="text-5xl font-bold text-black dark:text-spirit-primary-dark">₹0</span>
+                                    <span className="text-gray-500 dark:text-gray-400 font-medium">/forever</span>
                                 </div>
-                                <p className="text-sm text-gray-500 mt-3">Great for trying out AI-Spirit</p>
+                                <p className="text-sm text-gray-500 dark:text-gray-400 mt-3">Great for trying out AI-Spirit</p>
                             </div>
 
                             <ul className="space-y-4 mb-8 flex-grow">
-                                <li className="flex items-center gap-3 text-black">
+                                <li className="flex items-center gap-3 text-black dark:text-spirit-primary-dark">
                                     <CheckIcon />
                                     <span>20 messages per day</span>
                                 </li>
-                                <li className="flex items-center gap-3 text-black">
+                                <li className="flex items-center gap-3 text-black dark:text-spirit-primary-dark">
                                     <CheckIcon />
                                     <span>Access to all personas</span>
                                 </li>
-                                <li className="flex items-center gap-3 text-black">
+                                <li className="flex items-center gap-3 text-black dark:text-spirit-primary-dark">
                                     <CheckIcon />
                                     <span>2 custom personas</span>
                                 </li>
-                                <li className="flex items-center gap-3 text-black">
+                                <li className="flex items-center gap-3 text-black dark:text-spirit-primary-dark">
                                     <CheckIcon />
                                     <span>7-day chat history</span>
                                 </li>
-                                <li className="flex items-center gap-3 text-gray-400">
+                                <li className="flex items-center gap-3 text-gray-400 dark:text-gray-600">
                                     <XIcon />
                                     <span>Text only (no voice)</span>
                                 </li>
-                                <li className="flex items-center gap-3 text-gray-400">
+                                <li className="flex items-center gap-3 text-gray-400 dark:text-gray-600">
                                     <XIcon />
                                     <span>Standard response speed</span>
                                 </li>
@@ -172,12 +172,12 @@ export default function Premium() {
                             </div>
 
                             <div className="mb-6">
-                                <h3 className="text-lg font-semibold text-gray-600 mb-2 uppercase tracking-wide">Premium</h3>
+                                <h3 className="text-lg font-semibold text-gray-600 dark:text-gray-400 mb-2 uppercase tracking-wide">Premium</h3>
                                 <div className="flex items-baseline gap-2">
                                     <span className="text-6xl font-bold bg-gradient-to-r from-black to-gray-700 bg-clip-text text-transparent">₹249</span>
-                                    <span className="text-gray-500 font-medium">/month</span>
+                                    <span className="text-gray-500 dark:text-gray-400 font-medium">/month</span>
                                 </div>
-                                <p className="text-sm text-gray-500 mt-3 font-medium">Less than ₹9/day for unlimited AI</p>
+                                <p className="text-sm text-gray-500 dark:text-gray-400 mt-3 font-medium">Less than ₹9/day for unlimited AI</p>
                             </div>
 
                             <ul className="space-y-4 mb-8 flex-grow">
@@ -299,7 +299,7 @@ export default function Premium() {
                 </div>
 
                 {/* Mobile Bottom Navigation */}
-                <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-gray-200 z-50 shadow-lg">
+                <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-gray-200 dark:border-spirit-border-dark z-50 shadow-lg">
                     <div className="flex justify-around items-center h-16 px-2">
                         {/* Home */}
                         <Link

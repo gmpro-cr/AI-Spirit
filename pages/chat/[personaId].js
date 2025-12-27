@@ -540,8 +540,8 @@ function ChatPage() {
 
   if (!persona) {
     return (
-      <div className="flex h-screen items-center justify-center bg-white">
-        <p className="text-black">Loading persona...</p>
+      <div className="flex h-screen items-center justify-center bg-white dark:bg-spirit-bg-secondary-dark">
+        <p className="text-black dark:text-spirit-primary-dark">Loading persona...</p>
       </div>
     )
   }
@@ -571,22 +571,22 @@ function ChatPage() {
         <meta name="twitter:image:alt" content={`Chat with ${persona.name} on AI Spirit`} />
       </Head>
 
-      <div className="flex h-screen bg-white">
+      <div className="flex h-screen bg-white dark:bg-spirit-bg-secondary-dark dark:bg-spirit-bg-dark transition-colors">
         {/* Side Panel */}
         <SidePanelNew onBack={handleBack} backButtonText="Back to Personas" hasNavbar={false} />
 
         {/* Chat Area */}
         <div className="flex flex-col flex-1 h-screen md:ml-64">
           {/* Header */}
-          <header className="flex items-center justify-between p-4 border-b border-gray-200 sticky top-0 bg-white/80 backdrop-blur-sm z-10">
+          <header className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-spirit-border-dark sticky top-0 bg-white/80 backdrop-blur-sm z-10">
             <div className="flex items-center flex-1">
               <button
                 onClick={handleBack}
-                className="mr-4 p-2 rounded-full hover:bg-gray-100 md:hidden"
+                className="mr-4 p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 dark:bg-gray-800 md:hidden"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6 text-black"
+                  className="h-6 w-6 text-black dark:text-spirit-primary-dark"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -607,7 +607,7 @@ function ChatPage() {
                   e.target.src = '/default-persona.png'
                 }}
               />
-              <h2 className="text-xl font-bold text-black">{persona.name}</h2>
+              <h2 className="text-xl font-bold text-black dark:text-spirit-primary-dark">{persona.name}</h2>
             </div>
 
             {/* New Chat Button */}
@@ -627,7 +627,7 @@ function ChatPage() {
                   router.replace(`/chat/${personaId}`, undefined, { shallow: true })
                 }
               }}
-              className="flex items-center gap-2 px-4 py-2 bg-black text-white rounded-full hover:bg-gray-800 transition-all hover:shadow-lg group"
+              className="flex items-center gap-2 px-4 py-2 bg-black dark:bg-spirit-accent text-white rounded-full hover:bg-gray-800 transition-all hover:shadow-lg group"
               title="Start a new chat"
             >
               <svg
@@ -662,7 +662,7 @@ function ChatPage() {
                 }}
                 className={`flex items-center gap-2 px-4 py-2 rounded-full transition-all hover:shadow-lg ${shareLinkCopied
                   ? 'bg-green-600 text-white'
-                  : 'bg-gray-100 text-black hover:bg-gray-200'
+                  : 'bg-gray-100 dark:bg-gray-800 text-black dark:text-spirit-primary-dark hover:bg-gray-200'
                   }`}
                 title="Share conversation"
               >
@@ -688,7 +688,7 @@ function ChatPage() {
             {messages.length === 0 && !isLoading && persona.conversation_starters && (
               <div className="flex items-center justify-center h-full">
                 <div className="max-w-2xl w-full space-y-3">
-                  <p className="text-center text-gray-600 mb-6">Start a conversation with {persona.name}</p>
+                  <p className="text-center text-gray-600 dark:text-gray-400 dark:text-gray-500 mb-6">Start a conversation with {persona.name}</p>
                   {persona.conversation_starters.slice(0, 3).map((question, index) => (
                     <button
                       key={index}
@@ -696,7 +696,7 @@ function ChatPage() {
                         setCurrentInput(question)
                         document.querySelector('input[type="text"]')?.focus()
                       }}
-                      className="w-full p-4 text-left border border-gray-200 rounded-lg hover:bg-gray-50 hover:border-gray-300 transition-all text-black"
+                      className="w-full p-4 text-left border border-gray-200 dark:border-spirit-border-dark rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 dark:bg-spirit-bg-dark hover:border-gray-300 dark:border-spirit-border-dark transition-all text-black dark:text-spirit-primary-dark"
                     >
                       {question}
                     </button>
@@ -729,20 +729,20 @@ function ChatPage() {
                         <textarea
                           value={editedMessageText}
                           onChange={(e) => setEditedMessageText(e.target.value)}
-                          className="p-3 border border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-black text-black resize-none min-h-[60px]"
+                          className="p-3 border border-gray-300 dark:border-spirit-border-dark rounded-2xl focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-spirit-accent text-black dark:text-spirit-primary-dark resize-none min-h-[60px]"
                           autoFocus
                         />
                         <div className="flex gap-2 justify-end">
                           <button
                             onClick={handleCancelEdit}
-                            className="px-3 py-1 text-sm bg-gray-200 hover:bg-gray-300 rounded-lg transition-colors"
+                            className="px-3 py-1 text-sm bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:bg-gray-700 rounded-lg transition-colors"
                           >
                             Cancel
                           </button>
                           <button
                             onClick={() => handleSaveEdit(index)}
                             disabled={!editedMessageText.trim() || isLoading}
-                            className="px-3 py-1 text-sm bg-black text-white hover:bg-gray-800 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="px-3 py-1 text-sm bg-black dark:bg-spirit-accent text-white hover:bg-gray-800 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                           >
                             Save & Regenerate
                           </button>
@@ -752,8 +752,8 @@ function ChatPage() {
                       // Normal display
                       <div
                         className={`max-w-md lg:max-w-lg p-3 rounded-2xl ${msg.role === 'user'
-                          ? 'bg-black text-white rounded-br-none'
-                          : 'bg-gray-100 text-black rounded-bl-none'
+                          ? 'bg-black dark:bg-spirit-accent text-white rounded-br-none'
+                          : 'bg-gray-100 dark:bg-gray-800 text-black dark:text-spirit-primary-dark rounded-bl-none'
                           }`}
                       >
                         <p
@@ -769,7 +769,7 @@ function ChatPage() {
                         {/* Copy Button */}
                         <button
                           onClick={() => handleCopyMessage(msg.content, index)}
-                          className="p-1.5 hover:bg-gray-100 rounded-lg transition-colors group"
+                          className="p-1.5 hover:bg-gray-100 dark:hover:bg-gray-800 dark:bg-gray-800 rounded-lg transition-colors group"
                           title="Copy message"
                         >
                           {copiedMessageIndex === index ? (
@@ -777,7 +777,7 @@ function ChatPage() {
                               <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                             </svg>
                           ) : (
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-500 group-hover:text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-500 dark:text-gray-400 dark:text-gray-500 group-hover:text-gray-700 dark:text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
                             </svg>
                           )}
@@ -788,10 +788,10 @@ function ChatPage() {
                           <button
                             onClick={() => handleStartEdit(index, msg.content)}
                             disabled={isLoading}
-                            className="p-1.5 hover:bg-gray-100 rounded-lg transition-colors group disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="p-1.5 hover:bg-gray-100 dark:hover:bg-gray-800 dark:bg-gray-800 rounded-lg transition-colors group disabled:opacity-50 disabled:cursor-not-allowed"
                             title="Edit message"
                           >
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-500 group-hover:text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-500 dark:text-gray-400 dark:text-gray-500 group-hover:text-gray-700 dark:text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                             </svg>
                           </button>
@@ -802,19 +802,19 @@ function ChatPage() {
                           <>
                             <button
                               onClick={() => handleFeedback(index, 'like')}
-                              className="p-1.5 hover:bg-gray-100 rounded-lg transition-colors group"
+                              className="p-1.5 hover:bg-gray-100 dark:hover:bg-gray-800 dark:bg-gray-800 rounded-lg transition-colors group"
                               title="Like response"
                             >
-                              <svg xmlns="http://www.w3.org/2000/svg" className={`h-4 w-4 ${messageFeedback[index] === 'like' ? 'text-green-600 fill-current' : 'text-gray-500 group-hover:text-gray-700'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <svg xmlns="http://www.w3.org/2000/svg" className={`h-4 w-4 ${messageFeedback[index] === 'like' ? 'text-green-600 fill-current' : 'text-gray-500 dark:text-gray-400 dark:text-gray-500 group-hover:text-gray-700'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" />
                               </svg>
                             </button>
                             <button
                               onClick={() => handleFeedback(index, 'dislike')}
-                              className="p-1.5 hover:bg-gray-100 rounded-lg transition-colors group"
+                              className="p-1.5 hover:bg-gray-100 dark:hover:bg-gray-800 dark:bg-gray-800 rounded-lg transition-colors group"
                               title="Dislike response"
                             >
-                              <svg xmlns="http://www.w3.org/2000/svg" className={`h-4 w-4 ${messageFeedback[index] === 'dislike' ? 'text-red-600 fill-current' : 'text-gray-500 group-hover:text-gray-700'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <svg xmlns="http://www.w3.org/2000/svg" className={`h-4 w-4 ${messageFeedback[index] === 'dislike' ? 'text-red-600 fill-current' : 'text-gray-500 dark:text-gray-400 dark:text-gray-500 group-hover:text-gray-700'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 14H5.236a2 2 0 01-1.789-2.894l3.5-7A2 2 0 018.736 3h4.018a2 2 0 01.485.06l3.76.94m-7 10v5a2 2 0 002 2h.096c.5 0 .905-.405.905-.904 0-.715.211-1.413.608-2.008L17 13V4m-7 10h2m5-10h2a2 2 0 012 2v6a2 2 0 01-2 2h-2.5" />
                               </svg>
                             </button>
@@ -825,7 +825,7 @@ function ChatPage() {
                   </div>
 
                   {msg.role === 'user' && (
-                    <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center font-bold flex-shrink-0">
+                    <div className="w-8 h-8 rounded-full bg-gray-300 dark:bg-gray-700 flex items-center justify-center font-bold flex-shrink-0">
                       U
                     </div>
                   )}
@@ -843,9 +843,9 @@ function ChatPage() {
                     e.target.src = '/default-persona.png'
                   }}
                 />
-                <div className="max-w-md lg:max-w-lg p-3 rounded-2xl bg-gray-100 text-black rounded-bl-none">
+                <div className="max-w-md lg:max-w-lg p-3 rounded-2xl bg-gray-100 dark:bg-gray-800 text-black dark:text-spirit-primary-dark rounded-bl-none">
                   <div className="flex items-center gap-2">
-                    <span className="text-sm text-gray-600">{persona.name} is thinking</span>
+                    <span className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500">{persona.name} is thinking</span>
                     <div className="flex items-center space-x-1">
                       <div className="w-1.5 h-1.5 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
                       <div className="w-1.5 h-1.5 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
@@ -858,14 +858,14 @@ function ChatPage() {
           </main>
 
           {/* Input Box */}
-          <footer className="p-4 sticky bottom-0 bg-white border-t border-gray-200">
+          <footer className="p-4 sticky bottom-0 bg-white dark:bg-spirit-bg-secondary-dark border-t border-gray-200 dark:border-spirit-border-dark">
             <form onSubmit={handleSendMessage} className="flex items-center gap-2">
               <input
                 type="text"
                 value={currentInput}
                 onChange={(e) => setCurrentInput(e.target.value)}
                 placeholder={`Message ${persona.name}...`}
-                className="flex-1 p-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-black text-black"
+                className="flex-1 p-3 border border-gray-300 dark:border-spirit-border-dark rounded-full focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-spirit-accent text-black dark:text-spirit-primary-dark"
                 disabled={isLoading}
               />
 
@@ -875,7 +875,7 @@ function ChatPage() {
                 onClick={toggleSpeechRecognition}
                 className={`p-3 rounded-full transition-colors ${isListening
                   ? 'bg-red-500 text-white animate-pulse'
-                  : 'bg-gray-100 text-black hover:bg-gray-200'
+                  : 'bg-gray-100 dark:bg-gray-800 text-black dark:text-spirit-primary-dark hover:bg-gray-200'
                   }`}
                 disabled={isLoading}
                 title={isListening ? 'Stop recording' : 'Start voice input'}
@@ -899,7 +899,7 @@ function ChatPage() {
               {/* Send Button */}
               <button
                 type="submit"
-                className="bg-black text-white p-3 rounded-full disabled:bg-gray-400 hover:bg-gray-800 transition-colors"
+                className="bg-black dark:bg-spirit-accent text-white p-3 rounded-full disabled:bg-gray-400 hover:bg-gray-800 transition-colors"
                 disabled={isLoading || !currentInput.trim()}
               >
                 <svg
@@ -914,7 +914,7 @@ function ChatPage() {
             </form>
 
             {/* Disclaimer */}
-            <div className="text-center text-[10px] md:text-xs text-gray-500 mt-3 px-2">
+            <div className="text-center text-[10px] md:text-xs text-gray-500 dark:text-gray-400 dark:text-gray-500 mt-3 px-2">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-3 w-3 md:h-3.5 md:w-3.5 inline-block mr-1"
