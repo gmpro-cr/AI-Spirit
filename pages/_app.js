@@ -1,7 +1,6 @@
 import '@/styles/globals.css'
 import { AuthProvider } from '@/context/AuthContext'
 import { ChatProvider } from '@/context/ChatContext'
-import { ThemeProvider } from '@/context/ThemeContext'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import { DefaultSeo } from 'next-seo'
@@ -21,19 +20,17 @@ const crimsonText = Crimson_Text({
 export default function App({ Component, pageProps }) {
   return (
     <ErrorBoundary>
-      <ThemeProvider>
-        <AuthProvider>
-          <ChatProvider>
-            <DefaultSeo {...SEO} />
-            <div className={crimsonText.variable}>
-              <Component {...pageProps} />
-            </div>
-            <CookieConsentBanner />
-            <Analytics />
-            <SpeedInsights />
-          </ChatProvider>
-        </AuthProvider>
-      </ThemeProvider>
+      <AuthProvider>
+        <ChatProvider>
+          <DefaultSeo {...SEO} />
+          <div className={crimsonText.variable}>
+            <Component {...pageProps} />
+          </div>
+          <CookieConsentBanner />
+          <Analytics />
+          <SpeedInsights />
+        </ChatProvider>
+      </AuthProvider>
     </ErrorBoundary>
   )
 }

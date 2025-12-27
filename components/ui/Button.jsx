@@ -16,10 +16,10 @@ export function PrimaryButton({ children, onClick, className = '', disabled = fa
       onClick={onClick}
       disabled={disabled}
       className={`
-        bg-spirit-primary dark:bg-spirit-accent text-white
+        bg-spirit-primary text-white
         px-6 py-2.5
-        border border-spirit-primary dark:border-spirit-accent
-        hover:bg-white dark:hover:bg-spirit-bg-dark hover:text-spirit-primary dark:hover:text-spirit-accent
+        border border-spirit-primary
+        hover:bg-white hover:text-spirit-primary
         disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-spirit-primary disabled:hover:text-white
         transition-colors duration-200
         font-medium text-sm
@@ -42,10 +42,10 @@ export function SecondaryButton({ children, onClick, className = '', disabled = 
       onClick={onClick}
       disabled={disabled}
       className={`
-        bg-white dark:bg-spirit-bg-secondary-dark text-spirit-primary dark:text-spirit-primary-dark
+        bg-white text-spirit-primary
         px-6 py-2.5
-        border border-gray-300 dark:border-spirit-border-dark
-        hover:border-spirit-primary dark:hover:border-spirit-accent hover:bg-gray-50 dark:hover:bg-gray-800
+        border border-gray-300
+        hover:border-spirit-primary hover:bg-gray-50
         disabled:opacity-50 disabled:cursor-not-allowed
         transition-all duration-200
         font-medium text-sm
@@ -71,7 +71,7 @@ export function AccentButton({ children, onClick, className = '', disabled = fal
         bg-spirit-accent text-white
         px-6 py-2.5
         border border-spirit-accent
-        hover:bg-white dark:hover:bg-spirit-bg-dark hover:text-spirit-accent hover:border-spirit-accent
+        hover:bg-white hover:text-spirit-accent hover:border-spirit-accent
         disabled:opacity-50 disabled:cursor-not-allowed
         transition-all duration-200
         font-medium text-sm

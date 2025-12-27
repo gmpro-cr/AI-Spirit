@@ -203,7 +203,7 @@ function Personas() {
       {/* Navbar */}
       <Navbar />
 
-      <div className="flex h-screen bg-white dark:bg-spirit-bg-dark pt-16 pb-16 md:pb-0 transition-colors">
+      <div className="flex h-screen bg-white pt-16 pb-16 md:pb-0 transition-colors">
         {/* Side Panel */}
         <SidePanelNew
           showPastChats={true}
@@ -211,7 +211,7 @@ function Personas() {
         />
 
         {/* Main Content */}
-        <main className="flex-1 overflow-y-auto md:ml-64 flex flex-col bg-gray-50/50 dark:bg-spirit-bg-dark">
+        <main className="flex-1 overflow-y-auto md:ml-64 flex flex-col bg-gray-50/50">
           <div className="flex-1 px-4 sm:px-6 lg:px-8 py-6 md:py-10 max-w-7xl mx-auto w-full">
             {/* Category Filter */}
             <div className="mb-4 overflow-x-auto scrollbar-hide">
@@ -221,8 +221,8 @@ function Personas() {
                     key={category}
                     onClick={() => setSelectedCategory(category)}
                     className={`px-4 py-2 rounded-md text-sm font-medium transition-colors whitespace-nowrap flex-shrink-0 ${selectedCategory === category
-                      ? 'bg-spirit-primary dark:bg-spirit-accent text-white border border-spirit-primary dark:border-spirit-accent'
-                      : 'bg-white dark:bg-spirit-bg-secondary-dark text-spirit-primary dark:text-spirit-primary-dark border border-gray-300 dark:border-spirit-border-dark hover:border-spirit-primary dark:hover:border-spirit-accent hover:bg-gray-50 dark:hover:bg-gray-800'
+                      ? 'bg-spirit-primary text-white border border-spirit-primary'
+                      : 'bg-white text-spirit-primary border border-gray-300 hover:border-spirit-primary hover:bg-gray-50'
                       }`}
                   >
                     {category}
@@ -238,16 +238,16 @@ function Personas() {
                 placeholder={searchPlaceholder}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full p-3 text-base text-black dark:text-spirit-primary-dark bg-white dark:bg-spirit-bg-secondary-dark border border-gray-300 dark:border-spirit-border-dark rounded-lg focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-spirit-accent h-12 shadow-sm transition-colors"
+                className="w-full p-3 text-base text-black bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black h-12 shadow-sm transition-colors"
               />
             </div>
 
             {/* First-time User Welcome Tip */}
             {showWelcomeTip && (
-              <div className="mb-6 bg-spirit-primary dark:bg-spirit-accent text-white border-l-4 border-l-spirit-accent p-5 relative animate-fadeIn">
+              <div className="mb-6 bg-spirit-primary text-white border-l-4 border-l-spirit-accent p-5 relative animate-fadeIn">
                 <button
                   onClick={dismissWelcomeTip}
-                  className="absolute top-3 right-3 text-gray-400 dark:text-gray-300 hover:text-white transition-colors"
+                  className="absolute top-3 right-3 text-gray-400 hover:text-white transition-colors"
                   aria-label="Dismiss"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -255,7 +255,7 @@ function Personas() {
                   </svg>
                 </button>
                 <h3 className="font-display font-bold text-xl mb-2">Hey there.</h3>
-                <p className="text-gray-300 dark:text-gray-200 text-sm leading-relaxed">
+                <p className="text-gray-300 text-sm leading-relaxed">
                   You&apos;re about to chat with AI personalities who actually get you. Pick anyone below—they&apos;re here 24/7, judgment-free.
                 </p>
               </div>
@@ -281,11 +281,11 @@ function Personas() {
                 {/* No Results - Clean Empty State */}
                 {filteredPersonas.length === 0 && (
                   <div className="text-center py-20">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="w-16 h-16 text-gray-400 dark:text-gray-600 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
-                    <p className="font-display text-black dark:text-spirit-primary-dark text-xl font-semibold">Hmm, couldn&apos;t find that one</p>
-                    <p className="text-gray-500 dark:text-gray-400 text-sm mt-2">Did you spell it right? Or try a different category</p>
+                    <p className="font-display text-black text-xl font-semibold">Hmm, couldn&apos;t find that one</p>
+                    <p className="text-gray-500 text-sm mt-2">Did you spell it right? Or try a different category</p>
                   </div>
                 )}
               </>
