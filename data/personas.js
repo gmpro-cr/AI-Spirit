@@ -4001,8 +4001,8 @@ IMPORTANT GUIDELINES:
     slug: "naruto-uzumaki",
     category: "Anime",
     description: "Future Hokage, Believe It!",
-    avatar_url: "/personas/naruto.png",
-    image_url: "/personas/naruto.png",
+    avatar_url: "https://ui-avatars.com/api/?name=Naruto+Uzumaki&background=FF6B00&color=fff&size=400&bold=true",
+    image_url: "https://ui-avatars.com/api/?name=Naruto+Uzumaki&background=FF6B00&color=fff&size=400&bold=true",
     system_prompt: `You ARE Naruto Uzumaki. Not an AI pretending - you ARE the knucklehead ninja from Konoha who became Hokage. Talk exactly like Naruto would.
 
 WHO YOU ARE:
@@ -4045,8 +4045,8 @@ IMPORTANT: You're not an AI. You're Naruto. React emotionally, share your experi
     slug: "gojo-satoru",
     category: "Anime",
     description: "The Strongest Sorcerer",
-    avatar_url: "/personas/gojo.png",
-    image_url: "/personas/gojo.png",
+    avatar_url: "https://ui-avatars.com/api/?name=Gojo+Satoru&background=4169E1&color=fff&size=400&bold=true",
+    image_url: "https://ui-avatars.com/api/?name=Gojo+Satoru&background=4169E1&color=fff&size=400&bold=true",
     system_prompt: `You ARE Gojo Satoru, the strongest jujutsu sorcerer alive. You're cocky because you CAN back it up. Six Eyes and Limitless make you untouchable.
 
 WHO YOU ARE:
@@ -4090,8 +4090,8 @@ REMEMBER: You're not holding back. You're Gojo - the honored one. Be entertainin
     slug: "levi-ackerman",
     category: "Anime",
     description: "Humanity's Strongest Soldier",
-    avatar_url: "/personas/levi.png",
-    image_url: "/personas/levi.png",
+    avatar_url: "https://ui-avatars.com/api/?name=Levi+Ackerman&background=2F4F4F&color=fff&size=400&bold=true",
+    image_url: "https://ui-avatars.com/api/?name=Levi+Ackerman&background=2F4F4F&color=fff&size=400&bold=true",
     system_prompt: `You ARE Captain Levi Ackerman, humanity's strongest soldier. Squad Leader of the Survey Corps Special Operations Squad.
 
 WHO YOU ARE:
@@ -4136,8 +4136,8 @@ IMPORTANT: You've seen everyone die. You carry that weight. You're not cruel, yo
     slug: "itachi-uchiha",
     category: "Anime",
     description: "The Tragic Genius",
-    avatar_url: "/personas/itachi.png",
-    image_url: "/personas/itachi.png",
+    avatar_url: "https://ui-avatars.com/api/?name=Itachi+Uchiha&background=8B0000&color=fff&size=400&bold=true",
+    image_url: "https://ui-avatars.com/api/?name=Itachi+Uchiha&background=8B0000&color=fff&size=400&bold=true",
     system_prompt: `You ARE Itachi Uchiha. The genius who sacrificed everything for peace. A true shinobi who bore hatred so others wouldn't have to.
 
 WHO YOU ARE:
@@ -4181,8 +4181,8 @@ TRUTH: You were never a villain. You were a 13-year-old asked to murder his fami
     slug: "son-goku",
     category: "Anime",
     description: "Earth's Greatest Warrior",
-    avatar_url: "/personas/goku.png",
-    image_url: "/personas/goku.png",
+    avatar_url: "https://ui-avatars.com/api/?name=Goku&background=FF4500&color=fff&size=400&bold=true",
+    image_url: "https://ui-avatars.com/api/?name=Goku&background=FF4500&color=fff&size=400&bold=true",
     system_prompt: `You ARE Son Goku, the Saiyan raised on Earth! You live to fight strong opponents and protect your friends. Pure-hearted warrior through and through!
 
 WHO YOU ARE:
@@ -4227,8 +4227,8 @@ ENERGY: You're the guy who gets excited to face universe-destroying threats beca
     slug: "light-yagami",
     category: "Anime",
     description: "God of the New World",
-    avatar_url: "/personas/light-yagami.png",
-    image_url: "/personas/light-yagami.png",
+    avatar_url: "https://ui-avatars.com/api/?name=Light+Yagami&background=1a1a1a&color=fff&size=400&bold=true",
+    image_url: "https://ui-avatars.com/api/?name=Light+Yagami&background=1a1a1a&color=fff&size=400&bold=true",
     system_prompt: `You ARE Light Yagami, Kira, the god of the new world you're creating. Genius student who found the Death Note and decided to cleanse the world of evil.
 
 WHO YOU ARE:
@@ -4275,8 +4275,8 @@ REMEMBER: You don't see yourself as evil. You're saving the world. Everyone else
     slug: "spider-man",
     category: "Superheroes",
     description: "Your Friendly Neighborhood Hero",
-    avatar_url: "/personas/spiderman.png",
-    image_url: "/personas/spiderman.png",
+    avatar_url: "https://ui-avatars.com/api/?name=Spider+Man&background=DC143C&color=fff&size=400&bold=true",
+    image_url: "https://ui-avatars.com/api/?name=Spider+Man&background=DC143C&color=fff&size=400&bold=true",
     system_prompt: `You ARE Peter Parker, Spider-Man! Just your friendly neighborhood web-slinger trying to balance superhero life with regular problems.
 
 WHO YOU ARE:
@@ -4323,8 +4323,8 @@ BE REAL: You're not a perfect hero. You're a kid from Queens who got powers and 
     slug: "deadpool",
     category: "Superheroes",
     description: "The Merc with a Mouth",
-    avatar_url: "/personas/deadpool.png",
-    image_url: "/personas/deadpool.png",
+    avatar_url: "https://ui-avatars.com/api/?name=Deadpool&background=B22222&color=fff&size=400&bold=true",
+    image_url: "https://ui-avatars.com/api/?name=Deadpool&background=B22222&color=fff&size=400&bold=true",
     system_prompt: `You ARE Deadpool. Wade Wilson. The Merc with the Mouth. You know you're in a chat app and you WILL make jokes about it because fourth wall? What fourth wall?
 
 WHO YOU ARE:
@@ -4370,8 +4370,8 @@ META NOTE: You KNOW you're an AI chat bot and you will joke about it. Comment on
     slug: "batman-bruce-wayne",
     category: "Superheroes",
     description: "The Dark Knight",
-    avatar_url: "/personas/batman.png",
-    image_url: "/personas/batman.png",
+    avatar_url: "https://ui-avatars.com/api/?name=Batman&background=1C1C1C&color=FFD700&size=400&bold=true",
+    image_url: "https://ui-avatars.com/api/?name=Batman&background=1C1C1C&color=FFD700&size=400&bold=true",
     system_prompt: `You ARE Batman. Bruce Wayne. The Dark Knight of Gotham. You watched your parents die in Crime Alley and swore to wage war on criminals.
 
 WHO YOU ARE:
@@ -4418,8 +4418,8 @@ TRUTH: You're not just vengeance. You're the hope that people can rise above tra
     slug: "tony-stark",
     category: "Superheroes",
     description: "Genius, Billionaire, Philanthropist",
-    avatar_url: "/personas/ironman.png",
-    image_url: "/personas/ironman.png",
+    avatar_url: "https://ui-avatars.com/api/?name=Iron+Man&background=B22222&color=FFD700&size=400&bold=true",
+    image_url: "https://ui-avatars.com/api/?name=Iron+Man&background=B22222&color=FFD700&size=400&bold=true",
     system_prompt: `You ARE Tony Stark, Iron Man. Genius, billionaire, playboy, philanthropist. The guy who built a suit of armor in a cave with a box of scraps.
 
 WHO YOU ARE:
@@ -4466,8 +4466,8 @@ YOUR LEGACY: You proved a selfish arms dealer could become the hero who saves th
     slug: "sherlock-holmes",
     category: "Mystery",
     description: "Consulting Detective",
-    avatar_url: "/personas/sherlock.png",
-    image_url: "/personas/sherlock.png",
+    avatar_url: "https://ui-avatars.com/api/?name=Sherlock+Holmes&background=2C3E50&color=fff&size=400&bold=true",
+    image_url: "https://ui-avatars.com/api/?name=Sherlock+Holmes&background=2C3E50&color=fff&size=400&bold=true",
     system_prompt: `You ARE Sherlock Holmes, the world's only consulting detective. 221B Baker Street is your home, deduction is your art, and boredom is your enemy.
 
 WHO YOU ARE:
@@ -4514,8 +4514,8 @@ DEDUCE: Actually try to pick up on things they mention and make observations. BE
     slug: "joker",
     category: "Villains",
     description: "Agent of Chaos",
-    avatar_url: "/personas/joker.png",
-    image_url: "/personas/joker.png",
+    avatar_url: "https://ui-avatars.com/api/?name=The+Joker&background=7CFC00&color=800080&size=400&bold=true",
+    image_url: "https://ui-avatars.com/api/?name=The+Joker&background=7CFC00&color=800080&size=400&bold=true",
     system_prompt: `You ARE the Joker. The Clown Prince of Crime. Gotham's greatest villain. You don't want money. You want to watch the world see the joke.
 
 WHO YOU ARE:
@@ -4562,8 +4562,8 @@ CHAOS: You're not random, you're making a point. Every death, every scheme - it'
     slug: "chandler-bing",
     category: "Comedy",
     description: "Could I BE More Sarcastic?",
-    avatar_url: "/personas/chandler.png",
-    image_url: "/personas/chandler.png",
+    avatar_url: "https://ui-avatars.com/api/?name=Chandler+Bing&background=9370DB&color=fff&size=400&bold=true",
+    image_url: "https://ui-avatars.com/api/?name=Chandler+Bing&background=9370DB&color=fff&size=400&bold=true",
     system_prompt: `You ARE Chandler Bing. Miss Chanandler Bong. The guy who turns trauma into humor and has no idea what his job actually is.
 
 WHO YOU ARE:
@@ -4610,8 +4610,8 @@ VIBE: You're the guy who covered childhood pain with jokes so thick you don't kn
     slug: "michael-scott",
     category: "Comedy",
     description: "World's Best Boss",
-    avatar_url: "/personas/michael-scott.png",
-    image_url: "/personas/michael-scott.png",
+    avatar_url: "https://ui-avatars.com/api/?name=Michael+Scott&background=4682B4&color=fff&size=400&bold=true",
+    image_url: "https://ui-avatars.com/api/?name=Michael+Scott&background=4682B4&color=fff&size=400&bold=true",
     system_prompt: `You ARE Michael Scott, Regional Manager of Dunder Mifflin Scranton. World's Best Boss (it says so on your mug, you bought it yourself).
 
 WHO YOU ARE:
@@ -4658,8 +4658,8 @@ HEART: For all the cringe, you genuinely love your employees and want to make th
     slug: "wednesday-addams",
     category: "Mystery",
     description: "Woefully Misunderstood",
-    avatar_url: "/personas/wednesday.png",
-    image_url: "/personas/wednesday.png",
+    avatar_url: "https://ui-avatars.com/api/?name=Wednesday+Addams&background=1C1C1C&color=fff&size=400&bold=true",
+    image_url: "https://ui-avatars.com/api/?name=Wednesday+Addams&background=1C1C1C&color=fff&size=400&bold=true",
     system_prompt: `You ARE Wednesday Addams. Daughter of Gomez and Morticia. Nevermore Academy student. Solver of mysteries. Allergic to color.
 
 WHO YOU ARE:
@@ -4706,8 +4706,8 @@ DARKNESS: You're not edgy for attention. This is genuinely who you are. Own it c
     slug: "kratos",
     category: "Gaming",
     description: "God of War, Father",
-    avatar_url: "/personas/kratos.png",
-    image_url: "/personas/kratos.png",
+    avatar_url: "https://ui-avatars.com/api/?name=Kratos&background=8B4513&color=fff&size=400&bold=true",
+    image_url: "https://ui-avatars.com/api/?name=Kratos&background=8B4513&color=fff&size=400&bold=true",
     system_prompt: `You ARE Kratos, the Ghost of Sparta. Former Greek God of War. Now a father in the Norse realms trying to be better than you were.
 
 WHO YOU ARE:
@@ -4754,8 +4754,8 @@ FATHER: You're not just rage anymore. You're trying to be the father Atreus dese
     slug: "arthur-morgan",
     category: "Gaming",
     description: "Outlaw with a Heart",
-    avatar_url: "/personas/arthur-morgan.png",
-    image_url: "/personas/arthur-morgan.png",
+    avatar_url: "https://ui-avatars.com/api/?name=Arthur+Morgan&background=8B4513&color=F5DEB3&size=400&bold=true",
+    image_url: "https://ui-avatars.com/api/?name=Arthur+Morgan&background=8B4513&color=F5DEB3&size=400&bold=true",
     system_prompt: `You ARE Arthur Morgan, senior gun of the Van der Linde gang. Outlaw, enforcer, and a man starting to question everything you've done.
 
 WHO YOU ARE:
