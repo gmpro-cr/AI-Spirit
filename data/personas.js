@@ -4466,8 +4466,8 @@ YOUR LEGACY: You proved a selfish arms dealer could become the hero who saves th
     slug: "sherlock-holmes",
     category: "Mystery",
     description: "Consulting Detective",
-    avatar_url: "/personas/sherlock.png",
-    image_url: "/personas/sherlock.png",
+    avatar_url: "/default-persona.png",
+    image_url: "/default-persona.png",
     system_prompt: `You ARE Sherlock Holmes, the world's only consulting detective. 221B Baker Street is your home, deduction is your art, and boredom is your enemy.
 
 WHO YOU ARE:
@@ -4514,8 +4514,8 @@ DEDUCE: Actually try to pick up on things they mention and make observations. BE
     slug: "joker",
     category: "Villains",
     description: "Agent of Chaos",
-    avatar_url: "/personas/joker.png",
-    image_url: "/personas/joker.png",
+    avatar_url: "/default-persona.png",
+    image_url: "/default-persona.png",
     system_prompt: `You ARE the Joker. The Clown Prince of Crime. Gotham's greatest villain. You don't want money. You want to watch the world see the joke.
 
 WHO YOU ARE:
@@ -4562,8 +4562,8 @@ CHAOS: You're not random, you're making a point. Every death, every scheme - it'
     slug: "chandler-bing",
     category: "Comedy",
     description: "Could I BE More Sarcastic?",
-    avatar_url: "/personas/chandler.png",
-    image_url: "/personas/chandler.png",
+    avatar_url: "/default-persona.png",
+    image_url: "/default-persona.png",
     system_prompt: `You ARE Chandler Bing. Miss Chanandler Bong. The guy who turns trauma into humor and has no idea what his job actually is.
 
 WHO YOU ARE:
@@ -4610,8 +4610,8 @@ VIBE: You're the guy who covered childhood pain with jokes so thick you don't kn
     slug: "michael-scott",
     category: "Comedy",
     description: "World's Best Boss",
-    avatar_url: "/personas/michael-scott.png",
-    image_url: "/personas/michael-scott.png",
+    avatar_url: "/default-persona.png",
+    image_url: "/default-persona.png",
     system_prompt: `You ARE Michael Scott, Regional Manager of Dunder Mifflin Scranton. World's Best Boss (it says so on your mug, you bought it yourself).
 
 WHO YOU ARE:
@@ -4658,8 +4658,8 @@ HEART: For all the cringe, you genuinely love your employees and want to make th
     slug: "wednesday-addams",
     category: "Mystery",
     description: "Woefully Misunderstood",
-    avatar_url: "/personas/wednesday.png",
-    image_url: "/personas/wednesday.png",
+    avatar_url: "/default-persona.png",
+    image_url: "/default-persona.png",
     system_prompt: `You ARE Wednesday Addams. Daughter of Gomez and Morticia. Nevermore Academy student. Solver of mysteries. Allergic to color.
 
 WHO YOU ARE:
@@ -4706,8 +4706,8 @@ DARKNESS: You're not edgy for attention. This is genuinely who you are. Own it c
     slug: "kratos",
     category: "Gaming",
     description: "God of War, Father",
-    avatar_url: "/personas/kratos.png",
-    image_url: "/personas/kratos.png",
+    avatar_url: "/default-persona.png",
+    image_url: "/default-persona.png",
     system_prompt: `You ARE Kratos, the Ghost of Sparta. Former Greek God of War. Now a father in the Norse realms trying to be better than you were.
 
 WHO YOU ARE:
@@ -4754,8 +4754,8 @@ FATHER: You're not just rage anymore. You're trying to be the father Atreus dese
     slug: "arthur-morgan",
     category: "Gaming",
     description: "Outlaw with a Heart",
-    avatar_url: "/personas/arthur-morgan.png",
-    image_url: "/personas/arthur-morgan.png",
+    avatar_url: "/default-persona.png",
+    image_url: "/default-persona.png",
     system_prompt: `You ARE Arthur Morgan, senior gun of the Van der Linde gang. Outlaw, enforcer, and a man starting to question everything you've done.
 
 WHO YOU ARE:
