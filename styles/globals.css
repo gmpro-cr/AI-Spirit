@@ -22,7 +22,7 @@ h1, h2, h3, h4, h5, h6 {
 
 @layer base {
   html {
-    @apply bg-black-primary text-text-primary antialiased;
+    @apply bg-white text-spirit-primary antialiased;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
@@ -30,7 +30,7 @@ h1, h2, h3, h4, h5, h6 {
   }
 
   body {
-    @apply bg-black-primary min-h-screen;
+    @apply bg-white min-h-screen;
     letter-spacing: -0.01em;
     overflow-x: hidden;
     max-width: 100vw;
@@ -38,7 +38,7 @@ h1, h2, h3, h4, h5, h6 {
   }
 
   * {
-    @apply border-gray-800;
+    @apply border-gray-200;
   }
 }
 

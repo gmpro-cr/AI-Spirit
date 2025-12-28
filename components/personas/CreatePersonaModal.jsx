@@ -156,7 +156,7 @@ export default function CreatePersonaModal({ isOpen, onClose, onPersonaCreated }
 
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-md flex items-center justify-center z-50 p-3 sm:p-4 animate-fadeIn">
-      <div className="relative bg-white dark:bg-spirit-bg-secondary-dark rounded-3xl shadow-2xl max-w-2xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-hidden border border-gray-100">
+      <div className="relative bg-white rounded-3xl shadow-2xl max-w-2xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-hidden border border-gray-100">
         {/* Gradient accent bar */}
         <div className="h-1.5 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"></div>
 
