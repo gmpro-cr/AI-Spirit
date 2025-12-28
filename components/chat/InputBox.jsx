@@ -32,7 +32,7 @@ export default function InputBox({ onSend, disabled }) {
   }
 
   return (
-    <div className="border-t border-white/15 dark:border-spirit-border-dark bg-gradient-to-b from-black-secondary/98 to-black-secondary/95 dark:from-spirit-bg-dark dark:to-spirit-bg-secondary-dark backdrop-blur-2xl p-2 sm:p-3 pb-3 sm:pb-4 shadow-[0_-8px_32px_-4px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.05)] dark:shadow-[0_-8px_32px_-4px_rgba(0,0,0,0.8),inset_0_1px_0_rgba(100,100,100,0.03)]">
+    <div className="border-t border-gray-200 bg-white p-2 sm:p-3 pb-3 sm:pb-4 shadow-[0_-4px_12px_-4px_rgba(0,0,0,0.1)]">
       {error && (
         <div className="mb-3 text-red-400 text-xs sm:text-sm bg-red-500/10 border border-red-500/30 rounded-2xl px-3 sm:px-4 py-2 sm:py-2.5 font-light tracking-wide animate-fadeIn">
           {error}
@@ -49,18 +49,15 @@ export default function InputBox({ onSend, disabled }) {
               disabled={disabled}
               maxLength={MAX_CHARS}
               placeholder="Type your message..."
-              className="w-full bg-gradient-to-br from-black via-black to-black/95 dark:from-spirit-bg-secondary-dark dark:via-spirit-bg-dark dark:to-spirit-bg-dark border border-white/30 dark:border-spirit-border-dark rounded-2xl sm:rounded-3xl px-3 sm:px-5 py-3 sm:py-4 text-base text-white dark:text-spirit-primary-dark placeholder:text-white/50 dark:placeholder:text-gray-500 focus:border-white/50 dark:focus:border-spirit-accent shadow-glass focus-glow transition-smooth disabled:opacity-50 disabled:cursor-not-allowed font-light tracking-wide"
+              className="w-full bg-gray-50 border border-gray-200 rounded-2xl sm:rounded-3xl px-3 sm:px-5 py-3 sm:py-4 text-base text-black placeholder:text-gray-400 focus:border-gray-400 focus:ring-1 focus:ring-gray-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-light tracking-wide"
             />
-            <div className="absolute inset-0 rounded-2xl sm:rounded-3xl bg-gradient-to-tr from-white/8 via-transparent to-transparent opacity-0 group-focus-within:opacity-100 transition-opacity duration-500 pointer-events-none" />
           </div>
           <button
             onClick={handleSend}
             disabled={disabled || !input.trim()}
-            className="group relative flex-shrink-0 bg-gradient-to-br from-white/20 via-white/15 to-white/10 dark:from-gray-700/60 dark:via-gray-800/40 dark:to-gray-900/20 backdrop-blur-xl border border-white/35 dark:border-spirit-border-dark text-white dark:text-spirit-primary-dark font-semibold px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-base rounded-2xl sm:rounded-3xl hover:from-white/30 hover:via-white/22 hover:to-white/16 dark:hover:from-gray-600/70 dark:hover:via-gray-700/50 dark:hover:to-gray-800/30 hover:border-white/50 dark:hover:border-gray-600 shadow-glass hover:shadow-glass-hover transition-smooth disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none active:scale-95 hover:scale-[1.02] overflow-hidden"
+            className="flex-shrink-0 bg-black text-white font-semibold px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-base rounded-2xl sm:rounded-3xl hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed active:scale-95 hover:scale-[1.02]"
           >
-            <div className="absolute inset-0 rounded-2xl sm:rounded-3xl bg-gradient-to-tr from-white/25 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-            <div className="absolute inset-0 rounded-2xl sm:rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-xl bg-white/10 -z-10" />
-            <span className="relative z-10 tracking-wide">Send</span>
+            <span className="tracking-wide">Send</span>
           </button>
         </div>
 
@@ -69,10 +66,10 @@ export default function InputBox({ onSend, disabled }) {
           <div className="flex justify-end px-1">
             <span className={`text-xs transition-colors ${
               input.length > MAX_CHARS * 0.9
-                ? 'text-orange-400'
+                ? 'text-orange-500'
                 : input.length > MAX_CHARS * 0.8
-                  ? 'text-yellow-400'
-                  : 'text-white/40'
+                  ? 'text-yellow-600'
+                  : 'text-gray-400'
             }`}>
               {input.length} / {MAX_CHARS}
             </span>
@@ -83,7 +80,7 @@ export default function InputBox({ onSend, disabled }) {
       <div className="mt-2 px-1">
         <button
           onClick={() => setDisclaimerExpanded(!disclaimerExpanded)}
-          className="text-white/40 dark:text-gray-500 text-xs hover:text-white/60 dark:hover:text-gray-400 transition-colors text-left w-full cursor-pointer"
+          className="text-gray-400 text-xs hover:text-gray-600 transition-colors text-left w-full cursor-pointer"
         >
           {disclaimerExpanded ? (
             <span>This chat is powered by AI that imitate real or fictional characters. Responses are computer-generated and not from real individuals.</span>

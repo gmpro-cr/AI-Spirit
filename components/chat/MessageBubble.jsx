@@ -93,14 +93,14 @@ export default function MessageBubble({ message, language, personaName }) {
     <div className={`flex ${isUser ? 'justify-end' : 'justify-start'} mb-6 animate-fadeIn`}>
       <div className="relative max-w-[90%] sm:max-w-[75%] group">
         <div
-          className={`relative px-4 sm:px-5 py-3 sm:py-4 rounded-3xl transition-smooth ${isUser
-            ? 'bg-gradient-to-br from-white via-white/98 to-white/95 text-black font-medium shadow-glass hover:shadow-glass-hover hover:scale-[1.01]'
-            : 'bg-gradient-to-br from-white/15 via-white/10 to-white/5 backdrop-blur-2xl border border-white/30 text-white shadow-glass hover:shadow-glass-hover hover:from-white/18 hover:via-white/12 hover:to-white/8 hover:border-white/35 hover:scale-[1.01] before:absolute before:inset-0 before:rounded-3xl before:bg-gradient-to-tr before:from-white/15 before:via-transparent before:to-transparent before:opacity-0 before:group-hover:opacity-100 before:transition-opacity before:duration-500 before:pointer-events-none after:absolute after:inset-[1px] after:rounded-3xl after:bg-gradient-to-br after:from-transparent after:via-white/5 after:to-white/10 after:pointer-events-none'
+          className={`relative px-4 sm:px-5 py-3 sm:py-4 rounded-3xl transition-all ${isUser
+            ? 'bg-black text-white font-medium shadow-sm hover:shadow hover:scale-[1.01]'
+            : 'bg-gray-100 border border-gray-200 text-black shadow-sm hover:shadow hover:bg-gray-50 hover:scale-[1.01]'
             } ${language === 'hi' ? 'font-hindi' : ''}`}
         >
           <p className="relative z-10 whitespace-pre-wrap leading-relaxed tracking-wide font-light break-words">
             {displayedText}
-            {isTyping && <span className="inline-block w-1 h-4 bg-white ml-1 animate-pulse" />}
+            {isTyping && <span className="inline-block w-1 h-4 bg-black ml-1 animate-pulse" />}
           </p>
         </div>
 
@@ -110,15 +110,15 @@ export default function MessageBubble({ message, language, personaName }) {
             {/* Copy Button */}
             <button
               onClick={handleCopy}
-              className="bg-gradient-to-br from-white/22 via-white/16 to-white/12 backdrop-blur-xl border border-white/35 rounded-full p-2 hover:from-white/32 hover:via-white/24 hover:to-white/18 hover:border-white/50 shadow-glass hover:shadow-glass-hover active:scale-90 transition-smooth hover:scale-110"
+              className="bg-white border border-gray-200 rounded-full p-2 hover:bg-gray-100 hover:border-gray-300 shadow-sm hover:shadow active:scale-90 transition-all hover:scale-110"
               title={copied ? "Copied!" : "Copy message"}
             >
               {copied ? (
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-green-300" viewBox="0 0 20 20" fill="currentColor">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-green-600" viewBox="0 0 20 20" fill="currentColor">
                   <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                 </svg>
               ) : (
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-white" viewBox="0 0 20 20" fill="currentColor">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-black" viewBox="0 0 20 20" fill="currentColor">
                   <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z" />
                   <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z" />
                 </svg>
@@ -134,14 +134,14 @@ export default function MessageBubble({ message, language, personaName }) {
             <button
               onClick={handleLike}
               className={`group/like flex items-center gap-1 px-2 py-1 rounded-full transition-all ${liked === 'like'
-                ? 'bg-green-500/20 border border-green-400/40'
-                : 'bg-white/10 border border-white/20 hover:bg-white/15 hover:border-white/30'
+                ? 'bg-green-100 border border-green-300'
+                : 'bg-white border border-gray-200 hover:bg-gray-50 hover:border-gray-300'
                 }`}
               title="Like this response"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className={`h-4 w-4 transition-colors ${liked === 'like' ? 'text-green-400 fill-green-400' : 'text-white/70 group-hover/like:text-white'
+                className={`h-4 w-4 transition-colors ${liked === 'like' ? 'text-green-600 fill-green-600' : 'text-gray-500 group-hover/like:text-black'
                   }`}
                 fill="none"
                 viewBox="0 0 24 24"
@@ -155,14 +155,14 @@ export default function MessageBubble({ message, language, personaName }) {
             <button
               onClick={handleDislike}
               className={`group/dislike flex items-center gap-1 px-2 py-1 rounded-full transition-all ${liked === 'dislike'
-                ? 'bg-red-500/20 border border-red-400/40'
-                : 'bg-white/10 border border-white/20 hover:bg-white/15 hover:border-white/30'
+                ? 'bg-red-100 border border-red-300'
+                : 'bg-white border border-gray-200 hover:bg-gray-50 hover:border-gray-300'
                 }`}
               title="Dislike this response"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className={`h-4 w-4 transition-colors ${liked === 'dislike' ? 'text-red-400 fill-red-400' : 'text-white/70 group-hover/dislike:text-white'
+                className={`h-4 w-4 transition-colors ${liked === 'dislike' ? 'text-red-600 fill-red-600' : 'text-gray-500 group-hover/dislike:text-black'
                   }`}
                 fill="none"
                 viewBox="0 0 24 24"
