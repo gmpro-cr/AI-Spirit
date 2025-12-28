@@ -67,8 +67,8 @@ export default function ContactPage() {
                     {/* Status Message */}
                     {status.message && (
                         <div className={`mb-6 p-4 rounded-lg ${status.type === 'success'
-                            ? 'bg-green-100 text-green-800
-                            : 'bg-red-100 text-red-800
+                            ? 'bg-green-100 text-green-800'
+                            : 'bg-red-100 text-red-800'
                             }`}>
                             {status.message}
                         </div>
