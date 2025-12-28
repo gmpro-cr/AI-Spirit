@@ -46,20 +46,20 @@ export default function ChatsPage() {
             {/* Navbar */}
             <Navbar />
 
-            <div className="min-h-screen bg-white dark:bg-spirit-bg-dark pt-16 pb-20 transition-colors">
+            <div className="min-h-screen bg-white pt-16 pb-20 transition-colors">
                 {/* Main Content */}
                 <main className="max-w-4xl mx-auto px-4 py-6">
                     {loading ? (
                         <div className="text-center py-20">
-                            <div className="inline-block animate-spin rounded-full h-10 w-10 border-b-2 border-black dark:border-spirit-accent"></div>
-                            <p className="mt-4 text-gray-500 dark:text-gray-400">Loading conversations...</p>
+                            <div className="inline-block animate-spin rounded-full h-10 w-10 border-b-2 border-black"></div>
+                            <p className="mt-4 text-gray-500">Loading conversations...</p>
                         </div>
                     ) : pastChats.length > 0 ? (
                         <div className="space-y-3">
                             {pastChats.map(chat => (
                                 <div
                                     key={chat.id}
-                                    className="group bg-white dark:bg-spirit-bg-secondary-dark border border-gray-200 dark:border-spirit-border-dark rounded-2xl p-4 hover:shadow-lg hover:border-gray-300 dark:hover:border-gray-600 transition-all duration-200"
+                                    className="group bg-white border border-gray-200 rounded-2xl p-4 hover:shadow-lg hover:border-gray-300 transition-all duration-200"
                                 >
                                     <div className="flex items-center gap-4">
                                         <button
@@ -85,10 +85,10 @@ export default function ChatsPage() {
 
                                             {/* Chat Info */}
                                             <div className="flex-1 min-w-0">
-                                                <h3 className="font-semibold text-black dark:text-spirit-primary-dark text-lg truncate group-hover:text-indigo-600 dark:group-hover:text-spirit-accent transition-colors">
+                                                <h3 className="font-semibold text-black text-lg truncate group-hover:text-indigo-600 transition-colors">
                                                     {chat.personaName}
                                                 </h3>
-                                                <p className="text-sm text-gray-600 dark:text-gray-400 truncate mt-0.5">
+                                                <p className="text-sm text-gray-600 truncate mt-0.5">
                                                     {chat.title}
                                                 </p>
                                             </div>
@@ -97,7 +97,7 @@ export default function ChatsPage() {
                                         {/* Delete Button */}
                                         <button
                                             onClick={() => deleteChat(chat.id)}
-                                            className="p-2.5 text-gray-400 dark:text-gray-500 hover:text-red-500 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl transition-all"
+                                            className="p-2.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all"
                                             aria-label="Delete conversation"
                                         >
                                             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -112,16 +112,16 @@ export default function ChatsPage() {
                         <div className="text-center py-20">
                             {/* Empty State */}
                             <div className="max-w-md mx-auto">
-                                <div className="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-indigo-100 to-purple-100 dark:from-indigo-900/30 dark:to-purple-900/30 rounded-full flex items-center justify-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-indigo-600 dark:text-spirit-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <div className="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-indigo-100 to-purple-100 rounded-full flex items-center justify-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                                     </svg>
                                 </div>
-                                <h3 className="text-2xl font-bold text-black dark:text-spirit-primary-dark mb-3">No conversations yet</h3>
-                                <p className="text-gray-600 dark:text-gray-400 mb-8">Start chatting with an AI persona to see your conversations here</p>
+                                <h3 className="text-2xl font-bold text-black mb-3">No conversations yet</h3>
+                                <p className="text-gray-600 mb-8">Start chatting with an AI persona to see your conversations here</p>
                                 <button
                                     onClick={() => router.push('/')}
-                                    className="inline-flex items-center gap-2 px-8 py-3.5 bg-black dark:bg-spirit-accent text-white font-semibold rounded-md border border-black dark:border-spirit-accent hover:bg-white dark:hover:bg-spirit-bg-dark hover:text-black dark:hover:text-spirit-accent transition-all shadow-lg"
+                                    className="inline-flex items-center gap-2 px-8 py-3.5 bg-black text-white font-semibold rounded-md border border-black hover:bg-white hover:text-black transition-all shadow-lg"
                                 >
                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z" />
@@ -134,12 +134,12 @@ export default function ChatsPage() {
                 </main>
 
                 {/* Mobile Bottom Navigation */}
-                <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-spirit-bg-dark border-t border-gray-200 dark:border-spirit-border-dark z-50 shadow-lg transition-colors">
+                <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50 shadow-lg transition-colors">
                     <div className="flex justify-around items-center h-16 px-2">
                         {/* Home */}
                         <Link
                             href="/"
-                            className="flex flex-col items-center justify-center flex-1 py-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors"
+                            className="flex flex-col items-center justify-center flex-1 py-2 text-gray-500 hover:text-gray-700 transition-colors"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
@@ -150,7 +150,7 @@ export default function ChatsPage() {
                         {/* Chats - Active */}
                         <Link
                             href="/chats"
-                            className="flex flex-col items-center justify-center flex-1 py-2 text-black dark:text-spirit-accent"
+                            className="flex flex-col items-center justify-center flex-1 py-2 text-black"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
@@ -161,7 +161,7 @@ export default function ChatsPage() {
                         {/* Create */}
                         <Link
                             href="/personas"
-                            className="flex flex-col items-center justify-center flex-1 py-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors"
+                            className="flex flex-col items-center justify-center flex-1 py-2 text-gray-500 hover:text-gray-700 transition-colors"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -172,7 +172,7 @@ export default function ChatsPage() {
                         {/* Account */}
                         <Link
                             href="/auth/signin"
-                            className="flex flex-col items-center justify-center flex-1 py-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors"
+                            className="flex flex-col items-center justify-center flex-1 py-2 text-gray-500 hover:text-gray-700 transition-colors"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />

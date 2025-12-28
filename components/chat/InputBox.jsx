@@ -64,13 +64,12 @@ export default function InputBox({ onSend, disabled }) {
         {/* Character Counter */}
         {input.length > 0 && (
           <div className="flex justify-end px-1">
-            <span className={`text-xs transition-colors ${
-              input.length > MAX_CHARS * 0.9
-                ? 'text-orange-500'
-                : input.length > MAX_CHARS * 0.8
-                  ? 'text-yellow-600'
-                  : 'text-gray-400'
-            }`}>
+            <span className={`text-xs transition-colors ${input.length > MAX_CHARS * 0.9
+              ? 'text-orange-500'
+              : input.length > MAX_CHARS * 0.8
+                ? 'text-yellow-600'
+                : 'text-gray-400'
+              }`}>
               {input.length} / {MAX_CHARS}
             </span>
           </div>
