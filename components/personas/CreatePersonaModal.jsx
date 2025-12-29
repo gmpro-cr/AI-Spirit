@@ -156,11 +156,8 @@ export default function CreatePersonaModal({ isOpen, onClose, onPersonaCreated }
 
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-md flex items-center justify-center z-50 p-3 sm:p-4 animate-fadeIn">
-      <div className="relative bg-white rounded-3xl shadow-2xl max-w-2xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-hidden border border-gray-100">
-        {/* Accent bar */}
-        <div className="h-1 bg-black"></div>
-
-        <div className="overflow-y-auto max-h-[calc(95vh-6px)] sm:max-h-[calc(90vh-6px)]">
+      <div className="relative bg-white rounded-3xl shadow-2xl max-w-2xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-hidden border border-gray-200">
+        <div className="overflow-y-auto max-h-[95vh] sm:max-h-[90vh]">
           <div className="relative z-10 p-5 sm:p-7">
             <div className="flex justify-between items-center mb-6 sm:mb-8">
               <div>
