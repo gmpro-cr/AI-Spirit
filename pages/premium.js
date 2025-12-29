@@ -98,7 +98,7 @@ export default function Premium() {
                 src="https://checkout.razorpay.com/v1/checkout.js"
                 strategy="beforeInteractive"
             />
-            <div className="min-h-screen bg-white text-black font-sans pb-20 md:pb-0 transition-colors">
+            <div className="min-h-screen bg-white text-black font-sans pb-24 md:pb-0 transition-colors">
                 {/* Navbar */}
                 <Navbar />
 
