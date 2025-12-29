@@ -157,8 +157,8 @@ export default function CreatePersonaModal({ isOpen, onClose, onPersonaCreated }
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-md flex items-center justify-center z-50 p-3 sm:p-4 animate-fadeIn">
       <div className="relative bg-white rounded-3xl shadow-2xl max-w-2xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-hidden border border-gray-100">
-        {/* Gradient accent bar */}
-        <div className="h-1.5 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"></div>
+        {/* Accent bar */}
+        <div className="h-1 bg-black"></div>
 
         <div className="overflow-y-auto max-h-[calc(95vh-6px)] sm:max-h-[calc(90vh-6px)]">
           <div className="relative z-10 p-5 sm:p-7">
@@ -189,7 +189,7 @@ export default function CreatePersonaModal({ isOpen, onClose, onPersonaCreated }
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 placeholder="e.g., Albert Einstein, My Life Coach, Tech Expert"
-                className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 text-gray-900 placeholder-gray-400 focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 focus:outline-none transition-all duration-200 hover:border-gray-300"
+                className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 text-gray-900 placeholder-gray-400 focus:bg-white focus:border-black focus:ring-2 focus:ring-black/10 focus:outline-none transition-all duration-200 hover:border-gray-300"
               />
             </div>
 
@@ -208,7 +208,7 @@ export default function CreatePersonaModal({ isOpen, onClose, onPersonaCreated }
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                 placeholder="e.g., Physics Genius, Life Coach, Tech Expert"
                 maxLength={50}
-                className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 text-gray-900 placeholder-gray-400 focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 focus:outline-none transition-all duration-200 hover:border-gray-300"
+                className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 text-gray-900 placeholder-gray-400 focus:bg-white focus:border-black focus:ring-2 focus:ring-black/10 focus:outline-none transition-all duration-200 hover:border-gray-300"
               />
             </div>
 
@@ -227,7 +227,7 @@ export default function CreatePersonaModal({ isOpen, onClose, onPersonaCreated }
                   <img
                     src={imagePreview}
                     alt="Avatar preview"
-                    className="w-24 h-24 rounded-full object-cover border-4 border-indigo-100 shadow-lg"
+                    className="w-24 h-24 rounded-full object-cover border-4 border-gray-200 shadow-lg"
                   />
                   <button
                     type="button"
@@ -243,7 +243,7 @@ export default function CreatePersonaModal({ isOpen, onClose, onPersonaCreated }
 
               {/* Upload Button */}
               <div className="mb-4">
-                <label className="inline-flex items-center gap-2.5 px-5 py-3 bg-gradient-to-r from-indigo-50 to-purple-50 text-indigo-700 border border-indigo-200 rounded-xl hover:from-indigo-100 hover:to-purple-100 hover:border-indigo-300 cursor-pointer transition-all font-semibold shadow-sm hover:shadow">
+                <label className="inline-flex items-center gap-2.5 px-5 py-3 bg-gray-100 text-gray-700 border border-gray-200 rounded-xl hover:bg-gray-200 hover:border-gray-300 cursor-pointer transition-all font-semibold shadow-sm hover:shadow">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="h-5 w-5"
@@ -291,7 +291,7 @@ export default function CreatePersonaModal({ isOpen, onClose, onPersonaCreated }
                 }}
                 placeholder="https://example.com/image.jpg"
                 disabled={!!uploadedImage}
-                className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 text-gray-900 placeholder-gray-400 focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 focus:outline-none transition-all duration-200 hover:border-gray-300 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 text-gray-900 placeholder-gray-400 focus:bg-white focus:border-black focus:ring-2 focus:ring-black/10 focus:outline-none transition-all duration-200 hover:border-gray-300 disabled:bg-gray-100 disabled:cursor-not-allowed"
               />
               <p className="text-xs text-gray-500 mt-2">
                 💡 Upload an image or paste a URL. Leave blank to use initials.
@@ -312,7 +312,7 @@ export default function CreatePersonaModal({ isOpen, onClose, onPersonaCreated }
                 onChange={(e) => setFormData({ ...formData, systemPrompt: e.target.value })}
                 placeholder="Example: You are Albert Einstein. Respond with wisdom about physics, curiosity about the universe, and occasional humor. Keep responses thoughtful and encouraging. Reference relativity and scientific thinking when relevant."
                 rows={8}
-                className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 text-gray-900 placeholder-gray-400 focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 focus:outline-none resize-none transition-all duration-200 hover:border-gray-300 leading-relaxed"
+                className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 text-gray-900 placeholder-gray-400 focus:bg-white focus:border-black focus:ring-2 focus:ring-black/10 focus:outline-none resize-none transition-all duration-200 hover:border-gray-300 leading-relaxed"
               />
               <p className="text-xs text-gray-500 mt-2">
                 💡 Be specific about personality, knowledge areas, and response style
@@ -320,14 +320,14 @@ export default function CreatePersonaModal({ isOpen, onClose, onPersonaCreated }
             </div>
 
             {/* Info Box */}
-            <div className="bg-gradient-to-r from-indigo-50 to-purple-50 border border-indigo-100 rounded-xl p-4 shadow-sm">
+            <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 shadow-sm">
               <div className="flex items-start gap-3">
-                <div className="flex-shrink-0 w-5 h-5 bg-indigo-500 rounded-full flex items-center justify-center mt-0.5">
+                <div className="flex-shrink-0 w-5 h-5 bg-black rounded-full flex items-center justify-center mt-0.5">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                   </svg>
                 </div>
-                <p className="text-sm text-indigo-900 font-medium leading-relaxed">
+                <p className="text-sm text-gray-700 font-medium leading-relaxed">
                   {user ? (
                     <>Your custom persona will be saved to the database and synced across all your devices.</>
                   ) : (
