@@ -159,3 +159,80 @@ export function BreadcrumbSchema({ items }) {
         </Head>
     )
 }
+
+export function ServiceSchema() {
+    const schema = {
+        '@context': 'https://schema.org',
+        '@type': 'Service',
+        name: 'AI - Spirit',
+        description: 'AI-powered persona chat service for parenting advice, mental wellness coaching, relationship counseling, and career guidance available 24/7.',
+        provider: {
+            '@type': 'Organization',
+            name: 'AI - Spirit',
+            url: 'https://ai-spirit.in',
+        },
+        serviceType: 'AI Coaching Service',
+        areaServed: {
+            '@type': 'Country',
+            name: 'India',
+        },
+        availableChannel: {
+            '@type': 'ServiceChannel',
+            serviceUrl: 'https://ai-spirit.in',
+            serviceType: 'Web Application',
+            availableLanguage: ['English', 'Hindi'],
+        },
+        offers: [
+            {
+                '@type': 'Offer',
+                name: 'Free Plan',
+                price: '0',
+                priceCurrency: 'INR',
+                description: '20 messages per day, 2 custom personas, 7-day chat history',
+            },
+            {
+                '@type': 'Offer',
+                name: 'Premium Plan',
+                price: '249',
+                priceCurrency: 'INR',
+                description: 'Unlimited messages, voice AI, unlimited custom personas, forever chat history',
+                priceValidUntil: '2025-12-31',
+            },
+        ],
+        hasOfferCatalog: {
+            '@type': 'OfferCatalog',
+            name: 'AI Personas',
+            itemListElement: [
+                {
+                    '@type': 'OfferCatalog',
+                    name: 'Parenting Coaches',
+                    description: 'Expert AI personas for parenting guidance and advice',
+                },
+                {
+                    '@type': 'OfferCatalog',
+                    name: 'Wellness Coaches',
+                    description: 'Mental health and wellness support personas',
+                },
+                {
+                    '@type': 'OfferCatalog',
+                    name: 'Career Mentors',
+                    description: 'Professional guidance and career coaching',
+                },
+                {
+                    '@type': 'OfferCatalog',
+                    name: 'Relationship Advisors',
+                    description: 'Relationship and dating advice personas',
+                },
+            ],
+        },
+    }
+
+    return (
+        <Head>
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+            />
+        </Head>
+    )
+}

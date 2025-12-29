@@ -6,6 +6,35 @@ import Link from 'next/link'
 import { useAuth } from '@/context/AuthContext'
 import Navbar from '@/components/layout/Navbar'
 import ContactModal from '@/components/ContactModal'
+import { FAQSchema } from '@/components/seo/StructuredData'
+
+// FAQ data for structured data
+const premiumFaqs = [
+    {
+        question: 'What is included in AI-Spirit Premium?',
+        answer: 'AI-Spirit Premium includes unlimited messages, voice AI responses, unlimited custom personas, forever chat history, and priority response speed for just ₹249/month.'
+    },
+    {
+        question: 'How much does AI-Spirit Premium cost?',
+        answer: 'AI-Spirit Premium costs ₹249 per month, which is less than ₹9 per day for unlimited AI conversations with voice responses.'
+    },
+    {
+        question: 'What is the difference between Free and Premium plans?',
+        answer: 'Free plan offers 20 messages per day, 2 custom personas, and 7-day chat history with text only. Premium offers unlimited messages, unlimited custom personas, forever chat history, and voice AI responses.'
+    },
+    {
+        question: 'Can I cancel my AI-Spirit Premium subscription?',
+        answer: 'Yes, you can cancel your Premium subscription anytime. There are no long-term commitments or cancellation fees.'
+    },
+    {
+        question: 'What are voice responses in AI-Spirit?',
+        answer: 'Voice responses allow your AI personas to speak to you with natural-sounding voice. Instead of just reading text, you can hear your AI coach talk to you, making conversations more personal and engaging.'
+    },
+    {
+        question: 'Is the payment for AI-Spirit Premium secure?',
+        answer: 'Yes, all payments are processed securely through Razorpay, India\'s leading payment gateway. Your payment information is encrypted and protected.'
+    }
+]
 
 export default function Premium() {
     const router = useRouter()
@@ -94,6 +123,7 @@ export default function Premium() {
                 <meta property="og:description" content="Unlimited messages + Voice AI for just ₹249/month." />
                 <meta property="og:url" content="https://ai-spirit.in/premium" />
             </Head>
+            <FAQSchema faqs={premiumFaqs} />
             <Script
                 src="https://checkout.razorpay.com/v1/checkout.js"
                 strategy="beforeInteractive"

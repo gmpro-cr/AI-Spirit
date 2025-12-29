@@ -12,7 +12,7 @@ import { INITIAL_PERSONAS } from '@/data/personas'
 import { supabase } from '@/lib/supabase'
 import { withAuth } from '@/middleware/withAuth'
 import { useAuth } from '@/context/AuthContext'
-import { WebsiteSchema, SoftwareApplicationSchema } from '@/components/seo/StructuredData'
+import { WebsiteSchema, SoftwareApplicationSchema, ServiceSchema } from '@/components/seo/StructuredData'
 
 function Personas() {
   const router = useRouter()
@@ -199,6 +199,7 @@ function Personas() {
       {/* Structured Data for SEO */}
       <WebsiteSchema />
       <SoftwareApplicationSchema />
+      <ServiceSchema />
 
       {/* Navbar */}
       <Navbar />
