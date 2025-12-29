@@ -22,34 +22,34 @@ export default function About() {
 
             <main className="min-h-screen bg-white pt-16 transition-colors">
                 {/* Hero Section */}
-                <section className="py-16 md:py-24 px-4 sm:px-6 lg:px-8">
+                <section className="py-20 md:py-32 px-4 sm:px-6 lg:px-8">
                     <div className="max-w-3xl mx-auto text-center">
-                        <h1 className="text-4xl md:text-5xl font-bold text-black tracking-tight mb-6">
+                        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-black tracking-tight mb-6">
                             About <span className="italic">AI</span> - Spirit
                         </h1>
-                        <p className="text-xl text-gray-600 leading-relaxed">
+                        <p className="text-xl text-gray-500 leading-relaxed">
                             Making expert guidance accessible to everyone, anytime.
                         </p>
                     </div>
                 </section>
 
                 {/* Mission Section */}
-                <section className="py-12 px-4 sm:px-6 lg:px-8 bg-gray-50 transition-colors">
+                <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50">
                     <div className="max-w-3xl mx-auto">
-                        <h2 className="text-2xl md:text-3xl font-bold text-black mb-6">
+                        <h2 className="text-2xl md:text-3xl font-bold text-black mb-8">
                             Our Mission
                         </h2>
-                        <div className="prose prose-lg text-gray-600 space-y-4">
-                            <p>
+                        <div className="prose prose-lg text-gray-600 space-y-6">
+                            <p className="leading-relaxed">
                                 AI - Spirit was created with a simple belief: everyone deserves access to
                                 thoughtful guidance and support, regardless of time, location, or budget.
                             </p>
-                            <p>
+                            <p className="leading-relaxed">
                                 We&apos;ve built a collection of AI personas—each designed to provide helpful,
                                 empathetic conversations on topics ranging from parenting and mental wellness
                                 to relationships, career guidance, and everyday life challenges.
                             </p>
-                            <p>
+                            <p className="leading-relaxed">
                                 Whether you&apos;re a first-time parent looking for advice at 2 AM, someone
                                 seeking wellness tips, or just want to explore new recipes, our AI personas
                                 are here to help—24/7, with no judgment.
@@ -59,9 +59,9 @@ export default function About() {
                 </section>
 
                 {/* What We Offer Section */}
-                <section className="py-12 px-4 sm:px-6 lg:px-8">
+                <section className="py-16 px-4 sm:px-6 lg:px-8">
                     <div className="max-w-3xl mx-auto">
-                        <h2 className="text-2xl md:text-3xl font-bold text-black mb-8">
+                        <h2 className="text-2xl md:text-3xl font-bold text-black mb-10">
                             What We Offer
                         </h2>
                         <div className="grid md:grid-cols-2 gap-6">
@@ -85,12 +85,12 @@ export default function About() {
                             ].map((feature) => (
                                 <div
                                     key={feature.title}
-                                    className="bg-gray-50 rounded-2xl p-6 border border-gray-200 transition-colors"
+                                    className="bg-white rounded-2xl p-6 border border-gray-100 shadow-soft hover:shadow-lift hover:-translate-y-1 transition-all duration-300"
                                 >
-                                    <h3 className="text-lg font-semibold text-black mb-2">
+                                    <h3 className="text-lg font-semibold text-black mb-3">
                                         {feature.title}
                                     </h3>
-                                    <p className="text-gray-600 text-sm">
+                                    <p className="text-gray-500 text-sm leading-relaxed">
                                         {feature.description}
                                     </p>
                                 </div>
@@ -100,17 +100,17 @@ export default function About() {
                 </section>
 
                 {/* CTA Section */}
-                <section className="py-12 px-4 sm:px-6 lg:px-8 bg-black text-white transition-colors">
+                <section className="py-20 px-4 sm:px-6 lg:px-8 bg-black text-white">
                     <div className="max-w-3xl mx-auto text-center">
                         <h2 className="text-2xl md:text-3xl font-bold mb-4">
                             Ready to Get Started?
                         </h2>
-                        <p className="text-gray-300 mb-8">
+                        <p className="text-gray-400 mb-10">
                             Start chatting with our AI personas—it&apos;s free to try.
                         </p>
                         <Link
                             href="/"
-                            className="inline-block bg-white text-black font-semibold px-8 py-3 rounded-full hover:bg-gray-100 transition-all hover:scale-[1.02] active:scale-[0.98]"
+                            className="inline-block bg-white text-black font-medium px-8 py-4 rounded-2xl shadow-soft hover:shadow-lift hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] transition-all duration-300"
                         >
                             Browse Personas
                         </Link>

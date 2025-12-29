@@ -29,19 +29,19 @@ export default function ChatInterface({ persona, onSendMessage, onNewChat, onMen
   return (
     <div className="fixed top-0 lg:top-[65px] left-0 right-0 bottom-0 flex flex-col lg:left-72 bg-white">
       {/* Persona Header */}
-      <div className="relative bg-gray-50 border border-gray-200 rounded-2xl sm:rounded-3xl p-3 sm:p-4 mx-3 sm:mx-4 mt-2 mb-2 flex items-center space-x-3 sm:space-x-4 shadow-sm animate-fadeIn">
+      <div className="relative bg-white/80 backdrop-blur-xl border border-gray-100 rounded-2xl sm:rounded-3xl p-4 sm:p-5 mx-3 sm:mx-4 mt-3 mb-3 flex items-center space-x-3 sm:space-x-4 shadow-soft animate-fadeIn">
         {/* Hamburger Menu Button - Mobile only */}
         <button
           onClick={onMenuToggle}
-          className="lg:hidden relative z-10 w-9 h-9 flex flex-col items-center justify-center space-y-1.5 bg-white border border-gray-200 rounded-xl hover:bg-gray-100 hover:border-gray-300 transition-all active:scale-95"
+          className="lg:hidden relative z-10 w-10 h-10 flex flex-col items-center justify-center space-y-1.5 bg-gray-50 border border-gray-200 rounded-xl hover:bg-gray-100 hover:border-gray-300 hover:shadow-soft transition-all duration-300 active:scale-95"
           aria-label="Toggle menu"
         >
-          <span className="w-5 h-0.5 bg-black rounded-full"></span>
-          <span className="w-5 h-0.5 bg-black rounded-full"></span>
-          <span className="w-5 h-0.5 bg-black rounded-full"></span>
+          <span className="w-5 h-0.5 bg-black rounded-full transition-all duration-300"></span>
+          <span className="w-5 h-0.5 bg-black rounded-full transition-all duration-300"></span>
+          <span className="w-5 h-0.5 bg-black rounded-full transition-all duration-300"></span>
         </button>
 
-        <div className="relative z-10 w-11 h-11 sm:w-14 sm:h-14 rounded-full bg-gray-100 border border-gray-200 flex items-center justify-center overflow-hidden text-lg sm:text-xl text-black font-bold shadow-sm">
+        <div className="relative z-10 w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gray-50 border border-gray-100 flex items-center justify-center overflow-hidden text-lg sm:text-xl text-black font-bold shadow-soft">
           {persona.avatar_url ? (
             <Image
               src={persona.avatar_url}
@@ -56,17 +56,17 @@ export default function ChatInterface({ persona, onSendMessage, onNewChat, onMen
         </div>
         <div className="relative z-10 flex-1 min-w-0">
           <h2 className="font-semibold text-base sm:text-lg text-black tracking-tight truncate">{persona.name}</h2>
-          <p className="text-gray-500 text-xs sm:text-sm truncate font-light">{persona.description}</p>
+          <p className="text-gray-500 text-xs sm:text-sm truncate">{persona.description}</p>
         </div>
 
         {/* New Chat Button */}
         {messages.length > 0 && (
           <button
             onClick={handleNewChat}
-            className="group relative z-10 bg-black border border-black text-white text-xs sm:text-sm font-semibold px-3 sm:px-4 py-2 sm:py-2.5 rounded-full hover:bg-gray-800 shadow-sm hover:shadow-md transition-all hover:scale-[1.02] active:scale-[0.98] whitespace-nowrap"
+            className="group relative z-10 bg-black border border-black text-white text-xs sm:text-sm font-medium px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl shadow-soft hover:shadow-lift hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] transition-all duration-300 whitespace-nowrap"
             title="Start a new conversation"
           >
-            <span className="relative z-10 tracking-wide">New Chat</span>
+            <span className="relative z-10">New Chat</span>
           </button>
         )}
       </div>
@@ -74,17 +74,17 @@ export default function ChatInterface({ persona, onSendMessage, onNewChat, onMen
       {/* Messages - Scrollable middle section */}
       <div className="flex-1 overflow-y-auto overflow-x-hidden px-3 sm:px-4 min-h-0 bg-white" style={{ WebkitOverflowScrolling: 'touch', touchAction: 'pan-y' }}>
         {messages.length === 0 && (
-          <div className="text-center text-gray-600 px-2 py-4 animate-fadeIn">
-            <p className="mb-4 text-sm sm:text-base font-light tracking-wide">Start a conversation with {persona.name}</p>
-            <div className="space-y-2.5">
+          <div className="text-center text-gray-600 px-2 py-6 animate-fadeIn">
+            <p className="mb-6 text-sm sm:text-base text-gray-500">Start a conversation with {persona.name}</p>
+            <div className="space-y-3">
               {persona.conversation_starters?.map((starter, idx) => (
                 <button
                   key={idx}
                   onClick={() => onSendMessage(starter)}
-                  className="group relative block w-full bg-gray-50 border border-gray-200 rounded-2xl sm:rounded-3xl p-3 sm:p-3.5 hover:bg-gray-100 hover:border-gray-300 shadow-sm hover:shadow-md transition-all text-left text-black text-sm sm:text-base overflow-hidden hover:scale-[1.01] active:scale-[0.99] animate-fadeIn"
-                  style={{ animationDelay: `${idx * 80}ms`, animationFillMode: 'both' }}
+                  className="group relative block w-full bg-gray-50 border border-gray-100 rounded-2xl p-4 hover:bg-white hover:border-gray-200 shadow-xs hover:shadow-soft transition-all duration-300 text-left text-black text-sm sm:text-base overflow-hidden hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.99] animate-fadeIn"
+                  style={{ animationDelay: `${idx * 100}ms`, animationFillMode: 'both' }}
                 >
-                  <span className="relative z-10 font-light tracking-wide">{starter}</span>
+                  <span className="relative z-10">{starter}</span>
                 </button>
               ))}
             </div>
@@ -102,11 +102,11 @@ export default function ChatInterface({ persona, onSendMessage, onNewChat, onMen
 
         {isLoading && (
           <div className="flex justify-start mb-4 animate-fadeIn">
-            <div className="relative bg-gray-100 border border-gray-200 px-4 sm:px-5 py-3 sm:py-3.5 rounded-3xl shadow-sm">
-              <div className="relative z-10 flex space-x-2">
-                <div className="w-2 h-2 bg-black rounded-full animate-bounce" />
-                <div className="w-2 h-2 bg-black rounded-full animate-bounce delay-100" />
-                <div className="w-2 h-2 bg-black rounded-full animate-bounce delay-200" />
+            <div className="relative bg-gray-50 border border-gray-100 px-5 py-4 rounded-2xl shadow-soft">
+              <div className="relative z-10 flex space-x-1.5">
+                <div className="w-2 h-2 bg-gray-400 rounded-full animate-wave" style={{ animationDelay: '0ms' }} />
+                <div className="w-2 h-2 bg-gray-400 rounded-full animate-wave" style={{ animationDelay: '150ms' }} />
+                <div className="w-2 h-2 bg-gray-400 rounded-full animate-wave" style={{ animationDelay: '300ms' }} />
               </div>
             </div>
           </div>

@@ -65,46 +65,47 @@ export default function PersonaCard({ persona, onEdit, onLikeChange }) {
     <div
       className={`
         group relative bg-white
-        border border-gray-200 rounded-lg overflow-hidden
-        hover:shadow-md hover:border-spirit-accent
-        transition-all duration-200
+        border border-gray-100 rounded-2xl overflow-hidden
+        shadow-soft hover:shadow-lift hover:border-gray-200
+        hover:-translate-y-1
+        transition-all duration-300 ease-out
         cursor-pointer
       `}
       onClick={handleClick}
     >
-      {/* Image Container - Clean, minimal */}
-      <div className="relative w-full h-32 md:h-40 overflow-hidden bg-gray-100">
+      {/* Image Container */}
+      <div className="relative w-full h-36 md:h-44 overflow-hidden bg-gray-50">
         <Image
           src={persona.image_url || persona.avatar_url || '/default-persona.png'}
           alt={persona.name}
           fill
-          className="object-cover object-[center_25%] group-hover:scale-105 transition-transform duration-300"
+          className="object-cover object-[center_25%] group-hover:scale-110 transition-transform duration-500 ease-out"
         />
-        {/* Subtle overlay on hover - adds depth */}
-        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-200" />
+        {/* Subtle gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       </div>
 
-      {/* Info Section - Clean typography */}
-      <div className="p-3 space-y-1">
+      {/* Info Section */}
+      <div className="p-4 space-y-2">
         <div className="flex items-start justify-between gap-2">
-          {/* Name - Uses display font */}
-          <h3 className="font-display text-sm md:text-base font-semibold text-gray-900 flex-1 min-w-0 truncate">
+          {/* Name */}
+          <h3 className="font-display text-sm md:text-base font-semibold text-black flex-1 min-w-0 truncate group-hover:text-gray-700 transition-colors duration-300">
             {persona.name}
           </h3>
 
-          {/* Like Button - Minimal, gold when liked */}
+          {/* Like Button - Black when liked */}
           <button
             onClick={handleLike}
-            className="flex-shrink-0 p-1 hover:opacity-70 transition-opacity"
+            className={`flex-shrink-0 p-1.5 rounded-xl transition-all duration-300 ${isLiked ? 'bg-black text-white' : 'hover:bg-gray-100 text-gray-400 hover:text-gray-600'}`}
             title={isLiked ? "Unlike persona" : "Like persona"}
             aria-label={isLiked ? "Unlike persona" : "Like persona"}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4 md:h-5 md:w-5"
-              fill={isLiked ? "#D4AF37" : "none"}
+              className="h-4 w-4 md:h-5 md:w-5 transition-transform duration-300"
+              fill={isLiked ? "currentColor" : "none"}
               viewBox="0 0 24 24"
-              stroke={isLiked ? "#D4AF37" : "currentColor"}
+              stroke="currentColor"
               strokeWidth={2}
             >
               <path
@@ -116,8 +117,8 @@ export default function PersonaCard({ persona, onEdit, onLikeChange }) {
           </button>
         </div>
 
-        {/* Description - Muted color for hierarchy */}
-        <p className="text-gray-600 text-[10px] md:text-xs line-clamp-2 leading-relaxed">
+        {/* Description */}
+        <p className="text-gray-500 text-xs md:text-sm line-clamp-2 leading-relaxed">
           {persona.description || persona.bio}
         </p>
       </div>
@@ -129,13 +130,13 @@ export default function PersonaCard({ persona, onEdit, onLikeChange }) {
             e.stopPropagation()
             onEdit(persona)
           }}
-          className="absolute top-2 right-2 bg-white/95 hover:bg-white p-2 border border-gray-200 transition-colors"
+          className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm hover:bg-white p-2 rounded-xl border border-gray-100 shadow-soft hover:shadow-lift transition-all duration-300"
           title="Edit persona"
           aria-label="Edit persona"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-4 w-4 text-gray-700"
+            className="h-4 w-4 text-gray-600"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
