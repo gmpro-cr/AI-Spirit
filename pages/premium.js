@@ -2,9 +2,9 @@ import { useState } from 'react'
 import Head from 'next/head'
 import Script from 'next/script'
 import { useRouter } from 'next/router'
-import Link from 'next/link'
 import { useAuth } from '@/context/AuthContext'
 import Navbar from '@/components/layout/Navbar'
+import MobileBottomNav from '@/components/layout/MobileBottomNav'
 import ContactModal from '@/components/ContactModal'
 import { FAQSchema } from '@/components/seo/StructuredData'
 
@@ -12,23 +12,23 @@ import { FAQSchema } from '@/components/seo/StructuredData'
 const premiumFaqs = [
     {
         question: 'What is included in AI-Spirit Premium?',
-        answer: 'AI-Spirit Premium includes unlimited messages, voice AI responses, unlimited custom personas, forever chat history, and priority response speed for just ₹249/month.'
+        answer: 'AI-Spirit Premium includes unlimited messages and the ability to create your own custom AI personas for just ₹249/month.'
     },
     {
         question: 'How much does AI-Spirit Premium cost?',
-        answer: 'AI-Spirit Premium costs ₹249 per month, which is less than ₹9 per day for unlimited AI conversations with voice responses.'
+        answer: 'AI-Spirit Premium costs ₹249 per month, which is less than ₹9 per day for unlimited AI conversations.'
     },
     {
         question: 'What is the difference between Free and Premium plans?',
-        answer: 'Free plan offers 20 messages per day, 2 custom personas, and 7-day chat history with text only. Premium offers unlimited messages, unlimited custom personas, forever chat history, and voice AI responses.'
+        answer: 'Free plan offers 20 messages per day with access to all pre-built personas. Premium offers unlimited messages and lets you create your own custom AI personas.'
     },
     {
         question: 'Can I cancel my AI-Spirit Premium subscription?',
         answer: 'Yes, you can cancel your Premium subscription anytime. There are no long-term commitments or cancellation fees.'
     },
     {
-        question: 'What are voice responses in AI-Spirit?',
-        answer: 'Voice responses allow your AI personas to speak to you with natural-sounding voice. Instead of just reading text, you can hear your AI coach talk to you, making conversations more personal and engaging.'
+        question: 'What are custom personas?',
+        answer: 'Custom personas let you create your own AI characters with unique personalities, knowledge areas, and conversation styles. Design an AI that perfectly fits your needs.'
     },
     {
         question: 'Is the payment for AI-Spirit Premium secure?',
@@ -115,12 +115,12 @@ export default function Premium() {
     return (
         <>
             <Head>
-                <title>Premium Membership - Voice AI & Unlimited Chats | AI - Spirit</title>
-                <meta name="description" content="Get unlimited conversations with AI personas + voice responses. Premium membership at ₹249/month. Hear your AI coach speak to you!" />
-                <meta name="keywords" content="premium membership, unlimited AI chat, AI voice, AI - Spirit premium, voice AI" />
+                <title>Premium Membership - Unlimited Messages & Custom Personas | AI - Spirit</title>
+                <meta name="description" content="Get unlimited conversations with AI personas and create your own custom AI characters. Premium membership at ₹249/month." />
+                <meta name="keywords" content="premium membership, unlimited AI chat, custom AI personas, AI - Spirit premium" />
                 <link rel="canonical" href="https://ai-spirit.in/premium" />
                 <meta property="og:title" content="Premium Membership | AI - Spirit" />
-                <meta property="og:description" content="Unlimited messages + Voice AI for just ₹249/month." />
+                <meta property="og:description" content="Unlimited messages + Create custom personas for just ₹249/month." />
                 <meta property="og:url" content="https://ai-spirit.in/premium" />
             </Head>
             <FAQSchema faqs={premiumFaqs} />
@@ -134,15 +134,15 @@ export default function Premium() {
 
                 {/* Hero Section */}
                 <div className="pt-28 pb-12 px-6 text-center">
-                    <div className="inline-flex items-center gap-2 bg-gradient-to-r from-indigo-100 via-purple-100 to-pink-100 text-indigo-700 text-sm font-semibold px-5 py-2.5 rounded-full mb-8 shadow-sm border border-indigo-100">
-                        <span>🎙️</span>
-                        <span>NEW: Voice responses now available!</span>
+                    <div className="inline-flex items-center gap-2 bg-gray-100 text-gray-700 text-sm font-semibold px-5 py-2.5 rounded-full mb-8 shadow-sm border border-gray-200">
+                        <span>✨</span>
+                        <span>Unlock the full experience</span>
                     </div>
                     <h1 className="font-display text-5xl md:text-7xl font-bold mb-6 tracking-tight bg-gradient-to-r from-black via-gray-800 to-black bg-clip-text text-transparent">
-                        Hear your AI speak
+                        Go Premium
                     </h1>
                     <p className="text-xl md:text-2xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
-                        Unlimited conversations + voice responses. Your personal AI coach that actually talks to you.
+                        Unlimited messages + Create your own AI personas. No limits, just conversations.
                     </p>
                 </div>
 
@@ -169,21 +169,9 @@ export default function Premium() {
                                     <CheckIcon />
                                     <span>Access to all personas</span>
                                 </li>
-                                <li className="flex items-center gap-3 text-black">
-                                    <CheckIcon />
-                                    <span>2 custom personas</span>
-                                </li>
-                                <li className="flex items-center gap-3 text-black">
-                                    <CheckIcon />
-                                    <span>7-day chat history</span>
-                                </li>
                                 <li className="flex items-center gap-3 text-gray-400">
                                     <XIcon />
-                                    <span>Text only (no voice)</span>
-                                </li>
-                                <li className="flex items-center gap-3 text-gray-400">
-                                    <XIcon />
-                                    <span>Standard response speed</span>
+                                    <span>Cannot create custom personas</span>
                                 </li>
                             </ul>
 
@@ -221,22 +209,7 @@ export default function Premium() {
                                 </li>
                                 <li className="flex items-center gap-3 font-medium">
                                     <CheckIcon />
-                                    <div className="flex items-center gap-2">
-                                        <span className="text-black">🎙️ Voice responses</span>
-                                        <span className="text-xs bg-purple-100 text-purple-700 px-2 py-0.5 rounded-full">NEW</span>
-                                    </div>
-                                </li>
-                                <li className="flex items-center gap-3 font-medium">
-                                    <CheckIcon />
-                                    <span className="text-black">Unlimited custom personas</span>
-                                </li>
-                                <li className="flex items-center gap-3 font-medium">
-                                    <CheckIcon />
-                                    <span className="text-black">Forever chat history</span>
-                                </li>
-                                <li className="flex items-center gap-3 font-medium">
-                                    <CheckIcon />
-                                    <span className="text-black">Priority AI speed</span>
+                                    <span className="text-black">Create custom personas</span>
                                 </li>
                             </ul>
 
@@ -280,24 +253,14 @@ export default function Premium() {
                                     <td className="p-4 text-center bg-gray-100 font-medium">Unlimited</td>
                                 </tr>
                                 <tr>
-                                    <td className="p-4">Voice responses</td>
-                                    <td className="p-4 text-center text-gray-400">—</td>
+                                    <td className="p-4">Access to all personas</td>
+                                    <td className="p-4 text-center">✓</td>
                                     <td className="p-4 text-center bg-gray-100">✓</td>
                                 </tr>
                                 <tr>
-                                    <td className="p-4">Chat history</td>
-                                    <td className="p-4 text-center">7 days</td>
-                                    <td className="p-4 text-center bg-gray-100 font-medium">Forever</td>
-                                </tr>
-                                <tr>
-                                    <td className="p-4">Custom personas</td>
-                                    <td className="p-4 text-center">2</td>
-                                    <td className="p-4 text-center bg-gray-100 font-medium">Unlimited</td>
-                                </tr>
-                                <tr>
-                                    <td className="p-4">Response speed</td>
-                                    <td className="p-4 text-center text-gray-500">Standard</td>
-                                    <td className="p-4 text-center bg-gray-100 font-medium">Priority</td>
+                                    <td className="p-4">Create custom personas</td>
+                                    <td className="p-4 text-center text-gray-400">—</td>
+                                    <td className="p-4 text-center bg-gray-100 font-medium">✓</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -328,55 +291,10 @@ export default function Premium() {
                     </div>
                 </div>
 
-                {/* Mobile Bottom Navigation */}
-                <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-gray-200 z-50 shadow-lg">
-                    <div className="flex justify-around items-center h-16 px-2">
-                        {/* Home */}
-                        <Link
-                            href="/"
-                            className="flex flex-col items-center justify-center flex-1 py-2 text-gray-500 hover:text-gray-700 transition-colors"
-                        >
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                            </svg>
-                            <span className="text-xs mt-1 font-medium">Home</span>
-                        </Link>
-
-                        {/* Chats */}
-                        <Link
-                            href="/chats"
-                            className="flex flex-col items-center justify-center flex-1 py-2 text-gray-500 hover:text-gray-700 transition-colors"
-                        >
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                            </svg>
-                            <span className="text-xs mt-1 font-medium">Chats</span>
-                        </Link>
-
-                        {/* Create */}
-                        <Link
-                            href="/personas"
-                            className="flex flex-col items-center justify-center flex-1 py-2 text-gray-500 hover:text-gray-700 transition-colors"
-                        >
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                            </svg>
-                            <span className="text-xs mt-1 font-medium">Create</span>
-                        </Link>
-
-                        {/* Account */}
-                        <Link
-                            href="/auth/signin"
-                            className="flex flex-col items-center justify-center flex-1 py-2 text-gray-500 hover:text-gray-700 transition-colors"
-                        >
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                            </svg>
-                            <span className="text-xs mt-1 font-medium">Account</span>
-                        </Link>
-                    </div>
-                </nav>
             </div>
+
+            {/* Mobile Bottom Navigation */}
+            <MobileBottomNav />
 
             {/* Contact Modal */}
             <ContactModal

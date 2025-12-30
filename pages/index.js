@@ -27,6 +27,38 @@ function Personas() {
   const [loadingPersonas, setLoadingPersonas] = useState(true)
   const [likedPersonaSlugs, setLikedPersonaSlugs] = useState([])
   const [showWelcomeTip, setShowWelcomeTip] = useState(false)
+  const [isPremium, setIsPremium] = useState(false)
+
+  // Check premium status
+  useEffect(() => {
+    const checkPremiumStatus = async () => {
+      if (!user) {
+        setIsPremium(false)
+        return
+      }
+      try {
+        const res = await fetch(`/api/user/subscription-status?userId=${user.id}`)
+        if (res.ok) {
+          const data = await res.json()
+          setIsPremium(data.isPremium || false)
+        }
+      } catch (error) {
+        console.error('Error checking premium status:', error)
+        setIsPremium(false)
+      }
+    }
+    checkPremiumStatus()
+  }, [user])
+
+  // Handle create persona click - check premium status
+  const handleCreatePersonaClick = () => {
+    if (!isPremium) {
+      // Redirect to premium page
+      router.push('/premium')
+      return
+    }
+    setIsModalOpen(true)
+  }
 
   // Rotating search placeholders
   const searchPrompts = [
@@ -77,10 +109,14 @@ function Personas() {
   // Check for ?create=true query parameter
   useEffect(() => {
     if (router.query.create === 'true') {
-      setIsModalOpen(true)
       router.replace('/', undefined, { shallow: true })
+      if (isPremium) {
+        setIsModalOpen(true)
+      } else {
+        router.push('/premium')
+      }
     }
-  }, [router.query])
+  }, [router.query, isPremium])
 
   const loadAllPersonas = async () => {
     console.log('=== LOADING ALL PERSONAS ===')
@@ -208,7 +244,7 @@ function Personas() {
         {/* Side Panel */}
         <SidePanelNew
           showPastChats={true}
-          onCreatePersona={() => setIsModalOpen(true)}
+          onCreatePersona={handleCreatePersonaClick}
         />
 
         {/* Main Content */}
@@ -316,7 +352,7 @@ function Personas() {
       />
 
       {/* Mobile Bottom Navigation */}
-      <MobileBottomNav onCreatePersona={() => setIsModalOpen(true)} />
+      <MobileBottomNav onCreatePersona={handleCreatePersonaClick} />
     </>
   )
 }
