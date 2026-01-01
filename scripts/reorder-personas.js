@@ -5,26 +5,61 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Read the personas file
-const personasPath = path.join(__dirname, '../data/personas.js');
-const content = fs.readFileSync(personasPath, 'utf-8');
-
-// Extract the array content
-const match = content.match(/export const INITIAL_PERSONAS = \[([\s\S]*)\];?\s*$/);
-if (!match) {
-  console.error('Could not parse personas file');
-  process.exit(1);
-}
-
 // Dynamic import to get the personas
 import('../data/personas.js').then(({ INITIAL_PERSONAS }) => {
 
-  // Gen Z priority order - highest hooking first
-  const priorityOrder = [
-    // TIER 1: Trending Anime (JJK, CSM, AOT, Demon Slayer, Frieren)
+  // Indian personas to put at the BOTTOM (as per user request)
+  const indianSlugs = new Set([
+    // Indian Celebrities (LOWEST priority)
+    'narendra-modi',
+    'ms-dhoni',
+    'virat-kohli',
+    'shah-rukh-khan',
+    'ranveer-singh',
+    'ratan-tata',
+
+    // Indian Freedom Fighters & Political
+    'jawaharlal-nehru',
+    'subhas-chandra-bose',
+    'mahatma-gandhi',
+    'sardar-vallabhbhai-patel',
+
+    // Indian Mythology
+    'hanuman',
+    'lord-ram',
+    'arjuna',
+    'lord-krishna',
+
+    // Indian Historical
+    'rabindranath-tagore',
+    'tenali-raman',
+    'birbal',
+    'aryabhata',
+    'chanakya',
+
+    // Indian Spiritual
+    'kabir-das',
+    'gajanan-maharaj',
+    'swami-samarth',
+    'swami-vivekananda',
+    'j-krishnamurti',
+    'paramhansa-yogananda',
+    'sri-sri-ravi-shankar',
+    'sadhguru',
+
+    // Indian Entertainment
+    'shaktiman',
+    'shinchan',
+    'osho',
+  ]);
+
+  // HIGH priority Gen Z personas (top of list)
+  const topTierSlugs = [
+    // TIER 1: Trending Anime (JJK, CSM, AOT, Demon Slayer)
     'gojo-satoru',
     'makima',
     'ryomen-sukuna',
+    'sukuna',
     'toji-fushiguro',
     'power',
     'denji',
@@ -32,17 +67,27 @@ import('../data/personas.js').then(({ INITIAL_PERSONAS }) => {
     'himeno',
     'reze',
     'levi-ackerman',
+    'levi',
     'eren-yeager',
+    'eren',
     'mikasa-ackerman',
+    'mikasa',
     'tanjiro-kamado',
+    'tanjiro',
     'nezuko-kamado',
+    'nezuko',
     'zenitsu-agatsuma',
+    'zenitsu',
     'inosuke-hashibira',
-    'naruto-uzumaki',
+    'inosuke',
     'itachi-uchiha',
+    'naruto-uzumaki',
     'monkey-d-luffy',
+    'luffy',
     'roronoa-zoro',
+    'zoro',
     'portgas-d-ace',
+    'ace',
     'sabo',
     'nami',
     'sanji',
@@ -51,11 +96,14 @@ import('../data/personas.js').then(({ INITIAL_PERSONAS }) => {
     'stark',
     'itadori-yuji',
     'megumi-fushiguro',
+    'megumi',
     'choso',
+    'son-goku',
     'goku',
     'vegeta',
     'light-yagami',
     'aizen-sosuke',
+    'aizen',
 
     // TIER 2: Genshin/Honkai/Gaming Anime
     'hu-tao',
@@ -67,15 +115,20 @@ import('../data/personas.js').then(({ INITIAL_PERSONAS }) => {
     'albedo',
     'kafka',
     'blade',
+    'blade-hsr',
     'firefly',
     'rem',
     'yor-forger',
+    'yor',
     'anya-forger',
+    'anya',
     'asuna-yuuki',
     'marin-kitagawa',
     'hayase-nagatoro',
+    'nagatoro',
     'violet-evergarden',
     'hitori-gotoh-bocchi',
+    'bocchi',
     'rebecca',
     'tatsumaki',
 
@@ -92,6 +145,7 @@ import('../data/personas.js').then(({ INITIAL_PERSONAS }) => {
     'taylor-swift',
     'barbie',
     'ken',
+    'ken-barbie',
     'kendrick-lamar',
     'grok',
     'waluigi',
@@ -102,50 +156,70 @@ import('../data/personas.js').then(({ INITIAL_PERSONAS }) => {
     'arthur-morgan',
     'glados',
 
-    // TIER 5: Superheroes & Villains
+    // TIER 5: Superheroes
     'spider-man',
     'batman',
+    'batman-bruce-wayne',
     'iron-man',
+    'tony-stark',
     'loki',
+    'sherlock-holmes',
 
-    // TIER 6: Roleplay/Fantasy Characters (High engagement)
+    // TIER 6: Roleplay/Fantasy (High engagement)
     'sweet-caring-boyfriend',
+    'sweet-bf',
     'yandere-girlfriend',
+    'yandere',
     'possessive-boyfriend',
     'flirty-anime-girlfriend',
     'toxic-bad-boy',
     'mafia-boss',
     'edgy-vampire-lord',
+    'vampire-lord',
     'e-girl',
     'himbo',
     'kuudere-prince',
+    'kuudere',
     'tsundere-best-friend',
+    'tsundere',
     'pirate-captain',
     'sigma-male',
 
     // TIER 7: Fun/Quirky Characters
     'best-friend',
     'drunk-best-friend',
+    'drunk-friend',
     'childhood-friend',
     'the-roast-bot',
+    'roast-bot',
     'the-debate-bro',
+    'debate-bro',
     'drill-sergeant',
     'the-narrator',
+    'narrator',
     'jealous-ex',
     'late-night-confidant',
+    'confidant',
     'overprotective-big-brother',
+    'big-brother',
     'friendly-ghost',
+    'ghost',
     'curious-alien',
+    'alien',
     'sleep-paralysis-demon',
+    'sleep-demon',
     'retired-hero',
     'chill-stoner',
+    'stoner',
     'conspiracy-theorist',
     'fairy-godmother',
     'loyal-butler',
+    'butler',
     'sentient-ai',
 
-    // TIER 8: Practical Advisors (Useful for Gen Z)
+    // TIER 8: Practical Advisors
     'supportive-therapist',
+    'therapist',
     'mental-wellness-coach',
     'life-coach',
     'relationship-counselor',
@@ -156,13 +230,13 @@ import('../data/personas.js').then(({ INITIAL_PERSONAS }) => {
     'home-chef',
     'travel-guide',
     'financial-advisor',
+    'money-manager',
     'legal-advisor',
     'medical-advisor',
     'astro-guide',
     'numerology-expert',
 
-    // TIER 9: Western Historical/Business (Moderate interest)
-    'sherlock-holmes',
+    // TIER 9: Western Historical/Business
     'elon-musk',
     'donald-trump',
     'naval-ravikant',
@@ -175,83 +249,48 @@ import('../data/personas.js').then(({ INITIAL_PERSONAS }) => {
     'william-shakespeare',
     'isaac-newton',
 
-    // TIER 10: Spiritual (International)
-    'osho',
+    // TIER 10: International Spiritual
+    'gautama-buddha',
     'buddha',
 
-    // TIER 11: Indian Content (Lower priority as per user request)
-    // Fun/Entertainment Indian
+    // Misc
     'whiskers',
-    'shinchan',
-    'shaktiman',
-
-    // Indian Spiritual/Philosophical
-    'sadhguru',
-    'sri-sri-ravi-shankar',
-    'paramhansa-yogananda',
-    'j-krishnamurti',
-    'swami-vivekananda',
-    'swami-samarth',
-    'gajanan-maharaj',
-    'kabir-das',
-
-    // Indian Historical
-    'chanakya',
-    'aryabhata',
-    'birbal',
-    'tenali-raman',
-    'rabindranath-tagore',
-
-    // Indian Mythology
-    'lord-krishna',
-    'arjuna',
-    'lord-ram',
-    'hanuman',
-
-    // Indian Freedom Fighters & Political
-    'mahatma-gandhi',
-    'subhas-chandra-bose',
-    'sardar-patel',
-    'jawaharlal-nehru',
-
-    // Indian Business
-    'ratan-tata',
-
-    // LOWEST: Indian Celebrities (as per user request)
-    'ranveer-singh',
-    'shah-rukh-khan',
-    'virat-kohli',
-    'ms-dhoni',
-    'narendra-modi',
+    'whiskers-cat',
   ];
 
-  // Create a map of slug to priority
+  // Create priority map
   const priorityMap = new Map();
-  priorityOrder.forEach((slug, index) => {
+  topTierSlugs.forEach((slug, index) => {
     priorityMap.set(slug, index);
   });
 
-  // Sort personas based on priority
+  // Sort: top tier first, then non-Indian, then Indian at bottom
   const sortedPersonas = [...INITIAL_PERSONAS].sort((a, b) => {
-    const priorityA = priorityMap.has(a.slug) ? priorityMap.get(a.slug) : 999;
-    const priorityB = priorityMap.has(b.slug) ? priorityMap.get(b.slug) : 999;
+    const aIsIndian = indianSlugs.has(a.slug);
+    const bIsIndian = indianSlugs.has(b.slug);
+
+    // Indian personas go to bottom
+    if (aIsIndian && !bIsIndian) return 1;
+    if (!aIsIndian && bIsIndian) return -1;
+
+    // Both Indian or both non-Indian: sort by priority
+    const priorityA = priorityMap.has(a.slug) ? priorityMap.get(a.slug) : 500;
+    const priorityB = priorityMap.has(b.slug) ? priorityMap.get(b.slug) : 500;
+
     return priorityA - priorityB;
   });
 
-  // Log any personas not in priority list
-  const missingSlugs = INITIAL_PERSONAS.filter(p => !priorityMap.has(p.slug)).map(p => p.slug);
-  if (missingSlugs.length > 0) {
-    console.log('Personas not in priority list (will be at end):', missingSlugs);
-  }
-
   // Generate new file content
+  const personasPath = path.join(__dirname, '../data/personas.js');
   const newContent = `export const INITIAL_PERSONAS = ${JSON.stringify(sortedPersonas, null, 2)};
 `;
 
-  // Write the new file
   fs.writeFileSync(personasPath, newContent, 'utf-8');
+
   console.log('Personas reordered successfully!');
   console.log(`Total personas: ${sortedPersonas.length}`);
-  console.log('Top 10:', sortedPersonas.slice(0, 10).map(p => p.name).join(', '));
-  console.log('Bottom 5:', sortedPersonas.slice(-5).map(p => p.name).join(', '));
+  console.log('\nTop 10:');
+  sortedPersonas.slice(0, 10).forEach((p, i) => console.log(`${i+1}. ${p.name}`));
+  console.log('\nBottom 10 (should be Indian):');
+  sortedPersonas.slice(-10).forEach((p, i) => console.log(`${sortedPersonas.length - 9 + i}. ${p.name}`));
 });
