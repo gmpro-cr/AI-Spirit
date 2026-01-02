@@ -14,7 +14,7 @@ export default function Navbar({ onMenuToggle, showMenuButton = false }) {
 
   return (
     <nav className="fixed top-0 w-full bg-white/80 backdrop-blur-xl border-b border-gray-100 shadow-xs z-50 transition-all duration-300">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="w-full px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Left Side - Menu Button + Logo */}
           <div className="flex items-center gap-3">
