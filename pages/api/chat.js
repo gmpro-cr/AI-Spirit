@@ -109,11 +109,11 @@ export default async function handler(req, res) {
             .eq('role', 'user')
             .gte('created_at', todayISTinUTC.toISOString())
 
-          if (!countError && count >= 20) {
+          if (!countError && count >= 100) {
             return res.status(403).json({
-              error: 'Daily message limit reached (20 messages). Upgrade to Premium for unlimited access.',
+              error: 'Daily message limit reached (100 messages). Upgrade to Premium for unlimited access.',
               isLimitReached: true,
-              limit: 20
+              limit: 100
             })
           }
         }

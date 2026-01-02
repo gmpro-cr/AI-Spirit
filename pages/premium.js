@@ -20,7 +20,7 @@ const premiumFaqs = [
     },
     {
         question: 'What is the difference between Free and Premium plans?',
-        answer: 'Free plan offers 20 messages per day with access to all pre-built personas. Premium offers unlimited messages and lets you create your own custom AI personas.'
+        answer: 'Free plan offers 100 messages per day with access to all pre-built personas. Premium offers unlimited messages and lets you create your own custom AI personas.'
     },
     {
         question: 'Can I cancel my AI-Spirit Premium subscription?',
@@ -163,7 +163,7 @@ export default function Premium() {
                             <ul className="space-y-4 mb-8 flex-grow">
                                 <li className="flex items-center gap-3 text-black">
                                     <CheckIcon />
-                                    <span>20 messages per day</span>
+                                    <span>100 messages per day</span>
                                 </li>
                                 <li className="flex items-center gap-3 text-black">
                                     <CheckIcon />
@@ -249,7 +249,7 @@ export default function Premium() {
                             <tbody className="divide-y divide-gray-200">
                                 <tr>
                                     <td className="p-4">Daily messages</td>
-                                    <td className="p-4 text-center">20</td>
+                                    <td className="p-4 text-center">100</td>
                                     <td className="p-4 text-center bg-gray-100 font-medium">Unlimited</td>
                                 </tr>
                                 <tr>

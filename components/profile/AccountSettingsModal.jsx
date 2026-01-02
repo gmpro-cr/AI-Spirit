@@ -107,7 +107,7 @@ export default function AccountSettingsModal({ isOpen, onClose }) {
                         <div className="flex items-center justify-between">
                             <span className="text-sm text-gray-600">Messages Today</span>
                             <span className="text-sm font-medium text-gray-900">
-                                {loading ? '...' : `${messagesUsedToday}/20`}
+                                {loading ? '...' : `${messagesUsedToday}/100`}
                             </span>
                         </div>
                     )}

@@ -6,6 +6,7 @@ import SidePanelNew from '@/components/layout/SidePanel'
 import { useChat } from '@/context/ChatContext'
 import { INITIAL_PERSONAS } from '@/data/personas'
 import { useAuth } from '@/context/AuthContext'
+import { PersonaSchema, BreadcrumbSchema } from '@/components/seo/StructuredData'
 import {
   incrementGuestMessageCount,
   shouldShowTimeBasedPrompt,
@@ -459,7 +460,7 @@ function ChatPage() {
 
         if (!response.ok) {
           if (response.status === 403 && data.isLimitReached) {
-            if (confirm('You have reached your daily message limit (20 messages). Upgrade to Premium for unlimited access?')) {
+            if (confirm('You have reached your daily message limit (100 messages). Upgrade to Premium for unlimited access?')) {
               router.push('/premium')
             }
             throw new Error(data.error)
@@ -549,27 +550,45 @@ function ChatPage() {
   return (
     <>
       <Head>
-        <title>Chat with {persona.name} - AI - Spirit</title>
+        {/* Primary Meta Tags */}
+        <title>{`Chat with ${persona.name} - ${persona.category || 'AI'} Companion | AI Spirit`}</title>
+        <meta name="description" content={persona.description ? `${persona.description}. Chat with ${persona.name} on AI Spirit - your 24/7 AI companion for engaging conversations.` : `Talk to ${persona.name} on AI Spirit. Get instant, judgment-free conversations 24/7 with this ${persona.category || 'AI'} persona.`} />
+        <meta name="keywords" content={`chat with ${persona.name}, ${persona.name} AI, ${persona.category || 'AI'} AI chat, talk to ${persona.name}, AI Spirit, AI persona chat, ${persona.name?.toLowerCase()} chatbot`} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="canonical" href={`https://ai-spirit.in/chat/${personaId}`} />
 
         {/* Open Graph / Social Media Preview Tags */}
         <meta property="og:type" content="website" />
-        <meta property="og:title" content={`Chat with ${persona.name} - AI Spirit`} />
-        <meta property="og:description" content={persona.short_description || `Talk to ${persona.name} on AI Spirit. Get instant guidance and support 24/7.`} />
+        <meta property="og:title" content={`Chat with ${persona.name} - ${persona.category || 'AI'} Companion | AI Spirit`} />
+        <meta property="og:description" content={persona.description || `Talk to ${persona.name} on AI Spirit. Get instant guidance and support 24/7.`} />
         <meta property="og:url" content={`https://ai-spirit.in/chat/${personaId}`} />
         <meta property="og:site_name" content="AI - Spirit" />
-        <meta property="og:image" content={`https://ai-spirit.in/api/og?title=${encodeURIComponent(`Chat with ${persona.name}`)}&description=${encodeURIComponent(persona.short_description || `Talk to ${persona.name} on AI Spirit`)}&persona=${encodeURIComponent(persona.name)}&avatar=${encodeURIComponent(persona.avatar_url || '')}`} />
+        <meta property="og:image" content={`https://ai-spirit.in/api/og?title=${encodeURIComponent(`Chat with ${persona.name}`)}&description=${encodeURIComponent(persona.description || `Talk to ${persona.name} on AI Spirit`)}&persona=${encodeURIComponent(persona.name)}&avatar=${encodeURIComponent(persona.avatar_url || '')}`} />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
         <meta property="og:image:alt" content={`Chat with ${persona.name} on AI Spirit`} />
 
         {/* Twitter Card Tags */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={`Chat with ${persona.name} - AI Spirit`} />
-        <meta name="twitter:description" content={persona.short_description || `Talk to ${persona.name} on AI Spirit. Get instant guidance and support 24/7.`} />
-        <meta name="twitter:image" content={`https://ai-spirit.in/api/og?title=${encodeURIComponent(`Chat with ${persona.name}`)}&description=${encodeURIComponent(persona.short_description || `Talk to ${persona.name} on AI Spirit`)}&persona=${encodeURIComponent(persona.name)}&avatar=${encodeURIComponent(persona.avatar_url || '')}`} />
+        <meta name="twitter:title" content={`Chat with ${persona.name} - ${persona.category || 'AI'} Companion | AI Spirit`} />
+        <meta name="twitter:description" content={persona.description || `Talk to ${persona.name} on AI Spirit. Get instant guidance and support 24/7.`} />
+        <meta name="twitter:image" content={`https://ai-spirit.in/api/og?title=${encodeURIComponent(`Chat with ${persona.name}`)}&description=${encodeURIComponent(persona.description || `Talk to ${persona.name} on AI Spirit`)}&persona=${encodeURIComponent(persona.name)}&avatar=${encodeURIComponent(persona.avatar_url || '')}`} />
         <meta name="twitter:image:alt" content={`Chat with ${persona.name} on AI Spirit`} />
       </Head>
+
+      {/* Structured Data for SEO */}
+      <PersonaSchema persona={{
+        name: persona.name,
+        description: persona.description,
+        image: persona.image_url ? `https://ai-spirit.in${persona.image_url}` : null,
+        slug: persona.slug,
+        category: persona.category
+      }} />
+      <BreadcrumbSchema items={[
+        { name: 'Home', url: 'https://ai-spirit.in/' },
+        { name: persona.category || 'Personas', url: `https://ai-spirit.in/?category=${encodeURIComponent(persona.category || 'All')}` },
+        { name: persona.name, url: `https://ai-spirit.in/chat/${persona.slug}` }
+      ]} />
 
       <div className="flex h-screen bg-white transition-colors">
         {/* Side Panel */}

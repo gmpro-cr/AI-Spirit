@@ -188,7 +188,7 @@ export function ServiceSchema() {
                 name: 'Free Plan',
                 price: '0',
                 priceCurrency: 'INR',
-                description: '20 messages per day, access to all personas',
+                description: '100 messages per day, access to all personas',
             },
             {
                 '@type': 'Offer',
