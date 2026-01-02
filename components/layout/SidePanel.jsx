@@ -69,12 +69,12 @@ export default function SidePanel({ onBack, backButtonText, showPastChats = true
   }
 
   return (
-    <aside className={`w-64 bg-gray-50 border-r border-gray-200 p-6 flex flex-col justify-between hidden md:flex fixed left-0 transition-colors ${hasNavbar ? 'h-[calc(100vh-4rem)] top-16' : 'h-screen top-0'}`}>
+    <aside className={`w-64 bg-gray-50 border-r border-gray-200 flex flex-col justify-between hidden md:flex fixed left-0 transition-colors ${hasNavbar ? 'h-[calc(100vh-4rem)] top-16' : 'h-screen top-0'}`}>
       {/* Top Section */}
       <div className="flex flex-col flex-1 overflow-hidden">
-        {/* Back Navigation */}
+        {/* Back Navigation - Aligned with chat header */}
         {onBack && (
-          <div className="mb-6 pb-5 border-b border-gray-300">
+          <div className="h-16 flex items-center px-6 border-b border-gray-200">
             <button
               onClick={onBack}
               className="flex items-center text-sm font-medium text-gray-700 hover:text-black transition-colors"
@@ -100,7 +100,7 @@ export default function SidePanel({ onBack, backButtonText, showPastChats = true
 
         {/* Create Persona Button */}
         {onCreatePersona && (
-          <div className="mb-6">
+          <div className="mb-6 px-6 pt-6">
             <button
               onClick={handleCreateClick}
               className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-black text-white rounded-lg hover:bg-gray-800 transition-all duration-200 shadow-lg hover:shadow-xl font-medium group"
@@ -125,13 +125,13 @@ export default function SidePanel({ onBack, backButtonText, showPastChats = true
         )}
 
         {/* Past Chats Header */}
-        <div className="mb-6">
+        <div className="mb-6 px-6">
           <h2 className="text-xl font-bold text-black">Past Chats</h2>
         </div>
 
         {/* Past Chats List */}
         {showPastChats && (
-          <div className="flex-1 overflow-y-auto">
+          <div className="flex-1 overflow-y-auto px-6">
             {loading ? (
               <p className="text-sm text-gray-500">Loading...</p>
             ) : pastChats.length > 0 ? (
@@ -167,7 +167,7 @@ export default function SidePanel({ onBack, backButtonText, showPastChats = true
       </div>
 
       {/* Bottom Section - User Info or Sign In */}
-      <div className="mt-6 pt-6 border-t border-gray-300">
+      <div className="mt-6 pt-6 px-6 border-t border-gray-200">
         {user ? (
           <button
             onClick={() => setIsSettingsOpen(true)}
