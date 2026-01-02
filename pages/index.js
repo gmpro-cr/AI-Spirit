@@ -193,16 +193,8 @@ function Personas() {
 
           {/* Hero Section - Editorial Style */}
           <div className="px-6 py-12 md:px-12 md:py-16 lg:py-24 border-b border-black">
-            <h1 className="text-6xl md:text-8xl font-black tracking-tighter text-black mb-4 uppercase leading-[0.8]">
-              AI<span className="block italic font-light font-serif">Spirit</span>
-            </h1>
-            <p className="text-xl md:text-2xl font-light text-gray-500 max-w-xl leading-relaxed mt-6">
-              A curated anthology of synthetic personalities. <br />
-              <span className="text-black font-medium">Select a muse.</span>
-            </p>
-
-            {/* High Contrast Search */}
-            <div className="mt-12 max-w-2xl group">
+            {/* High Contrast Search - Now the main hero element */}
+            <div className="max-w-4xl group">
               <div className="relative">
                 <input
                   type="text"
