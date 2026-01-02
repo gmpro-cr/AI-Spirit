@@ -69,17 +69,26 @@ function Personas() {
   ]
   const [searchPlaceholder] = useState(() => searchPrompts[Math.floor(Math.random() * searchPrompts.length)])
 
-  // Default featured personas for "For You" section
+  // Default featured personas for "For You" section - balanced mix for engagement
   const FEATURED_PERSONAS = [
+    // Romance - hook companion-seekers
+    'cold-ceo',
+    'soft-boyfriend',
+    'campus-crush',
+    // Entertainment - keep them laughing
+    'unhinged-therapist',
+    'michael-scott',
+    'jack-sparrow',
+    // Trending Anime - capture anime fans
+    'gojo-satoru',
+    'sung-jin-woo',
+    // Utility - practical value = returns
+    'hype-man',
+    'study-buddy',
     'life-coach',
-    'career-mentor',
-    'travel-guide',
-    'fitness-coach',
-    'money-manager',
-    'astro-guide',
-    'legal-advisor',
-    'medical-advisor',
-    'numerology-expert'
+    // Iconic Characters - universal appeal
+    'tommy-shelby',
+    'joker-ledger'
   ]
 
   // Load liked personas from localStorage
