@@ -89,7 +89,7 @@ export default function PersonaCard({ persona, onEdit, onLikeChange }) {
       <div className="p-4 space-y-2">
         <div className="flex items-start justify-between gap-2">
           {/* Name */}
-          <h3 className="font-display text-sm md:text-base font-semibold text-black flex-1 min-w-0 truncate group-hover:text-gray-700 transition-colors duration-300">
+          <h3 className="font-display text-base md:text-lg font-bold text-gray-900 flex-1 min-w-0 line-clamp-2 leading-tight group-hover:text-black transition-colors duration-300">
             {persona.name}
           </h3>
 
