@@ -74,7 +74,7 @@ export default function SidePanel({ onBack, backButtonText, showPastChats = true
       <div className="flex flex-col flex-1 overflow-hidden">
         {/* Back Navigation - Fixed height header aligned with chat header */}
         {onBack && (
-          <div className="h-16 flex items-center px-6 border-b border-gray-200 flex-shrink-0">
+          <div className="flex items-center p-4 border-b border-gray-200 flex-shrink-0">
             <button
               onClick={onBack}
               className="flex items-center text-sm font-medium text-gray-700 hover:text-black transition-colors"
