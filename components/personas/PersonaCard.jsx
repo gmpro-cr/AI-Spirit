@@ -103,44 +103,42 @@ export default function PersonaCard({ persona, onEdit, onLikeChange, messageCoun
             {persona.name}
           </h3>
 
-          {/* Like Button - Black when liked */}
-          <button
-            onClick={handleLike}
-            className={`flex-shrink-0 p-1.5 rounded-xl transition-all duration-300 ${isLiked ? 'bg-black text-white' : 'hover:bg-gray-100 text-gray-400 hover:text-gray-600'}`}
-            title={isLiked ? "Unlike persona" : "Like persona"}
-            aria-label={isLiked ? "Unlike persona" : "Like persona"}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4 md:h-5 md:w-5 transition-transform duration-300"
-              fill={isLiked ? "currentColor" : "none"}
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
+          {/* Right side - Like button + Message count */}
+          <div className="flex flex-col items-center gap-0.5 flex-shrink-0">
+            {/* Like Button - Black when liked */}
+            <button
+              onClick={handleLike}
+              className={`p-1.5 rounded-xl transition-all duration-300 ${isLiked ? 'bg-black text-white' : 'hover:bg-gray-100 text-gray-400 hover:text-gray-600'}`}
+              title={isLiked ? "Unlike persona" : "Like persona"}
+              aria-label={isLiked ? "Unlike persona" : "Like persona"}
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-              />
-            </svg>
-          </button>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-4 w-4 md:h-5 md:w-5 transition-transform duration-300"
+                fill={isLiked ? "currentColor" : "none"}
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                />
+              </svg>
+            </button>
+
+            {/* Message Count */}
+            {formattedCount && (
+              <span className="text-gray-400 text-[10px] font-medium">{formattedCount}</span>
+            )}
+          </div>
         </div>
 
         {/* Description */}
         <p className="text-gray-500 text-xs md:text-sm line-clamp-2 leading-relaxed">
           {persona.description || persona.bio}
         </p>
-
-        {/* Message Count - Below description */}
-        {formattedCount && (
-          <div className="flex items-center gap-1 text-gray-400 text-xs">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-            </svg>
-            <span>{formattedCount} chats</span>
-          </div>
-        )}
       </div>
 
       {/* Edit Button for Custom Personas */}
