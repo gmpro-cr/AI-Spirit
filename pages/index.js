@@ -176,11 +176,8 @@ function Personas() {
     // Preserve the order from INITIAL_PERSONAS (priority personas first)
     // Custom personas from localStorage and database are appended after
     setPersonas(allPersonas)
-    setFilteredPersonas(allPersonas)
-    setLoadingPersonas(false)
-    console.log('=== PERSONAS LOADING COMPLETE ===')
 
-    // Fetch persona stats (message counts)
+    // Fetch persona stats (message counts) BEFORE showing content
     try {
       const statsRes = await fetch('/api/persona-views')
       if (statsRes.ok) {
@@ -198,6 +195,11 @@ function Personas() {
     } catch (error) {
       console.error('[Persona Stats] Error fetching:', error)
     }
+
+    // Now that both personas AND stats are loaded, show content
+    setFilteredPersonas(allPersonas)
+    setLoadingPersonas(false)
+    console.log('=== PERSONAS LOADING COMPLETE ===')
   }
 
   const handlePersonaCreated = () => {
