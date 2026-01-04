@@ -246,8 +246,15 @@ function Personas() {
       )
     }
 
+    // Sort by message count (highest first)
+    filtered = [...filtered].sort((a, b) => {
+      const countA = personaStats[a.slug]?.message_count || 0
+      const countB = personaStats[b.slug]?.message_count || 0
+      return countB - countA
+    })
+
     setFilteredPersonas(filtered)
-  }, [searchQuery, selectedCategory, personas, likedPersonaSlugs])
+  }, [searchQuery, selectedCategory, personas, likedPersonaSlugs, personaStats])
 
   return (
     <>
