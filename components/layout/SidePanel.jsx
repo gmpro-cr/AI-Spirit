@@ -168,6 +168,9 @@ export default function SidePanel({ onBack, backButtonText, showPastChats = true
 
       {/* Bottom Section - User Info or Sign In */}
       <div className="mt-6 pt-6 px-6 pb-6 border-t border-gray-200">
+        {/* Settings Label */}
+        <p className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-3">Settings</p>
+
         {user ? (
           <button
             onClick={() => setIsSettingsOpen(true)}
