@@ -512,6 +512,9 @@ ${relationshipContext}`
       extractAndSaveMemories(userId, persona.slug, finalConversationId, message, result.response, supabaseAdmin)
         .catch(err => console.error('[Memory Extraction Error]:', err))
 
+      // Increment persona message count
+      incrementPersonaMessageCount(persona.slug)
+
       // Return conversation ID to frontend
       return res.status(200).json({
         response: result.response,
