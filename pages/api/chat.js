@@ -15,6 +15,38 @@ import { extractAndSaveMemories, getUserMemories, formatMemoriesForContext } fro
 const MAX_MESSAGE_LENGTH = 2000 // characters
 const MAX_CONVERSATION_HISTORY = 50 // messages
 
+// Helper to increment persona message count (fire and forget)
+async function incrementPersonaMessageCount(personaSlug) {
+  try {
+    const { data: existing } = await supabaseAdmin
+      .from('persona_views')
+      .select('message_count')
+      .eq('persona_slug', personaSlug)
+      .single()
+
+    if (existing) {
+      await supabaseAdmin
+        .from('persona_views')
+        .update({
+          message_count: (existing.message_count || 0) + 2,
+          last_viewed_at: new Date().toISOString()
+        })
+        .eq('persona_slug', personaSlug)
+    } else {
+      await supabaseAdmin
+        .from('persona_views')
+        .insert({
+          persona_slug: personaSlug,
+          view_count: 0,
+          message_count: 2,
+          last_viewed_at: new Date().toISOString()
+        })
+    }
+  } catch (error) {
+    console.error('[Message Count] Error incrementing:', error)
+  }
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' })
@@ -382,6 +414,9 @@ ${relationshipContext}`
           // Extract memories
           extractAndSaveMemories(userId, persona.slug, finalConversationId, message, fullResponse, supabaseAdmin)
             .catch(err => console.error('[Memory Extraction Error]:', err))
+
+          // Increment persona message count
+          incrementPersonaMessageCount(persona.slug)
         }
 
         return
@@ -490,6 +525,9 @@ ${relationshipContext}`
       extractAndSaveMemories(userId, persona.slug, conversationId, message, result.response, supabaseAdmin)
         .catch(err => console.error('[Memory Extraction Error]:', err))
     }
+
+    // Increment persona message count for ALL users (guests and authenticated)
+    incrementPersonaMessageCount(persona.slug)
 
     return res.status(200).json({
       response: result.response,

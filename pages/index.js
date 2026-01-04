@@ -28,6 +28,7 @@ function Personas() {
   const [likedPersonaSlugs, setLikedPersonaSlugs] = useState([])
   const [showWelcomeTip, setShowWelcomeTip] = useState(false)
   const [isPremium, setIsPremium] = useState(false)
+  const [personaStats, setPersonaStats] = useState({}) // { slug: { message_count, view_count } }
 
   // Check premium status
   useEffect(() => {
@@ -178,6 +179,25 @@ function Personas() {
     setFilteredPersonas(allPersonas)
     setLoadingPersonas(false)
     console.log('=== PERSONAS LOADING COMPLETE ===')
+
+    // Fetch persona stats (message counts)
+    try {
+      const statsRes = await fetch('/api/persona-views')
+      if (statsRes.ok) {
+        const { views } = await statsRes.json()
+        const statsMap = {}
+        views?.forEach(v => {
+          statsMap[v.persona_slug] = {
+            message_count: v.message_count || 0,
+            view_count: v.view_count || 0
+          }
+        })
+        setPersonaStats(statsMap)
+        console.log('[Persona Stats] Loaded stats for', Object.keys(statsMap).length, 'personas')
+      }
+    } catch (error) {
+      console.error('[Persona Stats] Error fetching:', error)
+    }
   }
 
   const handlePersonaCreated = () => {
@@ -320,6 +340,7 @@ function Personas() {
                       persona={persona}
                       onEdit={persona.is_custom ? handleEditPersona : undefined}
                       onLikeChange={handleLikeChange}
+                      messageCount={personaStats[persona.slug]?.message_count}
                     />
                   ))}
                 </div>

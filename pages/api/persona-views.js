@@ -2,18 +2,18 @@ import { supabaseAdmin } from '@/lib/supabase'
 
 export default async function handler(req, res) {
     if (req.method === 'POST') {
-        // Track a persona view
-        const { personaSlug } = req.body
+        // Track a persona view OR increment message count
+        const { personaSlug, incrementMessages } = req.body
 
         if (!personaSlug) {
             return res.status(400).json({ error: 'personaSlug is required' })
         }
 
         try {
-            // Try to increment existing count or insert new record
+            // Try to get existing record
             const { data: existing, error: fetchError } = await supabaseAdmin
                 .from('persona_views')
-                .select('view_count')
+                .select('view_count, message_count')
                 .eq('persona_slug', personaSlug)
                 .single()
 
@@ -23,59 +23,72 @@ export default async function handler(req, res) {
             }
 
             if (existing) {
-                // Update existing
+                // Update existing - increment view or message count
+                const updateData = {
+                    last_viewed_at: new Date().toISOString()
+                }
+
+                if (incrementMessages) {
+                    // Increment message count by 2 (user + assistant)
+                    updateData.message_count = (existing.message_count || 0) + 2
+                } else {
+                    // Increment view count
+                    updateData.view_count = existing.view_count + 1
+                }
+
                 const { error: updateError } = await supabaseAdmin
                     .from('persona_views')
-                    .update({
-                        view_count: existing.view_count + 1,
-                        last_viewed_at: new Date().toISOString()
-                    })
+                    .update(updateData)
                     .eq('persona_slug', personaSlug)
 
                 if (updateError) throw updateError
             } else {
-                // Insert new
+                // Insert new record
+                const insertData = {
+                    persona_slug: personaSlug,
+                    view_count: incrementMessages ? 0 : 1,
+                    message_count: incrementMessages ? 2 : 0,
+                    last_viewed_at: new Date().toISOString()
+                }
+
                 const { error: insertError } = await supabaseAdmin
                     .from('persona_views')
-                    .insert({
-                        persona_slug: personaSlug,
-                        view_count: 1,
-                        last_viewed_at: new Date().toISOString()
-                    })
+                    .insert(insertData)
 
                 if (insertError) throw insertError
             }
 
             return res.status(200).json({ success: true })
         } catch (error) {
-            console.error('Error tracking persona view:', error)
-            return res.status(500).json({ error: 'Failed to track view' })
+            console.error('Error tracking persona:', error)
+            return res.status(500).json({ error: 'Failed to track' })
         }
     }
 
     if (req.method === 'GET') {
-        // Get view counts for all personas or specific slug
+        // Get view counts and message counts for all personas or specific slug
         const { slug } = req.query
 
         try {
             let query = supabaseAdmin
                 .from('persona_views')
-                .select('persona_slug, view_count')
+                .select('persona_slug, view_count, message_count')
 
             if (slug) {
                 query = query.eq('persona_slug', slug)
             }
 
-            const { data, error } = await query.order('view_count', { ascending: false })
+            const { data, error } = await query.order('message_count', { ascending: false })
 
             if (error) throw error
 
             return res.status(200).json({ views: data })
         } catch (error) {
-            console.error('Error fetching persona views:', error)
-            return res.status(500).json({ error: 'Failed to fetch views' })
+            console.error('Error fetching persona stats:', error)
+            return res.status(500).json({ error: 'Failed to fetch stats' })
         }
     }
 
     return res.status(405).json({ error: 'Method not allowed' })
 }
+
