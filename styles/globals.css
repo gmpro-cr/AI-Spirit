@@ -434,6 +434,47 @@ h1, h2, h3, h4, h5, h6 {
     /* Chrome, Safari and Opera */
   }
 
+  /* Custom visible scrollbar for personas list */
+  .scrollbar-visible {
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 0, 0, 0.3) transparent;
+  }
+
+  .scrollbar-visible::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .scrollbar-visible::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 3px;
+  }
+
+  .scrollbar-visible::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 3px;
+    transition: background-color 0.2s ease;
+  }
+
+  .scrollbar-visible::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+
+  /* Ensure scrollbar is always visible on touch devices */
+  @media (hover: none) and (pointer: coarse) {
+    .scrollbar-visible {
+      -webkit-overflow-scrolling: touch;
+    }
+    
+    .scrollbar-visible::-webkit-scrollbar {
+      width: 4px;
+    }
+    
+    .scrollbar-visible::-webkit-scrollbar-thumb {
+      background-color: rgba(0, 0, 0, 0.4);
+    }
+  }
+
   /* Accessibility: Reduced Motion Support */
   @media (prefers-reduced-motion: reduce) {
 

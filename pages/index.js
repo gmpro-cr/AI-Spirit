@@ -281,7 +281,7 @@ function Personas() {
         />
 
         {/* Main Content */}
-        <main className="flex-1 overflow-y-auto md:ml-64 flex flex-col bg-white">
+        <main className="flex-1 overflow-y-auto scrollbar-visible md:ml-64 flex flex-col bg-white">
           <div className="flex-1 px-4 sm:px-6 lg:px-8 py-8 md:py-12 max-w-7xl mx-auto w-full">
             {/* Category Filter */}
             <div className="mb-6 overflow-x-auto scrollbar-hide">
