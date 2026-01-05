@@ -225,18 +225,13 @@ function Personas() {
   }
 
   // Get unique categories
-  const categories = ['For You', 'All', ...new Set(personas.map(p => p.category).filter(Boolean))]
+  const categories = ['All', ...new Set(personas.map(p => p.category).filter(Boolean))]
 
   useEffect(() => {
     let filtered = personas
 
     // Filter by category
-    if (selectedCategory === 'For You') {
-      // For You category - show featured personas + liked personas
-      filtered = personas.filter(p =>
-        FEATURED_PERSONAS.includes(p.slug) || likedPersonaSlugs.includes(p.slug)
-      )
-    } else if (selectedCategory && selectedCategory !== 'All') {
+    if (selectedCategory && selectedCategory !== 'All') {
       filtered = filtered.filter(p => p.category === selectedCategory)
     }
 
