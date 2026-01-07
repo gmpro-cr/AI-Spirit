@@ -322,7 +322,7 @@ function ChatPage() {
       if (!sendCheck.canSend) {
         // Premium limit reached - hard block
         alert(sendCheck.message)
-        setShowPremiumPrompt(true)
+        // setShowPremiumPrompt(true) // Premium UI hidden - keeping code for future use
         return
       }
     }
@@ -524,9 +524,10 @@ function ChatPage() {
         incrementGuestMessageCount()
 
         // Check if we should show premium prompt (50 messages)
-        if (shouldShowPremiumPrompt()) {
-          setShowPremiumPrompt(true)
-        }
+        // Premium prompts disabled - keeping code for future use
+        // if (shouldShowPremiumPrompt()) {
+        //   setShowPremiumPrompt(true)
+        // }
         // Sign-in prompts are handled by time-based timer (every 30 seconds)
       }
 
@@ -960,10 +961,12 @@ function ChatPage() {
         isOpen={showSignInPrompt}
         onClose={() => setShowSignInPrompt(false)}
       />
+      {/* Premium prompt hidden - keeping code for future use
       <PremiumPromptModal
         isOpen={showPremiumPrompt}
         onClose={() => setShowPremiumPrompt(false)}
       />
+      */}
     </>
   )
 }

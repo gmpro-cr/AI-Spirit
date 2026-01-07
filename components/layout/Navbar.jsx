@@ -48,14 +48,16 @@ export default function Navbar({ onMenuToggle, showMenuButton = false }) {
             )}
           </div>
 
-          {/* Right Side - Premium + Contact */}
+          {/* Right Side - Contact (Premium hidden for now) */}
           <div className="flex items-center gap-2 sm:gap-3">
+            {/* Premium link hidden - keeping code for future use
             <Link
               href="/premium"
               className="text-black font-medium px-4 sm:px-5 py-2 sm:py-2.5 text-sm sm:text-base rounded-xl border border-gray-200 hover:border-gray-300 hover:bg-gray-50 hover:shadow-soft transition-all duration-300"
             >
               Premium
             </Link>
+            */}
             <Link
               href="/contact"
               className="bg-black text-white font-medium px-4 sm:px-5 py-2 sm:py-2.5 text-sm sm:text-base rounded-xl border border-black hover:bg-white hover:text-black shadow-soft hover:shadow-lift transition-all duration-300"
