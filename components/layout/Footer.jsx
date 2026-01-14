@@ -18,6 +18,9 @@ export default function Footer() {
             { name: 'Privacy Policy', href: '/privacy' },
             { name: 'Terms of Service', href: '/terms' },
         ],
+        social: [
+            { name: 'Twitter / X', href: 'https://x.com/mahalegauravk', external: true },
+        ],
     }
 
     return (
@@ -96,9 +99,25 @@ export default function Footer() {
 
                 {/* Bottom Bar */}
                 <div className="mt-12 pt-8 border-t border-gray-800">
-                    <p className="text-sm text-gray-500 text-center">
-                        © {currentYear} AI - Spirit. All rights reserved.
-                    </p>
+                    <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+                        <p className="text-sm text-gray-500">
+                            © {currentYear} AI - Spirit. All rights reserved.
+                        </p>
+                        <div className="flex items-center gap-4">
+                            <span className="text-sm text-gray-500">Built by Gaurav Mahale</span>
+                            <a
+                                href="https://x.com/mahalegauravk"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-gray-400 hover:text-white transition-colors"
+                                aria-label="Follow on Twitter"
+                            >
+                                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </footer>

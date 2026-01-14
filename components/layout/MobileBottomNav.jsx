@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useAuth } from '@/context/AuthContext'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import AccountSettingsModal from '@/components/profile/AccountSettingsModal'
 
 export default function MobileBottomNav({ onCreatePersona }) {
@@ -9,35 +9,9 @@ export default function MobileBottomNav({ onCreatePersona }) {
     const { user } = useAuth()
     const currentPath = router.pathname
     const [isAccountOpen, setIsAccountOpen] = useState(false)
-    const [isPremium, setIsPremium] = useState(false)
 
-    // Check premium status
-    useEffect(() => {
-        const checkPremiumStatus = async () => {
-            if (!user) {
-                setIsPremium(false)
-                return
-            }
-            try {
-                const res = await fetch(`/api/user/subscription-status?userId=${user.id}`)
-                if (res.ok) {
-                    const data = await res.json()
-                    setIsPremium(data.isPremium || false)
-                }
-            } catch (error) {
-                console.error('Error checking premium status:', error)
-                setIsPremium(false)
-            }
-        }
-        checkPremiumStatus()
-    }, [user])
-
-    // Handle create click with premium check
+    // Handle create click - free for all users
     const handleCreateClick = () => {
-        if (!isPremium) {
-            router.push('/premium')
-            return
-        }
         if (onCreatePersona) {
             onCreatePersona()
         } else {

@@ -27,37 +27,10 @@ function Personas() {
   const [loadingPersonas, setLoadingPersonas] = useState(true)
   const [likedPersonaSlugs, setLikedPersonaSlugs] = useState([])
   const [showWelcomeTip, setShowWelcomeTip] = useState(false)
-  const [isPremium, setIsPremium] = useState(false)
   const [personaStats, setPersonaStats] = useState({}) // { slug: { message_count, view_count } }
 
-  // Check premium status
-  useEffect(() => {
-    const checkPremiumStatus = async () => {
-      if (!user) {
-        setIsPremium(false)
-        return
-      }
-      try {
-        const res = await fetch(`/api/user/subscription-status?userId=${user.id}`)
-        if (res.ok) {
-          const data = await res.json()
-          setIsPremium(data.isPremium || false)
-        }
-      } catch (error) {
-        console.error('Error checking premium status:', error)
-        setIsPremium(false)
-      }
-    }
-    checkPremiumStatus()
-  }, [user])
-
-  // Handle create persona click - check premium status
+  // Handle create persona click - open modal directly (free for all users)
   const handleCreatePersonaClick = () => {
-    if (!isPremium) {
-      // Redirect to premium page
-      router.push('/premium')
-      return
-    }
     setIsModalOpen(true)
   }
 
@@ -120,13 +93,9 @@ function Personas() {
   useEffect(() => {
     if (router.query.create === 'true') {
       router.replace('/', undefined, { shallow: true })
-      if (isPremium) {
-        setIsModalOpen(true)
-      } else {
-        router.push('/premium')
-      }
+      setIsModalOpen(true)
     }
-  }, [router.query, isPremium])
+  }, [router.query])
 
   const loadAllPersonas = async () => {
     console.log('=== LOADING ALL PERSONAS ===')

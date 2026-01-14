@@ -10,39 +10,6 @@ export default function SidePanel({ onBack, backButtonText, showPastChats = true
   const [pastChats, setPastChats] = useState([])
   const [loading, setLoading] = useState(true)
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
-  const [isPremium, setIsPremium] = useState(false)
-
-  // Check premium status
-  useEffect(() => {
-    const checkPremiumStatus = async () => {
-      if (!user) {
-        setIsPremium(false)
-        return
-      }
-      try {
-        const res = await fetch(`/api/user/subscription-status?userId=${user.id}`)
-        if (res.ok) {
-          const data = await res.json()
-          setIsPremium(data.isPremium || false)
-        }
-      } catch (error) {
-        console.error('Error checking premium status:', error)
-        setIsPremium(false)
-      }
-    }
-    checkPremiumStatus()
-  }, [user])
-
-  // Handle create click with premium check
-  const handleCreateClick = () => {
-    if (!isPremium) {
-      router.push('/premium')
-      return
-    }
-    if (onCreatePersona) {
-      onCreatePersona()
-    }
-  }
 
   // Load past chats from localStorage
   useEffect(() => {
@@ -102,7 +69,7 @@ export default function SidePanel({ onBack, backButtonText, showPastChats = true
         {onCreatePersona && (
           <div className="mb-6 mt-6 px-6">
             <button
-              onClick={handleCreateClick}
+              onClick={onCreatePersona}
               className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-black text-white rounded-lg hover:bg-gray-800 transition-all duration-200 shadow-lg hover:shadow-xl font-medium group"
             >
               <svg

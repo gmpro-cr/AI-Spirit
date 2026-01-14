@@ -9,14 +9,8 @@ import { useAuth } from '@/context/AuthContext'
 import { PersonaSchema, BreadcrumbSchema } from '@/components/seo/StructuredData'
 import {
   incrementGuestMessageCount,
-  shouldShowTimeBasedPrompt,
-  updateLastPromptTime,
-  isSignInRequired,
-  shouldShowPremiumPrompt,
   canSendMessage
 } from '@/lib/guestMessageTracking'
-import SignInPromptModal from '@/components/modals/SignInPromptModal'
-import PremiumPromptModal from '@/components/modals/PremiumPromptModal'
 
 function ChatPage() {
   const router = useRouter()
@@ -33,8 +27,6 @@ function ChatPage() {
   const [isListening, setIsListening] = useState(false)
   const [recognition, setRecognition] = useState(null)
   const [shareLinkCopied, setShareLinkCopied] = useState(false)
-  const [showSignInPrompt, setShowSignInPrompt] = useState(false)
-  const [showPremiumPrompt, setShowPremiumPrompt] = useState(false)
   const chatContainerRef = useRef(null)
 
   // Format message content with bold text
@@ -292,19 +284,6 @@ function ChatPage() {
     }
   }, [messages])
 
-  // 30-second recurring sign-in prompt for guests
-  useEffect(() => {
-    if (user) return // Only for guests
-
-    const checkInterval = setInterval(() => {
-      if (shouldShowTimeBasedPrompt()) {
-        setShowSignInPrompt(true)
-        updateLastPromptTime()
-      }
-    }, 5000) // Check every 5 seconds
-
-    return () => clearInterval(checkInterval)
-  }, [user])
 
   const handleBack = () => {
     router.push('/')
@@ -956,17 +935,6 @@ function ChatPage() {
         </div>
       </div>
 
-      {/* Guest Message Limit Modals */}
-      <SignInPromptModal
-        isOpen={showSignInPrompt}
-        onClose={() => setShowSignInPrompt(false)}
-      />
-      {/* Premium prompt hidden - keeping code for future use
-      <PremiumPromptModal
-        isOpen={showPremiumPrompt}
-        onClose={() => setShowPremiumPrompt(false)}
-      />
-      */}
     </>
   )
 }

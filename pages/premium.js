@@ -12,7 +12,7 @@ import { FAQSchema } from '@/components/seo/StructuredData'
 const premiumFaqs = [
     {
         question: 'What is included in AI-Spirit Premium?',
-        answer: 'AI-Spirit Premium includes unlimited messages and the ability to create your own custom AI personas for just ₹249/month.'
+        answer: 'AI-Spirit Premium gives you unlimited messages per day to chat with any AI persona without restrictions.'
     },
     {
         question: 'How much does AI-Spirit Premium cost?',
@@ -20,15 +20,15 @@ const premiumFaqs = [
     },
     {
         question: 'What is the difference between Free and Premium plans?',
-        answer: 'Free plan offers 100 messages per day with access to all pre-built personas. Premium offers unlimited messages and lets you create your own custom AI personas.'
+        answer: 'Free plan offers 100 messages per day. Premium offers unlimited messages. Both plans include access to all personas and the ability to create custom personas.'
     },
     {
         question: 'Can I cancel my AI-Spirit Premium subscription?',
         answer: 'Yes, you can cancel your Premium subscription anytime. There are no long-term commitments or cancellation fees.'
     },
     {
-        question: 'What are custom personas?',
-        answer: 'Custom personas let you create your own AI characters with unique personalities, knowledge areas, and conversation styles. Design an AI that perfectly fits your needs.'
+        question: 'Can I create custom personas for free?',
+        answer: 'Yes! Creating custom personas is completely free for all users. Design your own AI characters with unique personalities and conversation styles.'
     },
     {
         question: 'Is the payment for AI-Spirit Premium secure?',
@@ -169,9 +169,9 @@ export default function Premium() {
                                     <CheckIcon />
                                     <span>Access to all personas</span>
                                 </li>
-                                <li className="flex items-center gap-3 text-gray-400">
-                                    <XIcon />
-                                    <span>Cannot create custom personas</span>
+                                <li className="flex items-center gap-3 text-black">
+                                    <CheckIcon />
+                                    <span>Create custom personas</span>
                                 </li>
                             </ul>
 
@@ -259,8 +259,8 @@ export default function Premium() {
                                 </tr>
                                 <tr>
                                     <td className="p-4">Create custom personas</td>
-                                    <td className="p-4 text-center text-gray-400">—</td>
-                                    <td className="p-4 text-center bg-gray-100 font-medium">✓</td>
+                                    <td className="p-4 text-center">✓</td>
+                                    <td className="p-4 text-center bg-gray-100">✓</td>
                                 </tr>
                             </tbody>
                         </table>

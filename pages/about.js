@@ -99,6 +99,42 @@ export default function About() {
                     </div>
                 </section>
 
+                {/* Founder Section */}
+                <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50">
+                    <div className="max-w-3xl mx-auto">
+                        <h2 className="text-2xl md:text-3xl font-bold text-black mb-8">
+                            Meet the Founder
+                        </h2>
+                        <div className="bg-white rounded-2xl p-8 border border-gray-100 shadow-soft">
+                            <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
+                                <div className="w-24 h-24 rounded-full bg-gradient-to-br from-gray-800 to-black flex items-center justify-center text-white text-3xl font-bold flex-shrink-0">
+                                    GM
+                                </div>
+                                <div className="text-center md:text-left">
+                                    <h3 className="text-xl font-bold text-black mb-2">Gaurav Mahale</h3>
+                                    <p className="text-gray-500 mb-4">Founder & Creator</p>
+                                    <p className="text-gray-600 leading-relaxed mb-4">
+                                        Passionate about making AI accessible and helpful for everyone.
+                                        Building AI - Spirit to provide thoughtful guidance and support
+                                        to people across India and beyond.
+                                    </p>
+                                    <a
+                                        href="https://x.com/mahalegauravk"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="inline-flex items-center gap-2 text-black hover:text-gray-600 transition-colors font-medium"
+                                    >
+                                        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                                        </svg>
+                                        Follow on X
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
                 {/* CTA Section */}
                 <section className="py-20 px-4 sm:px-6 lg:px-8 bg-black text-white">
                     <div className="max-w-3xl mx-auto text-center">
