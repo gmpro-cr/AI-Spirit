@@ -2,6 +2,7 @@ import { useState } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 import Navbar from '@/components/layout/Navbar'
+import HeroChatShowcase from '@/components/home/HeroChatShowcase'
 
 export default function HomePage() {
     const [formData, setFormData] = useState({
@@ -67,14 +68,9 @@ export default function HomePage() {
                 {/* Hero Section */}
                 <section className="flex flex-col items-center justify-center px-6 py-12 pt-24 md:pt-28">
                     <div className="max-w-4xl mx-auto text-center">
-                        {/* Hero Illustration */}
-                        <div className="mb-8 animate-fadeIn">
-                            <img
-                                src="/hero-illustration.png"
-                                alt="AI Personas"
-                                className="mx-auto max-w-full h-auto"
-                                style={{ maxWidth: '400px' }}
-                            />
+                        {/* Simulated Chat Interfaces */}
+                        <div className="mb-8">
+                            <HeroChatShowcase />
                         </div>
 
                         {/* Headline */}
@@ -169,8 +165,8 @@ export default function HomePage() {
                         {/* Status Message */}
                         {status.message && (
                             <div className={`mb-6 p-4 rounded-2xl text-center ${status.type === 'success'
-                                    ? 'bg-black/5 text-black'
-                                    : 'bg-black/5 text-black'
+                                ? 'bg-black/5 text-black'
+                                : 'bg-black/5 text-black'
                                 }`}>
                                 {status.type === 'success' && '✓ '}{status.message}
                             </div>
