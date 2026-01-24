@@ -12,45 +12,51 @@ export default function Navbar({ onMenuToggle, showMenuButton = false }) {
     router.push('/')
   }
 
+  // Define navigation links for the new structure
+  const navLinks = [
+    { href: '/', label: 'Home' },
+    { href: '/features', label: 'Features' },
+    { href: '/pricing', label: 'Pricing' },
+    { href: '/contact', label: 'Contact' },
+  ];
+
   return (
-    <nav className="fixed top-0 w-full bg-white/80 backdrop-blur-xl border-b border-gray-100 shadow-xs z-50 transition-all duration-300">
-      <div className="w-full px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          {/* Left Side - Menu Button + Logo */}
-          <div className="flex items-center gap-3">
-            {/* Hamburger Menu Button - Only on pages with SidePanel */}
-            {showMenuButton && (
-              <button
-                onClick={onMenuToggle}
-                className="lg:hidden group relative bg-gray-50 border border-gray-200 rounded-xl p-2.5 hover:bg-gray-100 hover:border-gray-300 hover:shadow-soft transition-all duration-300"
-                aria-label="Toggle menu"
-              >
-                <div className="w-5 h-4 flex flex-col justify-center gap-1.5">
-                  <span className="block w-full h-0.5 bg-black rounded-full transition-all duration-300"></span>
-                  <span className="block w-full h-0.5 bg-black rounded-full transition-all duration-300"></span>
-                </div>
-              </button>
-            )}
-
-            {/* Logo */}
-            {isHomePage ? (
-              <Link href="/" className="flex items-center space-x-2 group">
-                <span className="font-display text-xl sm:text-2xl font-bold text-black tracking-tight group-hover:opacity-70 transition-all duration-300">
-                  <span className="italic">AI</span> - Spirit
-                </span>
-              </Link>
-            ) : (
-              <Link href="/personas" className="flex items-center space-x-2 group">
-                <span className="font-display text-xl sm:text-2xl font-bold text-black tracking-tight group-hover:opacity-70 transition-all duration-300">
-                  <span className="italic">AI</span> - Spirit
-                </span>
-              </Link>
-            )}
+    <nav className="fixed w-full z-50 transition-all duration-300 bg-white/80 backdrop-blur-md border-b border-black/5">
+      <div className="max-w-[1600px] mx-auto px-6 h-20 flex items-center justify-between">
+        {/* Logo */}
+        <Link href="/" className="flex items-center gap-3 group">
+          <div className="w-10 h-10 bg-black rounded-full flex items-center justify-center text-white font-display text-xl pt-1">
+            AI
           </div>
+          <span className="font-display text-2xl tracking-tight text-black group-hover:opacity-70 transition-opacity">
+            AI Spirit
+          </span>
+        </Link>
 
-          {/* Right Side - Contact (Premium hidden for now) */}
-          <div className="flex items-center gap-2 sm:gap-3">
-            {/* Premium link hidden - keeping code for future use
+        {/* Desktop Links */}
+        <div className="hidden md:flex items-center gap-12">
+          {navLinks.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className={`text-sm font-medium tracking-widest uppercase hover:text-black transition-colors ${router.pathname === link.href ? 'text-black' : 'text-black/40'
+                }`}
+            >
+              {link.label}
+            </Link>
+          ))}
+
+          <Link
+            href="/personas"
+            className="px-6 py-2 bg-black text-white text-xs font-bold tracking-widest uppercase hover:bg-black/80 transition-colors"
+          >
+            Launch App
+          </Link>
+        </div>
+
+        {/* Right Side - Contact (Premium hidden for now) */}
+        <div className="flex items-center gap-2 sm:gap-3">
+          {/* Premium link hidden - keeping code for future use
             <Link
               href="/premium"
               className="text-black font-medium px-4 sm:px-5 py-2 sm:py-2.5 text-sm sm:text-base rounded-xl border border-gray-200 hover:border-gray-300 hover:bg-gray-50 hover:shadow-soft transition-all duration-300"
@@ -58,15 +64,15 @@ export default function Navbar({ onMenuToggle, showMenuButton = false }) {
               Premium
             </Link>
             */}
-            <Link
-              href="/contact"
-              className="bg-black text-white font-medium px-4 sm:px-5 py-2 sm:py-2.5 text-sm sm:text-base rounded-xl border border-black hover:bg-white hover:text-black shadow-soft hover:shadow-lift transition-all duration-300"
-            >
-              Contact
-            </Link>
-          </div>
+          <Link
+            href="/contact"
+            className="bg-black text-white font-medium px-4 sm:px-5 py-2 sm:py-2.5 text-sm sm:text-base rounded-xl border border-black hover:bg-white hover:text-black shadow-soft hover:shadow-lift transition-all duration-300"
+          >
+            Contact
+          </Link>
         </div>
       </div>
-    </nav>
+    </div>
+    </nav >
   )
 }

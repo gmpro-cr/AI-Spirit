@@ -2,7 +2,8 @@ import { useState } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 import Navbar from '@/components/layout/Navbar'
-import HeroChatShowcase from '@/components/home/HeroChatShowcase'
+import ChatMonoliths from '@/components/home/ChatMonoliths'
+import Marquee from '@/components/home/Marquee'
 
 export default function HomePage() {
     const [formData, setFormData] = useState({
@@ -28,22 +29,20 @@ export default function HomePage() {
         try {
             const response = await fetch('/api/contact-resend', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData)
             })
 
             const data = await response.json()
 
             if (response.ok) {
-                setStatus({ type: 'success', message: 'Message sent! We\'ll get back to you soon.' })
+                setStatus({ type: 'success', message: 'Message sent. We shall connect shortly.' })
                 setFormData({ name: '', email: '', message: '' })
             } else {
-                setStatus({ type: 'error', message: data.error || 'Failed to send. Please try again.' })
+                setStatus({ type: 'error', message: data.error || 'Transmission failed.' })
             }
         } catch (error) {
-            setStatus({ type: 'error', message: 'Network error. Please try again.' })
+            setStatus({ type: 'error', message: 'Network error.' })
         } finally {
             setIsSubmitting(false)
         }
@@ -52,194 +51,163 @@ export default function HomePage() {
     return (
         <>
             <Head>
-                <title>AI Spirit - Chat with your favorite AI personas</title>
-                <meta name="description" content="Chat with AI-powered personas 24/7. From business icons to historical figures, celebrities to fictional characters. Start your conversation now." />
-                <meta name="keywords" content="AI chat, AI personas, chat with AI, conversational AI, AI characters" />
+                <title>AI Spirit - The Digital Circle</title>
+                <meta name="description" content="A new form of digital existence. Chat with 100+ AI personas in a judgment-free space." />
                 <link rel="canonical" href="https://ai-spirit.in" />
-                <meta property="og:title" content="AI Spirit - Chat with your favorite AI personas" />
-                <meta property="og:description" content="Chat with AI-powered personas 24/7. From business icons to historical figures." />
-                <meta property="og:url" content="https://ai-spirit.in" />
             </Head>
 
-            <div className="min-h-screen bg-[#FFFAFA]">
-                {/* Navigation */}
+            <div className="min-h-screen bg-[#FFFAFA] font-sans overflow-x-hidden selection:bg-black selection:text-white">
                 <Navbar />
 
-                {/* Hero Section */}
-                <section className="flex flex-col items-center justify-center px-6 py-12 pt-24 md:pt-28">
-                    <div className="max-w-4xl mx-auto text-center">
-                        {/* Simulated Chat Interfaces */}
-                        <div className="mb-8">
-                            <HeroChatShowcase />
-                        </div>
+                {/* --- HERO SECTION: THE MONOLITH --- */}
+                <section className="relative min-h-screen flex flex-col md:flex-row items-center pt-24 pb-12 px-6 md:px-12 max-w-[1600px] mx-auto overflow-hidden">
 
-                        {/* Headline */}
-                        <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-black tracking-tight mb-4 animate-fadeIn" style={{ animationDelay: '100ms' }}>
-                            Chat with your favorite<br />
-                            <span className="text-black/80">AI personas</span>
+                    {/* Left: Manifest typography */}
+                    <div className="w-full md:w-5/12 z-20 flex flex-col items-start justify-center text-left">
+                        <h1 className="font-display text-7xl md:text-9xl tracking-tighter leading-[0.8] mb-8 text-black animate-fadeIn">
+                            YOUR<br />
+                            DIGITAL<br />
+                            CIRCLE
                         </h1>
-
-                        {/* Subtext */}
-                        <p className="text-base md:text-lg text-black/60 max-w-2xl mx-auto mb-8 animate-fadeIn" style={{ animationDelay: '200ms' }}>
-                            From business icons to historical figures, celebrities to fictional characters.
-                            Available 24/7, judgment-free.
+                        <div className="h-0.5 w-24 bg-black mb-8 animate-scaleIn origin-left"></div>
+                        <p className="text-lg md:text-xl font-light text-black/70 max-w-sm mb-12 animate-fadeIn" style={{ animationDelay: '200ms' }}>
+                            We are not just a chat app. <br />
+                            We are a new form of digital existence.
                         </p>
 
-                        {/* CTA Button */}
-                        <div className="animate-fadeIn" style={{ animationDelay: '300ms' }}>
-                            <Link
-                                href="/personas"
-                                className="inline-flex items-center gap-3 bg-black text-[#FFFAFA] px-8 py-4 rounded-full text-lg font-medium hover:bg-black/90 transition-all duration-300 hover:scale-105 hover:shadow-lg"
+                        <Link
+                            href="/personas"
+                            className="group relative inline-flex items-center gap-4 bg-black text-[#FFFAFA] px-10 py-5 rounded-none hover:bg-black/90 transition-all duration-500 overflow-hidden"
+                        >
+                            <span className="relative z-10 font-medium tracking-widest text-sm uppercase">Enter The Circle</span>
+                            <span className="relative z-10 group-hover:translate-x-1 transition-transform">→</span>
+                            <div className="absolute inset-0 bg-gray-900 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-500"></div>
+                        </Link>
+                    </div>
+
+                    {/* Right: The 3D Monoliths */}
+                    <div className="w-full md:w-7/12 h-[600px] md:h-screen flex items-center justify-center relative z-10">
+                        <ChatMonoliths />
+                    </div>
+
+                </section>
+
+                {/* --- MARQUEE SEPARATOR --- */}
+                <Marquee />
+
+                {/* --- FOUNDER SECTION: THE ARCHITECT --- */}
+                <section className="py-32 px-6 bg-black text-[#FFFAFA] relative overflow-hidden">
+                    {/* Abstract grid background */}
+                    <div className="absolute inset-0 opacity-10"
+                        style={{ backgroundImage: 'linear-gradient(#333 1px, transparent 1px), linear-gradient(90deg, #333 1px, transparent 1px)', backgroundSize: '40px 40px' }}>
+                    </div>
+
+                    <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-start gap-16 md:gap-32 relative z-10">
+                        {/* Photo/Signature Area */}
+                        <div className="w-full md:w-1/3 flex flex-col items-center">
+                            <div className="w-64 h-64 md:w-80 md:h-80 border border-white/20 rounded-full flex items-center justify-center relative group">
+                                <div className="absolute inset-0 border border-white/10 rounded-full animate-ping opacity-20" style={{ animationDuration: '3s' }}></div>
+                                <span className="font-display text-8xl text-white/90">GM</span>
+                            </div>
+                            <div className="mt-8 text-center">
+                                <h3 className="font-display text-3xl">Gaurav Mahale</h3>
+                                <p className="text-white/40 uppercase tracking-widest text-xs mt-2">The Architect</p>
+                            </div>
+
+                            <a
+                                href="https://x.com/mahalegauravk"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="mt-8 w-16 h-16 rounded-full border border-white/30 flex items-center justify-center hover:bg-white hover:text-black transition-all duration-300 group"
                             >
-                                Start Chatting
-                                <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                                </svg>
-                            </Link>
+                                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" /></svg>
+                            </a>
                         </div>
 
-                        {/* Scroll indicator */}
-                        <div className="mt-12 animate-bounce">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 mx-auto text-black/30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-                            </svg>
-                        </div>
-                    </div>
-                </section>
-
-                {/* About Section */}
-                <section className="py-24 px-6 bg-black text-[#FFFAFA]">
-                    <div className="max-w-4xl mx-auto">
-                        <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">
-                            About
-                        </h2>
-
-                        <div className="flex flex-col md:flex-row items-center justify-center gap-8">
-                            {/* Founder Card */}
-                            <div className="bg-[#FFFAFA]/5 border border-[#FFFAFA]/10 rounded-3xl p-8 text-center max-w-sm w-full">
-                                {/* Avatar placeholder */}
-                                <div className="w-24 h-24 rounded-full bg-[#FFFAFA]/10 mx-auto mb-6 flex items-center justify-center">
-                                    <span className="text-3xl font-bold text-[#FFFAFA]/60">GM</span>
-                                </div>
-
-                                <h3 className="text-2xl font-bold mb-2">Gaurav Mahale</h3>
-                                <p className="text-[#FFFAFA]/60 mb-6">Founder</p>
-
-                                {/* X Link */}
-                                <a
-                                    href="https://x.com/mahalegauravk"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="inline-flex items-center gap-2 text-[#FFFAFA]/80 hover:text-[#FFFAFA] transition-colors duration-300"
-                                >
-                                    <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-                                        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-                                    </svg>
-                                    @mahalegauravk
-                                </a>
-                            </div>
-
-                            {/* About Text */}
-                            <div className="max-w-md text-center md:text-left">
-                                <p className="text-[#FFFAFA]/80 text-lg leading-relaxed">
-                                    AI Spirit was built with a simple vision: to make AI conversations more personal and engaging.
+                        {/* Editorial Text */}
+                        <div className="w-full md:w-2/3 pt-12">
+                            <h2 className="font-display text-5xl md:text-7xl leading-tight mb-12">
+                                "We are building a bridge between human intuition and machine intelligence."
+                            </h2>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-lg text-white/60 font-light leading-relaxed">
+                                <p>
+                                    AI Spirit was conceived not as a tool, but as a sanctuary. A place where judgment ceases to exist, and conversation flows as freely as thought itself.
                                 </p>
-                                <p className="text-[#FFFAFA]/60 mt-4 leading-relaxed">
-                                    Whether you need advice, entertainment, or just someone to talk to, there&apos;s an AI persona waiting for you.
+                                <p>
+                                    From the wisdom of history's greatest minds to the comfort of a friend who always listens—we are crafting the future of connection.
                                 </p>
                             </div>
                         </div>
                     </div>
                 </section>
 
-                {/* Contact Section */}
-                <section className="py-24 px-6 bg-[#FFFAFA]">
-                    <div className="max-w-md mx-auto">
-                        <h2 className="text-3xl md:text-4xl font-bold text-black mb-4 text-center">
-                            Get in Touch
-                        </h2>
-                        <p className="text-black/60 text-center mb-12">
-                            Have questions or feedback? We&apos;d love to hear from you.
-                        </p>
+                {/* --- CONTACT: THE INVITATION --- */}
+                <section className="py-32 px-6 bg-[#FFFAFA] max-w-4xl mx-auto">
+                    <div className="text-center mb-20">
+                        <span className="text-xs font-bold tracking-[0.3em] text-black/30 uppercase mb-4 block">System Link</span>
+                        <h2 className="font-display text-5xl md:text-6xl text-black mb-6">Initiate Protocol</h2>
+                        <p className="text-black/50">Send a transmission to the core.</p>
+                    </div>
 
-                        {/* Status Message */}
-                        {status.message && (
-                            <div className={`mb-6 p-4 rounded-2xl text-center ${status.type === 'success'
-                                ? 'bg-black/5 text-black'
-                                : 'bg-black/5 text-black'
-                                }`}>
-                                {status.type === 'success' && '✓ '}{status.message}
-                            </div>
-                        )}
+                    {status.message && (
+                        <div className="mb-12 p-4 text-center border-l-4 border-black bg-gray-50 text-black">
+                            {status.message}
+                        </div>
+                    )}
 
-                        {/* Contact Form */}
-                        <form onSubmit={handleSubmit} className="space-y-5">
-                            <div>
-                                <input
-                                    type="text"
-                                    id="name"
-                                    name="name"
-                                    required
-                                    value={formData.name}
-                                    onChange={handleChange}
-                                    className="w-full px-5 py-4 bg-[#FFFAFA] border border-black/10 rounded-2xl focus:outline-none focus:border-black focus:ring-2 focus:ring-black/5 text-black placeholder:text-black/40 transition-all duration-300"
-                                    placeholder="Your name"
-                                />
-                            </div>
+                    <form onSubmit={handleSubmit} className="space-y-16">
+                        <div className="group relative">
+                            <input
+                                type="text"
+                                name="name"
+                                value={formData.name}
+                                onChange={handleChange}
+                                required
+                                className="w-full bg-transparent border-b border-black/10 py-4 text-2xl font-display focus:outline-none focus:border-black transition-colors placeholder:text-black/10 text-black"
+                                placeholder="IDENTITY"
+                            />
+                        </div>
 
-                            <div>
-                                <input
-                                    type="email"
-                                    id="email"
-                                    name="email"
-                                    required
-                                    value={formData.email}
-                                    onChange={handleChange}
-                                    className="w-full px-5 py-4 bg-[#FFFAFA] border border-black/10 rounded-2xl focus:outline-none focus:border-black focus:ring-2 focus:ring-black/5 text-black placeholder:text-black/40 transition-all duration-300"
-                                    placeholder="your@email.com"
-                                />
-                            </div>
+                        <div className="group relative">
+                            <input
+                                type="email"
+                                name="email"
+                                value={formData.email}
+                                onChange={handleChange}
+                                required
+                                className="w-full bg-transparent border-b border-black/10 py-4 text-2xl font-display focus:outline-none focus:border-black transition-colors placeholder:text-black/10 text-black"
+                                placeholder="FREQUENCY (EMAIL)"
+                            />
+                        </div>
 
-                            <div>
-                                <textarea
-                                    id="message"
-                                    name="message"
-                                    required
-                                    value={formData.message}
-                                    onChange={handleChange}
-                                    rows={5}
-                                    className="w-full px-5 py-4 bg-[#FFFAFA] border border-black/10 rounded-2xl focus:outline-none focus:border-black focus:ring-2 focus:ring-black/5 text-black placeholder:text-black/40 resize-none transition-all duration-300"
-                                    placeholder="Your message..."
-                                />
-                            </div>
+                        <div className="group relative">
+                            <textarea
+                                name="message"
+                                value={formData.message}
+                                onChange={handleChange}
+                                required
+                                rows={1}
+                                className="w-full bg-transparent border-b border-black/10 py-4 text-2xl font-display focus:outline-none focus:border-black transition-colors placeholder:text-black/10 resize-none text-black"
+                                placeholder="TRANSMISSION"
+                            />
+                        </div>
 
+                        <div className="text-center pt-8">
                             <button
                                 type="submit"
                                 disabled={isSubmitting}
-                                className="w-full px-6 py-4 bg-black text-[#FFFAFA] font-medium rounded-2xl hover:bg-black/90 transition-all duration-300 disabled:bg-black/40 disabled:cursor-not-allowed"
+                                className="bg-black text-white px-12 py-4 text-sm font-bold tracking-[0.2em] hover:bg-gray-900 transition-all uppercase"
                             >
-                                {isSubmitting ? 'Sending...' : 'Send Message'}
+                                {isSubmitting ? 'Transmitting...' : 'Send Transmission'}
                             </button>
-                        </form>
-                    </div>
+                        </div>
+                    </form>
                 </section>
 
-                {/* Footer */}
-                <footer className="py-8 px-6 border-t border-black/5 bg-[#FFFAFA]">
-                    <div className="max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-                        <p className="text-black/40 text-sm">
-                            © {new Date().getFullYear()} AI Spirit. All rights reserved.
-                        </p>
-                        <div className="flex items-center gap-6">
-                            <Link href="/privacy" className="text-black/40 hover:text-black text-sm transition-colors">
-                                Privacy
-                            </Link>
-                            <Link href="/terms" className="text-black/40 hover:text-black text-sm transition-colors">
-                                Terms
-                            </Link>
-                        </div>
-                    </div>
+                <footer className="py-12 bg-black text-white/20 text-center text-xs tracking-widest uppercase border-t border-white/10">
+                    © {new Date().getFullYear()} AI Spirit. All Systems Operational.
                 </footer>
+
             </div>
         </>
     )

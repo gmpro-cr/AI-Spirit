@@ -53,7 +53,7 @@ module.exports = {
       },
       fontFamily: {
         sans: ['Inter', 'sans-serif'],
-        display: ['var(--font-display)', 'serif'],
+        display: ['"Crimson Text"', 'serif'],
         hindi: ['Noto Sans Devanagari', 'sans-serif'],
       },
       borderRadius: {
