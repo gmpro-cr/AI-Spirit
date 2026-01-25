@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import Link from 'next/link'
 import { useAuth } from '@/context/AuthContext'
 import { useRouter } from 'next/router'
@@ -6,13 +7,13 @@ export default function Navbar({ onMenuToggle, showMenuButton = false }) {
   const { user, signOut } = useAuth()
   const router = useRouter()
   const isHomePage = router.pathname === '/'
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   const handleSignOut = async () => {
     await signOut()
     router.push('/')
   }
 
-  // Define navigation links for the new structure
   const navLinks = [
     { href: '/', label: 'Home' },
     { href: '/features', label: 'Features' },
@@ -20,58 +21,110 @@ export default function Navbar({ onMenuToggle, showMenuButton = false }) {
     { href: '/contact', label: 'Contact' },
   ];
 
-  return (
-    <nav className="fixed w-full z-50 transition-all duration-300 bg-white/80 backdrop-blur-md border-b border-black/5">
-      <div className="max-w-[1600px] mx-auto px-6 h-20 flex items-center justify-between">
-        {/* Logo */}
-        <Link href="/" className="flex items-center gap-3 group">
-          <div className="w-10 h-10 bg-black rounded-full flex items-center justify-center text-white font-display text-xl pt-1">
-            AI
-          </div>
-          <span className="font-display text-2xl tracking-tight text-black group-hover:opacity-70 transition-opacity">
-            AI Spirit
-          </span>
-        </Link>
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!mobileMenuOpen)
+  }
 
-        {/* Desktop Links */}
-        <div className="hidden md:flex items-center gap-12">
+  const closeMobileMenu = () => {
+    setMobileMenuOpen(false)
+  }
+
+  return (
+    <>
+      <nav className="fixed w-full z-50 transition-all duration-300 bg-white/90 backdrop-blur-md border-b border-black/5">
+        <div className="max-w-[1600px] mx-auto px-6 h-20 flex items-center justify-between">
+          {/* Logo */}
+          <Link href="/" className="flex items-center gap-3 group">
+            <div className="w-10 h-10 bg-black rounded-full flex items-center justify-center text-white font-display text-xl pt-1">
+              AI
+            </div>
+            <span className="font-display text-2xl tracking-tight text-black group-hover:opacity-70 transition-opacity">
+              AI Spirit
+            </span>
+          </Link>
+
+          {/* Desktop Links */}
+          <div className="hidden md:flex items-center gap-10">
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`text-sm font-medium tracking-widest uppercase hover:text-black transition-colors relative ${
+                  router.pathname === link.href
+                    ? 'text-black after:absolute after:bottom-[-4px] after:left-0 after:w-full after:h-0.5 after:bg-black'
+                    : 'text-black/50 hover:text-black/80'
+                }`}
+              >
+                {link.label}
+              </Link>
+            ))}
+          </div>
+
+          {/* Right Side - CTA */}
+          <div className="flex items-center gap-4">
+            <Link
+              href="/personas"
+              className="hidden sm:inline-flex px-6 py-2.5 bg-black text-white text-xs font-bold tracking-widest uppercase hover:bg-black/80 transition-colors rounded-lg"
+            >
+              Launch App
+            </Link>
+
+            {/* Mobile Menu Button */}
+            <button
+              onClick={toggleMobileMenu}
+              className="md:hidden w-10 h-10 flex flex-col items-center justify-center gap-1.5 rounded-lg hover:bg-black/5 transition-colors"
+              aria-label="Toggle menu"
+              aria-expanded={mobileMenuOpen}
+            >
+              <span className={`w-5 h-0.5 bg-black transition-all duration-300 ${mobileMenuOpen ? 'rotate-45 translate-y-2' : ''}`} />
+              <span className={`w-5 h-0.5 bg-black transition-all duration-300 ${mobileMenuOpen ? 'opacity-0' : ''}`} />
+              <span className={`w-5 h-0.5 bg-black transition-all duration-300 ${mobileMenuOpen ? '-rotate-45 -translate-y-2' : ''}`} />
+            </button>
+          </div>
+        </div>
+      </nav>
+
+      {/* Mobile Menu Overlay */}
+      <div
+        className={`fixed inset-0 bg-black/20 backdrop-blur-sm z-40 md:hidden transition-opacity duration-300 ${
+          mobileMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
+        }`}
+        onClick={closeMobileMenu}
+      />
+
+      {/* Mobile Menu Panel */}
+      <div
+        className={`fixed top-20 left-0 right-0 bg-white z-40 md:hidden transition-all duration-300 border-b border-black/10 shadow-soft-lg ${
+          mobileMenuOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4 pointer-events-none'
+        }`}
+      >
+        <div className="px-6 py-6 space-y-2">
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className={`text-sm font-medium tracking-widest uppercase hover:text-black transition-colors ${router.pathname === link.href ? 'text-black' : 'text-black/40'
-                }`}
+              onClick={closeMobileMenu}
+              className={`block py-3 px-4 text-lg font-medium rounded-lg transition-colors ${
+                router.pathname === link.href
+                  ? 'bg-black text-white'
+                  : 'text-black/70 hover:bg-black/5 hover:text-black'
+              }`}
             >
               {link.label}
             </Link>
           ))}
 
-          <Link
-            href="/personas"
-            className="px-6 py-2 bg-black text-white text-xs font-bold tracking-widest uppercase hover:bg-black/80 transition-colors"
-          >
-            Launch App
-          </Link>
-        </div>
-
-        {/* Right Side - Contact (Premium hidden for now) */}
-        <div className="flex items-center gap-2 sm:gap-3">
-          {/* Premium link hidden - keeping code for future use
+          <div className="pt-4 border-t border-black/10 mt-4">
             <Link
-              href="/premium"
-              className="text-black font-medium px-4 sm:px-5 py-2 sm:py-2.5 text-sm sm:text-base rounded-xl border border-gray-200 hover:border-gray-300 hover:bg-gray-50 hover:shadow-soft transition-all duration-300"
+              href="/personas"
+              onClick={closeMobileMenu}
+              className="block w-full py-3 px-4 bg-black text-white text-center font-bold tracking-widest uppercase rounded-lg hover:bg-black/80 transition-colors"
             >
-              Premium
+              Launch App
             </Link>
-            */}
-          <Link
-            href="/contact"
-            className="bg-black text-white font-medium px-4 sm:px-5 py-2 sm:py-2.5 text-sm sm:text-base rounded-xl border border-black hover:bg-white hover:text-black shadow-soft hover:shadow-lift transition-all duration-300"
-          >
-            Contact
-          </Link>
+          </div>
         </div>
       </div>
-    </nav>
+    </>
   )
 }
