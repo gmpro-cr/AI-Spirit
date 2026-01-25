@@ -72,7 +72,6 @@ export default function Navbar({ onMenuToggle, showMenuButton = false }) {
           </Link>
         </div>
       </div>
-    </div>
-    </nav >
+    </nav>
   )
 }

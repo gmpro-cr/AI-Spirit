@@ -127,14 +127,14 @@ export default function HomePage() {
                         {/* Editorial Text */}
                         <div className="w-full md:w-2/3 pt-12">
                             <h2 className="font-display text-5xl md:text-7xl leading-tight mb-12">
-                                "We are building a bridge between human intuition and machine intelligence."
+                                &quot;We are building a bridge between human intuition and machine intelligence.&quot;
                             </h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-lg text-white/60 font-light leading-relaxed">
                                 <p>
                                     AI Spirit was conceived not as a tool, but as a sanctuary. A place where judgment ceases to exist, and conversation flows as freely as thought itself.
                                 </p>
                                 <p>
-                                    From the wisdom of history's greatest minds to the comfort of a friend who always listens—we are crafting the future of connection.
+                                    From the wisdom of history&apos;s greatest minds to the comfort of a friend who always listens—we are crafting the future of connection.
                                 </p>
                             </div>
                         </div>
