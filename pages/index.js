@@ -52,7 +52,7 @@ export default function HomePage() {
         <>
             <Head>
                 <title>AI Spirit - Talk to Anyone, Anytime</title>
-                <meta name="description" content="Chat with 100+ AI personas - spiritual guides, world leaders, celebrities, and fictional characters. Your digital sanctuary for meaningful conversations." />
+                <meta name="description" content="Chat with 350+ AI personas - spiritual guides, world leaders, celebrities, and fictional characters. Your digital sanctuary for meaningful conversations." />
                 <link rel="canonical" href="https://ai-spirit.in" />
             </Head>
 
@@ -65,7 +65,7 @@ export default function HomePage() {
                     {/* Left: Copy */}
                     <div className="w-full lg:w-1/2 z-10 text-center lg:text-left">
                         <div className="inline-block px-4 py-1.5 bg-black/5 rounded-full text-xs font-medium tracking-wide text-black/60 mb-6">
-                            100+ AI Personas Available
+                            350+ AI Personas Available
                         </div>
 
                         <h1 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl tracking-tight leading-[1.1] mb-6 text-black">
@@ -74,7 +74,7 @@ export default function HomePage() {
                         </h1>
 
                         <p className="text-lg md:text-xl text-black/60 max-w-lg mx-auto lg:mx-0 mb-8 leading-relaxed">
-                            Spiritual guides, world leaders, celebrities, fictional characters—100+ AI personas ready for meaningful conversations.
+                            Spiritual guides, world leaders, celebrities, fictional characters—350+ AI personas ready for meaningful conversations.
                         </p>
 
                         <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
@@ -103,7 +103,7 @@ export default function HomePage() {
                             </div>
                             <div className="w-px h-10 bg-black/10" />
                             <div className="text-center lg:text-left">
-                                <div className="text-2xl font-bold text-black">100+</div>
+                                <div className="text-2xl font-bold text-black">350+</div>
                                 <div className="text-sm text-black/50">Personas</div>
                             </div>
                             <div className="w-px h-10 bg-black/10" />
@@ -143,8 +143,8 @@ export default function HomePage() {
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                                         </svg>
                                     ),
-                                    title: '100+ Unique Personas',
-                                    description: 'From philosophers to scientists, leaders to artists. Each persona has its own personality, knowledge, and communication style.'
+                                    title: '350+ Unique Personas',
+                                    description: 'From spiritual guides to celebrities, fictional characters to world leaders. Each persona has its own personality, knowledge, and style.'
                                 },
                                 {
                                     icon: (
