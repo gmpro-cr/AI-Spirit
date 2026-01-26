@@ -32,7 +32,7 @@ export default function Navbar({ onMenuToggle, showMenuButton = false }) {
   return (
     <>
       <nav className="fixed w-full z-50 transition-all duration-300 bg-white/90 backdrop-blur-md border-b border-black/5">
-        <div className="max-w-[1600px] mx-auto px-6 h-20 flex items-center justify-between">
+        <div className="max-w-[1600px] mx-auto px-6 h-20 flex items-center">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3 group">
             <div className="w-10 h-10 bg-black rounded-full flex items-center justify-center text-white font-display text-xl pt-1">
@@ -43,8 +43,8 @@ export default function Navbar({ onMenuToggle, showMenuButton = false }) {
             </span>
           </Link>
 
-          {/* Desktop Links */}
-          <div className="hidden md:flex items-center gap-10">
+          {/* Desktop Links - Right after logo */}
+          <div className="hidden md:flex items-center gap-8 ml-12">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
@@ -60,27 +60,20 @@ export default function Navbar({ onMenuToggle, showMenuButton = false }) {
             ))}
           </div>
 
-          {/* Right Side - CTA */}
-          <div className="flex items-center gap-4">
-            <Link
-              href="/personas"
-              className="hidden sm:inline-flex px-6 py-2.5 bg-black text-white text-xs font-bold tracking-widest uppercase hover:bg-black/80 transition-colors rounded-lg"
-            >
-              Launch App
-            </Link>
+          {/* Spacer to push mobile menu button to right */}
+          <div className="flex-1" />
 
-            {/* Mobile Menu Button */}
-            <button
-              onClick={toggleMobileMenu}
-              className="md:hidden w-10 h-10 flex flex-col items-center justify-center gap-1.5 rounded-lg hover:bg-black/5 transition-colors"
-              aria-label="Toggle menu"
-              aria-expanded={mobileMenuOpen}
-            >
-              <span className={`w-5 h-0.5 bg-black transition-all duration-300 ${mobileMenuOpen ? 'rotate-45 translate-y-2' : ''}`} />
-              <span className={`w-5 h-0.5 bg-black transition-all duration-300 ${mobileMenuOpen ? 'opacity-0' : ''}`} />
-              <span className={`w-5 h-0.5 bg-black transition-all duration-300 ${mobileMenuOpen ? '-rotate-45 -translate-y-2' : ''}`} />
-            </button>
-          </div>
+          {/* Mobile Menu Button */}
+          <button
+            onClick={toggleMobileMenu}
+            className="md:hidden w-10 h-10 flex flex-col items-center justify-center gap-1.5 rounded-lg hover:bg-black/5 transition-colors"
+            aria-label="Toggle menu"
+            aria-expanded={mobileMenuOpen}
+          >
+            <span className={`w-5 h-0.5 bg-black transition-all duration-300 ${mobileMenuOpen ? 'rotate-45 translate-y-2' : ''}`} />
+            <span className={`w-5 h-0.5 bg-black transition-all duration-300 ${mobileMenuOpen ? 'opacity-0' : ''}`} />
+            <span className={`w-5 h-0.5 bg-black transition-all duration-300 ${mobileMenuOpen ? '-rotate-45 -translate-y-2' : ''}`} />
+          </button>
         </div>
       </nav>
 
@@ -113,16 +106,6 @@ export default function Navbar({ onMenuToggle, showMenuButton = false }) {
               {link.label}
             </Link>
           ))}
-
-          <div className="pt-4 border-t border-black/10 mt-4">
-            <Link
-              href="/personas"
-              onClick={closeMobileMenu}
-              className="block w-full py-3 px-4 bg-black text-white text-center font-bold tracking-widest uppercase rounded-lg hover:bg-black/80 transition-colors"
-            >
-              Launch App
-            </Link>
-          </div>
         </div>
       </div>
     </>

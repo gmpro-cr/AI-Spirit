@@ -77,23 +77,15 @@ export default function HomePage() {
                             Spiritual guides, world leaders, celebrities, fictional characters—350+ AI personas ready for meaningful conversations.
                         </p>
 
-                        <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
-                            <Link
-                                href="/personas"
-                                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-black text-white px-8 py-4 rounded-xl font-medium hover:bg-black/90 transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5"
-                            >
-                                Start Chatting
-                                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                                </svg>
-                            </Link>
-                            <Link
-                                href="/features"
-                                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 text-black/70 px-6 py-4 rounded-xl font-medium hover:bg-black/5 transition-all"
-                            >
-                                See how it works
-                            </Link>
-                        </div>
+                        <Link
+                            href="/personas"
+                            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-black text-white px-8 py-4 rounded-xl font-medium hover:bg-black/90 transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5"
+                        >
+                            Start Chatting
+                            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                            </svg>
+                        </Link>
 
                         {/* Social proof */}
                         <div className="mt-12 pt-8 border-t border-black/10 flex items-center justify-center lg:justify-start gap-8">
