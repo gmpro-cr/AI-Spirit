@@ -2,7 +2,7 @@ import { useState } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 import Navbar from '@/components/layout/Navbar'
-import ChatMonoliths from '@/components/home/ChatMonoliths'
+import HeroAnimation from '@/components/home/HeroAnimation'
 import Marquee from '@/components/home/Marquee'
 
 export default function HomePage() {
@@ -36,13 +36,13 @@ export default function HomePage() {
             const data = await response.json()
 
             if (response.ok) {
-                setStatus({ type: 'success', message: 'Message sent. We shall connect shortly.' })
+                setStatus({ type: 'success', message: 'Message sent successfully!' })
                 setFormData({ name: '', email: '', message: '' })
             } else {
-                setStatus({ type: 'error', message: data.error || 'Transmission failed.' })
+                setStatus({ type: 'error', message: data.error || 'Failed to send message.' })
             }
         } catch (error) {
-            setStatus({ type: 'error', message: 'Network error.' })
+            setStatus({ type: 'error', message: 'Network error. Please try again.' })
         } finally {
             setIsSubmitting(false)
         }
@@ -51,179 +51,256 @@ export default function HomePage() {
     return (
         <>
             <Head>
-                <title>AI Spirit - The Digital Circle</title>
-                <meta name="description" content="A new form of digital existence. Chat with 100+ AI personas in a judgment-free space." />
+                <title>AI Spirit - Chat with History&apos;s Greatest Minds</title>
+                <meta name="description" content="Experience meaningful conversations with AI personas of history's greatest thinkers, leaders, and visionaries. Your digital sanctuary for wisdom and connection." />
                 <link rel="canonical" href="https://ai-spirit.in" />
             </Head>
 
-            <div className="min-h-screen bg-[#FAFAFA] font-sans overflow-x-hidden selection:bg-black selection:text-white">
+            <div className="min-h-screen bg-white font-sans overflow-x-hidden selection:bg-black selection:text-white">
                 <Navbar />
 
-                {/* --- HERO SECTION --- */}
-                <section className="relative min-h-screen flex flex-col lg:flex-row items-center pt-28 pb-16 px-6 md:px-12 max-w-[1600px] mx-auto">
+                {/* === HERO SECTION === */}
+                <section className="relative min-h-screen flex flex-col lg:flex-row items-center justify-center pt-24 pb-16 px-6 md:px-12 lg:px-20 max-w-[1400px] mx-auto gap-12 lg:gap-20">
 
-                    {/* Left: Typography */}
-                    <div className="w-full lg:w-5/12 z-20 flex flex-col items-start justify-center text-left mb-12 lg:mb-0">
-                        <h1 className="font-display text-6xl sm:text-7xl md:text-8xl lg:text-9xl tracking-tighter leading-[0.85] mb-8 text-black animate-fadeIn">
-                            YOUR<br />
-                            DIGITAL<br />
-                            CIRCLE
+                    {/* Left: Copy */}
+                    <div className="w-full lg:w-1/2 z-10 text-center lg:text-left">
+                        <div className="inline-block px-4 py-1.5 bg-black/5 rounded-full text-xs font-medium tracking-wide text-black/60 mb-6">
+                            100+ AI Personas Available
+                        </div>
+
+                        <h1 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl tracking-tight leading-[1.1] mb-6 text-black">
+                            Chat with history&apos;s
+                            <span className="block text-black/40">greatest minds</span>
                         </h1>
-                        <div className="h-0.5 w-24 bg-black mb-8 animate-scaleIn origin-left"></div>
-                        <p className="text-lg md:text-xl font-light text-black/60 max-w-sm mb-10 animate-fadeIn" style={{ animationDelay: '200ms' }}>
-                            We are not just a chat app.<br />
-                            We are a new form of digital existence.
+
+                        <p className="text-lg md:text-xl text-black/60 max-w-lg mx-auto lg:mx-0 mb-8 leading-relaxed">
+                            From Einstein to Cleopatra, Osho to Elon Musk. Have meaningful conversations with AI personas that think, respond, and inspire like the originals.
                         </p>
 
-                        <Link
-                            href="/personas"
-                            className="group relative inline-flex items-center gap-4 bg-black text-white px-8 py-4 sm:px-10 sm:py-5 rounded-xl hover:bg-black/90 transition-all duration-300 shadow-soft hover:shadow-lift"
-                        >
-                            <span className="relative z-10 font-medium tracking-widest text-sm uppercase">Enter The Circle</span>
-                            <span className="relative z-10 group-hover:translate-x-1 transition-transform">→</span>
-                        </Link>
+                        <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+                            <Link
+                                href="/personas"
+                                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-black text-white px-8 py-4 rounded-xl font-medium hover:bg-black/90 transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5"
+                            >
+                                Start Chatting
+                                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                                </svg>
+                            </Link>
+                            <Link
+                                href="/features"
+                                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 text-black/70 px-6 py-4 rounded-xl font-medium hover:bg-black/5 transition-all"
+                            >
+                                See how it works
+                            </Link>
+                        </div>
+
+                        {/* Social proof */}
+                        <div className="mt-12 pt-8 border-t border-black/10 flex items-center justify-center lg:justify-start gap-8">
+                            <div className="text-center lg:text-left">
+                                <div className="text-2xl font-bold text-black">10K+</div>
+                                <div className="text-sm text-black/50">Conversations</div>
+                            </div>
+                            <div className="w-px h-10 bg-black/10" />
+                            <div className="text-center lg:text-left">
+                                <div className="text-2xl font-bold text-black">100+</div>
+                                <div className="text-sm text-black/50">Personas</div>
+                            </div>
+                            <div className="w-px h-10 bg-black/10" />
+                            <div className="text-center lg:text-left">
+                                <div className="text-2xl font-bold text-black">4.9</div>
+                                <div className="text-sm text-black/50">User Rating</div>
+                            </div>
+                        </div>
                     </div>
 
-                    {/* Right: The Monoliths */}
-                    <div className="w-full lg:w-7/12 flex items-center justify-center relative z-10">
-                        <ChatMonoliths />
+                    {/* Right: Animation */}
+                    <div className="w-full lg:w-1/2 flex items-center justify-center relative">
+                        <HeroAnimation />
                     </div>
-
                 </section>
 
-                {/* --- MARQUEE SEPARATOR --- */}
+                {/* === MARQUEE === */}
                 <Marquee />
 
-                {/* --- FOUNDER SECTION --- */}
-                <section className="py-24 md:py-32 px-6 bg-black text-white relative overflow-hidden">
-                    {/* Grid background */}
-                    <div className="absolute inset-0 opacity-[0.08]"
-                        style={{ backgroundImage: 'linear-gradient(#333 1px, transparent 1px), linear-gradient(90deg, #333 1px, transparent 1px)', backgroundSize: '40px 40px' }}>
+                {/* === FEATURES SECTION === */}
+                <section className="py-24 md:py-32 px-6 bg-gray-50">
+                    <div className="max-w-6xl mx-auto">
+                        <div className="text-center mb-16">
+                            <h2 className="font-display text-3xl sm:text-4xl md:text-5xl text-black mb-4">
+                                Why AI Spirit?
+                            </h2>
+                            <p className="text-lg text-black/60 max-w-2xl mx-auto">
+                                More than just AI chat. A sanctuary for meaningful conversations.
+                            </p>
+                        </div>
+
+                        <div className="grid md:grid-cols-3 gap-8">
+                            {[
+                                {
+                                    icon: (
+                                        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                                        </svg>
+                                    ),
+                                    title: '100+ Unique Personas',
+                                    description: 'From philosophers to scientists, leaders to artists. Each persona has its own personality, knowledge, and communication style.'
+                                },
+                                {
+                                    icon: (
+                                        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                                        </svg>
+                                    ),
+                                    title: 'Judgment-Free Space',
+                                    description: 'Ask anything, explore any topic. Our AI personas provide wisdom without judgment, creating a safe space for growth.'
+                                },
+                                {
+                                    icon: (
+                                        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                                        </svg>
+                                    ),
+                                    title: 'Learn & Grow',
+                                    description: 'Gain insights from the greatest minds in history. Perfect for learning, reflection, or just meaningful conversation.'
+                                },
+                            ].map((feature, i) => (
+                                <div key={i} className="bg-white p-8 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+                                    <div className="w-12 h-12 bg-black rounded-xl flex items-center justify-center text-white mb-5">
+                                        {feature.icon}
+                                    </div>
+                                    <h3 className="text-xl font-semibold text-black mb-3">{feature.title}</h3>
+                                    <p className="text-black/60 leading-relaxed">{feature.description}</p>
+                                </div>
+                            ))}
+                        </div>
                     </div>
+                </section>
 
-                    <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-start gap-12 md:gap-24 relative z-10">
-                        {/* Photo/Signature Area */}
-                        <div className="w-full md:w-1/3 flex flex-col items-center">
-                            <div className="w-48 h-48 md:w-64 md:h-64 border-2 border-white/20 rounded-full flex items-center justify-center relative group bg-white/5 backdrop-blur-sm">
-                                <div className="absolute inset-0 border border-white/10 rounded-full animate-pulse opacity-30"></div>
-                                <span className="font-display text-6xl md:text-7xl text-white/90">GM</span>
+                {/* === FOUNDER SECTION === */}
+                <section className="py-24 md:py-32 px-6 bg-black text-white">
+                    <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center gap-12 md:gap-20">
+                        {/* Photo */}
+                        <div className="flex flex-col items-center">
+                            <div className="w-40 h-40 md:w-48 md:h-48 border-2 border-white/20 rounded-full flex items-center justify-center bg-white/5">
+                                <span className="font-display text-5xl md:text-6xl text-white/90">GM</span>
                             </div>
-                            <div className="mt-8 text-center">
-                                <h3 className="font-display text-2xl md:text-3xl">Gaurav Mahale</h3>
-                                <p className="text-white/50 uppercase tracking-widest text-xs mt-2">Founder</p>
+                            <div className="mt-6 text-center">
+                                <h3 className="font-display text-2xl">Gaurav Mahale</h3>
+                                <p className="text-white/50 text-sm mt-1">Founder</p>
                             </div>
-
                             <a
                                 href="https://x.com/mahalegauravk"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="mt-6 px-6 py-3 rounded-full border border-white/30 flex items-center gap-3 hover:bg-white hover:text-black transition-all duration-300 text-sm"
+                                className="mt-4 px-5 py-2 rounded-full border border-white/30 flex items-center gap-2 hover:bg-white hover:text-black transition-all text-sm"
                             >
-                                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" /></svg>
-                                <span>Follow on X</span>
+                                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" /></svg>
+                                Follow
                             </a>
                         </div>
 
-                        {/* Editorial Text */}
-                        <div className="w-full md:w-2/3 pt-0 md:pt-8">
-                            <h2 className="font-display text-4xl sm:text-5xl md:text-6xl leading-tight mb-10">
+                        {/* Quote */}
+                        <div className="flex-1 text-center md:text-left">
+                            <blockquote className="font-display text-3xl sm:text-4xl md:text-5xl leading-tight mb-8">
                                 &quot;We are building a bridge between human intuition and machine intelligence.&quot;
-                            </h2>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-base md:text-lg text-white/60 font-light leading-relaxed">
-                                <p>
-                                    AI Spirit was conceived not as a tool, but as a sanctuary. A place where judgment ceases to exist, and conversation flows as freely as thought itself.
-                                </p>
-                                <p>
-                                    From the wisdom of history&apos;s greatest minds to the comfort of a friend who always listens—we are crafting the future of connection.
-                                </p>
-                            </div>
+                            </blockquote>
+                            <p className="text-white/60 text-lg leading-relaxed max-w-xl">
+                                AI Spirit was conceived as a sanctuary—a place where judgment ceases to exist and conversation flows as freely as thought itself.
+                            </p>
                         </div>
                     </div>
                 </section>
 
-                {/* --- CONTACT SECTION --- */}
-                <section className="py-24 md:py-32 px-6 bg-[#FAFAFA] max-w-3xl mx-auto">
-                    <div className="text-center mb-16">
-                        <span className="text-xs font-bold tracking-[0.3em] text-black/40 uppercase mb-4 block">Get In Touch</span>
-                        <h2 className="font-display text-4xl sm:text-5xl md:text-6xl text-black mb-4">Contact Us</h2>
-                        <p className="text-black/50 text-lg">We'd love to hear from you.</p>
-                    </div>
-
-                    {status.message && (
-                        <div className={`mb-10 p-4 text-center rounded-xl ${
-                            status.type === 'success'
-                                ? 'bg-green-50 text-green-800 border border-green-200'
-                                : 'bg-red-50 text-red-800 border border-red-200'
-                        }`}>
-                            {status.message}
-                        </div>
-                    )}
-
-                    <form onSubmit={handleSubmit} className="space-y-8">
-                        <div className="space-y-2">
-                            <label htmlFor="name" className="block text-sm font-medium text-black/70 uppercase tracking-wider">
-                                Your Name
-                            </label>
-                            <input
-                                type="text"
-                                id="name"
-                                name="name"
-                                value={formData.name}
-                                onChange={handleChange}
-                                required
-                                className="w-full bg-white border border-black/10 rounded-xl py-4 px-5 text-lg focus:outline-none focus:border-black focus:ring-1 focus:ring-black transition-colors text-black placeholder:text-black/30"
-                                placeholder="John Doe"
-                            />
+                {/* === CONTACT SECTION === */}
+                <section className="py-24 md:py-32 px-6 bg-white">
+                    <div className="max-w-xl mx-auto">
+                        <div className="text-center mb-12">
+                            <h2 className="font-display text-3xl sm:text-4xl text-black mb-3">Get in Touch</h2>
+                            <p className="text-black/60">Have questions? We&apos;d love to hear from you.</p>
                         </div>
 
-                        <div className="space-y-2">
-                            <label htmlFor="email" className="block text-sm font-medium text-black/70 uppercase tracking-wider">
-                                Email Address
-                            </label>
-                            <input
-                                type="email"
-                                id="email"
-                                name="email"
-                                value={formData.email}
-                                onChange={handleChange}
-                                required
-                                className="w-full bg-white border border-black/10 rounded-xl py-4 px-5 text-lg focus:outline-none focus:border-black focus:ring-1 focus:ring-black transition-colors text-black placeholder:text-black/30"
-                                placeholder="john@example.com"
-                            />
-                        </div>
+                        {status.message && (
+                            <div className={`mb-8 p-4 text-center rounded-xl text-sm ${
+                                status.type === 'success'
+                                    ? 'bg-green-50 text-green-800 border border-green-200'
+                                    : 'bg-red-50 text-red-800 border border-red-200'
+                            }`}>
+                                {status.message}
+                            </div>
+                        )}
 
-                        <div className="space-y-2">
-                            <label htmlFor="message" className="block text-sm font-medium text-black/70 uppercase tracking-wider">
-                                Message
-                            </label>
-                            <textarea
-                                id="message"
-                                name="message"
-                                value={formData.message}
-                                onChange={handleChange}
-                                required
-                                rows={4}
-                                className="w-full bg-white border border-black/10 rounded-xl py-4 px-5 text-lg focus:outline-none focus:border-black focus:ring-1 focus:ring-black transition-colors resize-none text-black placeholder:text-black/30"
-                                placeholder="Tell us what's on your mind..."
-                            />
-                        </div>
+                        <form onSubmit={handleSubmit} className="space-y-6">
+                            <div>
+                                <label htmlFor="name" className="block text-sm font-medium text-black/70 mb-2">
+                                    Name
+                                </label>
+                                <input
+                                    type="text"
+                                    id="name"
+                                    name="name"
+                                    value={formData.name}
+                                    onChange={handleChange}
+                                    required
+                                    className="w-full bg-gray-50 border border-gray-200 rounded-xl py-3 px-4 text-black focus:outline-none focus:border-black focus:ring-1 focus:ring-black transition-colors"
+                                    placeholder="Your name"
+                                />
+                            </div>
 
-                        <div className="pt-4">
+                            <div>
+                                <label htmlFor="email" className="block text-sm font-medium text-black/70 mb-2">
+                                    Email
+                                </label>
+                                <input
+                                    type="email"
+                                    id="email"
+                                    name="email"
+                                    value={formData.email}
+                                    onChange={handleChange}
+                                    required
+                                    className="w-full bg-gray-50 border border-gray-200 rounded-xl py-3 px-4 text-black focus:outline-none focus:border-black focus:ring-1 focus:ring-black transition-colors"
+                                    placeholder="you@example.com"
+                                />
+                            </div>
+
+                            <div>
+                                <label htmlFor="message" className="block text-sm font-medium text-black/70 mb-2">
+                                    Message
+                                </label>
+                                <textarea
+                                    id="message"
+                                    name="message"
+                                    value={formData.message}
+                                    onChange={handleChange}
+                                    required
+                                    rows={4}
+                                    className="w-full bg-gray-50 border border-gray-200 rounded-xl py-3 px-4 text-black focus:outline-none focus:border-black focus:ring-1 focus:ring-black transition-colors resize-none"
+                                    placeholder="Your message..."
+                                />
+                            </div>
+
                             <button
                                 type="submit"
                                 disabled={isSubmitting}
-                                className="w-full sm:w-auto bg-black text-white px-10 py-4 text-sm font-bold tracking-widest uppercase rounded-xl hover:bg-black/80 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-soft hover:shadow-lift"
+                                className="w-full bg-black text-white py-3 px-6 rounded-xl font-medium hover:bg-black/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                                 {isSubmitting ? 'Sending...' : 'Send Message'}
                             </button>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
                 </section>
 
-                <footer className="py-8 bg-black text-white/40 text-center text-sm border-t border-white/10">
-                    © {new Date().getFullYear()} AI Spirit. All rights reserved.
+                {/* === FOOTER === */}
+                <footer className="py-8 bg-black text-white/50 text-center text-sm border-t border-white/10">
+                    <div className="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+                        <div>© {new Date().getFullYear()} AI Spirit. All rights reserved.</div>
+                        <div className="flex items-center gap-6">
+                            <Link href="/privacy" className="hover:text-white transition-colors">Privacy</Link>
+                            <Link href="/terms" className="hover:text-white transition-colors">Terms</Link>
+                            <Link href="/contact" className="hover:text-white transition-colors">Contact</Link>
+                        </div>
+                    </div>
                 </footer>
-
             </div>
         </>
     )
