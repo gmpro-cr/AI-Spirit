@@ -51,8 +51,8 @@ export default function HomePage() {
     return (
         <>
             <Head>
-                <title>AI Spirit - Chat with History&apos;s Greatest Minds</title>
-                <meta name="description" content="Experience meaningful conversations with AI personas of history's greatest thinkers, leaders, and visionaries. Your digital sanctuary for wisdom and connection." />
+                <title>AI Spirit - Talk to Anyone, Anytime</title>
+                <meta name="description" content="Chat with 100+ AI personas - spiritual guides, world leaders, celebrities, and fictional characters. Your digital sanctuary for meaningful conversations." />
                 <link rel="canonical" href="https://ai-spirit.in" />
             </Head>
 
@@ -69,12 +69,12 @@ export default function HomePage() {
                         </div>
 
                         <h1 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl tracking-tight leading-[1.1] mb-6 text-black">
-                            Chat with history&apos;s
-                            <span className="block text-black/40">greatest minds</span>
+                            Talk to anyone.
+                            <span className="block text-black/40">Anytime.</span>
                         </h1>
 
                         <p className="text-lg md:text-xl text-black/60 max-w-lg mx-auto lg:mx-0 mb-8 leading-relaxed">
-                            From Einstein to Cleopatra, Osho to Elon Musk. Have meaningful conversations with AI personas that think, respond, and inspire like the originals.
+                            Spiritual guides, world leaders, celebrities, fictional characters—100+ AI personas ready for meaningful conversations.
                         </p>
 
                         <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">

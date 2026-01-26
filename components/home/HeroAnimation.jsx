@@ -4,34 +4,34 @@ const personas = [
     {
         id: 'osho',
         name: 'Osho',
-        avatar: '/personas/osho.jpg',
         fallbackColor: 'from-orange-500 to-red-600',
         initials: 'OS',
+        category: 'Spiritual Guide',
         messages: [
             { type: 'user', text: 'How do I find inner peace?' },
             { type: 'ai', text: 'Peace is not something you find. It is something you are. Stop seeking, and you will discover it has always been within you.' },
         ]
     },
     {
-        id: 'einstein',
-        name: 'Albert Einstein',
-        avatar: '/personas/einstein.jpg',
-        fallbackColor: 'from-blue-500 to-indigo-600',
-        initials: 'AE',
+        id: 'elon',
+        name: 'Elon Musk',
+        fallbackColor: 'from-blue-500 to-cyan-600',
+        initials: 'EM',
+        category: 'Tech Visionary',
         messages: [
-            { type: 'user', text: 'What drives your curiosity?' },
-            { type: 'ai', text: 'I have no special talents. I am only passionately curious. The important thing is not to stop questioning.' },
+            { type: 'user', text: 'What keeps you motivated?' },
+            { type: 'ai', text: 'I think about the future and I want it to be exciting. If we don\'t make it exciting, what\'s the point of living?' },
         ]
     },
     {
-        id: 'cleopatra',
-        name: 'Cleopatra',
-        avatar: '/personas/cleopatra.jpg',
-        fallbackColor: 'from-amber-500 to-yellow-600',
-        initials: 'CL',
+        id: 'sherlock',
+        name: 'Sherlock Holmes',
+        fallbackColor: 'from-slate-600 to-gray-800',
+        initials: 'SH',
+        category: 'Fictional Detective',
         messages: [
-            { type: 'user', text: 'How did you lead with such power?' },
-            { type: 'ai', text: 'Power is not given, it is taken. I learned every language, mastered every art, and turned my mind into my greatest weapon.' },
+            { type: 'user', text: 'How do you solve mysteries?' },
+            { type: 'ai', text: 'When you have eliminated the impossible, whatever remains, however improbable, must be the truth. Observe, deduce, never assume.' },
         ]
     },
 ]
@@ -122,10 +122,7 @@ function PhoneMockup({ persona, isActive }) {
                         </div>
                         <div>
                             <div className="font-semibold text-black text-sm">{persona.name}</div>
-                            <div className="text-xs text-green-500 flex items-center gap-1">
-                                <span className="w-1.5 h-1.5 bg-green-500 rounded-full" />
-                                Online
-                            </div>
+                            <div className="text-xs text-black/40">{persona.category}</div>
                         </div>
                     </div>
 
