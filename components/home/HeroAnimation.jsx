@@ -220,11 +220,6 @@ export default function HeroAnimation() {
 
     return (
         <div className="relative flex items-center justify-center">
-            {/* Glow effect behind phone */}
-            <div
-                className={`absolute w-[400px] h-[400px] rounded-full blur-3xl opacity-20 transition-all duration-1000 bg-gradient-to-br ${currentPersona.fallbackColor}`}
-            />
-
             {/* Floating persona indicators */}
             <div className="absolute -left-4 sm:left-0 top-1/2 -translate-y-1/2 flex flex-col gap-3">
                 {personas.map((p, i) => (
