@@ -43,8 +43,11 @@ export default function Navbar({ onMenuToggle, showMenuButton = false }) {
             </span>
           </Link>
 
-          {/* Desktop Links - Right after logo */}
-          <div className="hidden md:flex items-center gap-8 ml-12">
+          {/* Spacer */}
+          <div className="flex-1" />
+
+          {/* Desktop Links - Right side */}
+          <div className="hidden md:flex items-center gap-8">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
@@ -59,9 +62,6 @@ export default function Navbar({ onMenuToggle, showMenuButton = false }) {
               </Link>
             ))}
           </div>
-
-          {/* Spacer to push mobile menu button to right */}
-          <div className="flex-1" />
 
           {/* Mobile Menu Button */}
           <button
