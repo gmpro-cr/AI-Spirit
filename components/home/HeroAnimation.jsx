@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react'
+import Image from 'next/image'
 
 const personas = [
     {
         id: 'osho',
         name: 'Osho',
+        image: '/personas/osho.png',
         fallbackColor: 'from-orange-500 to-red-600',
         initials: 'OS',
         category: 'Spiritual Guide',
@@ -15,6 +17,7 @@ const personas = [
     {
         id: 'elon',
         name: 'Elon Musk',
+        image: '/personas/elon-musk.png',
         fallbackColor: 'from-blue-500 to-cyan-600',
         initials: 'EM',
         category: 'Tech Visionary',
@@ -26,6 +29,7 @@ const personas = [
     {
         id: 'sherlock',
         name: 'Sherlock Holmes',
+        image: '/personas/sherlock-holmes.png',
         fallbackColor: 'from-slate-600 to-gray-800',
         initials: 'SH',
         category: 'Fictional Detective',
@@ -75,6 +79,37 @@ function ChatMessage({ message, isVisible, delay = 0 }) {
     )
 }
 
+function PersonaAvatar({ persona, size = 'md', className = '' }) {
+    const [imgError, setImgError] = useState(false)
+
+    const sizeClasses = {
+        sm: 'w-10 h-10',
+        md: 'w-12 h-12',
+        lg: 'w-14 h-14'
+    }
+
+    if (imgError) {
+        return (
+            <div className={`${sizeClasses[size]} rounded-full bg-gradient-to-br ${persona.fallbackColor} flex items-center justify-center text-white font-semibold text-sm shadow-md ${className}`}>
+                {persona.initials}
+            </div>
+        )
+    }
+
+    return (
+        <div className={`${sizeClasses[size]} rounded-full overflow-hidden shadow-md ${className}`}>
+            <Image
+                src={persona.image}
+                alt={persona.name}
+                width={56}
+                height={56}
+                className="w-full h-full object-cover"
+                onError={() => setImgError(true)}
+            />
+        </div>
+    )
+}
+
 function PhoneMockup({ persona, isActive }) {
     const [showTyping, setShowTyping] = useState(false)
     const [visibleMessages, setVisibleMessages] = useState(0)
@@ -117,9 +152,7 @@ function PhoneMockup({ persona, isActive }) {
 
                     {/* Chat header */}
                     <div className="px-4 py-3 border-b border-gray-100 flex items-center gap-3">
-                        <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${persona.fallbackColor} flex items-center justify-center text-white font-semibold text-sm shadow-md`}>
-                            {persona.initials}
-                        </div>
+                        <PersonaAvatar persona={persona} size="sm" />
                         <div>
                             <div className="font-semibold text-black text-sm">{persona.name}</div>
                             <div className="text-xs text-black/40">{persona.category}</div>
@@ -198,13 +231,13 @@ export default function HeroAnimation() {
                     <button
                         key={p.id}
                         onClick={() => setCurrentIndex(i)}
-                        className={`w-12 h-12 rounded-full bg-gradient-to-br ${p.fallbackColor} flex items-center justify-center text-white font-semibold text-xs shadow-lg transition-all duration-300 ${
+                        className={`transition-all duration-300 ${
                             i === currentIndex
-                                ? 'scale-110 ring-2 ring-white ring-offset-2'
+                                ? 'scale-110 ring-2 ring-white ring-offset-2 rounded-full'
                                 : 'opacity-50 hover:opacity-80'
                         }`}
                     >
-                        {p.initials}
+                        <PersonaAvatar persona={p} size="md" />
                     </button>
                 ))}
             </div>
