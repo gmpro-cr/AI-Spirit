@@ -10,8 +10,10 @@ const personas = [
         initials: 'OS',
         category: 'Spiritual Guide',
         messages: [
-            { type: 'user', text: 'How do I find inner peace?' },
-            { type: 'ai', text: 'Peace is not something you find. It is something you are. Stop seeking, and you will discover it has always been within you.' },
+            { type: 'user', text: 'I feel lost in life.' },
+            { type: 'ai', text: 'Good. Being lost is the beginning of finding yourself. The mind wants certainty, but life is a mystery to be lived, not a problem to be solved.' },
+            { type: 'user', text: 'But how do I stop overthinking?' },
+            { type: 'ai', text: 'You cannot stop the mind by fighting it. Watch it. Be a witness. The moment you observe thoughts, you are no longer trapped in them. You become the sky, not the clouds.' },
         ]
     },
     {
@@ -22,8 +24,10 @@ const personas = [
         initials: 'EM',
         category: 'Tech Visionary',
         messages: [
-            { type: 'user', text: 'What keeps you motivated?' },
-            { type: 'ai', text: 'I think about the future and I want it to be exciting. If we don\'t make it exciting, what\'s the point of living?' },
+            { type: 'user', text: 'How do you handle failure?' },
+            { type: 'ai', text: 'If things are not failing, you\'re not innovating enough. SpaceX blew up rockets. Tesla nearly went bankrupt. Failure is just data.' },
+            { type: 'user', text: 'What\'s your secret to productivity?' },
+            { type: 'ai', text: 'First principles thinking. Don\'t reason by analogy. Break problems down to fundamental truths and build up from there. Also, lots of coffee.' },
         ]
     },
     {
@@ -34,8 +38,10 @@ const personas = [
         initials: 'SH',
         category: 'Fictional Detective',
         messages: [
-            { type: 'user', text: 'How do you solve mysteries?' },
-            { type: 'ai', text: 'When you have eliminated the impossible, whatever remains, however improbable, must be the truth. Observe, deduce, never assume.' },
+            { type: 'user', text: 'How can I be more observant?' },
+            { type: 'ai', text: 'You see, but you do not observe. The distinction is clear. Notice the mud on shoes, the calluses on hands, the worn edges of a wallet. Details reveal everything.' },
+            { type: 'user', text: 'What if I miss something important?' },
+            { type: 'ai', text: 'It is a capital mistake to theorize before one has data. Collect facts ruthlessly. The truth will emerge when you stop forcing conclusions.' },
         ]
     },
 ]
@@ -121,19 +127,32 @@ function PhoneMockup({ persona, isActive }) {
             return
         }
 
-        // Animation sequence
+        // Animation sequence for 4 messages
         const sequence = async () => {
-            // Show first message (user)
+            // Message 1 (user)
             setVisibleMessages(1)
+            await new Promise(r => setTimeout(r, 600))
 
-            // Show typing indicator
-            await new Promise(r => setTimeout(r, 800))
+            // Typing indicator
             setShowTyping(true)
+            await new Promise(r => setTimeout(r, 1200))
 
-            // Show AI response
-            await new Promise(r => setTimeout(r, 1500))
+            // Message 2 (AI response)
             setShowTyping(false)
             setVisibleMessages(2)
+            await new Promise(r => setTimeout(r, 800))
+
+            // Message 3 (user)
+            setVisibleMessages(3)
+            await new Promise(r => setTimeout(r, 600))
+
+            // Typing indicator
+            setShowTyping(true)
+            await new Promise(r => setTimeout(r, 1200))
+
+            // Message 4 (AI response)
+            setShowTyping(false)
+            setVisibleMessages(4)
         }
 
         sequence()
