@@ -220,25 +220,8 @@ export default function HeroAnimation() {
 
     return (
         <div className="relative flex items-center justify-center">
-            {/* Floating persona indicators */}
-            <div className="absolute -left-4 sm:left-0 top-1/2 -translate-y-1/2 flex flex-col gap-3">
-                {personas.map((p, i) => (
-                    <button
-                        key={p.id}
-                        onClick={() => setCurrentIndex(i)}
-                        className={`transition-all duration-300 ${
-                            i === currentIndex
-                                ? 'scale-110 ring-2 ring-white ring-offset-2 rounded-full'
-                                : 'opacity-50 hover:opacity-80'
-                        }`}
-                    >
-                        <PersonaAvatar persona={p} size="md" />
-                    </button>
-                ))}
-            </div>
-
             {/* Phone mockup */}
-            <div className="relative z-10">
+            <div className="relative">
                 <PhoneMockup persona={currentPersona} isActive={true} key={currentPersona.id} />
             </div>
 
