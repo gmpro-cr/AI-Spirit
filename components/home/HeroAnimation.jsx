@@ -224,12 +224,6 @@ export default function HeroAnimation() {
             <div className="relative">
                 <PhoneMockup persona={currentPersona} isActive={true} key={currentPersona.id} />
             </div>
-
-            {/* Persona name badge */}
-            <div className="absolute -right-4 sm:right-0 bottom-20 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full shadow-lg border border-gray-100">
-                <span className="text-sm font-medium text-black">Chatting with </span>
-                <span className="text-sm font-bold text-black">{currentPersona.name}</span>
-            </div>
         </div>
     )
 }
