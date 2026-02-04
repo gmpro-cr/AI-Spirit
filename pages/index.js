@@ -60,7 +60,7 @@ export default function HomePage() {
                 <meta property="og:url" content="https://ai-spirit.in" />
                 <meta property="og:title" content="AI Spirit - Talk to Anyone, Anytime" />
                 <meta property="og:description" content="Chat with 350+ AI personas - spiritual guides, world leaders, celebrities, and fictional characters." />
-                <meta property="og:image" content="https://ai-spirit.in/og-image-v4.png" />
+                <meta property="og:image" content="https://ai-spirit.in/og-image-v5.png" />
                 <meta property="og:image:width" content="1200" />
                 <meta property="og:image:height" content="630" />
 
@@ -68,7 +68,7 @@ export default function HomePage() {
                 <meta name="twitter:card" content="summary_large_image" />
                 <meta name="twitter:title" content="AI Spirit - Talk to Anyone, Anytime" />
                 <meta name="twitter:description" content="Chat with 350+ AI personas - spiritual guides, world leaders, celebrities, and fictional characters." />
-                <meta name="twitter:image" content="https://ai-spirit.in/og-image-v4.png" />
+                <meta name="twitter:image" content="https://ai-spirit.in/og-image-v5.png" />
             </Head>
 
             <div className="min-h-screen bg-white font-sans overflow-x-hidden selection:bg-black selection:text-white">
