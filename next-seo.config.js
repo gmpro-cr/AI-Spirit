@@ -100,7 +100,7 @@ export default {
         description: 'Chat with 350+ AI personas - spiritual guides, world leaders, celebrities, and fictional characters. Your digital sanctuary for meaningful conversations.',
         images: [
             {
-                url: 'https://ai-spirit.in/og-image-v6.png',
+                url: 'https://ai-spirit.in/og-image-v7.png',
                 width: 1200,
                 height: 630,
                 alt: 'AI Spirit - Chat with 350+ AI Personas',

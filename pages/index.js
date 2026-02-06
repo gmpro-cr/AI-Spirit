@@ -68,7 +68,7 @@ export default function HomePage() {
                 <meta name="twitter:card" content="summary_large_image" />
                 <meta name="twitter:title" content="AI Spirit - Talk to Anyone, Anytime" />
                 <meta name="twitter:description" content="Chat with 350+ AI personas - spiritual guides, world leaders, celebrities, and fictional characters." />
-                <meta name="twitter:image" content="https://ai-spirit.in/og-image-v6.png" />
+                <meta name="twitter:image" content="https://ai-spirit.in/og-image-v7.png" />
             </Head>
 
             <div className="min-h-screen bg-white font-sans overflow-x-hidden selection:bg-black selection:text-white">
@@ -229,8 +229,8 @@ export default function HomePage() {
 
                         {status.message && (
                             <div className={`mb-8 p-4 text-center rounded-xl text-sm ${status.type === 'success'
-                                    ? 'bg-green-50 text-green-800 border border-green-200'
-                                    : 'bg-red-50 text-red-800 border border-red-200'
+                                ? 'bg-green-50 text-green-800 border border-green-200'
+                                : 'bg-red-50 text-red-800 border border-red-200'
                                 }`}>
                                 {status.message}
                             </div>
