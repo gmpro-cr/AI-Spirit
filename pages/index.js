@@ -60,7 +60,7 @@ export default function HomePage() {
                 <meta property="og:url" content="https://ai-spirit.in" />
                 <meta property="og:title" content="AI Spirit - Talk to Anyone, Anytime" />
                 <meta property="og:description" content="Chat with 350+ AI personas - spiritual guides, world leaders, celebrities, and fictional characters." />
-                <meta property="og:image" content="https://ai-spirit.in/og-image-v6.png" />
+                <meta property="og:image" content="https://ai-spirit.in/og-image-v7.png" />
                 <meta property="og:image:width" content="1200" />
                 <meta property="og:image:height" content="630" />
 
@@ -228,11 +228,10 @@ export default function HomePage() {
                         </div>
 
                         {status.message && (
-                            <div className={`mb-8 p-4 text-center rounded-xl text-sm ${
-                                status.type === 'success'
+                            <div className={`mb-8 p-4 text-center rounded-xl text-sm ${status.type === 'success'
                                     ? 'bg-green-50 text-green-800 border border-green-200'
                                     : 'bg-red-50 text-red-800 border border-red-200'
-                            }`}>
+                                }`}>
                                 {status.message}
                             </div>
                         )}
