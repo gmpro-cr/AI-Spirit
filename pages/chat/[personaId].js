@@ -11,6 +11,7 @@ import {
   incrementGuestMessageCount,
   canSendMessage
 } from '@/lib/guestMessageTracking'
+import { speak, stopSpeaking } from '@/lib/textToSpeech'
 
 function ChatPage() {
   const router = useRouter()
@@ -27,6 +28,7 @@ function ChatPage() {
   const [isListening, setIsListening] = useState(false)
   const [recognition, setRecognition] = useState(null)
   const [shareLinkCopied, setShareLinkCopied] = useState(false)
+  const [speakingIndex, setSpeakingIndex] = useState(null)
   const chatContainerRef = useRef(null)
 
   // Format message content with bold text
@@ -59,6 +61,30 @@ function ChatPage() {
       ...prev,
       [index]: prev[index] === type ? null : type // Toggle if same, set if different
     }))
+  }
+
+  // Handle speak button for assistant messages
+  const handleSpeak = async (content, index) => {
+    if (speakingIndex === index) {
+      stopSpeaking()
+      setSpeakingIndex(null)
+      return
+    }
+    // Stop any currently playing audio
+    stopSpeaking()
+    setSpeakingIndex(index)
+    try {
+      // Strip HTML tags for clean TTS
+      const tempDiv = document.createElement('div')
+      tempDiv.innerHTML = formatMessage(content)
+      const plainText = tempDiv.textContent || tempDiv.innerText || ''
+      await speak(plainText, persona?.name, persona?.language || 'en', () => {
+        setSpeakingIndex(null)
+      })
+    } catch (err) {
+      console.error('Speech failed:', err)
+      setSpeakingIndex(null)
+    }
   }
 
   // Start editing user message
@@ -796,9 +822,25 @@ function ChatPage() {
                           </button>
                         )}
 
-                        {/* Like/Dislike - Only for assistant messages */}
+                        {/* Speak / Like / Dislike - Only for assistant messages */}
                         {msg.role === 'assistant' && (
                           <>
+                            {/* Speaker Button */}
+                            <button
+                              onClick={() => handleSpeak(msg.content, index)}
+                              className={`p-1.5 rounded-lg transition-colors group ${speakingIndex === index ? 'bg-blue-100' : 'hover:bg-gray-100'}`}
+                              title={speakingIndex === index ? 'Stop speaking' : 'Listen'}
+                            >
+                              {speakingIndex === index ? (
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-blue-600" viewBox="0 0 24 24" fill="currentColor">
+                                  <rect x="6" y="6" width="12" height="12" rx="2" />
+                                </svg>
+                              ) : (
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-500 group-hover:text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                                </svg>
+                              )}
+                            </button>
                             <button
                               onClick={() => handleFeedback(index, 'like')}
                               className="p-1.5 hover:bg-gray-100 rounded-lg transition-colors group"
