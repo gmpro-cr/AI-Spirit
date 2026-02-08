@@ -2,6 +2,7 @@
 // Force rebuild: 2025-11-29T17:20:00
 
 import { useState, useEffect, useRef } from 'react'
+import { speak, stopSpeaking, isSpeaking } from '../../lib/textToSpeech'
 
 // Typing speeds (milliseconds per word) based on persona talking style
 // Each persona has a unique speed that matches their character
@@ -27,6 +28,7 @@ export default function MessageBubble({ message, language, personaName }) {
   const [displayedText, setDisplayedText] = useState(message.content) // Start with full text for SSR
   const [isTyping, setIsTyping] = useState(false)
   const [liked, setLiked] = useState(null) // null, 'like', or 'dislike'
+  const [speaking, setSpeaking] = useState(false)
   const animationRef = useRef(null)
   const [mounted, setMounted] = useState(false)
 
@@ -53,6 +55,23 @@ export default function MessageBubble({ message, language, personaName }) {
   const handleDislike = () => {
     setLiked(liked === 'dislike' ? null : 'dislike')
     // TODO: Send feedback to backend
+  }
+
+  const handleSpeak = async () => {
+    if (speaking) {
+      stopSpeaking()
+      setSpeaking(false)
+      return
+    }
+    setSpeaking(true)
+    try {
+      await speak(message.content, personaName, language, () => {
+        setSpeaking(false)
+      })
+    } catch (err) {
+      console.error('Speech failed:', err)
+      setSpeaking(false)
+    }
   }
 
   // Word-by-word streaming animation for AI messages
@@ -127,9 +146,29 @@ export default function MessageBubble({ message, language, personaName }) {
           </div>
         )}
 
-        {/* Like/Dislike Buttons - Below AI messages */}
+        {/* Action Buttons - Below AI messages */}
         {!isUser && !isTyping && (
           <div className="flex items-center gap-2 mt-2 ml-1">
+            {/* Speaker Button */}
+            <button
+              onClick={handleSpeak}
+              className={`group/speak flex items-center gap-1 px-2 py-1 rounded-full transition-all ${speaking
+                ? 'bg-blue-100 border border-blue-300'
+                : 'bg-white border border-gray-200 hover:bg-gray-50 hover:border-gray-300'
+                }`}
+              title={speaking ? "Stop speaking" : "Listen to response"}
+            >
+              {speaking ? (
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-blue-600" viewBox="0 0 24 24" fill="currentColor">
+                  <rect x="6" y="6" width="12" height="12" rx="2" />
+                </svg>
+              ) : (
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-500 group-hover/speak:text-black transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                </svg>
+              )}
+            </button>
+
             {/* Like Button */}
             <button
               onClick={handleLike}
