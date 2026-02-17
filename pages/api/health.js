@@ -6,7 +6,6 @@
  */
 
 import { createClient } from '@supabase/supabase-js'
-import { GoogleGenerativeAI } from '@google/generative-ai'
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -35,7 +34,7 @@ export default async function handler(req, res) {
   // 1. Check Database Connection
   try {
     const dbStartTime = Date.now()
-    
+
     const { data, error } = await supabase
       .from('personas')
       .select('id')
@@ -64,35 +63,49 @@ export default async function handler(req, res) {
     health.errors.push({ service: 'database', error: error.message })
   }
 
-  // 2. Check Gemini API
+  // 2. Check AI API (OpenRouter)
   try {
     const apiStartTime = Date.now()
-    
-    if (!process.env.GEMINI_API_KEY) {
-      throw new Error('GEMINI_API_KEY not configured')
+
+    if (!process.env.OPENROUTER_API_KEY) {
+      throw new Error('OPENROUTER_API_KEY not configured')
     }
 
-    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY)
-    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' })
-    
-    // Simple test prompt
-    const result = await model.generateContent('Respond with only: OK')
-    const response = result.response.text()
-    
+    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
+        'Content-Type': 'application/json',
+        'HTTP-Referer': process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
+        'X-Title': 'AI Spirit',
+      },
+      body: JSON.stringify({
+        model: 'meta-llama/llama-3.3-70b-instruct:free',
+        messages: [{ role: 'user', content: 'Respond with only: OK' }],
+        max_tokens: 10,
+      }),
+    })
+
+    if (!response.ok) {
+      throw new Error(`OpenRouter API returned ${response.status}`)
+    }
+
+    const data = await response.json()
+    const testResponse = data.choices?.[0]?.message?.content || ''
     const apiResponseTime = Date.now() - apiStartTime
 
     health.checks.geminiAPI = {
       status: 'healthy',
       responseTime: apiResponseTime,
-      message: 'Gemini API accessible',
-      testResponse: response.trim().substring(0, 50),
+      message: 'OpenRouter API accessible',
+      testResponse: testResponse.trim().substring(0, 50),
     }
   } catch (error) {
     health.checks.geminiAPI = {
       status: 'unhealthy',
       responseTime: 0,
       error: error.message,
-      message: 'Gemini API check failed',
+      message: 'OpenRouter API check failed',
     }
     health.status = 'degraded'
     health.errors.push({ service: 'geminiAPI', error: error.message })
@@ -154,9 +167,9 @@ export default async function handler(req, res) {
   }
 
   // Set appropriate HTTP status code
-  const statusCode = health.status === 'healthy' ? 200 
-                   : health.status === 'degraded' ? 200
-                   : 503
+  const statusCode = health.status === 'healthy' ? 200
+    : health.status === 'degraded' ? 200
+      : 503
 
   console.log(`[Health Check] Status: ${health.status}`, {
     database: health.checks.database.status,
