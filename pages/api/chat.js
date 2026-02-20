@@ -414,10 +414,10 @@ ${relationshipContext}`
           // Extract memories
           extractAndSaveMemories(userId, persona.slug, finalConversationId, message, fullResponse, supabaseAdmin)
             .catch(err => console.error('[Memory Extraction Error]:', err))
-
-          // Increment persona message count
-          incrementPersonaMessageCount(persona.slug)
         }
+
+        // Increment persona message count for ALL users (guests and authenticated)
+        incrementPersonaMessageCount(persona.slug)
 
         return
       } catch (error) {
