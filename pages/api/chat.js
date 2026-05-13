@@ -1,5 +1,4 @@
 import { supabaseAdmin } from '@/lib/supabase'
-import { createPagesServerClient } from '@supabase/auth-helpers-nextjs'
 import crypto from 'crypto'
 import { generatePersonaResponse, generatePersonaResponseStream } from '@/lib/gemini'
 import { generateGroqResponse } from '@/lib/groq'
@@ -54,13 +53,17 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' })
   }
 
-  // Enforce authenticated session — Google sign-in is mandatory
-  const supabaseServer = createPagesServerClient({ req, res })
-  const { data: { session } } = await supabaseServer.auth.getSession()
-  if (!session?.user?.id) {
+  // Enforce authenticated session via Bearer token (more reliable than cookies in PWA/production)
+  const authHeader = req.headers.authorization
+  const token = authHeader?.startsWith('Bearer ') ? authHeader.slice(7) : null
+  if (!token) {
     return res.status(401).json({ error: 'Sign in required to chat with personas.' })
   }
-  const userId = session.user.id
+  const { data: { user: authUser }, error: authError } = await supabaseAdmin.auth.getUser(token)
+  if (authError || !authUser) {
+    return res.status(401).json({ error: 'Invalid or expired session. Please sign in again.' })
+  }
+  const userId = authUser.id
   const isGuest = false
 
   // Declare for error handler scope

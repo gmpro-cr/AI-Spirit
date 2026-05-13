@@ -6,6 +6,7 @@ import SidePanelNew from '@/components/layout/SidePanel'
 import { useChat } from '@/context/ChatContext'
 import { INITIAL_PERSONAS } from '@/data/personas'
 import { useAuth } from '@/context/AuthContext'
+import { supabase } from '@/lib/supabase'
 import { PersonaSchema, BreadcrumbSchema } from '@/components/seo/StructuredData'
 import {
   incrementGuestMessageCount,
@@ -116,17 +117,11 @@ function ChatPage() {
     setIsLoading(true)
 
     try {
-      // DEBUG: Log auth state before API call (edit mode)
-      const authDebug = {
-        hasUser: !!user,
-        userId: user?.id || null,
-        isGuest: !user
-      }
-      console.log('[Chat Page - Edit] Sending to API:', JSON.stringify(authDebug, null, 2))
+      const headers = await getAuthHeaders()
 
       const response = await fetch('/api/chat', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         body: JSON.stringify({
           persona: persona,
           personaId: persona.id || persona.slug,
@@ -316,6 +311,14 @@ function ChatPage() {
     router.push('/')
   }
 
+  const getAuthHeaders = async () => {
+    const { data: { session } } = await supabase.auth.getSession()
+    return {
+      'Content-Type': 'application/json',
+      ...(session?.access_token ? { 'Authorization': `Bearer ${session.access_token}` } : {}),
+    }
+  }
+
   const handleSendMessage = async (e) => {
     e.preventDefault()
     if (!currentInput.trim() || isLoading || !persona) return
@@ -326,9 +329,7 @@ function ChatPage() {
     if (!user) {
       const sendCheck = canSendMessage()
       if (!sendCheck.canSend) {
-        // Premium limit reached - hard block
         alert(sendCheck.message)
-        // setShowPremiumPrompt(true) // Premium UI hidden - keeping code for future use
         return
       }
     }
@@ -340,20 +341,11 @@ function ChatPage() {
     setIsLoading(true)
 
     try {
-      // DEBUG: Log auth state before API call
-      const authDebug = {
-        hasUser: !!user,
-        userId: user?.id || null,
-        userEmail: user?.email || null,
-        isGuest: !user,
-        hasProfile: !!userProfile
-      }
-      console.log('[Chat Page] Sending to API:', JSON.stringify(authDebug, null, 2))
+      const headers = await getAuthHeaders()
 
-      // Use streaming for better UX
       const response = await fetch('/api/chat', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         body: JSON.stringify({
           persona: persona,
           personaId: persona.id || persona.slug,
@@ -363,7 +355,7 @@ function ChatPage() {
           isGuest: !user,
           userId: user?.id || null,
           userProfile: userProfile || null,
-          stream: false, // Disable streaming for now (Vercel timeout issues)
+          stream: false,
         }),
       })
 
