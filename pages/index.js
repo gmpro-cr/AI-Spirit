@@ -92,7 +92,7 @@ export default function HomePage() {
                         </h1>
 
                         <p className="text-lg md:text-xl text-black/60 max-w-lg mx-auto lg:mx-0 mb-8 leading-relaxed">
-                            Spiritual guides, world leaders, celebrities, fictional characters—350+ AI personas ready for meaningful conversations.
+                            Spiritual guides, world leaders, celebrities, fictional characters — all ready for meaningful conversations.
                         </p>
 
                         <Link

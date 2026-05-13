@@ -88,7 +88,7 @@ export default function SignIn() {
                 redirectTo={`${process.env.NEXT_PUBLIC_APP_URL}/auth/callback${returnTo ? `?returnTo=${encodeURIComponent(returnTo)}` : ''}`}
               />
 
-              <div className="mt-6 text-center text-black text-sm">
+              <div className="mt-6 text-justify text-black text-sm">
                 <p>By signing in, you agree to our Terms and Privacy Policy</p>
                 <p className="mt-2 text-gray-600">AI-generated responses for entertainment purposes</p>
               </div>
