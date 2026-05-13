@@ -17,7 +17,7 @@ const premiumFaqs = [
     },
     {
         question: 'How much does AI-Spirit Premium cost?',
-        answer: 'AI-Spirit Premium costs ₹499 per month for unlimited AI conversations.'
+        answer: 'AI-Spirit Premium costs ₹249 per month for unlimited AI conversations.'
     },
     {
         question: 'What is the difference between Free and Premium plans?',
@@ -84,7 +84,7 @@ export default function Premium() {
                 key: data.subscription.razorpay_key,
                 subscription_id: data.subscription.id,
                 name: 'AI - Spirit Premium',
-                description: 'Monthly Subscription - ₹499/month',
+                description: 'Monthly Subscription - ₹249/month',
                 prefill: {
                     email: user.email,
                     name: userProfile?.full_name || '',
@@ -126,11 +126,11 @@ export default function Premium() {
         <>
             <Head>
                 <title>Premium Membership - Unlimited Messages & Custom Personas | AI - Spirit</title>
-                <meta name="description" content="Get unlimited conversations with AI personas and create your own custom AI characters. Premium membership at ₹499/month." />
+                <meta name="description" content="Get unlimited conversations with AI personas and create your own custom AI characters. Premium membership at ₹249/month." />
                 <meta name="keywords" content="premium membership, unlimited AI chat, custom AI personas, AI - Spirit premium" />
                 <link rel="canonical" href="https://ai-spirit.in/premium" />
                 <meta property="og:title" content="Premium Membership | AI - Spirit" />
-                <meta property="og:description" content="Unlimited messages + Create custom personas for just ₹499/month." />
+                <meta property="og:description" content="Unlimited messages + Create custom personas for just ₹249/month." />
                 <meta property="og:url" content="https://ai-spirit.in/premium" />
             </Head>
             <FAQSchema faqs={premiumFaqs} />
@@ -202,10 +202,10 @@ export default function Premium() {
                             <div className="mb-6">
                                 <h3 className="text-lg font-semibold text-gray-600 mb-2 uppercase tracking-wide">Premium</h3>
                                 <div className="flex items-baseline gap-2">
-                                    <span className="text-6xl font-bold bg-gradient-to-r from-black to-gray-700 bg-clip-text text-transparent">₹499</span>
+                                    <span className="text-6xl font-bold bg-gradient-to-r from-black to-gray-700 bg-clip-text text-transparent">₹249</span>
                                     <span className="text-gray-500 font-medium">/month</span>
                                 </div>
-                                <p className="text-sm text-gray-500 mt-3 font-medium">Less than ₹17/day for unlimited AI</p>
+                                <p className="text-sm text-gray-500 mt-3 font-medium">Less than ₹9/day for unlimited AI</p>
                             </div>
 
                             <ul className="space-y-4 mb-8 flex-grow">

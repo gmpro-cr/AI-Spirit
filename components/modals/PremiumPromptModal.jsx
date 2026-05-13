@@ -66,7 +66,7 @@ export default function PremiumPromptModal({ isOpen, onClose, reason = 'messages
         </div>
 
         <div className="text-center mb-6">
-          <div className="text-3xl font-bold text-black mb-1">₹499/month</div>
+          <div className="text-3xl font-bold text-black mb-1">₹249/month</div>
           <p className="text-sm text-gray-500">Cancel anytime, no questions asked</p>
         </div>
 
