@@ -1,6 +1,6 @@
 // Razorpay subscription creation API.
-// Auth comes from the Supabase session cookie — never trust user info from the body.
-import { createPagesServerClient } from '@supabase/auth-helpers-nextjs'
+// Auth is verified via Bearer token in the Authorization header (more reliable than cookies in production).
+import { supabaseAdmin } from '@/lib/supabase'
 
 export default async function handler(req, res) {
     if (req.method !== 'POST') {
@@ -8,19 +8,26 @@ export default async function handler(req, res) {
     }
 
     try {
-        const supabaseServer = createPagesServerClient({ req, res })
-        const { data: { session } } = await supabaseServer.auth.getSession()
+        // Verify session via Bearer token (avoids cookie-based auth issues in PWA/production)
+        const authHeader = req.headers.authorization
+        const token = authHeader?.startsWith('Bearer ') ? authHeader.slice(7) : null
 
-        if (!session?.user?.id) {
+        if (!token) {
             return res.status(401).json({ error: 'Sign in required to subscribe.' })
         }
 
-        const userId = session.user.id
-        const userEmail = session.user.email
+        const { data: { user }, error: authError } = await supabaseAdmin.auth.getUser(token)
+
+        if (authError || !user) {
+            return res.status(401).json({ error: 'Invalid or expired session. Please sign in again.' })
+        }
+
+        const userId = user.id
+        const userEmail = user.email
         const userName =
             req.body?.userName ||
-            session.user.user_metadata?.full_name ||
-            session.user.user_metadata?.name ||
+            user.user_metadata?.full_name ||
+            user.user_metadata?.name ||
             (userEmail ? userEmail.split('@')[0] : 'User')
 
         if (!userEmail) {

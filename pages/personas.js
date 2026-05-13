@@ -8,15 +8,19 @@ import PersonaCardNew from '@/components/personas/PersonaCard'
 import { PersonaGridSkeleton } from '@/components/personas/PersonaCardSkeleton'
 import CreatePersonaModal from '@/components/personas/CreatePersonaModal'
 import EditPersonaModal from '@/components/personas/EditPersonaModal'
+import PremiumPromptModal from '@/components/modals/PremiumPromptModal'
 import { INITIAL_PERSONAS } from '@/data/personas'
 import { supabase } from '@/lib/supabase'
 import { withAuth } from '@/middleware/withAuth'
 import { useAuth } from '@/context/AuthContext'
 import { WebsiteSchema, SoftwareApplicationSchema, ServiceSchema } from '@/components/seo/StructuredData'
 
+const FREE_PERSONA_LIMIT = 5
+const ACCESSED_PERSONAS_KEY = 'ai_spirit_accessed_personas'
+
 function Personas() {
   const router = useRouter()
-  const { user, userProfile } = useAuth()
+  const { user, userProfile, isPremium } = useAuth()
   const [personas, setPersonas] = useState([])
   const [filteredPersonas, setFilteredPersonas] = useState([])
   const [searchQuery, setSearchQuery] = useState('')
@@ -27,10 +31,53 @@ function Personas() {
   const [loadingPersonas, setLoadingPersonas] = useState(true)
   const [likedPersonaSlugs, setLikedPersonaSlugs] = useState([])
   const [showWelcomeTip, setShowWelcomeTip] = useState(false)
-  const [personaStats, setPersonaStats] = useState({}) // { slug: { message_count, view_count } }
+  const [personaStats, setPersonaStats] = useState({})
+  const [premiumModal, setPremiumModal] = useState({ open: false, reason: 'personas' })
 
-  // Handle create persona click - open modal directly (free for all users)
+  const getAccessedPersonas = () => {
+    try {
+      return new Set(JSON.parse(localStorage.getItem(ACCESSED_PERSONAS_KEY) || '[]'))
+    } catch {
+      return new Set()
+    }
+  }
+
+  const recordPersonaAccess = (slug) => {
+    const accessed = getAccessedPersonas()
+    accessed.add(slug)
+    localStorage.setItem(ACCESSED_PERSONAS_KEY, JSON.stringify([...accessed]))
+  }
+
+  const handlePersonaClick = (persona) => {
+    if (isPremium) {
+      recordPersonaAccess(persona.slug)
+      router.push(`/chat/${persona.slug}`)
+      return
+    }
+
+    const accessed = getAccessedPersonas()
+    if (accessed.has(persona.slug)) {
+      // Already in their 5 — allow
+      router.push(`/chat/${persona.slug}`)
+      return
+    }
+
+    if (accessed.size < FREE_PERSONA_LIMIT) {
+      recordPersonaAccess(persona.slug)
+      router.push(`/chat/${persona.slug}`)
+      return
+    }
+
+    // Hit the limit — show premium prompt
+    setPremiumModal({ open: true, reason: 'personas' })
+  }
+
+  // Create persona is premium-only
   const handleCreatePersonaClick = () => {
+    if (!isPremium) {
+      setPremiumModal({ open: true, reason: 'createPersona' })
+      return
+    }
     setIsModalOpen(true)
   }
 
@@ -311,6 +358,7 @@ function Personas() {
                     <PersonaCardNew
                       key={persona.slug}
                       persona={persona}
+                      onClick={handlePersonaClick}
                       onEdit={persona.is_custom ? handleEditPersona : undefined}
                       onLikeChange={handleLikeChange}
                       messageCount={personaStats[persona.slug]?.message_count}
@@ -336,6 +384,13 @@ function Personas() {
         </main>
       </div>
 
+
+      {/* Premium Prompt Modal */}
+      <PremiumPromptModal
+        isOpen={premiumModal.open}
+        reason={premiumModal.reason}
+        onClose={() => setPremiumModal({ open: false, reason: 'personas' })}
+      />
 
       {/* Modals */}
       <CreatePersonaModal

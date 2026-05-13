@@ -8,8 +8,8 @@ export const AuthProvider = ({ children }) => {
   const [userProfile, setUserProfile] = useState(null)
   const [loading, setLoading] = useState(true)
   const [profileLoading, setProfileLoading] = useState(false)
+  const [isPremium, setIsPremium] = useState(false)
 
-  // Load user profile from database (or create if doesn't exist)
   const loadUserProfile = async (userId, userMetadata) => {
     if (!userId) {
       setUserProfile(null)
@@ -25,9 +25,7 @@ export const AuthProvider = ({ children }) => {
         .single()
 
       if (error) {
-        // Profile doesn't exist yet (first-time user)
         if (error.code === 'PGRST116') {
-          // Auto-create profile from Google sign-in data
           const fullName = userMetadata?.full_name || userMetadata?.name || ''
           const preferredName = fullName.split(' ')[0] || userMetadata?.email?.split('@')[0] || 'User'
 
@@ -47,7 +45,6 @@ export const AuthProvider = ({ children }) => {
             console.error('Error creating profile:', createError)
             setUserProfile(null)
           } else {
-            console.log('✅ Auto-created profile for:', preferredName)
             setUserProfile(newProfile)
           }
         } else {
@@ -63,42 +60,57 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
+  const loadSubscriptionStatus = async (userId) => {
+    if (!userId) {
+      setIsPremium(false)
+      return
+    }
+    try {
+      const res = await fetch(`/api/user/subscription-status?userId=${userId}`)
+      if (res.ok) {
+        const data = await res.json()
+        setIsPremium(data.isPremium || false)
+      }
+    } catch {
+      setIsPremium(false)
+    }
+  }
+
   useEffect(() => {
-    // Only run on client side
     if (typeof window === 'undefined') {
       setLoading(false)
       return
     }
 
-    // Check active sessions and sets the user
     supabase.auth.getSession()
       .then(({ data: { session } }) => {
         setUser(session?.user ?? null)
         if (session?.user) {
           loadUserProfile(session.user.id, session.user.user_metadata)
+          loadSubscriptionStatus(session.user.id)
         }
         setLoading(false)
       })
       .catch((error) => {
-        // Silently handle session errors (e.g., invalid refresh token)
         console.debug('Auth session error (can be ignored for guest users):', error.message)
         setUser(null)
         setUserProfile(null)
+        setIsPremium(false)
         setLoading(false)
 
-        // Clear invalid tokens from localStorage
         if (error.message?.includes('refresh_token') || error.message?.includes('Refresh Token')) {
           localStorage.removeItem('supabase.auth.token')
         }
       })
 
-    // Listen for changes on auth state
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null)
       if (session?.user) {
         loadUserProfile(session.user.id, session.user.user_metadata)
+        loadSubscriptionStatus(session.user.id)
       } else {
         setUserProfile(null)
+        setIsPremium(false)
       }
       setLoading(false)
     })
@@ -111,8 +123,10 @@ export const AuthProvider = ({ children }) => {
     userProfile,
     loading,
     profileLoading,
+    isPremium,
     signOut: () => supabase.auth.signOut(),
     refreshProfile: () => user && loadUserProfile(user.id),
+    refreshPremium: () => user && loadSubscriptionStatus(user.id),
   }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

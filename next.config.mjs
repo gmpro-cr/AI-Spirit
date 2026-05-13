@@ -46,6 +46,22 @@ const withPWA = withPWAInit({
   register: true,
   skipWaiting: true,
   disable: process.env.NODE_ENV === 'development',
+  // Never cache API routes — always go to network so auth/payment calls are fresh
+  buildExcludes: [/middleware-manifest\.json$/],
+  runtimeCaching: [
+    {
+      urlPattern: /^https:\/\/.*\/api\/.*/,
+      handler: 'NetworkOnly',
+    },
+    {
+      urlPattern: /^https:\/\/.*\/(premium|auth)(\/.*)?$/,
+      handler: 'NetworkFirst',
+      options: {
+        networkTimeoutSeconds: 10,
+        cacheName: 'auth-pages',
+      },
+    },
+  ],
 });
 
 export default withPWA(nextConfig);

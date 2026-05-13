@@ -3,6 +3,7 @@ import Head from 'next/head'
 import Script from 'next/script'
 import { useRouter } from 'next/router'
 import { useAuth } from '@/context/AuthContext'
+import { supabase } from '@/lib/supabase'
 import Navbar from '@/components/layout/Navbar'
 import MobileBottomNav from '@/components/layout/MobileBottomNav'
 import ContactModal from '@/components/ContactModal'
@@ -20,7 +21,7 @@ const premiumFaqs = [
     },
     {
         question: 'What is the difference between Free and Premium plans?',
-        answer: 'Free plan offers 100 messages per day. Premium offers unlimited messages. Both plans include access to all personas and the ability to create custom personas.'
+        answer: 'Free plan gives you 100 messages per day and access to 5 personas. Premium gives you unlimited messages, access to all personas, and the ability to create custom personas.'
     },
     {
         question: 'Can I cancel my AI-Spirit Premium subscription?',
@@ -28,7 +29,7 @@ const premiumFaqs = [
     },
     {
         question: 'Can I create custom personas for free?',
-        answer: 'Yes! Creating custom personas is completely free for all users. Design your own AI characters with unique personalities and conversation styles.'
+        answer: 'Custom persona creation is a Premium feature. Upgrade to design your own AI characters with unique personalities and conversation styles.'
     },
     {
         question: 'Is the payment for AI-Spirit Premium secure?',
@@ -51,12 +52,21 @@ export default function Premium() {
         setLoading(true)
 
         try {
+            // Get the current session token for Bearer auth (more reliable than cookies in PWA)
+            const { data: { session } } = await supabase.auth.getSession()
+            if (!session?.access_token) {
+                router.push('/auth/signin?returnTo=/premium')
+                return
+            }
+
             // Create subscription
             const res = await fetch('/api/subscription/create', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${session.access_token}`,
+                },
                 body: JSON.stringify({
-                    userEmail: user.email,
                     userName: userProfile?.full_name || user.email.split('@')[0],
                 }),
             })
@@ -167,10 +177,10 @@ export default function Premium() {
                                 </li>
                                 <li className="flex items-center gap-3 text-black">
                                     <CheckIcon />
-                                    <span>Access to all personas</span>
+                                    <span>Access to 5 personas</span>
                                 </li>
-                                <li className="flex items-center gap-3 text-black">
-                                    <CheckIcon />
+                                <li className="flex items-center gap-3 text-gray-400">
+                                    <XIcon />
                                     <span>Create custom personas</span>
                                 </li>
                             </ul>
@@ -210,6 +220,10 @@ export default function Premium() {
                                 <li className="flex items-center gap-3 font-medium">
                                     <CheckIcon />
                                     <span className="text-black">Create custom personas</span>
+                                </li>
+                                <li className="flex items-center gap-3 font-medium">
+                                    <CheckIcon />
+                                    <span className="text-black">Priority AI responses</span>
                                 </li>
                             </ul>
 
@@ -253,13 +267,18 @@ export default function Premium() {
                                     <td className="p-4 text-center bg-gray-100 font-medium">Unlimited</td>
                                 </tr>
                                 <tr>
-                                    <td className="p-4">Access to all personas</td>
-                                    <td className="p-4 text-center">✓</td>
-                                    <td className="p-4 text-center bg-gray-100">✓</td>
+                                    <td className="p-4">Persona access</td>
+                                    <td className="p-4 text-center">5 personas</td>
+                                    <td className="p-4 text-center bg-gray-100 font-medium">All personas</td>
                                 </tr>
                                 <tr>
                                     <td className="p-4">Create custom personas</td>
-                                    <td className="p-4 text-center">✓</td>
+                                    <td className="p-4 text-center text-gray-400">✗</td>
+                                    <td className="p-4 text-center bg-gray-100">✓</td>
+                                </tr>
+                                <tr>
+                                    <td className="p-4">Priority AI responses</td>
+                                    <td className="p-4 text-center text-gray-400">✗</td>
                                     <td className="p-4 text-center bg-gray-100">✓</td>
                                 </tr>
                             </tbody>

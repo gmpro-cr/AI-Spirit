@@ -9,11 +9,15 @@ function formatCount(num) {
   return num.toString()
 }
 
-export default function PersonaCard({ persona, onEdit, messageCount }) {
+export default function PersonaCard({ persona, onEdit, messageCount, onClick }) {
   const router = useRouter()
 
   const handleClick = () => {
-    router.push(`/chat/${persona.slug}`)
+    if (onClick) {
+      onClick(persona)
+    } else {
+      router.push(`/chat/${persona.slug}`)
+    }
   }
 
   const formattedCount = formatCount(messageCount)
