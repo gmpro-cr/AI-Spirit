@@ -12,6 +12,7 @@ import {
   canSendMessage
 } from '@/lib/guestMessageTracking'
 import { speak, stopSpeaking } from '@/lib/textToSpeech'
+import { withAuth } from '@/middleware/withAuth'
 
 function ChatPage() {
   const router = useRouter()
@@ -981,4 +982,4 @@ function ChatPage() {
   )
 }
 
-export default ChatPage
+export default withAuth(ChatPage)

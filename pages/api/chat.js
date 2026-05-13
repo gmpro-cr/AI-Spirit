@@ -1,7 +1,9 @@
 import { supabaseAdmin } from '@/lib/supabase'
+import { createPagesServerClient } from '@supabase/auth-helpers-nextjs'
 import crypto from 'crypto'
 import { generatePersonaResponse, generatePersonaResponseStream } from '@/lib/gemini'
 import { generateGroqResponse } from '@/lib/groq'
+import { generateOllamaResponse, generateOllamaResponseStream } from '@/lib/ollama'
 import { moderateContent } from '@/lib/moderation'
 // Rate limiting disabled for now - will enable when userbase grows
 // import { chatRateLimiter, getClientIdentifier } from '@/lib/rate-limit'
@@ -9,7 +11,7 @@ import { logApiCall, checkCostThreshold } from '@/lib/cost-tracking'
 import { getContextIfNeeded } from '@/lib/contextProvider'
 import { extractAndSaveMemories, getUserMemories, formatMemoriesForContext } from '@/lib/memorySystem'
 
-// Fallback system: Gemini first, then Groq if rate limited
+// Fallback chain: Ollama (self-hosted) → OpenRouter (free API) → Groq (free API)
 
 // Configuration constants
 const MAX_MESSAGE_LENGTH = 2000 // characters
@@ -52,8 +54,21 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' })
   }
 
+  // Enforce authenticated session — Google sign-in is mandatory
+  const supabaseServer = createPagesServerClient({ req, res })
+  const { data: { session } } = await supabaseServer.auth.getSession()
+  if (!session?.user?.id) {
+    return res.status(401).json({ error: 'Sign in required to chat with personas.' })
+  }
+  const userId = session.user.id
+  const isGuest = false
+
+  // Declare for error handler scope
+  let conversationId, personaId
+
   try {
-    const { conversationId, personaId, persona: personaObj, message, conversationHistory, isGuest, userId, userProfile, stream } = req.body
+    ;({ conversationId, personaId } = req.body || {})
+    const { persona: personaObj, message, conversationHistory, userProfile, stream } = req.body
 
     console.log('[Chat API] Request received:', {
       conversationId,
@@ -351,6 +366,25 @@ RELATIONSHIP CONTEXT:
 ${relationshipContext}`
     }
 
+    // Check daily budget before making any API call
+    const costCheck = checkCostThreshold(15) // $15 daily budget
+    if (costCheck.exceeded) {
+      console.error('[Cost Alert] Daily budget exceeded — blocking request', {
+        currentCost: `$${costCheck.currentCost.toFixed(2)}`,
+        budget: `$${costCheck.budget}`,
+      })
+      return res.status(503).json({
+        error: 'Service temporarily unavailable. Please try again later.',
+      })
+    } else if (costCheck.percentUsed > 80) {
+      console.warn('[Cost Alert]', {
+        percentUsed: `${costCheck.percentUsed.toFixed(1)}%`,
+        currentCost: `$${costCheck.currentCost.toFixed(2)}`,
+        budget: `$${costCheck.budget}`,
+        remaining: `$${costCheck.remaining.toFixed(2)}`,
+      })
+    }
+
     // Log message history stats before generating response
     console.log('[Chat API] Generating response with:', {
       messageHistoryLength: messageHistory.length,
@@ -372,7 +406,12 @@ ${relationshipContext}`
       try {
         let fullResponse = ''
 
-        for await (const chunk of generatePersonaResponseStream(finalSystemPrompt, messageHistory, contextString)) {
+        // Use Ollama if configured, otherwise fall back to OpenRouter
+        const streamGenerator = process.env.OLLAMA_URL
+          ? generateOllamaResponseStream(finalSystemPrompt, messageHistory, contextString)
+          : generatePersonaResponseStream(finalSystemPrompt, messageHistory, contextString)
+
+        for await (const chunk of streamGenerator) {
           fullResponse += chunk
           res.write(`data: ${JSON.stringify({ chunk, done: false })}\n\n`)
         }
@@ -422,26 +461,32 @@ ${relationshipContext}`
         return
       } catch (error) {
         console.error('[Streaming Error]:', error)
-        res.write(`data: ${JSON.stringify({ error: error.message || 'Streaming failed', done: true })}\n\n`)
+        res.write(`data: ${JSON.stringify({ error: 'An error occurred. Please try again.', done: true })}\n\n`)
         res.end()
         return
       }
     }
 
-    // Generate AI response - try Gemini first, fallback to Groq if rate limited
-    let result = await generatePersonaResponse(finalSystemPrompt, messageHistory, {}, contextString)
+    // Generate AI response — Ollama → OpenRouter → Groq fallback chain
+    let result
 
-    // If Gemini fails (rate limit, overload, or any technical error), try Groq
-    // We only skip fallback if it was a safety/moderation block
+    if (process.env.OLLAMA_URL) {
+      result = await generateOllamaResponse(finalSystemPrompt, messageHistory, contextString)
+      if (!result.success) {
+        console.log('[Fallback] Ollama failed:', result.error, '- trying OpenRouter...')
+      }
+    }
+
+    if (!result?.success) {
+      result = await generatePersonaResponse(finalSystemPrompt, messageHistory, {}, contextString)
+    }
+
     if (!result.success && !result.error?.includes('appropriate')) {
-      console.log('[Fallback] Gemini failed:', result.error, '- trying Groq...')
-      // Prepend context to system prompt for Groq as well
+      console.log('[Fallback] OpenRouter failed:', result.error, '- trying Groq...')
       const groqSystemPrompt = contextString ? contextString + finalSystemPrompt : finalSystemPrompt
       result = await generateGroqResponse(groqSystemPrompt, messageHistory)
-
-      // If Groq also succeeded, log that we used the fallback
       if (result.success) {
-        console.log('[Fallback] ✅ Groq succeeded after Gemini failure')
+        console.log('[Fallback] ✅ Groq succeeded')
       }
     }
 
@@ -454,23 +499,12 @@ ${relationshipContext}`
     // Log API call for cost tracking
     logApiCall({
       conversationId,
-      userId: 'guest',
+      userId: userId || 'guest',
       input: messageHistory.map(m => m.content).join('\n'),
       output: result.response,
       inputTokens: result.metadata?.inputTokens,
       outputTokens: result.metadata?.outputTokens,
     })
-
-    // Check if daily budget exceeded (log warning)
-    const costCheck = checkCostThreshold(15) // $15 daily budget
-    if (costCheck.percentUsed > 80) {
-      console.warn('[Cost Alert]', {
-        percentUsed: `${costCheck.percentUsed.toFixed(1)}%`,
-        currentCost: `$${costCheck.currentCost.toFixed(2)}`,
-        budget: `$${costCheck.budget}`,
-        remaining: `$${costCheck.remaining.toFixed(2)}`,
-      })
-    }
 
     // Save to database (if authenticated)
     if (!isGuest && userId) {

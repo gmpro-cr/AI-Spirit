@@ -4,8 +4,11 @@ import Link from 'next/link'
 import Navbar from '@/components/layout/Navbar'
 import HeroAnimation from '@/components/home/HeroAnimation'
 import Marquee from '@/components/home/Marquee'
+import { useAuth } from '@/context/AuthContext'
 
 export default function HomePage() {
+    const { user } = useAuth()
+    const startHref = user ? '/personas' : '/auth/signin?returnTo=/personas'
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -93,10 +96,10 @@ export default function HomePage() {
                         </p>
 
                         <Link
-                            href="/personas"
+                            href={startHref}
                             className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-black text-white px-8 py-4 rounded-xl font-medium hover:bg-black/90 transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5"
                         >
-                            Start Chatting
+                            {user ? 'Start Chatting' : 'Sign in to Chat'}
                             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                             </svg>

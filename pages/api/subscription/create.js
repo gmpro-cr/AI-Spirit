@@ -1,90 +1,78 @@
-// Simple Razorpay subscription creation API
+// Razorpay subscription creation API.
+// Auth comes from the Supabase session cookie — never trust user info from the body.
+import { createPagesServerClient } from '@supabase/auth-helpers-nextjs'
+
 export default async function handler(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ error: 'Method not allowed' })
     }
 
     try {
-        const { userEmail, userName } = req.body
+        const supabaseServer = createPagesServerClient({ req, res })
+        const { data: { session } } = await supabaseServer.auth.getSession()
 
-        if (!userEmail) {
-            return res.status(400).json({ error: 'Email is required' })
+        if (!session?.user?.id) {
+            return res.status(401).json({ error: 'Sign in required to subscribe.' })
         }
 
-        // Get credentials from environment
+        const userId = session.user.id
+        const userEmail = session.user.email
+        const userName =
+            req.body?.userName ||
+            session.user.user_metadata?.full_name ||
+            session.user.user_metadata?.name ||
+            (userEmail ? userEmail.split('@')[0] : 'User')
+
+        if (!userEmail) {
+            return res.status(400).json({ error: 'No email on session' })
+        }
+
         const keyId = process.env.RAZORPAY_KEY_ID
         const keySecret = process.env.RAZORPAY_KEY_SECRET
         const planId = process.env.RAZORPAY_PLAN_ID
-
-        console.log('🔑 Razorpay credentials check:', {
-            hasKeyId: !!keyId,
-            hasKeySecret: !!keySecret,
-            hasPlanId: !!planId,
-            keyIdPrefix: keyId?.substring(0, 8)
-        })
 
         if (!keyId || !keySecret || !planId) {
             console.error('❌ Missing Razorpay configuration')
             return res.status(500).json({ error: 'Payment system not configured' })
         }
 
-        // Create Basic Auth header
         const auth = Buffer.from(`${keyId}:${keySecret}`).toString('base64')
 
-        // Step 1: Create customer
+        // Step 1: Find or create customer
+        let customer
         const customerResponse = await fetch('https://api.razorpay.com/v1/customers', {
             method: 'POST',
             headers: {
                 'Authorization': `Basic ${auth}`,
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-                name: userName || userEmail.split('@')[0],
-                email: userEmail,
-            }),
+            body: JSON.stringify({ name: userName, email: userEmail }),
         })
 
-        let customer
         if (!customerResponse.ok) {
             const error = await customerResponse.json()
 
-            // Check if customer already exists
             if (error.error?.description?.includes('Customer already exists')) {
-                console.log('ℹ️  Customer already exists, fetching existing customer...')
-
-                // Fetch existing customer by email
-                const fetchResponse = await fetch(`https://api.razorpay.com/v1/customers?email=${encodeURIComponent(userEmail)}`, {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': `Basic ${auth}`,
-                    },
-                })
-
+                const fetchResponse = await fetch(
+                    `https://api.razorpay.com/v1/customers?email=${encodeURIComponent(userEmail)}`,
+                    { method: 'GET', headers: { 'Authorization': `Basic ${auth}` } }
+                )
                 const fetchData = await fetchResponse.json()
                 if (fetchData.items && fetchData.items.length > 0) {
                     customer = fetchData.items[0]
-                    console.log('✅ Found existing customer:', customer.id)
                 } else {
-                    console.error('❌ Could not find existing customer')
                     return res.status(500).json({ error: 'Customer lookup failed' })
                 }
             } else {
-                console.error('❌ Customer creation failed:', {
-                    status: customerResponse.status,
-                    statusText: customerResponse.statusText,
-                    error: error
-                })
-                return res.status(500).json({
-                    error: 'Failed to create customer',
-                    details: error
-                })
+                console.error('❌ Customer creation failed:', error)
+                return res.status(500).json({ error: 'Failed to create customer' })
             }
         } else {
             customer = await customerResponse.json()
-            console.log('✅ New customer created:', customer.id)
         }
 
-        // Step 2: Create subscription
+        // Step 2: Create subscription. `notes.user_id` is the only reliable way for the
+        // webhook to bind a Razorpay subscription back to the Supabase user.
         const subscriptionResponse = await fetch('https://api.razorpay.com/v1/subscriptions', {
             method: 'POST',
             headers: {
@@ -96,25 +84,21 @@ export default async function handler(req, res) {
                 customer_id: customer.id,
                 total_count: 12,
                 customer_notify: 1,
+                notes: {
+                    user_id: userId,
+                    user_email: userEmail,
+                },
             }),
         })
 
         if (!subscriptionResponse.ok) {
             const error = await subscriptionResponse.json()
-            console.error('❌ Subscription creation failed:', {
-                status: subscriptionResponse.status,
-                statusText: subscriptionResponse.statusText,
-                error: error
-            })
-            return res.status(500).json({
-                error: 'Failed to create subscription',
-                details: error
-            })
+            console.error('❌ Subscription creation failed:', error)
+            return res.status(500).json({ error: 'Failed to create subscription' })
         }
 
         const subscription = await subscriptionResponse.json()
 
-        // Return subscription details with proper structure for Razorpay checkout
         return res.status(200).json({
             success: true,
             subscription: {

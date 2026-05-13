@@ -4,36 +4,30 @@ import { useAuth } from '@/context/AuthContext'
 import { useRouter } from 'next/router'
 
 export default function Navbar({ onMenuToggle, showMenuButton = false }) {
-  const { user, signOut } = useAuth()
+  const { user, loading, signOut } = useAuth()
   const router = useRouter()
-  const isHomePage = router.pathname === '/'
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   const handleSignOut = async () => {
     await signOut()
+    setMobileMenuOpen(false)
     router.push('/')
   }
 
   const navLinks = [
     { href: '/', label: 'Home' },
-    { href: '/features', label: 'Features' },
-    { href: '/pricing', label: 'Pricing' },
+    { href: '/personas', label: 'Personas' },
+    { href: '/premium', label: 'Premium' },
     { href: '/contact', label: 'Contact' },
-  ];
+  ]
 
-  const toggleMobileMenu = () => {
-    setMobileMenuOpen(!mobileMenuOpen)
-  }
-
-  const closeMobileMenu = () => {
-    setMobileMenuOpen(false)
-  }
+  const toggleMobileMenu = () => setMobileMenuOpen((v) => !v)
+  const closeMobileMenu = () => setMobileMenuOpen(false)
 
   return (
     <>
       <nav className="fixed w-full z-50 transition-all duration-300 bg-white/90 backdrop-blur-md border-b border-black/5">
         <div className="max-w-[1600px] mx-auto px-6 h-20 flex items-center">
-          {/* Logo */}
           <Link href="/" className="flex items-center gap-3 group">
             <div className="w-10 h-10 bg-black rounded-full flex items-center justify-center text-white font-display text-xl pt-1">
               AI
@@ -43,10 +37,8 @@ export default function Navbar({ onMenuToggle, showMenuButton = false }) {
             </span>
           </Link>
 
-          {/* Spacer */}
           <div className="flex-1" />
 
-          {/* Desktop Links - Right side */}
           <div className="hidden md:flex items-center gap-8">
             {navLinks.map((link) => (
               <Link
@@ -61,9 +53,26 @@ export default function Navbar({ onMenuToggle, showMenuButton = false }) {
                 {link.label}
               </Link>
             ))}
+
+            {!loading && (
+              user ? (
+                <button
+                  onClick={handleSignOut}
+                  className="text-sm font-medium tracking-widest uppercase px-4 py-2 rounded-full border border-black/20 text-black/70 hover:text-black hover:border-black/40 transition-colors"
+                >
+                  Sign Out
+                </button>
+              ) : (
+                <Link
+                  href={`/auth/signin?returnTo=${encodeURIComponent(router.asPath || '/')}`}
+                  className="text-sm font-medium tracking-widest uppercase px-4 py-2 rounded-full bg-black text-white hover:bg-black/90 transition-colors"
+                >
+                  Sign In
+                </Link>
+              )
+            )}
           </div>
 
-          {/* Mobile Menu Button */}
           <button
             onClick={toggleMobileMenu}
             className="md:hidden w-10 h-10 flex flex-col items-center justify-center gap-1.5 rounded-lg hover:bg-black/5 transition-colors"
@@ -77,7 +86,6 @@ export default function Navbar({ onMenuToggle, showMenuButton = false }) {
         </div>
       </nav>
 
-      {/* Mobile Menu Overlay */}
       <div
         className={`fixed inset-0 bg-black/20 backdrop-blur-sm z-40 md:hidden transition-opacity duration-300 ${
           mobileMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
@@ -85,7 +93,6 @@ export default function Navbar({ onMenuToggle, showMenuButton = false }) {
         onClick={closeMobileMenu}
       />
 
-      {/* Mobile Menu Panel */}
       <div
         className={`fixed top-20 left-0 right-0 bg-white z-40 md:hidden transition-all duration-300 border-b border-black/10 shadow-soft-lg ${
           mobileMenuOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4 pointer-events-none'
@@ -106,6 +113,25 @@ export default function Navbar({ onMenuToggle, showMenuButton = false }) {
               {link.label}
             </Link>
           ))}
+
+          {!loading && (
+            user ? (
+              <button
+                onClick={handleSignOut}
+                className="w-full text-left py-3 px-4 text-lg font-medium rounded-lg text-black/70 hover:bg-black/5 hover:text-black transition-colors"
+              >
+                Sign Out
+              </button>
+            ) : (
+              <Link
+                href={`/auth/signin?returnTo=${encodeURIComponent(router.asPath || '/')}`}
+                onClick={closeMobileMenu}
+                className="block py-3 px-4 text-lg font-medium rounded-lg bg-black text-white hover:bg-black/90 transition-colors"
+              >
+                Sign In
+              </Link>
+            )
+          )}
         </div>
       </div>
     </>

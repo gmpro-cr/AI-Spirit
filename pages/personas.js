@@ -360,4 +360,4 @@ function Personas() {
   )
 }
 
-export default Personas
+export default withAuth(Personas)

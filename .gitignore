@@ -50,6 +50,7 @@ backups/
 
 .env.vercel
 .env.production
+.env*.check
 .worktrees/
 
 # PWA files

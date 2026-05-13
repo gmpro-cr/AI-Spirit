@@ -63,7 +63,7 @@ export default async function handler(req, res) {
     health.errors.push({ service: 'database', error: error.message })
   }
 
-  // 2. Check AI API (OpenRouter)
+  // 2. Check AI API configuration (no real API call to avoid wasting quota)
   try {
     const apiStartTime = Date.now()
 
@@ -71,44 +71,34 @@ export default async function handler(req, res) {
       throw new Error('OPENROUTER_API_KEY not configured')
     }
 
-    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-      method: 'POST',
+    // Just verify the models endpoint is reachable — no tokens consumed
+    const response = await fetch('https://openrouter.ai/api/v1/models', {
+      method: 'GET',
       headers: {
         'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
-        'Content-Type': 'application/json',
-        'HTTP-Referer': process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
-        'X-Title': 'AI Spirit',
       },
-      body: JSON.stringify({
-        model: 'meta-llama/llama-3.3-70b-instruct:free',
-        messages: [{ role: 'user', content: 'Respond with only: OK' }],
-        max_tokens: 10,
-      }),
+      signal: AbortSignal.timeout(5000),
     })
 
     if (!response.ok) {
       throw new Error(`OpenRouter API returned ${response.status}`)
     }
 
-    const data = await response.json()
-    const testResponse = data.choices?.[0]?.message?.content || ''
     const apiResponseTime = Date.now() - apiStartTime
 
     health.checks.geminiAPI = {
       status: 'healthy',
       responseTime: apiResponseTime,
-      message: 'OpenRouter API accessible',
-      testResponse: testResponse.trim().substring(0, 50),
+      message: 'OpenRouter API key configured and reachable',
     }
   } catch (error) {
     health.checks.geminiAPI = {
       status: 'unhealthy',
       responseTime: 0,
-      error: error.message,
       message: 'OpenRouter API check failed',
     }
     health.status = 'degraded'
-    health.errors.push({ service: 'geminiAPI', error: error.message })
+    health.errors.push({ service: 'geminiAPI', error: 'API connectivity check failed' })
   }
 
   // 3. Check Memory Usage

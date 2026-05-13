@@ -4,8 +4,9 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import Navbar from '@/components/layout/Navbar'
 import MobileBottomNav from '@/components/layout/MobileBottomNav'
+import { withAuth } from '@/middleware/withAuth'
 
-export default function ChatsPage() {
+function ChatsPage() {
     const router = useRouter()
     const [pastChats, setPastChats] = useState([])
     const [loading, setLoading] = useState(true)
@@ -140,3 +141,5 @@ export default function ChatsPage() {
         </>
     )
 }
+
+export default withAuth(ChatsPage)
