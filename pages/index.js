@@ -125,7 +125,7 @@ export default function HomePage() {
                     </div>
 
                     {/* Right: Animation */}
-                    <div className="w-full lg:w-1/2 flex items-center justify-center relative">
+                    <div className="w-full lg:w-1/2 flex items-center justify-center lg:justify-end relative">
                         <HeroAnimation />
                     </div>
                 </section>
