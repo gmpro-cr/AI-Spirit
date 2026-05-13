@@ -137,11 +137,15 @@ function ChatPage() {
       const data = await response.json()
 
       if (!response.ok) {
+        if (response.status === 401) {
+          router.push(`/auth/signin?returnTo=/chat/${personaId}`)
+          throw new Error(data.error || 'Session expired')
+        }
         throw new Error(data.error || 'Failed to send message')
       }
 
       // Add new assistant response
-      const assistantMessage = { role: 'assistant', content: data.response }
+      const assistantMessage = { role: 'assistant', content: data.response || "I'm having trouble responding right now. Please try again." }
       addMessage(assistantMessage)
 
       // Update localStorage
@@ -157,8 +161,10 @@ function ChatPage() {
       }
     } catch (error) {
       console.error('Error regenerating response:', error)
-      const errorMessage = { role: 'assistant', content: "Sorry, something went wrong. Please try again." }
-      addMessage(errorMessage)
+      if (!error.message?.includes('Session expired') && !error.message?.includes('Sign in required')) {
+        const errorMessage = { role: 'assistant', content: error.message || "Sorry, something went wrong. Please try again." }
+        addMessage(errorMessage)
+      }
     } finally {
       setIsLoading(false)
     }
@@ -457,6 +463,11 @@ function ChatPage() {
         const data = await response.json()
 
         if (!response.ok) {
+          if (response.status === 401) {
+            // Session expired — redirect to signin
+            router.push(`/auth/signin?returnTo=/chat/${personaId}`)
+            throw new Error(data.error || 'Session expired')
+          }
           if (response.status === 403 && data.isLimitReached) {
             if (confirm('You have reached your daily message limit (100 messages). Upgrade to Premium for unlimited access?')) {
               router.push('/premium')
@@ -466,7 +477,7 @@ function ChatPage() {
           throw new Error(data.error || 'Failed to send message')
         }
 
-        const assistantMessage = { role: 'assistant', content: data.response }
+        const assistantMessage = { role: 'assistant', content: data.response || "I'm having trouble responding right now. Please try again." }
         addMessage(assistantMessage)
 
         let convId = conversationId
@@ -531,8 +542,11 @@ function ChatPage() {
 
     } catch (error) {
       console.error('Error sending message:', error)
-      const errorMessage = { role: 'assistant', content: "Sorry, something went wrong. Please try again." }
-      addMessage(errorMessage)
+      // Don't add error message if we redirected to signin
+      if (!error.message?.includes('Session expired') && !error.message?.includes('Sign in required')) {
+        const errorMessage = { role: 'assistant', content: error.message || "Sorry, something went wrong. Please try again." }
+        addMessage(errorMessage)
+      }
     } finally {
       setIsLoading(false)
     }
