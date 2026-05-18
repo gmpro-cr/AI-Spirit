@@ -609,8 +609,8 @@ function ChatPage() {
 
         {/* Chat Area */}
         <div className="flex flex-col flex-1 h-screen md:ml-64">
-          {/* Header */}
-          <header className="flex items-center justify-between p-4 border-b border-gray-200 sticky top-0 bg-white/80 backdrop-blur-sm z-10">
+          {/* Header — h-[72px] matches SidePanel back button section for border alignment */}
+          <header className="flex items-center justify-between px-5 h-[72px] border-b border-gray-100 sticky top-0 bg-white/90 backdrop-blur-md z-10">
             <div className="flex items-center flex-1">
               <button
                 onClick={handleBack}
@@ -634,12 +634,17 @@ function ChatPage() {
               <img
                 src={persona.image_url || '/default-persona.png'}
                 alt={persona.name}
-                className="w-10 h-10 rounded-full mr-4 object-cover"
+                className="w-9 h-9 rounded-full mr-3 object-cover border border-gray-100"
                 onError={(e) => {
                   e.target.src = '/default-persona.png'
                 }}
               />
-              <h2 className="text-xl font-bold text-black">{persona.name}</h2>
+              <div>
+                <h2 className="text-base font-semibold text-black leading-tight">{persona.name}</h2>
+                {persona.description && (
+                  <p className="text-xs text-gray-400 truncate max-w-[200px]">{persona.description}</p>
+                )}
+              </div>
             </div>
 
             {/* New Chat Button */}
@@ -659,7 +664,7 @@ function ChatPage() {
                   router.replace(`/chat/${personaId}`, undefined, { shallow: true })
                 }
               }}
-              className="flex items-center gap-2 px-4 py-2 bg-black text-white rounded-full hover:bg-gray-800 transition-all hover:shadow-lg group"
+              className="flex items-center gap-2 px-4 py-2 bg-black text-white rounded-xl hover:bg-gray-900 transition-all duration-200 hover:shadow-soft group text-sm font-medium"
               title="Start a new chat"
             >
               <svg
@@ -692,7 +697,7 @@ function ChatPage() {
                     console.error('Failed to copy:', error)
                   }
                 }}
-                className={`flex items-center gap-2 px-4 py-2 rounded-full transition-all hover:shadow-lg ${shareLinkCopied
+                className={`flex items-center gap-2 px-4 py-2 rounded-xl transition-all duration-200 text-sm font-medium ${shareLinkCopied
                   ? 'bg-green-600 text-white'
                   : 'bg-gray-100 text-black hover:bg-gray-200'
                   }`}
@@ -715,7 +720,7 @@ function ChatPage() {
           </header>
 
           {/* Messages */}
-          <main ref={chatContainerRef} className="flex-1 overflow-y-auto p-6 space-y-6">
+          <main ref={chatContainerRef} className="flex-1 overflow-y-auto px-5 py-6 space-y-5 scrollbar-hide">
             {/* Suggested Questions - shown only when no messages */}
             {messages.length === 0 && !isLoading && persona.conversation_starters && (
               <div className="flex items-center justify-center h-full">
@@ -728,7 +733,7 @@ function ChatPage() {
                         setCurrentInput(question)
                         document.querySelector('input[type="text"]')?.focus()
                       }}
-                      className="w-full p-4 text-left border border-gray-200 rounded-lg hover:bg-gray-50 hover:border-gray-300 transition-all text-black"
+                      className="w-full p-4 text-left border border-gray-100 rounded-2xl hover:bg-gray-50 hover:border-gray-200 hover:shadow-soft transition-all duration-200 text-black text-sm"
                     >
                       {question}
                     </button>
@@ -783,9 +788,9 @@ function ChatPage() {
                     ) : (
                       // Normal display
                       <div
-                        className={`max-w-md lg:max-w-lg p-3 rounded-2xl ${msg.role === 'user'
-                          ? 'bg-black text-white rounded-br-none'
-                          : 'bg-gray-100 text-black rounded-bl-none'
+                        className={`max-w-md lg:max-w-lg px-4 py-3 rounded-2xl text-sm leading-relaxed ${msg.role === 'user'
+                          ? 'bg-black text-white rounded-br-sm'
+                          : 'bg-gray-50 border border-gray-100 text-black rounded-bl-sm'
                           }`}
                       >
                         <p
@@ -873,8 +878,10 @@ function ChatPage() {
                   </div>
 
                   {msg.role === 'user' && (
-                    <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center font-bold flex-shrink-0">
-                      U
+                    <div className="w-8 h-8 rounded-full bg-black border border-gray-200 flex items-center justify-center flex-shrink-0">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-white" viewBox="0 0 24 24" fill="currentColor">
+                        <path fillRule="evenodd" d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z" clipRule="evenodd" />
+                      </svg>
                     </div>
                   )}
                 </div>
@@ -891,13 +898,13 @@ function ChatPage() {
                     e.target.src = '/default-persona.png'
                   }}
                 />
-                <div className="max-w-md lg:max-w-lg p-3 rounded-2xl bg-gray-100 text-black rounded-bl-none">
+                <div className="px-4 py-3 rounded-2xl rounded-bl-sm bg-gray-50 border border-gray-100">
                   <div className="flex items-center gap-2">
-                    <span className="text-sm text-gray-600">{persona.name} is thinking</span>
+                    <span className="text-xs text-gray-400">{persona.name} is thinking</span>
                     <div className="flex items-center space-x-1">
-                      <div className="w-1.5 h-1.5 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
-                      <div className="w-1.5 h-1.5 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
-                      <div className="w-1.5 h-1.5 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+                      <div className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+                      <div className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
+                      <div className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
                     </div>
                   </div>
                 </div>
@@ -906,14 +913,14 @@ function ChatPage() {
           </main>
 
           {/* Input Box */}
-          <footer className="p-4 sticky bottom-0 bg-white border-t border-gray-200">
+          <footer className="px-5 py-4 sticky bottom-0 bg-white/90 backdrop-blur-md border-t border-gray-100">
             <form onSubmit={handleSendMessage} className="flex items-center gap-2">
               <input
                 type="text"
                 value={currentInput}
                 onChange={(e) => setCurrentInput(e.target.value)}
                 placeholder={`Message ${persona.name}...`}
-                className="flex-1 p-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-black text-black"
+                className="flex-1 px-5 py-3 border border-gray-200 rounded-2xl focus:outline-none focus:border-black focus:ring-2 focus:ring-black/10 text-black text-sm placeholder:text-gray-400 bg-gray-50 focus:bg-white transition-all duration-200 disabled:opacity-50"
                 disabled={isLoading}
               />
 
@@ -921,7 +928,7 @@ function ChatPage() {
               <button
                 type="button"
                 onClick={toggleSpeechRecognition}
-                className={`p-3 rounded-full transition-colors ${isListening
+                className={`p-2.5 rounded-xl transition-all duration-200 ${isListening
                   ? 'bg-red-500 text-white animate-pulse'
                   : 'bg-gray-100 text-black hover:bg-gray-200'
                   }`}
@@ -947,7 +954,7 @@ function ChatPage() {
               {/* Send Button */}
               <button
                 type="submit"
-                className="bg-black text-white p-3 rounded-full disabled:bg-gray-400 hover:bg-gray-800 transition-colors"
+                className="bg-black text-white p-2.5 rounded-xl hover:bg-gray-900 transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
                 disabled={isLoading || !currentInput.trim()}
               >
                 <svg
