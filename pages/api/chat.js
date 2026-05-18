@@ -1,7 +1,7 @@
 import { supabaseAdmin } from '@/lib/supabase'
 import crypto from 'crypto'
 import { generatePersonaResponse, generatePersonaResponseStream } from '@/lib/gemini'
-import { generateGroqResponse } from '@/lib/groq'
+import { generateGroqResponse, generateGroqResponseStream } from '@/lib/groq'
 import { generateOllamaResponse, generateOllamaResponseStream } from '@/lib/ollama'
 import { moderateContent } from '@/lib/moderation'
 // Rate limiting disabled for now - will enable when userbase grows
@@ -113,57 +113,40 @@ export default async function handler(req, res) {
     }
 
     // Check Premium Status & Message Limits
+    // Run subscription check in parallel with other setup work below
+    let isPremium = false
     if (userId) {
-      // 1. Check if user is premium
       const { data: subscription } = await supabaseAdmin
         .from('subscriptions')
-        .select('status, current_period_end')
+        .select('status')
         .eq('user_id', userId)
         .eq('status', 'active')
         .gt('current_period_end', new Date().toISOString())
         .single()
-
-      const isPremium = !!subscription
+      isPremium = !!subscription
 
       if (!isPremium) {
-        // 2. Count messages sent today by this user (using IST timezone UTC+5:30)
-        const now = new Date()
+        const istOffset = 5.5 * 60 * 60 * 1000
+        const nowIST = new Date(Date.now() + istOffset)
+        const todayISTinUTC = new Date(Date.UTC(nowIST.getUTCFullYear(), nowIST.getUTCMonth(), nowIST.getUTCDate()) - istOffset)
 
-        // Get IST midnight (subtract 5:30 from UTC to get IST midnight in UTC)
-        const istOffset = 5.5 * 60 * 60 * 1000 // 5 hours 30 minutes in milliseconds
-        const nowIST = new Date(now.getTime() + istOffset)
-        const istMidnight = new Date(Date.UTC(
-          nowIST.getUTCFullYear(),
-          nowIST.getUTCMonth(),
-          nowIST.getUTCDate(),
-          0, 0, 0, 0
-        ))
-        // Convert IST midnight back to UTC
-        const todayISTinUTC = new Date(istMidnight.getTime() - istOffset)
+        const [{ data: conversations }, ] = await Promise.all([
+          supabaseAdmin.from('conversations').select('id').eq('user_id', userId),
+        ])
 
-        // We need to join conversations to get user's messages
-        // But Supabase JS client join syntax can be complex, so we'll use a two-step approach or RPC if available
-        // Simpler approach: Get all conversation IDs for this user
-        const { data: conversations } = await supabaseAdmin
-          .from('conversations')
-          .select('id')
-          .eq('user_id', userId)
-
-        if (conversations && conversations.length > 0) {
-          const conversationIds = conversations.map(c => c.id)
-
-          const { count, error: countError } = await supabaseAdmin
+        if (conversations?.length) {
+          const { count } = await supabaseAdmin
             .from('messages')
             .select('*', { count: 'exact', head: true })
-            .in('conversation_id', conversationIds)
+            .in('conversation_id', conversations.map(c => c.id))
             .eq('role', 'user')
             .gte('created_at', todayISTinUTC.toISOString())
 
-          if (!countError && count >= 100) {
+          if (count >= 100) {
             return res.status(403).json({
               error: 'Daily message limit reached (100 messages). Upgrade to Premium for unlimited access.',
               isLimitReached: true,
-              limit: 100
+              limit: 100,
             })
           }
         }
@@ -199,43 +182,18 @@ export default async function handler(req, res) {
 
     let messageHistory = []
 
-    // Guest mode: use conversation history from frontend
     if (isGuest) {
-      // Use the conversation history sent from frontend + current message
-      messageHistory = [
-        ...(conversationHistory || []),
-        { role: 'user', content: message }
-      ]
-      // Limit to last 20 messages for performance
-      messageHistory = messageHistory.slice(-20)
-      console.log('[Chat API] Guest mode - using frontend history:', messageHistory.length, 'messages')
+      messageHistory = [...(conversationHistory || []), { role: 'user', content: message }].slice(-20)
+    } else if (conversationId) {
+      const { data: history } = await supabaseAdmin
+        .from('messages')
+        .select('role, content')
+        .eq('conversation_id', conversationId)
+        .order('created_at', { ascending: true })
+        .limit(20)
+      messageHistory = [...(history || []), { role: 'user', content: message }]
     } else {
-      // Load conversation history from database
-      if (conversationId) {
-        console.log('[Chat API] Loading history from database for conversationId:', conversationId)
-        const { data: history, error: historyError } = await supabaseAdmin
-          .from('messages')
-          .select('role, content')
-          .eq('conversation_id', conversationId)
-          .order('created_at', { ascending: true })
-          .limit(20)
-
-        if (historyError) {
-          console.error('[Chat API] Error loading history:', historyError)
-        }
-
-        console.log('[Chat API] Loaded', (history || []).length, 'messages from database')
-        messageHistory = [...(history || []), { role: 'user', content: message }]
-        console.log('[Chat API] Total message history:', messageHistory.length, 'messages')
-      } else {
-        // Fallback: use conversation history from frontend (for authenticated users without conversationId)
-        console.log('[Chat API] No conversationId - using frontend history')
-        messageHistory = [
-          ...(conversationHistory || []),
-          { role: 'user', content: message }
-        ]
-        messageHistory = messageHistory.slice(-20)
-      }
+      messageHistory = [...(conversationHistory || []), { role: 'user', content: message }].slice(-20)
     }
 
     // Validate persona has system_prompt
@@ -277,79 +235,23 @@ CRITICAL RULES:
 `
     const enhancedSystemPrompt = universalInstructions + '\n\n' + persona.system_prompt
 
-    // DEBUG: Check what we're working with
-    console.log('[DEBUG] Context injection check:', {
-      isGuest,
-      conversationId,
-      hasConversationHistory: !!conversationHistory,
-      conversationHistoryLength: conversationHistory?.length
-    })
-
-    // ALWAYS inject current context (date/time + latest news) so personas have up-to-date information
-    // This ensures they can discuss recent events and know the current date/time
-    // Detect persona language for context formatting
     const personaLanguage = persona.language || 'en'
-    const contextString = await getContextIfNeeded(null, personaLanguage, true) // Pass null to always get context
 
-    // Log context injection
-    if (contextString) {
-      console.log('[Chat API] Injecting real-time context', {
-        conversationId,
-        language: personaLanguage,
-        hasContext: true,
-        contextLength: contextString.length
-      })
-    }
+    // Fetch context, memories, and relationship in parallel — only inject context on first message
+    const isFirstMessage = !conversationId
+    const [contextString, memories, { getRelationshipContext }, relationship] = await Promise.all([
+      isFirstMessage ? getContextIfNeeded(null, personaLanguage, true) : Promise.resolve(null),
+      userId && !isGuest ? getUserMemories(userId, persona.slug, supabaseAdmin) : Promise.resolve([]),
+      import('@/lib/relationshipSystem'),
+      userId && !isGuest
+        ? import('@/lib/relationshipSystem').then(m => m.getPersonaRelationship(userId, persona.slug, supabaseAdmin))
+        : Promise.resolve(null),
+    ])
 
-    // Get user memories for authenticated users
-    let memoryContext = ''
-    let relationshipContext = ''
-
-    // DEBUG: Log memory system check
-    console.log('[Memory System] Pre-check:', {
-      userId,
-      isGuest,
-      willFetchMemories: userId && !isGuest
-    })
-
-    if (userId && !isGuest) {
-      const memories = await getUserMemories(userId, persona.slug, supabaseAdmin)
-      console.log('[Memory System] Retrieved memories:', {
-        memoriesCount: memories.length,
-        userId,
-        personaSlug: persona.slug
-      })
-
-      memoryContext = formatMemoriesForContext(memories, userProfile)
-      console.log('[Memory System] Formatted context:', {
-        contextLength: memoryContext.length,
-        isEmpty: !memoryContext
-      })
-
-      if (memoryContext) {
-        console.log('[Memory System] Injecting user memories:', {
-          userId,
-          personaSlug: persona.slug,
-          memoriesCount: memories.length
-        })
-      } else {
-        console.log('[Memory System] ❌ Memory context is empty despite having', memories.length, 'memories')
-      }
-
-      // Get relationship level and context
-      const { getPersonaRelationship, getRelationshipContext } = await import('@/lib/relationshipSystem')
-      const relationship = await getPersonaRelationship(userId, persona.slug, supabaseAdmin)
-
-      if (relationship) {
-        relationshipContext = getRelationshipContext(relationship.relationship_level, relationship.conversation_count)
-        console.log('[Relationship System] Injecting relationship context:', {
-          userId,
-          personaSlug: persona.slug,
-          level: relationship.relationship_level,
-          conversations: relationship.conversation_count
-        })
-      }
-    }
+    const memoryContext = memories.length ? formatMemoriesForContext(memories, userProfile) : ''
+    const relationshipContext = relationship
+      ? getRelationshipContext(relationship.relationship_level, relationship.conversation_count)
+      : ''
 
     // Build final system prompt with memory and relationship context
     let finalSystemPrompt = enhancedSystemPrompt
@@ -409,10 +311,12 @@ ${relationshipContext}`
       try {
         let fullResponse = ''
 
-        // Use Ollama if configured, otherwise fall back to OpenRouter
+        // Groq is fastest for streaming; fall back to OpenRouter if Groq key unavailable
         const streamGenerator = process.env.OLLAMA_URL
           ? generateOllamaResponseStream(finalSystemPrompt, messageHistory, contextString)
-          : generatePersonaResponseStream(finalSystemPrompt, messageHistory, contextString)
+          : process.env.GROQ_API_KEY
+            ? generateGroqResponseStream(finalSystemPrompt, messageHistory)
+            : generatePersonaResponseStream(finalSystemPrompt, messageHistory, contextString)
 
         for await (const chunk of streamGenerator) {
           fullResponse += chunk
@@ -470,27 +374,19 @@ ${relationshipContext}`
       }
     }
 
-    // Generate AI response — Ollama → OpenRouter → Groq fallback chain
+    // Generate AI response — Ollama → Groq → OpenRouter fallback chain
     let result
 
     if (process.env.OLLAMA_URL) {
       result = await generateOllamaResponse(finalSystemPrompt, messageHistory, contextString)
-      if (!result.success) {
-        console.log('[Fallback] Ollama failed:', result.error, '- trying OpenRouter...')
-      }
     }
 
     if (!result?.success) {
-      result = await generatePersonaResponse(finalSystemPrompt, messageHistory, {}, contextString)
+      result = await generateGroqResponse(finalSystemPrompt, messageHistory)
     }
 
-    if (!result.success && !result.error?.includes('appropriate')) {
-      console.log('[Fallback] OpenRouter failed:', result.error, '- trying Groq...')
-      const groqSystemPrompt = contextString ? contextString + finalSystemPrompt : finalSystemPrompt
-      result = await generateGroqResponse(groqSystemPrompt, messageHistory)
-      if (result.success) {
-        console.log('[Fallback] ✅ Groq succeeded')
-      }
+    if (!result?.success && !result?.error?.includes('appropriate')) {
+      result = await generatePersonaResponse(finalSystemPrompt, messageHistory, {}, contextString)
     }
 
     if (!result.success) {

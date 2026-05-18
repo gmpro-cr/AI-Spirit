@@ -361,7 +361,7 @@ function ChatPage() {
           isGuest: !user,
           userId: user?.id || null,
           userProfile: userProfile || null,
-          stream: false,
+          stream: true,
         }),
       })
 
