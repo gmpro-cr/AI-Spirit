@@ -320,6 +320,16 @@ ${relationshipContext}`
           res.write(`data: ${JSON.stringify({ chunk, done: false })}\n\n`)
         }
 
+        // If streaming produced no content (model returned empty SSE), fall back to Groq
+        if (!fullResponse) {
+          console.warn('[Streaming] Empty response from stream — falling back to Groq non-streaming')
+          const fallback = await generateGroqResponse(finalSystemPrompt, messageHistory)
+          if (fallback.success && fallback.response) {
+            fullResponse = fallback.response
+            res.write(`data: ${JSON.stringify({ chunk: fullResponse, done: false })}\n\n`)
+          }
+        }
+
         // Send done signal
         res.write(`data: ${JSON.stringify({ chunk: '', done: true, fullResponse })}\n\n`)
         res.end()

@@ -409,8 +409,8 @@ function ChatPage() {
           if (streamError) break
         }
 
-        if (streamError) {
-          // Replace the empty assistant message with the error
+        if (streamError || !streamedContent) {
+          // Replace the empty assistant message with a visible error
           setMessages(prev => {
             const updated = [...prev]
             updated[updated.length - 1] = { role: 'assistant', content: `Sorry, something went wrong. Please try again.` }
