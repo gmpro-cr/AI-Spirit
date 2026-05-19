@@ -1,41 +1,16 @@
 'use client'
-// Force rebuild: 2025-11-29T17:20:00
 
-import { useState, useEffect, useRef } from 'react'
+import { useState } from 'react'
 import { speak, stopSpeaking, isSpeaking } from '../../lib/textToSpeech'
-
-// Typing speeds (milliseconds per word) based on persona talking style
-// Each persona has a unique speed that matches their character
-const TYPING_SPEEDS = {
-  'Osho': 180,              // Slow, contemplative
-  'Albert Einstein': 150,    // Thoughtful, measured
-  'Elon Musk': 80,          // Fast, energetic
-  'Mahatma Gandhi': 160,    // Calm, deliberate
-
-  'Swami Vivekananda': 130, // Passionate, flowing
-  'Socrates': 170,          // Questioning, reflective
-  'Astro Guide': 120,       // Mystical, moderate
-  'Fitness Coach': 90,      // Energetic, quick
-  'Life Coach': 110,        // Encouraging, steady
-  'Career Mentor': 100,     // Professional, clear
-  'Shinchan': 70,           // Childlike, fast
-  'default': 120            // Default speed
-}
 
 export default function MessageBubble({ message, language, personaName }) {
   const isUser = message.role === 'user'
   const [copied, setCopied] = useState(false)
-  const [displayedText, setDisplayedText] = useState(message.content) // Start with full text for SSR
-  const [isTyping, setIsTyping] = useState(false)
   const [liked, setLiked] = useState(null) // null, 'like', or 'dislike'
   const [speaking, setSpeaking] = useState(false)
-  const animationRef = useRef(null)
-  const [mounted, setMounted] = useState(false)
 
-  // Detect client-side mount
-  useEffect(() => {
-    setMounted(true)
-  }, [])
+  // Show streaming cursor when AI message content is empty (still streaming)
+  const isStreaming = !isUser && message.content === ''
 
   const handleCopy = async () => {
     try {
@@ -74,40 +49,6 @@ export default function MessageBubble({ message, language, personaName }) {
     }
   }
 
-  // Word-by-word streaming animation for AI messages
-  useEffect(() => {
-    if (isUser || !mounted) return // Only run on client-side for AI messages
-
-    const words = message.content.split(' ')
-    const typingSpeed = TYPING_SPEEDS[personaName] || TYPING_SPEEDS['default']
-    console.log('[MessageBubble] Starting animation:', { personaName, typingSpeed, wordCount: words.length })
-    let currentWordIndex = 0
-
-    setDisplayedText('')
-    setIsTyping(true)
-
-    const typeNextWord = () => {
-      if (currentWordIndex < words.length) {
-        setDisplayedText(prev => {
-          const newText = prev + (prev ? ' ' : '') + words[currentWordIndex]
-          return newText
-        })
-        currentWordIndex++
-        animationRef.current = setTimeout(typeNextWord, typingSpeed)
-      } else {
-        setIsTyping(false)
-      }
-    }
-
-    animationRef.current = setTimeout(typeNextWord, typingSpeed / 2)
-
-    return () => {
-      if (animationRef.current) {
-        clearTimeout(animationRef.current)
-      }
-    }
-  }, [message.content, isUser, personaName, mounted])
-
   return (
     <div className={`flex ${isUser ? 'justify-end' : 'justify-start'} mb-6 animate-fadeIn`}>
       <div className="relative max-w-[90%] sm:max-w-[75%] group">
@@ -118,8 +59,8 @@ export default function MessageBubble({ message, language, personaName }) {
             } ${language === 'hi' ? 'font-hindi' : ''}`}
         >
           <p className="relative z-10 whitespace-pre-wrap leading-relaxed tracking-wide font-light break-words">
-            {displayedText}
-            {isTyping && <span className="inline-block w-1 h-4 bg-black ml-1 animate-pulse" />}
+            {message.content}
+            {isStreaming && <span className="inline-block w-1 h-4 bg-black ml-1 animate-pulse" />}
           </p>
         </div>
 
@@ -147,7 +88,7 @@ export default function MessageBubble({ message, language, personaName }) {
         )}
 
         {/* Action Buttons - Below AI messages */}
-        {!isUser && !isTyping && (
+        {!isUser && !isStreaming && message.content && (
           <div className="flex items-center gap-2 mt-2 ml-1">
             {/* Speaker Button */}
             <button

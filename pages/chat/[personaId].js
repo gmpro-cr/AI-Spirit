@@ -314,7 +314,7 @@ function ChatPage() {
 
 
   const handleBack = () => {
-    router.push('/')
+    router.push('/personas')
   }
 
   const getAuthHeaders = async () => {
