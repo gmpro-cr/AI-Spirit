@@ -375,6 +375,7 @@ function ChatPage() {
         const assistantMessage = { role: 'assistant', content: '' }
         addMessage(assistantMessage)
 
+        let streamError = null
         while (true) {
           const { done, value } = await reader.read()
           if (done) break
@@ -383,28 +384,40 @@ function ChatPage() {
           const lines = chunk.split('\n')
 
           for (const line of lines) {
-            if (line.startsWith('data: ')) {
-              try {
-                const data = JSON.parse(line.slice(6))
+            if (!line.startsWith('data: ')) continue
+            let data
+            try {
+              data = JSON.parse(line.slice(6))
+            } catch {
+              continue // skip malformed SSE lines
+            }
 
-                if (data.error) {
-                  throw new Error(data.error)
-                }
+            if (data.error) {
+              streamError = data.error
+              break
+            }
 
-                if (!data.done && data.chunk) {
-                  streamedContent += data.chunk
-                  // Update the last message with accumulated content
-                  setMessages(prev => {
-                    const updated = [...prev]
-                    updated[updated.length - 1] = { role: 'assistant', content: streamedContent }
-                    return updated
-                  })
-                }
-              } catch (parseError) {
-                console.error('Error parsing SSE data:', parseError)
-              }
+            if (!data.done && data.chunk) {
+              streamedContent += data.chunk
+              setMessages(prev => {
+                const updated = [...prev]
+                updated[updated.length - 1] = { role: 'assistant', content: streamedContent }
+                return updated
+              })
             }
           }
+          if (streamError) break
+        }
+
+        if (streamError) {
+          // Replace the empty assistant message with the error
+          setMessages(prev => {
+            const updated = [...prev]
+            updated[updated.length - 1] = { role: 'assistant', content: `Sorry, something went wrong. Please try again.` }
+            return updated
+          })
+          setIsLoading(false)
+          return
         }
 
         const finalResponse = streamedContent

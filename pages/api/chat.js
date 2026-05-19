@@ -311,12 +311,9 @@ ${relationshipContext}`
       try {
         let fullResponse = ''
 
-        // Groq is fastest for streaming; fall back to OpenRouter if Groq key unavailable
         const streamGenerator = process.env.OLLAMA_URL
           ? generateOllamaResponseStream(finalSystemPrompt, messageHistory, contextString)
-          : process.env.GROQ_API_KEY
-            ? generateGroqResponseStream(finalSystemPrompt, messageHistory)
-            : generatePersonaResponseStream(finalSystemPrompt, messageHistory, contextString)
+          : generatePersonaResponseStream(finalSystemPrompt, messageHistory, contextString)
 
         for await (const chunk of streamGenerator) {
           fullResponse += chunk
