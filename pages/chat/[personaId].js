@@ -792,7 +792,8 @@ function ChatPage() {
             )}
 
             {messages.map((msg, index) => (
-              <div key={index} className="space-y-2">
+              msg.role === 'assistant' && !msg.content.trim() ? null : (
+                <div key={index} className="space-y-2">
                 <div
                   className={`flex items-start gap-4 ${msg.role === 'user' ? 'justify-end' : ''}`}
                 >
@@ -937,7 +938,7 @@ function ChatPage() {
               </div>
             ))}
 
-            {isLoading && (
+            {isLoading && (messages.length === 0 || messages[messages.length - 1].role !== 'assistant' || !messages[messages.length - 1].content.trim()) && (
               <div className="flex items-center gap-4">
                 <img
                   src={persona.image_url || '/default-persona.png'}
