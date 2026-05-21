@@ -330,6 +330,7 @@ function ChatPage() {
     if (!currentInput.trim() || isLoading || !persona) return
 
     const messageText = currentInput.trim()
+    let addedAssistantMessagePlaceholder = false
 
     // Guest message tracking - check if guest can send message
     if (!user) {
@@ -374,21 +375,33 @@ function ChatPage() {
         // Add empty assistant message that we'll update as chunks arrive
         const assistantMessage = { role: 'assistant', content: '' }
         addMessage(assistantMessage)
+        addedAssistantMessagePlaceholder = true
 
         let streamError = null
+        let buffer = ''
         while (true) {
           const { done, value } = await reader.read()
-          if (done) break
+          
+          if (value) {
+            buffer += decoder.decode(value, { stream: true })
+          }
 
-          const chunk = decoder.decode(value)
-          const lines = chunk.split('\n')
+          const lines = buffer.split('\n')
+          if (done) {
+            buffer = ''
+          } else {
+            buffer = lines.pop() || ''
+          }
 
           for (const line of lines) {
-            if (!line.startsWith('data: ')) continue
+            const trimmedLine = line.trim()
+            if (!trimmedLine) continue
+            if (!trimmedLine.startsWith('data: ')) continue
             let data
             try {
-              data = JSON.parse(line.slice(6))
-            } catch {
+              data = JSON.parse(trimmedLine.slice(6))
+            } catch (err) {
+              console.warn('[SSE] Failed to parse line:', trimmedLine, err)
               continue // skip malformed SSE lines
             }
 
@@ -407,13 +420,14 @@ function ChatPage() {
             }
           }
           if (streamError) break
+          if (done) break
         }
 
         if (streamError || !streamedContent) {
           // Replace the empty assistant message with a visible error
           setMessages(prev => {
             const updated = [...prev]
-            updated[updated.length - 1] = { role: 'assistant', content: `Sorry, something went wrong. Please try again.` }
+            updated[updated.length - 1] = { role: 'assistant', content: streamError || `Sorry, something went wrong. Please try again.` }
             return updated
           })
           setIsLoading(false)
@@ -557,8 +571,30 @@ function ChatPage() {
       console.error('Error sending message:', error)
       // Don't add error message if we redirected to signin
       if (!error.message?.includes('Session expired') && !error.message?.includes('Sign in required')) {
-        const errorMessage = { role: 'assistant', content: error.message || "Sorry, something went wrong. Please try again." }
-        addMessage(errorMessage)
+        const errorText = error.message || "Sorry, something went wrong. Please try again."
+        if (addedAssistantMessagePlaceholder) {
+          setMessages(prev => {
+            const updated = [...prev]
+            if (updated.length > 0 && updated[updated.length - 1].role === 'assistant') {
+              updated[updated.length - 1] = { role: 'assistant', content: errorText }
+            } else {
+              updated.push({ role: 'assistant', content: errorText })
+            }
+            return updated
+          })
+        } else {
+          addMessage({ role: 'assistant', content: errorText })
+        }
+      } else {
+        if (addedAssistantMessagePlaceholder) {
+          setMessages(prev => {
+            const updated = [...prev]
+            if (updated.length > 0 && updated[updated.length - 1].role === 'assistant') {
+              updated.pop()
+            }
+            return updated
+          })
+        }
       }
     } finally {
       setIsLoading(false)

@@ -327,6 +327,11 @@ ${relationshipContext}`
           if (fallback.success && fallback.response) {
             fullResponse = fallback.response
             res.write(`data: ${JSON.stringify({ chunk: fullResponse, done: false })}\n\n`)
+          } else {
+            console.error('[Streaming Fallback Failed]', fallback.error)
+            res.write(`data: ${JSON.stringify({ error: fallback.userMessage || 'An error occurred. Please try again.', done: true })}\n\n`)
+            res.end()
+            return
           }
         }
 
