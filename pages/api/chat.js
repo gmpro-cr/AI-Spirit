@@ -188,12 +188,16 @@ export default async function handler(req, res) {
     if (isGuest) {
       messageHistory = [...(conversationHistory || []), { role: 'user', content: message }].slice(-20)
     } else if (conversationId) {
-      const { data: history } = await supabaseAdmin
+      const { data: history, error: historyError } = await supabaseAdmin
         .from('messages')
         .select('role, content')
         .eq('conversation_id', conversationId)
         .order('created_at', { ascending: true })
         .limit(20)
+
+      if (historyError) {
+        console.error('[Chat API] Failed to load conversation history:', historyError.message)
+      }
       messageHistory = [...(history || []), { role: 'user', content: message }]
     } else {
       messageHistory = [...(conversationHistory || []), { role: 'user', content: message }].slice(-20)
