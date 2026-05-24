@@ -378,6 +378,7 @@ function ChatPage() {
         addedAssistantMessagePlaceholder = true
 
         let streamError = null
+        let serverConversationId = null
         let buffer = ''
         while (true) {
           const { done, value } = await reader.read()
@@ -410,7 +411,9 @@ function ChatPage() {
               break
             }
 
-            if (!data.done && data.chunk) {
+            if (data.done) {
+              if (data.conversationId) serverConversationId = data.conversationId
+            } else if (data.chunk) {
               streamedContent += data.chunk
               setMessages(prev => {
                 const updated = [...prev]
@@ -444,22 +447,24 @@ function ChatPage() {
 
         const finalResponse = streamedContent
 
-        // For authenticated users, conversation is saved on server
-        // For guest users, generate locally and save to localStorage
-        let convId = conversationId
+        // Resolve the conversation ID:
+        // - auth users: use server-assigned UUID from done event (or existing state)
+        // - guest users: generate a local ID
+        let convId = conversationId || serverConversationId
 
         if (!convId) {
-          // Generate new conversation ID locally
           convId = user ? null : `conv_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
-          if (convId) {
-            setConversationId(convId)
-            router.replace(`/chat/${personaId}?conversationId=${convId}`, undefined, { shallow: true })
-          }
+        }
+
+        if (convId && convId !== conversationId) {
+          setConversationId(convId)
+          router.replace(`/chat/${personaId}?conversationId=${convId}`, undefined, { shallow: true })
         }
 
         const allMessages = [...messages, userMessage, { role: 'assistant', content: finalResponse }]
 
-        // Save conversation to localStorage for guest users
+        // Save conversation metadata to localStorage so past-chats list stays current
+        // (auth users: convId comes from server; guest users: local ID generated above)
         if (convId) {
           localStorage.setItem(`esperit_conversation_${convId}`, JSON.stringify({
             id: convId,

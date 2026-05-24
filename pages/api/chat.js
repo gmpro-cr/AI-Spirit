@@ -347,16 +347,20 @@ ${relationshipContext}`
           }
         }
 
-        // Send done signal
-        res.write(`data: ${JSON.stringify({ chunk: '', done: true, fullResponse })}\n\n`)
+        // Determine conversation ID before sending done so client can update localStorage
+        let finalConversationId = conversationId
+        if (!isGuest && userId && !conversationId) {
+          finalConversationId = crypto.randomUUID()
+        }
+
+        // Send done signal — include conversationId so client can update past-chats list
+        res.write(`data: ${JSON.stringify({ chunk: '', done: true, fullResponse, conversationId: finalConversationId })}\n\n`)
         res.end()
 
         // Save to database after streaming completes (if authenticated)
         if (!isGuest && userId) {
-          let finalConversationId = conversationId
-
           if (!conversationId) {
-            finalConversationId = crypto.randomUUID()
+            // finalConversationId already generated above
             const { error: convError } = await supabaseAdmin
               .from('conversations')
               .insert({
