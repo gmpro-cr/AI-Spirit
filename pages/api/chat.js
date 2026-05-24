@@ -397,7 +397,8 @@ ${relationshipContext}`
     }
 
     if (!result?.success) {
-      result = await generateGroqResponse(finalSystemPrompt, messageHistory)
+      const groqPrompt = contextString ? `${contextString}\n\n${finalSystemPrompt}` : finalSystemPrompt
+      result = await generateGroqResponse(groqPrompt, messageHistory)
     }
 
     if (!result?.success && !result?.error?.includes('appropriate')) {
