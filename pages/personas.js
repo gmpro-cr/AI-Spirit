@@ -15,9 +15,6 @@ import { withAuth } from '@/middleware/withAuth'
 import { useAuth } from '@/context/AuthContext'
 import { WebsiteSchema, SoftwareApplicationSchema, ServiceSchema } from '@/components/seo/StructuredData'
 
-const FREE_PERSONA_LIMIT = 5
-const ACCESSED_PERSONAS_KEY = 'ai_spirit_accessed_personas'
-
 function Personas() {
   const router = useRouter()
   const { user, userProfile, isPremium } = useAuth()
@@ -33,46 +30,9 @@ function Personas() {
   const [showWelcomeTip, setShowWelcomeTip] = useState(false)
   const [personaStats, setPersonaStats] = useState({})
   const [premiumModal, setPremiumModal] = useState({ open: false, reason: 'personas' })
-  const [accessedPersonas, setAccessedPersonas] = useState(new Set())
-
-  const getAccessedPersonas = () => {
-    try {
-      return new Set(JSON.parse(localStorage.getItem(ACCESSED_PERSONAS_KEY) || '[]'))
-    } catch {
-      return new Set()
-    }
-  }
-
-  const recordPersonaAccess = (slug) => {
-    const accessed = getAccessedPersonas()
-    accessed.add(slug)
-    localStorage.setItem(ACCESSED_PERSONAS_KEY, JSON.stringify([...accessed]))
-  }
 
   const handlePersonaClick = (persona) => {
-    if (isPremium) {
-      recordPersonaAccess(persona.slug)
-      setAccessedPersonas(getAccessedPersonas())
-      router.push(`/chat/${persona.slug}`)
-      return
-    }
-
-    const accessed = getAccessedPersonas()
-    if (accessed.has(persona.slug)) {
-      // Already in their 5 — allow
-      router.push(`/chat/${persona.slug}`)
-      return
-    }
-
-    if (accessed.size < FREE_PERSONA_LIMIT) {
-      recordPersonaAccess(persona.slug)
-      setAccessedPersonas(getAccessedPersonas())
-      router.push(`/chat/${persona.slug}`)
-      return
-    }
-
-    // Hit the limit — show premium prompt
-    setPremiumModal({ open: true, reason: 'personas' })
+    router.push(`/chat/${persona.slug}`)
   }
 
   // Create persona is premium-only
@@ -353,30 +313,6 @@ function Personas() {
               </div>
             )}
 
-            {/* Free Tier Info Banner - shown for non-premium users */}
-            {!isPremium && !loadingPersonas && (
-              <div className="mb-6 bg-gray-50 border border-gray-200 rounded-2xl p-4 flex items-center gap-4 animate-fadeIn">
-                <div className="w-10 h-10 rounded-xl bg-black flex items-center justify-center flex-shrink-0">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white" viewBox="0 0 24 24" fill="currentColor">
-                    <path fillRule="evenodd" d="M12 1.5a5.25 5.25 0 00-5.25 5.25v3a3 3 0 00-3 3v6.75a3 3 0 003 3h10.5a3 3 0 003-3v-6.75a3 3 0 00-3-3v-3c0-2.9-2.35-5.25-5.25-5.25zm3.75 8.25v-3a3.75 3.75 0 10-7.5 0v3h7.5z" clipRule="evenodd" />
-                  </svg>
-                </div>
-                <div className="flex-1">
-                  <p className="text-sm font-semibold text-black">
-                    Free Plan: {accessedPersonas.size}/{FREE_PERSONA_LIMIT} personas unlocked
-                  </p>
-                  <p className="text-xs text-gray-500">
-                    You can chat with {FREE_PERSONA_LIMIT} personas for free. Upgrade to Premium for unlimited access.
-                  </p>
-                </div>
-                <button
-                  onClick={() => setPremiumModal({ open: true, reason: 'personas' })}
-                  className="px-4 py-2 bg-black text-white text-xs font-medium rounded-xl hover:bg-gray-900 transition-all flex-shrink-0"
-                >
-                  Upgrade
-                </button>
-              </div>
-            )}
 
             {/* Loading State with Skeleton */}
             {loadingPersonas ? (
@@ -385,22 +321,16 @@ function Personas() {
               <>
                 {/* Personas Grid */}
                 <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 md:gap-6">
-                  {filteredPersonas.map((persona) => {
-                    const isAccessed = accessedPersonas.has(persona.slug)
-                    const isLocked = !isPremium && !isAccessed && accessedPersonas.size >= FREE_PERSONA_LIMIT
-                    return (
-                      <PersonaCardNew
-                        key={persona.slug}
-                        persona={persona}
-                        onClick={handlePersonaClick}
-                        onEdit={persona.is_custom ? handleEditPersona : undefined}
-                        onLikeChange={handleLikeChange}
-                        messageCount={personaStats[persona.slug]?.message_count}
-                        isLocked={isLocked}
-                        isAccessed={isAccessed}
-                      />
-                    )
-                  })}
+                  {filteredPersonas.map((persona) => (
+                    <PersonaCardNew
+                      key={persona.slug}
+                      persona={persona}
+                      onClick={handlePersonaClick}
+                      onEdit={persona.is_custom ? handleEditPersona : undefined}
+                      onLikeChange={handleLikeChange}
+                      messageCount={personaStats[persona.slug]?.message_count}
+                    />
+                  ))}
                 </div>
 
                 {/* No Results - Clean Empty State */}

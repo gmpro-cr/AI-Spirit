@@ -13,7 +13,7 @@ import { FAQSchema } from '@/components/seo/StructuredData'
 const premiumFaqs = [
     {
         question: 'What is included in AI-Spirit Premium?',
-        answer: 'AI-Spirit Premium gives you unlimited messages per day to chat with any AI persona without restrictions.'
+        answer: 'AI-Spirit Premium gives you unlimited messages per day and the ability to create your own custom AI personas.'
     },
     {
         question: 'How much does AI-Spirit Premium cost?',
@@ -21,7 +21,7 @@ const premiumFaqs = [
     },
     {
         question: 'What is the difference between Free and Premium plans?',
-        answer: 'Free plan gives you 100 messages per day and access to 5 personas. Premium gives you unlimited messages, access to all personas, and the ability to create custom personas.'
+        answer: 'Free plan gives you 100 messages per day and access to all personas. Premium gives you unlimited messages and the ability to create custom personas.'
     },
     {
         question: 'Can I cancel my AI-Spirit Premium subscription?',
@@ -177,7 +177,7 @@ export default function Premium() {
                                 </li>
                                 <li className="flex items-center gap-3 text-black">
                                     <CheckIcon />
-                                    <span>Access to 5 personas</span>
+                                    <span>Access to all personas</span>
                                 </li>
                                 <li className="flex items-center gap-3 text-gray-400">
                                     <XIcon />
@@ -268,7 +268,7 @@ export default function Premium() {
                                 </tr>
                                 <tr>
                                     <td className="p-4">Persona access</td>
-                                    <td className="p-4 text-center">5 personas</td>
+                                    <td className="p-4 text-center">All personas</td>
                                     <td className="p-4 text-center bg-gray-100 font-medium">All personas</td>
                                 </tr>
                                 <tr>

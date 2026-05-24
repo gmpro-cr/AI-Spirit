@@ -35,7 +35,7 @@ export default function SidePanel({ onBack, backButtonText, showPastChats = true
   }
 
   return (
-    <aside className={`w-64 bg-white border-r border-gray-100 flex flex-col hidden md:flex fixed left-0 transition-colors ${hasNavbar ? 'h-[calc(100vh-5rem)] top-20' : 'h-screen top-0'}`}>
+    <aside className={`w-64 bg-gray-50 border-r border-gray-200 flex flex-col hidden md:flex fixed left-0 transition-colors ${hasNavbar ? 'h-[calc(100vh-5rem)] top-20' : 'h-screen top-0'}`}>
       {/* Top Section */}
       <div className="flex flex-col flex-1 overflow-hidden">
         {/* Back Navigation — fixed h-[72px] to align border-b with chat header border-b */}
