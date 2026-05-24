@@ -246,12 +246,15 @@ CRITICAL RULES:
 
     // Fetch context, memories, and relationship in parallel — only inject context on first message
     const isFirstMessage = !conversationId
-    const [contextString, memories, { getRelationshipContext }, relationship] = await Promise.all([
+    const relationshipMod = await import('@/lib/relationshipSystem')
+    const { getRelationshipContext } = relationshipMod
+
+    const [contextString, memories, relationship] = await Promise.all([
       isFirstMessage ? getContextIfNeeded(null, personaLanguage, true) : Promise.resolve(null),
       userId && !isGuest ? getUserMemories(userId, persona.slug, supabaseAdmin) : Promise.resolve([]),
-      import('@/lib/relationshipSystem'),
       userId && !isGuest
-        ? import('@/lib/relationshipSystem').then(m => m.getPersonaRelationship(userId, persona.slug, supabaseAdmin))
+        ? relationshipMod.getPersonaRelationship(userId, persona.slug, supabaseAdmin)
+            .catch(err => { console.error('[Relationship] Failed to load:', err.message); return null })
         : Promise.resolve(null),
     ])
 
