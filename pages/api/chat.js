@@ -130,19 +130,22 @@ export default async function handler(req, res) {
         const nowIST = new Date(Date.now() + istOffset)
         const todayISTinUTC = new Date(Date.UTC(nowIST.getUTCFullYear(), nowIST.getUTCMonth(), nowIST.getUTCDate()) - istOffset)
 
-        const [{ data: conversations }, ] = await Promise.all([
-          supabaseAdmin.from('conversations').select('id').eq('user_id', userId),
-        ])
+        const { data: conversations, error: convFetchError } = await supabaseAdmin
+          .from('conversations')
+          .select('id')
+          .eq('user_id', userId)
 
-        if (conversations?.length) {
-          const { count } = await supabaseAdmin
+        if (convFetchError) {
+          console.error('[Rate Limit] Failed to fetch conversations:', convFetchError.message)
+        } else if (conversations?.length) {
+          const { count, error: countError } = await supabaseAdmin
             .from('messages')
             .select('*', { count: 'exact', head: true })
             .in('conversation_id', conversations.map(c => c.id))
             .eq('role', 'user')
             .gte('created_at', todayISTinUTC.toISOString())
 
-          if (count >= 100) {
+          if (!countError && count >= 100) {
             return res.status(403).json({
               error: 'Daily message limit reached (100 messages). Upgrade to Premium for unlimited access.',
               isLimitReached: true,
