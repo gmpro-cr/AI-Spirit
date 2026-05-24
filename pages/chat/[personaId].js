@@ -423,15 +423,23 @@ function ChatPage() {
           if (done) break
         }
 
-        if (streamError || !streamedContent) {
-          // Replace the empty assistant message with a visible error
+        if (!streamedContent) {
+          // Nothing arrived — replace the empty placeholder with an error
           setMessages(prev => {
             const updated = [...prev]
-            updated[updated.length - 1] = { role: 'assistant', content: streamError || `Sorry, something went wrong. Please try again.` }
+            updated[updated.length - 1] = {
+              role: 'assistant',
+              content: streamError || 'Sorry, something went wrong. Please try again.',
+            }
             return updated
           })
           setIsLoading(false)
           return
+        }
+
+        if (streamError) {
+          // Partial content arrived before error — keep it visible, just log
+          console.warn('[SSE] Stream ended with error after partial content:', streamError)
         }
 
         const finalResponse = streamedContent
