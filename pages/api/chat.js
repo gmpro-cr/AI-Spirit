@@ -327,16 +327,18 @@ ${relationshipContext}`
           res.write(`data: ${JSON.stringify({ chunk, done: false })}\n\n`)
         }
 
-        // If streaming produced no content (model returned empty SSE), fall back to Groq
+        // If streaming produced no content, fall back to Groq streaming
         if (!fullResponse) {
-          console.warn('[Streaming] Empty response from stream — falling back to Groq non-streaming')
-          const fallback = await generateGroqResponse(finalSystemPrompt, messageHistory)
-          if (fallback.success && fallback.response) {
-            fullResponse = fallback.response
-            res.write(`data: ${JSON.stringify({ chunk: fullResponse, done: false })}\n\n`)
-          } else {
-            console.error('[Streaming Fallback Failed]', fallback.error)
-            res.write(`data: ${JSON.stringify({ error: fallback.userMessage || 'An error occurred. Please try again.', done: true })}\n\n`)
+          console.warn('[Streaming] Empty response from primary — falling back to Groq stream')
+          const groqPrompt = contextString ? `${contextString}\n\n${finalSystemPrompt}` : finalSystemPrompt
+          for await (const chunk of generateGroqResponseStream(groqPrompt, messageHistory)) {
+            fullResponse += chunk
+            res.write(`data: ${JSON.stringify({ chunk, done: false })}\n\n`)
+          }
+
+          if (!fullResponse) {
+            console.error('[Streaming] Groq stream also returned empty response')
+            res.write(`data: ${JSON.stringify({ error: 'An error occurred. Please try again.', done: true })}\n\n`)
             res.end()
             return
           }
