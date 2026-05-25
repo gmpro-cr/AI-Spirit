@@ -75,16 +75,13 @@ function Personas() {
     'joker-ledger'
   ]
 
-  // Load liked personas and accessed personas from localStorage
+  // Load liked personas from localStorage
   useEffect(() => {
     const loadLikedPersonas = () => {
       const liked = JSON.parse(localStorage.getItem('esperit_liked_personas') || '[]')
       setLikedPersonaSlugs(liked)
     }
     loadLikedPersonas()
-
-    // Load accessed personas
-    setAccessedPersonas(getAccessedPersonas())
 
     // Check if first-time user for welcome tip
     const hasSeenWelcome = localStorage.getItem('esperit_seen_welcome')
