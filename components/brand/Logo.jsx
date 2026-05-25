@@ -1,56 +1,53 @@
 import Link from 'next/link'
 
 /**
- * AI Spirit logo — infinity lemniscate mark + wordmark
- * @param {'sm'|'md'|'lg'} size
- * @param {boolean} dark — light-on-dark rendering
- * @param {boolean} markOnly — glyph only, no wordmark
- * @param {string} className
+ * AI Spirit — spirit-flame mark + Crimson Text wordmark
+ *
+ * Mark anatomy (viewBox 0 0 22 34):
+ *   • Elongated teardrop/flame — outline only (stroke, no fill)
+ *     widest point sits at ~72% down the height, mimicking real fire
+ *   • Center filled node at the widest zone — the AI within the spirit
  */
 export default function Logo({ size = 'md', dark = false, markOnly = false, className = '' }) {
-  const sizes = {
-    sm: { mark: 26, markH: 13, wordmarkFontSize: '1rem', gap: '0.6rem' },
-    md: { mark: 36, markH: 18, wordmarkFontSize: '1.25rem', gap: '0.75rem' },
-    lg: { mark: 50, markH: 25, wordmarkFontSize: '1.65rem', gap: '1rem' },
+  const cfg = {
+    sm: { w: 14, h: 21, fontSize: '0.95rem', gap: '0.55rem' },
+    md: { w: 18, h: 28, fontSize: '1.2rem',  gap: '0.65rem' },
+    lg: { w: 26, h: 40, fontSize: '1.6rem',  gap: '0.85rem' },
   }
 
-  const { mark, markH, wordmarkFontSize, gap } = sizes[size] || sizes.md
-  const color = dark ? '#ffffff' : '#000000'
-  const mutedColor = dark ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.35)'
+  const { w, h, fontSize, gap } = cfg[size] ?? cfg.md
+  const ink = dark ? '#ffffff' : '#0a0a0a'
 
-  // Lemniscate in a 40×20 viewBox — elongated for the proper ∞ aspect ratio
-  // Right loop: C 20 3, 37 3, 37 10  ↘  C 37 17, 20 17, 20 10
-  // Left loop:  C 20 3, 3 3, 3 10    ↙  C 3 17, 20 17, 20 10
+  // ViewBox 22 × 34
+  // Tip: (11, 1.5)  — symmetrical, vertical axis
+  // Widest: x 1→21 at y ≈ 24.5  (72% of height)
+  // Base:   (11, 32.5)
   const glyph = (
     <svg
-      width={mark}
-      height={markH}
-      viewBox="0 0 40 20"
+      width={w}
+      height={h}
+      viewBox="0 0 22 34"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden="true"
       style={{ flexShrink: 0, display: 'block' }}
     >
-      {/* Right loop */}
+      {/* Spirit flame — outline only */}
       <path
-        d="M 20 10 C 20 3, 37 3, 37 10 C 37 17, 20 17, 20 10"
-        stroke={color}
-        strokeWidth="1.4"
+        d="M 11 1.5
+           C 19 6,  21 16, 21 24
+           C 21 30, 17 33, 11 33
+           C  5 33,  1 30,  1 24
+           C  1 16,  3  6, 11 1.5
+           Z"
+        stroke={ink}
+        strokeWidth="1.35"
         fill="none"
-        strokeLinecap="round"
         strokeLinejoin="round"
-      />
-      {/* Left loop */}
-      <path
-        d="M 20 10 C 20 3, 3 3, 3 10 C 3 17, 20 17, 20 10"
-        stroke={color}
-        strokeWidth="1.4"
-        fill="none"
         strokeLinecap="round"
-        strokeLinejoin="round"
       />
-      {/* Center node — the AI / spirit convergence point */}
-      <circle cx="20" cy="10" r="1.8" fill={color} />
+      {/* AI node — intelligence at the heart of spirit */}
+      <circle cx="11" cy="22" r="2.2" fill={ink} />
     </svg>
   )
 
@@ -70,25 +67,21 @@ export default function Logo({ size = 'md', dark = false, markOnly = false, clas
       {glyph}
       <span
         style={{
+          fontFamily: '"Crimson Text", Georgia, serif',
+          fontStyle:  'italic',
+          fontSize,
+          lineHeight: 1,
+          letterSpacing: '-0.01em',
+          userSelect: 'none',
           display: 'inline-flex',
           alignItems: 'baseline',
-          gap: '0.28em',
-          fontFamily: '"Crimson Text", Georgia, serif',
-          fontSize: wordmarkFontSize,
-          fontStyle: 'italic',
-          letterSpacing: '-0.01em',
-          lineHeight: 1,
-          userSelect: 'none',
+          gap: '0.2em',
         }}
       >
-        <span style={{ color, fontWeight: 400 }}>AI</span>
-        <span style={{
-          color: mutedColor,
-          fontSize: '0.7em',
-          fontStyle: 'normal',
-          letterSpacing: '0.14em',
-          fontFamily: 'inherit',
-        }}>
+        {/* "AI" — heavier weight creates visual anchor */}
+        <span style={{ color: ink, fontWeight: 600 }}>AI</span>
+        {/* "Spirit" — lighter, receding — like spirit itself */}
+        <span style={{ color: dark ? 'rgba(255,255,255,0.55)' : 'rgba(0,0,0,0.52)', fontWeight: 400 }}>
           Spirit
         </span>
       </span>
