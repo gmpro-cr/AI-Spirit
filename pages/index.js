@@ -5,7 +5,6 @@ import Navbar from '@/components/layout/Navbar'
 import HeroAnimation from '@/components/home/HeroAnimation'
 import Marquee from '@/components/home/Marquee'
 import { useAuth } from '@/context/AuthContext'
-import Logo from '@/components/brand/Logo'
 
 export default function HomePage() {
     const { user } = useAuth()
@@ -303,10 +302,7 @@ export default function HomePage() {
                 {/* === FOOTER === */}
                 <footer className="py-8 bg-black text-white/50 text-center text-sm border-t border-white/10">
                     <div className="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-                        <div className="flex items-center gap-3">
-                            <Logo size="sm" dark={true} markOnly={false} />
-                            <span className="text-white/30 text-xs">© {new Date().getFullYear()}</span>
-                        </div>
+                        <div>© {new Date().getFullYear()} AI Spirit. All rights reserved.</div>
                         <div className="flex items-center gap-6">
                             <Link href="/privacy" className="hover:text-white transition-colors">Privacy</Link>
                             <Link href="/terms" className="hover:text-white transition-colors">Terms</Link>
