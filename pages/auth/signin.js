@@ -24,6 +24,19 @@ export default function SignIn() {
     }
   }, [user, router, returnTo])
 
+  // Prevent SSR prerender — page is purely client-side (auth UI, browser APIs)
+  if (!mounted) {
+    return (
+      <>
+        <Head>
+          <title>Sign In — AI Spirit</title>
+          <meta name="description" content="Sign in to AI Spirit and start conversations with AI personas." />
+        </Head>
+        <div className="min-h-[100dvh] bg-[#080808]" suppressHydrationWarning />
+      </>
+    )
+  }
+
   return (
     <>
       <Head>
