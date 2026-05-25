@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react'
 import { useAuth } from '@/context/AuthContext'
 import Link from 'next/link'
 import Image from 'next/image'
+import Logo from '@/components/brand/Logo'
 
 const PERSONA_TAGS = ['Philosophers', 'Life Coaches', 'Historical Icons', 'Mentors', 'Visionaries', 'Spiritual Guides']
 
@@ -83,16 +84,13 @@ export default function SignIn() {
           >
             {/* Logo */}
             <header>
-              <Link href="/" className="inline-flex items-baseline gap-1.5 group">
-                <span
-                  className="font-display text-xl text-white italic tracking-tight"
-                  style={{ fontFamily: '"Crimson Text", Georgia, serif' }}
-                >
-                  AI
-                </span>
-                <span className="text-white/50 text-sm font-light tracking-[0.15em] group-hover:text-white/70 transition-colors duration-300 ease-[cubic-bezier(0.32,0.72,0,1)]">
-                  — Spirit
-                </span>
+              <Link
+                href="/"
+                style={{ display: 'inline-flex', opacity: 1, transition: 'opacity 300ms cubic-bezier(0.32,0.72,0,1)' }}
+                onMouseEnter={e => e.currentTarget.style.opacity = '0.55'}
+                onMouseLeave={e => e.currentTarget.style.opacity = '1'}
+              >
+                <Logo size="sm" dark={true} />
               </Link>
             </header>
 
