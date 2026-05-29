@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
-import Image from 'next/image'
 import Navbar from '@/components/layout/Navbar'
 import HeroAnimation from '@/components/home/HeroAnimation'
 import Marquee from '@/components/home/Marquee'
@@ -151,11 +150,11 @@ function PersonaCategoryCard({ cat, index, visible }) {
                     {/* Image strip */}
                     <div className={`relative h-32 bg-gradient-to-br ${cat.gradient} flex items-end justify-start p-4 overflow-hidden`}>
                         {!imgError ? (
-                            <Image
+                            // eslint-disable-next-line @next/next/no-img-element
+                            <img
                                 src={cat.image}
                                 alt={cat.title}
-                                fill
-                                className="object-cover object-top opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
+                                className="absolute inset-0 w-full h-full object-cover object-top opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
                                 onError={() => setImgError(true)}
                             />
                         ) : (
