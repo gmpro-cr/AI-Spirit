@@ -37,7 +37,7 @@ export default function SignIn() {
       </Head>
       <div className="min-h-[100dvh] bg-white flex flex-col items-center justify-center gap-4">
         <Link href="/" className="flex mb-2">
-          <div className="w-12 h-12 bg-black rounded-2xl overflow-hidden flex-shrink-0 hover:opacity-80 transition-opacity">
+          <div className="w-16 h-16 bg-black rounded-2xl overflow-hidden flex-shrink-0 hover:opacity-80 transition-opacity">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/logo.png" alt="AI Spirit" className="w-full h-full object-cover" />
           </div>

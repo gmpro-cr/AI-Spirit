@@ -75,7 +75,7 @@ export default function Footer() {
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">
             <Link href="/" className="inline-flex group">
-              <div className="w-10 h-10 bg-black rounded-[0.7rem] overflow-hidden flex-shrink-0 ring-1 ring-white/10 group-hover:opacity-80 transition-opacity">
+              <div className="w-14 h-14 bg-black rounded-[0.9rem] overflow-hidden flex-shrink-0 ring-1 ring-white/10 group-hover:opacity-80 transition-opacity">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src="/logo.png" alt="AI Spirit" className="w-full h-full object-cover" />
               </div>
