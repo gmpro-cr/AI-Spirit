@@ -74,14 +74,11 @@ export default function Footer() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">
-            <Link href="/" className="inline-flex items-center gap-2.5 group">
-              <div className="w-8 h-8 bg-black rounded-[0.6rem] overflow-hidden flex-shrink-0 ring-1 ring-white/10">
+            <Link href="/" className="inline-flex group">
+              <div className="w-10 h-10 bg-black rounded-[0.7rem] overflow-hidden flex-shrink-0 ring-1 ring-white/10 group-hover:opacity-80 transition-opacity">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src="/logo.png" alt="AI Spirit" className="w-full h-full object-cover" />
               </div>
-              <span className="font-display text-xl tracking-tight text-white group-hover:opacity-70 transition-opacity">
-                AI Spirit
-              </span>
             </Link>
             <p className="mt-3 text-sm text-white/40 max-w-xs leading-relaxed">
               Meaningful AI conversations with personas that truly listen — always private, always present.

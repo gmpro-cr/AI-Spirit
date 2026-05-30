@@ -36,12 +36,11 @@ export default function SignIn() {
         <title>Signing in — AI Spirit</title>
       </Head>
       <div className="min-h-[100dvh] bg-white flex flex-col items-center justify-center gap-4">
-        <Link href="/" className="flex items-center gap-2.5 mb-2">
-          <div className="w-9 h-9 bg-black rounded-xl overflow-hidden flex-shrink-0">
+        <Link href="/" className="flex mb-2">
+          <div className="w-12 h-12 bg-black rounded-2xl overflow-hidden flex-shrink-0 hover:opacity-80 transition-opacity">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/logo.png" alt="AI Spirit" className="w-full h-full object-cover" />
           </div>
-          <span className="font-display text-xl tracking-tight text-black">AI Spirit</span>
         </Link>
         <div className="flex items-center gap-2 text-black/30">
           <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">

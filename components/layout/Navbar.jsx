@@ -28,14 +28,11 @@ export default function Navbar({ onMenuToggle, showMenuButton = false }) {
     <>
       <nav className="fixed w-full z-50 transition-all duration-300 bg-white/90 backdrop-blur-md border-b border-black/5">
         <div className="max-w-[1600px] mx-auto px-6 h-20 flex items-center">
-          <Link href="/" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 bg-black rounded-2xl overflow-hidden flex-shrink-0">
+          <Link href="/" className="flex items-center group">
+            <div className="w-12 h-12 bg-black rounded-2xl overflow-hidden flex-shrink-0 group-hover:opacity-80 transition-opacity">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/logo.png" alt="AI Spirit" className="w-full h-full object-cover" />
             </div>
-            <span className="font-display text-2xl tracking-tight text-black group-hover:opacity-70 transition-opacity">
-              AI Spirit
-            </span>
           </Link>
 
           <div className="flex-1" />
