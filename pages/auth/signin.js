@@ -37,7 +37,10 @@ export default function SignIn() {
       </Head>
       <div className="min-h-[100dvh] bg-white flex flex-col items-center justify-center gap-4">
         <Link href="/" className="flex items-center gap-2.5 mb-2">
-          <div className="w-9 h-9 bg-black rounded-full flex items-center justify-center text-white font-display text-sm">AI</div>
+          <div className="w-9 h-9 bg-black rounded-xl overflow-hidden flex-shrink-0">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logo.png" alt="AI Spirit" className="w-full h-full object-cover" />
+          </div>
           <span className="font-display text-xl tracking-tight text-black">AI Spirit</span>
         </Link>
         <div className="flex items-center gap-2 text-black/30">

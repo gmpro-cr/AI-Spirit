@@ -72,7 +72,10 @@ export default function SidePanel({ onBack, backButtonText, showPastChats = true
         {!hasNavbar && (
           <div className="px-5 h-16 flex items-center border-b border-black/[0.06] flex-shrink-0">
             <Link href="/" className="flex items-center gap-2.5 group">
-              <div className="w-7 h-7 bg-black rounded-full flex items-center justify-center text-white text-[10px] font-bold">AI</div>
+              <div className="w-7 h-7 bg-black rounded-[0.5rem] overflow-hidden flex-shrink-0">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/logo.png" alt="AI Spirit" className="w-full h-full object-cover" />
+              </div>
               <span className="font-display text-lg tracking-tight text-black group-hover:opacity-70 transition-opacity">AI Spirit</span>
             </Link>
           </div>

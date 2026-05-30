@@ -587,8 +587,9 @@ export default function HomePage() {
                     {/* Main footer */}
                     <div className="max-w-6xl mx-auto px-6 py-10 flex flex-col sm:flex-row items-center justify-between gap-4">
                         <div className="flex items-center gap-3">
-                            <div className="w-7 h-7 bg-white rounded-full flex items-center justify-center">
-                                <span className="text-black font-display text-xs font-semibold">AI</span>
+                            <div className="w-7 h-7 bg-black rounded-[0.45rem] overflow-hidden flex-shrink-0 ring-1 ring-white/20">
+                                {/* eslint-disable-next-line @next/next/no-img-element */}
+                                <img src="/logo.png" alt="AI Spirit" className="w-full h-full object-cover" />
                             </div>
                             <span className="font-display text-lg text-white/80">AI Spirit</span>
                         </div>
