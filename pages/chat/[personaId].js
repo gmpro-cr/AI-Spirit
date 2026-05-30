@@ -305,6 +305,24 @@ function ChatPage() {
     }
   }, [persona?.slug, urlConversationId])
 
+  // Lock body scroll so iOS Safari keyboard doesn't scroll the page out of bounds
+  useEffect(() => {
+    const html = document.documentElement
+    const body = document.body
+    const prevHtmlOverflow = html.style.overflow
+    const prevBodyOverflow = body.style.overflow
+    html.style.overflow = 'hidden'
+    html.style.height = '100%'
+    body.style.overflow = 'hidden'
+    body.style.height = '100%'
+    return () => {
+      html.style.overflow = prevHtmlOverflow
+      html.style.height = ''
+      body.style.overflow = prevBodyOverflow
+      body.style.height = ''
+    }
+  }, [])
+
   // Auto-scroll to bottom
   useEffect(() => {
     if (chatContainerRef.current) {
