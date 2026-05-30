@@ -665,12 +665,12 @@ function ChatPage() {
         { name: persona.name, url: `https://ai-spirit.in/chat/${persona.slug}` }
       ]} />
 
-      <div className="flex h-screen bg-white transition-colors">
+      <div className="flex h-[100dvh] bg-white overflow-hidden transition-colors">
         {/* Side Panel */}
         <SidePanelNew onBack={handleBack} backButtonText="Back to Personas" hasNavbar={false} />
 
         {/* Chat Area */}
-        <div className="flex flex-col flex-1 h-screen md:ml-64">
+        <div className="flex flex-col flex-1 min-h-0 md:ml-64">
           {/* Header — h-[72px] matches SidePanel back button section for border alignment */}
           <header className="flex items-center justify-between px-5 h-[72px] border-b border-gray-100 sticky top-0 bg-white/90 backdrop-blur-md z-10">
             <div className="flex items-center flex-1">
@@ -977,7 +977,7 @@ function ChatPage() {
           </main>
 
           {/* Input Box */}
-          <footer className="px-5 py-4 sticky bottom-0 bg-white/90 backdrop-blur-md border-t border-gray-100">
+          <footer className="px-5 py-4 flex-shrink-0 bg-white/90 backdrop-blur-md border-t border-gray-100">
             <form onSubmit={handleSendMessage} className="flex items-center gap-2">
               <input
                 type="text"
