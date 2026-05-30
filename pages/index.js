@@ -73,48 +73,12 @@ function PillButton({ href, children, dark = false, fullWidth = false }) {
 
 // Persona category cards for the showcase grid
 const PERSONA_CATEGORIES = [
-    {
-        title: 'Spiritual Guides',
-        description: 'Peace, clarity & inner wisdom',
-        image: '/personas/osho.png',
-        initials: 'SG',
-        gradient: 'from-amber-100 to-orange-100',
-    },
-    {
-        title: 'Tech Visionaries',
-        description: 'First principles thinking',
-        image: '/personas/elon-musk.png',
-        initials: 'TV',
-        gradient: 'from-blue-100 to-sky-100',
-    },
-    {
-        title: 'Historical Figures',
-        description: 'Centuries of lived wisdom',
-        image: '/personas/abraham-lincoln.png',
-        initials: 'HF',
-        gradient: 'from-stone-100 to-gray-100',
-    },
-    {
-        title: 'Fictional Characters',
-        description: 'Stories that shape the world',
-        image: '/personas/sherlock-holmes.png',
-        initials: 'FC',
-        gradient: 'from-slate-100 to-zinc-100',
-    },
-    {
-        title: 'Scientists & Thinkers',
-        description: 'Ideas that changed everything',
-        image: '/personas/albert-einstein.png',
-        initials: 'ST',
-        gradient: 'from-emerald-100 to-teal-100',
-    },
-    {
-        title: 'Companions & Romance',
-        description: 'Always here, always present',
-        image: '/personas/soft-boyfriend.png',
-        initials: 'CR',
-        gradient: 'from-rose-100 to-pink-100',
-    },
+    { title: 'Spiritual Guides',     description: 'Peace, clarity & inner wisdom',       dot: 'bg-amber-400' },
+    { title: 'Tech Visionaries',     description: 'First-principles thinking',            dot: 'bg-sky-400' },
+    { title: 'Historical Figures',   description: 'Centuries of lived wisdom',            dot: 'bg-stone-400' },
+    { title: 'Fictional Characters', description: 'Stories that shaped the world',        dot: 'bg-slate-400' },
+    { title: 'Scientists & Thinkers',description: 'Ideas that changed everything',        dot: 'bg-emerald-400' },
+    { title: 'Companions & Romance', description: 'Always here, always present',          dot: 'bg-rose-400' },
 ]
 
 const TESTIMONIALS = [
@@ -139,36 +103,27 @@ const TESTIMONIALS = [
 ]
 
 function PersonaCategoryCard({ cat, index, visible, href }) {
-    const [imgError, setImgError] = useState(false)
     return (
         <Link
             href={href}
             className={`group block ${rev(visible, index % 4 + 1)}`}
         >
-            <div className="p-1.5 rounded-[1.5rem] ring-1 ring-black/5 bg-black/[0.03] transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)]">
-                <div className="rounded-[calc(1.5rem-0.375rem)] bg-white border border-black/5 overflow-hidden">
-                    {/* Image strip */}
-                    <div className={`relative h-44 bg-gradient-to-br ${cat.gradient} overflow-hidden`}>
-                        {!imgError ? (
-                            // eslint-disable-next-line @next/next/no-img-element
-                            <img
-                                src={cat.image}
-                                alt={cat.title}
-                                className="absolute inset-0 w-full h-full object-cover object-center opacity-85 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
-                                onError={() => setImgError(true)}
-                            />
-                        ) : (
-                            <div className="absolute inset-0 flex items-center justify-center">
-                                <span className="font-display text-3xl text-black/20">{cat.initials}</span>
-                            </div>
-                        )}
-                        {/* gradient overlay — bottom fade for text legibility */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
+            <div className="p-1.5 rounded-[1.5rem] ring-1 ring-black/[0.06] bg-black/[0.02] transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-[0_8px_32px_rgba(0,0,0,0.07)]">
+                <div className="bg-white rounded-[calc(1.5rem-0.375rem)] border border-black/[0.05] shadow-[inset_0_1px_1px_rgba(255,255,255,0.9)] px-5 py-5 flex flex-col justify-between min-h-[140px]">
+                    {/* Top row: dot + arrow */}
+                    <div className="flex items-center justify-between mb-4">
+                        <span className={`w-2 h-2 rounded-full ${cat.dot}`} />
+                        <svg
+                            className="w-3.5 h-3.5 text-black/20 group-hover:text-black/60 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300"
+                            fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}
+                        >
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M7 17L17 7M17 7H7M17 7v10" />
+                        </svg>
                     </div>
                     {/* Text */}
-                    <div className="px-5 py-4">
-                        <h3 className="font-display text-base text-black mb-0.5">{cat.title}</h3>
-                        <p className="text-xs text-black/40 leading-relaxed">{cat.description}</p>
+                    <div>
+                        <h3 className="font-display text-lg text-black leading-tight mb-1">{cat.title}</h3>
+                        <p className="text-xs text-black/35 leading-relaxed">{cat.description}</p>
                     </div>
                 </div>
             </div>
