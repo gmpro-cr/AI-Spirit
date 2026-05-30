@@ -6,7 +6,6 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { useAuth } from '@/context/AuthContext'
 import Link from 'next/link'
-import Image from 'next/image'
 
 const PERSONA_TAGS = ['Philosophers', 'Life Coaches', 'Historical Icons', 'Mentors', 'Visionaries', 'Spiritual Guides']
 
@@ -297,13 +296,12 @@ export default function SignIn() {
 
                     {/* The hero illustration — inverted for dark theme */}
                     <div className="relative w-full aspect-square max-w-[340px]">
-                      <Image
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
                         src="/hero-illustration.png"
                         alt="AI Personas — philosophers, mentors, icons and coaches"
-                        fill
-                        className="object-contain"
+                        className="w-full h-full object-contain"
                         style={{ filter: 'invert(1) opacity(0.88)' }}
-                        priority
                       />
                     </div>
                   </div>
