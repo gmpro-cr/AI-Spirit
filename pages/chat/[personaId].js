@@ -629,7 +629,7 @@ function ChatPage() {
         <title>{`Chat with ${persona.name} - ${persona.category || 'AI'} Companion | AI Spirit`}</title>
         <meta name="description" content={persona.description ? `${persona.description}. Chat with ${persona.name} on AI Spirit - your 24/7 AI companion for engaging conversations.` : `Talk to ${persona.name} on AI Spirit. Get instant, judgment-free conversations 24/7 with this ${persona.category || 'AI'} persona.`} />
         <meta name="keywords" content={`chat with ${persona.name}, ${persona.name} AI, ${persona.category || 'AI'} AI chat, talk to ${persona.name}, AI Spirit, AI persona chat, ${persona.name?.toLowerCase()} chatbot`} />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content" />
         <link rel="canonical" href={`https://ai-spirit.in/chat/${personaId}`} />
 
         {/* Open Graph / Social Media Preview Tags */}
@@ -665,14 +665,14 @@ function ChatPage() {
         { name: persona.name, url: `https://ai-spirit.in/chat/${persona.slug}` }
       ]} />
 
-      <div className="flex h-[100dvh] bg-white overflow-hidden transition-colors">
+      <div className="fixed inset-0 flex bg-white overflow-hidden">
         {/* Side Panel */}
         <SidePanelNew onBack={handleBack} backButtonText="Back to Personas" hasNavbar={false} />
 
         {/* Chat Area */}
         <div className="flex flex-col flex-1 min-h-0 md:ml-64">
-          {/* Header — h-[72px] matches SidePanel back button section for border alignment */}
-          <header className="flex items-center justify-between px-5 h-[72px] border-b border-gray-100 sticky top-0 bg-white/90 backdrop-blur-md z-10">
+          {/* Header */}
+          <header className="flex items-center justify-between px-5 h-[72px] border-b border-gray-100 flex-shrink-0 bg-white/90 backdrop-blur-md z-10">
             <div className="flex items-center flex-1">
               <button
                 onClick={handleBack}
