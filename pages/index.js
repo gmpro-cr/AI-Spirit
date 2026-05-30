@@ -138,23 +138,23 @@ const TESTIMONIALS = [
     },
 ]
 
-function PersonaCategoryCard({ cat, index, visible }) {
+function PersonaCategoryCard({ cat, index, visible, href }) {
     const [imgError, setImgError] = useState(false)
     return (
         <Link
-            href="/auth/signin?returnTo=/personas"
+            href={href}
             className={`group block ${rev(visible, index % 4 + 1)}`}
         >
             <div className="p-1.5 rounded-[1.5rem] ring-1 ring-black/5 bg-black/[0.03] transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)]">
                 <div className="rounded-[calc(1.5rem-0.375rem)] bg-white border border-black/5 overflow-hidden">
                     {/* Image strip */}
-                    <div className={`relative h-32 bg-gradient-to-br ${cat.gradient} flex items-end justify-start p-4 overflow-hidden`}>
+                    <div className={`relative h-44 bg-gradient-to-br ${cat.gradient} overflow-hidden`}>
                         {!imgError ? (
                             // eslint-disable-next-line @next/next/no-img-element
                             <img
                                 src={cat.image}
                                 alt={cat.title}
-                                className="absolute inset-0 w-full h-full object-cover object-top opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
+                                className="absolute inset-0 w-full h-full object-cover object-center opacity-85 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
                                 onError={() => setImgError(true)}
                             />
                         ) : (
@@ -162,8 +162,8 @@ function PersonaCategoryCard({ cat, index, visible }) {
                                 <span className="font-display text-3xl text-black/20">{cat.initials}</span>
                             </div>
                         )}
-                        {/* subtle overlay */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+                        {/* gradient overlay — bottom fade for text legibility */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
                     </div>
                     {/* Text */}
                     <div className="px-5 py-4">
@@ -300,7 +300,7 @@ export default function HomePage() {
                         </div>
                         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 md:gap-4">
                             {PERSONA_CATEGORIES.map((cat, i) => (
-                                <PersonaCategoryCard key={cat.title} cat={cat} index={i} visible={personasVisible} />
+                                <PersonaCategoryCard key={cat.title} cat={cat} index={i} visible={personasVisible} href={startHref} />
                             ))}
                         </div>
                         <div className={`${rev(personasVisible, 4)} text-center mt-10`}>
