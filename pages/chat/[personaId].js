@@ -777,17 +777,28 @@ function ChatPage() {
               <span className="hidden md:inline font-medium">New Chat</span>
             </button>
 
-            {/* Share Button */}
-            {messages.length > 0 && conversationId && (
+            {/* Share Button — flips conversation to public, then copies the public /share/<id> URL */}
+            {messages.length > 0 && conversationId && user && (
               <button
                 onClick={async () => {
-                  const shareUrl = `${window.location.origin}/chat/${personaId}?conversationId=${conversationId}`
                   try {
+                    const headers = await getAuthHeaders()
+                    const res = await fetch('/api/share/enable', {
+                      method: 'POST',
+                      headers,
+                      body: JSON.stringify({ conversationId }),
+                    })
+                    if (!res.ok) {
+                      const { error } = await res.json().catch(() => ({}))
+                      console.error('Failed to enable sharing:', error || res.status)
+                      return
+                    }
+                    const shareUrl = `${window.location.origin}/share/${conversationId}`
                     await navigator.clipboard.writeText(shareUrl)
                     setShareLinkCopied(true)
                     setTimeout(() => setShareLinkCopied(false), 2000)
                   } catch (error) {
-                    console.error('Failed to copy:', error)
+                    console.error('Failed to share:', error)
                   }
                 }}
                 className={`flex items-center gap-2 px-4 py-2 rounded-xl transition-all duration-200 text-sm font-medium ${shareLinkCopied
