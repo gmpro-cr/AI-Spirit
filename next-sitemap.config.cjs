@@ -11,19 +11,19 @@ module.exports = {
     changefreq: 'weekly',
     priority: 0.7,
     sitemapSize: 5000,
-    exclude: ['/api/*', '/auth/*'],
+    exclude: ['/api/*', '/auth/*', '/admin/*', '/chat/*'],
 
     // Generate additional paths for all personas
     additionalPaths: async (config) => {
         const result = []
 
-        // Add all persona chat URLs to sitemap
+        // Public, SEO-optimized landing page per persona (chat pages are auth-gated)
         if (personas && personas.INITIAL_PERSONAS) {
             for (const persona of personas.INITIAL_PERSONAS) {
                 if (!persona.hidden) {
                     result.push({
-                        loc: `/chat/${persona.slug}`,
-                        changefreq: 'daily',
+                        loc: `/talk-to/${persona.slug}`,
+                        changefreq: 'weekly',
                         priority: 0.8,
                         lastmod: new Date().toISOString(),
                     })
@@ -45,9 +45,9 @@ module.exports = {
         } else if (path === '/premium') {
             priority = 0.9
             changefreq = 'monthly'
-        } else if (path.startsWith('/chat/')) {
+        } else if (path.startsWith('/talk-to/')) {
             priority = 0.8
-            changefreq = 'daily'
+            changefreq = 'weekly'
         } else if (path === '/contact' || path === '/about') {
             priority = 0.6
             changefreq = 'monthly'
