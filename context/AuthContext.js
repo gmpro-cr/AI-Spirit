@@ -49,6 +49,7 @@ export const AuthProvider = ({ children }) => {
           }
         } else {
           console.error('Error loading user profile:', error)
+          setUserProfile(null)
         }
       } else {
         setUserProfile(data)
@@ -125,7 +126,7 @@ export const AuthProvider = ({ children }) => {
     profileLoading,
     isPremium,
     signOut: () => supabase.auth.signOut(),
-    refreshProfile: () => user && loadUserProfile(user.id),
+    refreshProfile: () => user && loadUserProfile(user.id, user.user_metadata),
     refreshPremium: () => user && loadSubscriptionStatus(user.id),
   }
 

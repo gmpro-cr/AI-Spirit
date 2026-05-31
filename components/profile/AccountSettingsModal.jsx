@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { createPortal } from 'react-dom'
 import { useAuth } from '@/context/AuthContext'
 import Image from 'next/image'
@@ -15,13 +15,8 @@ export default function AccountSettingsModal({ isOpen, onClose }) {
         return () => setMounted(false)
     }, [])
 
-    useEffect(() => {
-        if (isOpen && user) {
-            loadSubscriptionStatus()
-        }
-    }, [isOpen, user])
-
-    const loadSubscriptionStatus = async () => {
+    const loadSubscriptionStatus = useCallback(async () => {
+        if (!user) return
         setLoading(true)
         try {
             const res = await fetch(`/api/user/subscription-status?userId=${user.id}`)
@@ -35,7 +30,13 @@ export default function AccountSettingsModal({ isOpen, onClose }) {
         } finally {
             setLoading(false)
         }
-    }
+    }, [user])
+
+    useEffect(() => {
+        if (isOpen && user) {
+            loadSubscriptionStatus()
+        }
+    }, [isOpen, user, loadSubscriptionStatus])
 
     const handleSignOut = async () => {
         await signOut()

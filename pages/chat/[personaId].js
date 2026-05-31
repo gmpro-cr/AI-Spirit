@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useMemo } from 'react'
 import Head from 'next/head'
 import DOMPurify from 'isomorphic-dompurify'
 import SidePanelNew from '@/components/layout/SidePanel'
@@ -32,6 +32,15 @@ function ChatPage() {
   const [shareLinkCopied, setShareLinkCopied] = useState(false)
   const [speakingIndex, setSpeakingIndex] = useState(null)
   const chatContainerRef = useRef(null)
+
+  // Index of the last user message — used to decide which user bubble shows the Edit button.
+  // Memoize so the lookup runs once per messages change instead of O(n) per rendered bubble.
+  const lastUserMessageIndex = useMemo(() => {
+    for (let i = messages.length - 1; i >= 0; i--) {
+      if (messages[i].role === 'user') return i
+    }
+    return -1
+  }, [messages])
 
   // Format message content with bold text
   const formatMessage = (content) => {
@@ -303,6 +312,10 @@ function ChatPage() {
       clearMessages()
       setConversationId(null)
     }
+    // setMessages/clearMessages come from ChatContext and aren't memoized;
+    // `persona` reference changes each load. We only want this effect to fire on
+    // persona slug or url conversation id changes — adding the others would loop.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [persona?.slug, urlConversationId])
 
   // Lock body scroll so iOS Safari keyboard doesn't scroll the page out of bounds
@@ -902,7 +915,7 @@ function ChatPage() {
                         </button>
 
                         {/* Edit Button - Only for last user message */}
-                        {msg.role === 'user' && index === messages.map((m, i) => m.role === 'user' ? i : -1).filter(i => i !== -1).pop() && (
+                        {msg.role === 'user' && index === lastUserMessageIndex && (
                           <button
                             onClick={() => handleStartEdit(index, msg.content)}
                             disabled={isLoading}

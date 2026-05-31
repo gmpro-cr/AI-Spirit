@@ -9,6 +9,7 @@ export default function MobileBottomNav({ onCreatePersona }) {
   const { user } = useAuth()
   const currentPath = router.pathname
   const [isAccountOpen, setIsAccountOpen] = useState(false)
+  const [avatarError, setAvatarError] = useState(false)
 
   const handleCreateClick = () => {
     if (onCreatePersona) {
@@ -117,11 +118,13 @@ export default function MobileBottomNav({ onCreatePersona }) {
               onClick={() => setIsAccountOpen(true)}
               className="flex flex-col items-center justify-end flex-1 pb-2 gap-1 min-h-[44px]"
             >
-              {user.user_metadata?.avatar_url ? (
+              {user.user_metadata?.avatar_url && !avatarError ? (
+                // eslint-disable-next-line @next/next/no-img-element
                 <img
                   src={user.user_metadata.avatar_url}
                   alt="Account"
                   className="w-6 h-6 rounded-full object-cover ring-1 ring-black/10"
+                  onError={() => setAvatarError(true)}
                 />
               ) : (
                 <div className="w-6 h-6 rounded-full bg-black/[0.08] border border-black/10 flex items-center justify-center">

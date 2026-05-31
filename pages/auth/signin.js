@@ -8,11 +8,13 @@ import Link from 'next/link'
 export default function SignIn() {
   const router = useRouter()
   const { user } = useAuth()
-  const { returnTo } = router.query
+  // Next.js query values can be string | string[] | undefined — coerce to a single string
+  const returnToRaw = router.query.returnTo
+  const returnTo = Array.isArray(returnToRaw) ? returnToRaw[0] : returnToRaw
 
-  // If already signed in, skip straight to destination
+  // If already signed in, skip straight to destination (replace so signin isn't in back-stack)
   useEffect(() => {
-    if (user) router.push(returnTo || '/')
+    if (user) router.replace(returnTo || '/')
   }, [user, router, returnTo])
 
   // Once the router is ready (query params resolved), fire Google OAuth immediately

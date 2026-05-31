@@ -102,10 +102,10 @@ function Personas() {
   // Check for ?create=true query parameter
   useEffect(() => {
     if (router.query.create === 'true') {
-      router.replace('/', undefined, { shallow: true })
+      router.replace('/personas', undefined, { shallow: true })
       setIsModalOpen(true)
     }
-  }, [router.query])
+  }, [router.query, router])
 
   const loadAllPersonas = async () => {
     console.log('=== LOADING ALL PERSONAS ===')
