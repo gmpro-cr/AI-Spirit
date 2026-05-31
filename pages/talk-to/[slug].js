@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import Link from 'next/link'
+import { NextSeo } from 'next-seo'
 import { INITIAL_PERSONAS } from '@/data/personas'
 import { createClient } from '@supabase/supabase-js'
 import Navbar from '@/components/layout/Navbar'
@@ -58,25 +59,31 @@ export default function TalkToPersonaPage({ persona, related }) {
   const chatHref = `/chat/${persona.slug}`
   const faqs = buildFaqs(persona)
 
+  const ogImage = `${SITE_URL}/api/og?title=${encodeURIComponent(`Talk to ${persona.name}`)}&description=${encodeURIComponent(persona.description || '')}&persona=${encodeURIComponent(persona.name)}&avatar=${encodeURIComponent(persona.avatar_url || '')}`
+
   return (
     <>
+      {/* NextSeo overrides the DefaultSeo from _app.js so we don't double-emit canonical/og */}
+      <NextSeo
+        title={title}
+        description={description}
+        canonical={canonical}
+        openGraph={{
+          type: 'profile',
+          url: canonical,
+          title,
+          description,
+          images: [{ url: ogImage, width: 1200, height: 630, alt: `Talk to ${persona.name}` }],
+        }}
+        twitter={{ cardType: 'summary_large_image' }}
+        additionalMetaTags={[
+          {
+            name: 'keywords',
+            content: `talk to ${persona.name}, ${persona.name} AI, chat with ${persona.name}, ${persona.name} chatbot, AI ${persona.category || 'persona'}, ${persona.name.toLowerCase()} AI online`,
+          },
+        ]}
+      />
       <Head>
-        <title>{title}</title>
-        <meta name="description" content={description} />
-        <meta
-          name="keywords"
-          content={`talk to ${persona.name}, ${persona.name} AI, chat with ${persona.name}, ${persona.name} chatbot, AI ${persona.category || 'persona'}, ${persona.name.toLowerCase()} AI online`}
-        />
-        <link rel="canonical" href={canonical} />
-        <meta property="og:type" content="profile" />
-        <meta property="og:title" content={title} />
-        <meta property="og:description" content={description} />
-        <meta property="og:url" content={canonical} />
-        <meta
-          property="og:image"
-          content={`${SITE_URL}/api/og?title=${encodeURIComponent(`Talk to ${persona.name}`)}&description=${encodeURIComponent(persona.description || '')}&persona=${encodeURIComponent(persona.name)}&avatar=${encodeURIComponent(persona.avatar_url || '')}`}
-        />
-        <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={title} />
         <meta name="twitter:description" content={description} />
       </Head>
