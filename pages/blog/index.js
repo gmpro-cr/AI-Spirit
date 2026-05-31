@@ -1,135 +1,94 @@
-import Head from 'next/head'
 import Link from 'next/link'
+import { NextSeo } from 'next-seo'
 import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
+import { getAllPostMeta } from '@/lib/blog'
 
-// Sample blog posts - in production, these would come from a CMS or database
-const BLOG_POSTS = [
-    {
-        slug: 'introduction-to-ai-spirit',
-        title: 'Welcome to AI - Spirit: Your Personal AI Coach',
-        excerpt: 'Discover how AI - Spirit can help you with parenting, wellness, relationships, and more through conversational AI personas.',
-        date: '2024-12-01',
-        category: 'Announcements',
-        readTime: '3 min read',
-    },
-    {
-        slug: 'how-ai-personas-work',
-        title: 'How AI Personas Work: The Technology Behind AI - Spirit',
-        excerpt: 'Learn about the technology that powers our AI personas and how they provide helpful, contextual conversations.',
-        date: '2024-11-15',
-        category: 'Technology',
-        readTime: '5 min read',
-    },
-    {
-        slug: 'parenting-tips-from-ai',
-        title: '5 Ways AI Can Support Your Parenting Journey',
-        excerpt: 'Explore how AI-powered parenting coaches can provide 24/7 guidance for modern parents.',
-        date: '2024-11-01',
-        category: 'Parenting',
-        readTime: '4 min read',
-    },
-]
+const SITE_URL = 'https://ai-spirit.in'
 
-export default function Blog() {
+export default function Blog({ posts }) {
     return (
         <>
-            <Head>
-                <title>Blog | AI - Spirit</title>
-                <meta
-                    name="description"
-                    content="Read articles about AI, parenting, wellness, relationships, and how AI - Spirit can help you in daily life."
-                />
-                <link rel="canonical" href="https://ai-spirit.in/blog" />
-                <meta property="og:title" content="AI - Spirit Blog" />
-                <meta property="og:description" content="Articles about AI, parenting, wellness, and relationships." />
-                <meta property="og:url" content="https://ai-spirit.in/blog" />
-            </Head>
+            <NextSeo
+                title="Blog | AI Spirit"
+                description="Honest writing on AI personas, conversation design, and what we're learning shipping AI Spirit."
+                canonical={`${SITE_URL}/blog`}
+                openGraph={{
+                    type: 'website',
+                    url: `${SITE_URL}/blog`,
+                    title: 'Blog | AI Spirit',
+                    description: 'Honest writing on AI personas, conversation design, and what we are learning shipping AI Spirit.',
+                }}
+            />
 
             <Navbar />
 
-            <main className="min-h-screen bg-white pt-16">
+            <main className="min-h-screen bg-white pt-24 pb-16">
                 {/* Header */}
-                <section className="py-12 md:py-16 px-4 sm:px-6 lg:px-8 border-b border-gray-200">
-                    <div className="max-w-4xl mx-auto text-center">
-                        <h1 className="text-4xl md:text-5xl font-bold text-black tracking-tight mb-4">
-                            Blog
-                        </h1>
-                        <p className="text-lg text-gray-600">
-                            Insights, tips, and updates from the <span className="italic">AI</span> - Spirit team
-                        </p>
-                    </div>
+                <section className="px-6 max-w-5xl mx-auto pb-12 border-b border-black/[0.06]">
+                    <p className="text-[10px] uppercase tracking-[0.2em] text-black/40 mb-3">Writing</p>
+                    <h1 className="font-display text-5xl md:text-6xl tracking-tight text-black leading-[1.05] mb-4">
+                        Blog
+                    </h1>
+                    <p className="text-lg text-black/50 max-w-2xl">
+                        Notes on AI personas, conversation design, and what we&apos;re learning while shipping AI Spirit.
+                    </p>
                 </section>
 
-                {/* Blog Posts Grid */}
-                <section className="py-12 px-4 sm:px-6 lg:px-8">
-                    <div className="max-w-4xl mx-auto">
-                        <div className="space-y-8">
-                            {BLOG_POSTS.map((post) => (
-                                <article
+                {/* Posts */}
+                <section className="px-6 max-w-5xl mx-auto py-12">
+                    {posts.length === 0 ? (
+                        <p className="text-black/40">No posts yet — first one drops soon.</p>
+                    ) : (
+                        <div className="space-y-3">
+                            {posts.map((post) => (
+                                <Link
                                     key={post.slug}
-                                    className="group border border-gray-200 rounded-2xl p-6 hover:border-gray-400 transition-colors"
+                                    href={`/blog/${post.slug}`}
+                                    className="group block p-1.5 rounded-2xl ring-1 ring-black/[0.06] bg-black/[0.02] hover:-translate-y-0.5 transition-transform"
                                 >
-                                    <div className="flex items-center gap-3 mb-3">
-                                        <span className="text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            {post.category}
-                                        </span>
-                                        <span className="text-gray-300">•</span>
-                                        <span className="text-xs text-gray-500">
-                                            {new Date(post.date).toLocaleDateString('en-US', {
-                                                year: 'numeric',
-                                                month: 'long',
-                                                day: 'numeric',
-                                            })}
-                                        </span>
-                                        <span className="text-gray-300">•</span>
-                                        <span className="text-xs text-gray-500">{post.readTime}</span>
-                                    </div>
-
-                                    <h2 className="text-xl md:text-2xl font-bold text-black mb-2 group-hover:underline">
-                                        <Link href={`/blog/${post.slug}`}>
+                                    <article className="bg-white rounded-[calc(1rem-0.375rem)] border border-black/[0.05] px-6 py-5">
+                                        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mb-3 text-[10px] uppercase tracking-widest text-black/40">
+                                            <span>{post.category}</span>
+                                            {post.date && (
+                                                <>
+                                                    <span className="text-black/20">·</span>
+                                                    <span>
+                                                        {new Date(post.date).toLocaleDateString('en-GB', {
+                                                            year: 'numeric',
+                                                            month: 'short',
+                                                            day: 'numeric',
+                                                        })}
+                                                    </span>
+                                                </>
+                                            )}
+                                            {post.readTime && (
+                                                <>
+                                                    <span className="text-black/20">·</span>
+                                                    <span>{post.readTime}</span>
+                                                </>
+                                            )}
+                                        </div>
+                                        <h2 className="font-display text-xl md:text-2xl text-black mb-2 group-hover:opacity-70 transition-opacity">
                                             {post.title}
-                                        </Link>
-                                    </h2>
-
-                                    <p className="text-gray-600 mb-4">
-                                        {post.excerpt}
-                                    </p>
-
-                                    <Link
-                                        href={`/blog/${post.slug}`}
-                                        className="inline-flex items-center text-sm font-medium text-black hover:underline"
-                                    >
-                                        Read more
-                                        <svg
-                                            className="ml-1 w-4 h-4"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            viewBox="0 0 24 24"
-                                        >
-                                            <path
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                                strokeWidth={2}
-                                                d="M9 5l7 7-7 7"
-                                            />
-                                        </svg>
-                                    </Link>
-                                </article>
+                                        </h2>
+                                        {post.excerpt && (
+                                            <p className="text-black/55 leading-relaxed text-base">{post.excerpt}</p>
+                                        )}
+                                    </article>
+                                </Link>
                             ))}
                         </div>
-
-                        {/* Coming Soon Notice */}
-                        <div className="mt-12 text-center py-8 bg-gray-50 rounded-2xl">
-                            <p className="text-gray-600">
-                                More articles coming soon! Check back regularly for updates.
-                            </p>
-                        </div>
-                    </div>
+                    )}
                 </section>
             </main>
 
             <Footer />
         </>
     )
+}
+
+export async function getStaticProps() {
+    const posts = getAllPostMeta()
+    return { props: { posts } }
 }

@@ -1,169 +1,234 @@
-import Head from 'next/head'
 import Link from 'next/link'
-import { useRouter } from 'next/router'
+import { NextSeo, ArticleJsonLd } from 'next-seo'
+import { MDXRemote } from 'next-mdx-remote'
+import { serialize } from 'next-mdx-remote/serialize'
 import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
+import { BreadcrumbSchema } from '@/components/seo/StructuredData'
+import { getAllPostSlugs, getPostBySlug, getAllPostMeta } from '@/lib/blog'
 
-// Sample blog content - in production, this would come from a CMS or database
-const BLOG_CONTENT = {
-    'introduction-to-ai-spirit': {
-        title: 'Welcome to AI - Spirit: Your Personal AI Coach',
-        date: '2024-12-01',
-        category: 'Announcements',
-        readTime: '3 min read',
-        content: `
-      <p>We're excited to introduce AI - Spirit, a platform designed to bring expert guidance to your fingertips through conversational AI personas.</p>
-      
-      <h2>What is AI - Spirit?</h2>
-      <p>AI - Spirit is a collection of AI-powered personas, each designed to help you with different aspects of life. Whether you need parenting advice at 2 AM, wellness tips during a stressful day, or relationship guidance, our personas are available 24/7.</p>
-      
-      <h2>Why We Built This</h2>
-      <p>We believe everyone deserves access to thoughtful guidance and support. Traditional coaching and counseling can be expensive and not always available when you need it most. AI - Spirit bridges that gap.</p>
-      
-      <h2>Getting Started</h2>
-      <p>Simply browse our personas, pick one that matches your needs, and start chatting. It's free to try, and you can create your own custom personas too!</p>
-    `,
+const SITE_URL = 'https://ai-spirit.in'
+
+// MDX components — these are what render when the post uses Markdown / JSX
+// Internal links automatically use next/link for client-side routing + prefetching.
+const mdxComponents = {
+    a: ({ href = '', children, ...props }) => {
+        const isInternal = href.startsWith('/') || href.startsWith('#')
+        if (isInternal) {
+            return (
+                <Link href={href} className="text-black underline underline-offset-2 decoration-black/30 hover:decoration-black transition-colors">
+                    {children}
+                </Link>
+            )
+        }
+        return (
+            <a
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-black underline underline-offset-2 decoration-black/30 hover:decoration-black transition-colors"
+                {...props}
+            >
+                {children}
+            </a>
+        )
     },
-    'how-ai-personas-work': {
-        title: 'How AI Personas Work: The Technology Behind AI - Spirit',
-        date: '2024-11-15',
-        category: 'Technology',
-        readTime: '5 min read',
-        content: `
-      <p>Ever wondered how our AI personas provide such contextual and helpful responses? Let's dive into the technology.</p>
-      
-      <h2>The Foundation</h2>
-      <p>Our personas are built on advanced large language models that have been carefully prompted and tuned to embody specific expertise areas and communication styles.</p>
-      
-      <h2>Context Awareness</h2>
-      <p>Each persona maintains conversation context, remembering what you've discussed and building on previous exchanges to provide more relevant advice.</p>
-      
-      <h2>Safety First</h2>
-      <p>We've implemented multiple safety layers to ensure conversations remain helpful and appropriate. Our personas are designed to provide supportive guidance while encouraging professional help when needed.</p>
-    `,
-    },
-    'parenting-tips-from-ai': {
-        title: '5 Ways AI Can Support Your Parenting Journey',
-        date: '2024-11-01',
-        category: 'Parenting',
-        readTime: '4 min read',
-        content: `
-      <p>Parenting is one of the most rewarding yet challenging journeys. Here's how AI-powered coaches can support you along the way.</p>
-      
-      <h2>1. 24/7 Availability</h2>
-      <p>Parenting questions don't follow a 9-to-5 schedule. Our Parenting Coach is available whenever you need guidance, whether it's midnight feeding challenges or early morning tantrums.</p>
-      
-      <h2>2. Judgment-Free Zone</h2>
-      <p>AI coaches provide a safe space to ask any question without fear of judgment. Every parent has questions they might feel embarrassed to ask others.</p>
-      
-      <h2>3. Consistent Guidance</h2>
-      <p>Get consistent, evidence-based advice that aligns with modern parenting research and practices.</p>
-      
-      <h2>4. Personalized Support</h2>
-      <p>Our AI learns your communication style and preferences, providing increasingly tailored advice over time.</p>
-      
-      <h2>5. Quick Answers</h2>
-      <p>Sometimes you need a quick answer, not a long article to read. Chat-based guidance gets you answers in seconds.</p>
-    `,
-    },
+    h2: (props) => <h2 className="font-display text-3xl md:text-4xl tracking-tight text-black mt-16 mb-4 leading-tight" {...props} />,
+    h3: (props) => <h3 className="font-display text-2xl text-black mt-12 mb-3 leading-tight" {...props} />,
+    h4: (props) => <h4 className="text-lg font-semibold text-black mt-8 mb-2" {...props} />,
+    p: (props) => <p className="text-black/75 leading-[1.75] text-[17px] my-5" {...props} />,
+    ul: (props) => <ul className="my-5 space-y-2 list-disc list-outside pl-5 text-black/75 text-[17px] leading-[1.75]" {...props} />,
+    ol: (props) => <ol className="my-5 space-y-2 list-decimal list-outside pl-5 text-black/75 text-[17px] leading-[1.75]" {...props} />,
+    li: (props) => <li className="pl-1" {...props} />,
+    blockquote: (props) => (
+        <blockquote className="my-8 pl-6 border-l-2 border-black/20 text-black/60 italic text-[17px] leading-[1.75]" {...props} />
+    ),
+    code: (props) => (
+        <code className="bg-black/[0.04] text-black px-1.5 py-0.5 rounded text-[0.9em] font-mono" {...props} />
+    ),
+    pre: (props) => (
+        <pre className="my-6 p-5 rounded-2xl bg-black text-white overflow-x-auto text-sm leading-relaxed" {...props} />
+    ),
+    hr: () => <hr className="my-12 border-0 border-t border-black/10" />,
+    table: (props) => (
+        <div className="my-8 overflow-x-auto p-1.5 rounded-2xl ring-1 ring-black/[0.06] bg-black/[0.02]">
+            <table className="w-full bg-white rounded-[calc(1rem-0.375rem)] border border-black/[0.05]" {...props} />
+        </div>
+    ),
+    thead: (props) => <thead className="border-b border-black/[0.06]" {...props} />,
+    th: (props) => (
+        <th className="px-5 py-3 text-left text-[10px] font-semibold uppercase tracking-widest text-black/40" {...props} />
+    ),
+    td: (props) => <td className="px-5 py-3 text-black/70 text-sm border-b border-black/[0.04]" {...props} />,
+    strong: (props) => <strong className="font-semibold text-black" {...props} />,
+    em: (props) => <em className="italic" {...props} />,
 }
 
-export default function BlogPost() {
-    const router = useRouter()
-    const { slug } = router.query
+export default function BlogPost({ post, mdxSource, related }) {
+    if (!post) return null
 
-    // Handle loading state
-    if (!slug || !BLOG_CONTENT[slug]) {
-        return (
-            <>
-                <Navbar />
-                <main className="min-h-screen bg-white pt-16 flex items-center justify-center">
-                    <div className="text-center">
-                        <h1 className="text-2xl font-bold text-black mb-4">Post not found</h1>
-                        <Link href="/blog" className="text-gray-600 hover:underline">
-                            ← Back to Blog
-                        </Link>
-                    </div>
-                </main>
-                <Footer />
-            </>
-        )
-    }
-
-    const post = BLOG_CONTENT[slug]
+    const canonical = `${SITE_URL}/blog/${post.slug}`
+    const formattedDate = post.date
+        ? new Date(post.date).toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' })
+        : null
 
     return (
         <>
-            <Head>
-                <title>{post.title} | AI - Spirit Blog</title>
-                <meta name="description" content={post.title} />
-                <link rel="canonical" href={`https://ai-spirit.in/blog/${slug}`} />
-                <meta property="og:title" content={post.title} />
-                <meta property="og:url" content={`https://ai-spirit.in/blog/${slug}`} />
-                <meta property="og:type" content="article" />
-            </Head>
+            <NextSeo
+                title={`${post.title} | AI Spirit`}
+                description={post.excerpt}
+                canonical={canonical}
+                openGraph={{
+                    type: 'article',
+                    url: canonical,
+                    title: post.title,
+                    description: post.excerpt,
+                    article: {
+                        publishedTime: post.date || undefined,
+                        section: post.category,
+                    },
+                }}
+            />
+
+            {post.date && (
+                <ArticleJsonLd
+                    url={canonical}
+                    title={post.title}
+                    images={[`${SITE_URL}/og-image-v7.png`]}
+                    datePublished={post.date}
+                    dateModified={post.date}
+                    authorName="AI Spirit"
+                    publisherName="AI Spirit"
+                    publisherLogo={`${SITE_URL}/logo.png`}
+                    description={post.excerpt}
+                />
+            )}
+
+            <BreadcrumbSchema
+                items={[
+                    { name: 'Home', url: `${SITE_URL}/` },
+                    { name: 'Blog', url: `${SITE_URL}/blog` },
+                    { name: post.title, url: canonical },
+                ]}
+            />
 
             <Navbar />
 
-            <main className="min-h-screen bg-white pt-16">
-                <article className="py-12 px-4 sm:px-6 lg:px-8">
-                    <div className="max-w-3xl mx-auto">
-                        {/* Back link */}
-                        <Link
-                            href="/blog"
-                            className="inline-flex items-center text-sm text-gray-500 hover:text-black mb-8 transition-colors"
-                        >
-                            <svg className="mr-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                            </svg>
-                            Back to Blog
-                        </Link>
+            <main className="bg-white pt-24 pb-16">
+                <article className="max-w-3xl mx-auto px-6">
+                    {/* Breadcrumb */}
+                    <nav className="text-xs text-black/40 mb-6 flex items-center gap-2">
+                        <Link href="/" className="hover:text-black transition-colors">Home</Link>
+                        <span>/</span>
+                        <Link href="/blog" className="hover:text-black transition-colors">Blog</Link>
+                    </nav>
 
-                        {/* Post header */}
-                        <header className="mb-8">
-                            <div className="flex items-center gap-3 mb-4">
-                                <span className="text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    {post.category}
-                                </span>
-                                <span className="text-gray-300">•</span>
-                                <span className="text-xs text-gray-500">
-                                    {new Date(post.date).toLocaleDateString('en-US', {
-                                        year: 'numeric',
-                                        month: 'long',
-                                        day: 'numeric',
-                                    })}
-                                </span>
-                                <span className="text-gray-300">•</span>
-                                <span className="text-xs text-gray-500">{post.readTime}</span>
+                    {/* Header */}
+                    <header className="mb-12 pb-8 border-b border-black/[0.06]">
+                        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mb-5 text-[10px] uppercase tracking-widest text-black/40">
+                            <span>{post.category}</span>
+                            {formattedDate && (
+                                <>
+                                    <span className="text-black/20">·</span>
+                                    <span>{formattedDate}</span>
+                                </>
+                            )}
+                            {post.readTime && (
+                                <>
+                                    <span className="text-black/20">·</span>
+                                    <span>{post.readTime}</span>
+                                </>
+                            )}
+                        </div>
+                        <h1 className="font-display text-4xl md:text-5xl text-black leading-[1.1] tracking-tight mb-4">
+                            {post.title}
+                        </h1>
+                        {post.excerpt && (
+                            <p className="text-lg text-black/55 leading-relaxed">{post.excerpt}</p>
+                        )}
+                    </header>
+
+                    {/* Body */}
+                    <div className="blog-body">
+                        <MDXRemote {...mdxSource} components={mdxComponents} />
+                    </div>
+
+                    {/* Footer CTA */}
+                    <div className="mt-16 pt-10 border-t border-black/[0.06]">
+                        <div className="p-1.5 rounded-3xl ring-1 ring-black/[0.06] bg-black/[0.02]">
+                            <div className="bg-black text-white rounded-[calc(1.5rem-0.375rem)] px-8 py-10 text-center">
+                                <h3 className="font-display text-2xl md:text-3xl mb-3">Try AI Spirit yourself.</h3>
+                                <p className="text-white/60 mb-6 max-w-md mx-auto">
+                                    Browse the persona library and start a conversation — no signup needed to look around.
+                                </p>
+                                <Link
+                                    href="/personas"
+                                    className="group inline-flex items-center gap-3 bg-white text-black pl-6 pr-2 py-2 rounded-full text-sm font-medium hover:opacity-90 transition-opacity"
+                                >
+                                    <span>Browse personas</span>
+                                    <span className="w-9 h-9 rounded-full bg-black/[0.08] flex items-center justify-center group-hover:translate-x-0.5 group-hover:-translate-y-[1px] transition-transform">
+                                        <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M7 17L17 7M17 7H7M17 7v10" />
+                                        </svg>
+                                    </span>
+                                </Link>
                             </div>
-
-                            <h1 className="text-3xl md:text-4xl font-bold text-black tracking-tight">
-                                {post.title}
-                            </h1>
-                        </header>
-
-                        {/* Post content */}
-                        <div
-                            className="prose prose-lg max-w-none prose-headings:text-black prose-headings:font-bold prose-p:text-gray-600 prose-a:text-black prose-a:underline"
-                            dangerouslySetInnerHTML={{ __html: post.content }}
-                        />
-
-                        {/* CTA */}
-                        <div className="mt-12 p-6 bg-black text-white rounded-2xl text-center">
-                            <h3 className="text-xl font-bold mb-2">Ready to try <span className="italic">AI</span> - Spirit?</h3>
-                            <p className="text-gray-300 mb-4">Start chatting with our AI personas today.</p>
-                            <Link
-                                href="/"
-                                className="inline-block bg-white text-black font-semibold px-6 py-2 rounded-full hover:bg-gray-100 transition-colors"
-                            >
-                                Browse Personas
-                            </Link>
                         </div>
                     </div>
+
+                    {/* Related posts */}
+                    {related.length > 0 && (
+                        <section className="mt-16">
+                            <h3 className="font-display text-xl text-black mb-6">More reading</h3>
+                            <div className="space-y-3">
+                                {related.map((r) => (
+                                    <Link
+                                        key={r.slug}
+                                        href={`/blog/${r.slug}`}
+                                        className="group block p-1.5 rounded-2xl ring-1 ring-black/[0.06] bg-black/[0.02] hover:-translate-y-0.5 transition-transform"
+                                    >
+                                        <div className="bg-white rounded-[calc(1rem-0.375rem)] border border-black/[0.05] px-5 py-4">
+                                            <div className="text-[10px] uppercase tracking-widest text-black/40 mb-1">{r.category}</div>
+                                            <div className="font-display text-base text-black group-hover:opacity-70 transition-opacity">
+                                                {r.title}
+                                            </div>
+                                        </div>
+                                    </Link>
+                                ))}
+                            </div>
+                        </section>
+                    )}
                 </article>
             </main>
 
             <Footer />
         </>
     )
+}
+
+export async function getStaticPaths() {
+    const slugs = getAllPostSlugs()
+    return {
+        paths: slugs.map((slug) => ({ params: { slug } })),
+        fallback: false,
+    }
+}
+
+export async function getStaticProps({ params }) {
+    const post = getPostBySlug(params.slug)
+    if (!post) return { notFound: true }
+
+    const mdxSource = await serialize(post.content)
+    const related = getAllPostMeta()
+        .filter((p) => p.slug !== post.slug)
+        .slice(0, 3)
+        .map((p) => ({ slug: p.slug, title: p.title, category: p.category }))
+
+    return {
+        props: {
+            post: { ...post, content: '' }, // strip raw content from props — only mdxSource needs to ship
+            mdxSource,
+            related,
+        },
+    }
 }

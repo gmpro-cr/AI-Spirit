@@ -1,7 +1,17 @@
 /** @type {import('next-sitemap').IConfig} */
 
+const fs = require('fs')
+const path = require('path')
+
 // Import personas for sitemap generation
 const personas = require('./data/personas.cjs')
+
+// Read blog post slugs from /content/blog at build time
+function getBlogSlugs() {
+    const dir = path.join(__dirname, 'content', 'blog')
+    if (!fs.existsSync(dir)) return []
+    return fs.readdirSync(dir).filter((f) => f.endsWith('.md')).map((f) => f.replace(/\.md$/, ''))
+}
 
 module.exports = {
     siteUrl: 'https://ai-spirit.in',
@@ -29,6 +39,16 @@ module.exports = {
                     })
                 }
             }
+        }
+
+        // Blog posts from /content/blog
+        for (const slug of getBlogSlugs()) {
+            result.push({
+                loc: `/blog/${slug}`,
+                changefreq: 'monthly',
+                priority: 0.7,
+                lastmod: new Date().toISOString(),
+            })
         }
 
         return result
