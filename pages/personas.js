@@ -262,33 +262,42 @@ function Personas() {
         {/* Main Content */}
         <main className="flex-1 overflow-y-auto scrollbar-visible md:ml-64 flex flex-col bg-white">
           <div className="flex-1 px-4 sm:px-6 lg:px-8 py-8 md:py-12 max-w-7xl mx-auto w-full">
+            {/* Search Bar — moved above filters for mobile priority */}
+            <div className="mb-4">
+              <div className="relative">
+                <svg
+                  className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-black/25 pointer-events-none"
+                  fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+                <input
+                  type="text"
+                  placeholder={searchPlaceholder}
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full pl-11 pr-4 py-3.5 text-[15px] text-black bg-black/[0.04] border border-black/[0.07] rounded-2xl focus:outline-none focus:border-black/25 focus:bg-white focus:ring-2 focus:ring-black/[0.07] transition-all duration-200"
+                />
+              </div>
+            </div>
+
             {/* Category Filter */}
-            <div className="mb-6 overflow-x-auto scrollbar-hide">
-              <div className="flex gap-2 pb-2">
+            <div className="mb-6 overflow-x-auto scrollbar-hide -mx-4 sm:mx-0 px-4 sm:px-0">
+              <div className="flex gap-1.5 pb-1 w-max sm:w-auto sm:flex-wrap">
                 {categories.map(category => (
                   <button
                     key={category}
                     onClick={() => setSelectedCategory(category)}
-                    className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300 whitespace-nowrap flex-shrink-0 ${selectedCategory === category
-                      ? 'bg-black text-white shadow-soft'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:text-black'
-                      }`}
+                    className={`px-4 py-2 rounded-full text-[13px] font-medium transition-all duration-200 whitespace-nowrap flex-shrink-0 active:scale-95 ${
+                      selectedCategory === category
+                        ? 'bg-black text-white'
+                        : 'bg-black/[0.05] text-black/60 hover:bg-black/[0.08] hover:text-black'
+                    }`}
                   >
                     {category}
                   </button>
                 ))}
               </div>
-            </div>
-
-            {/* Search Bar */}
-            <div className="mb-8">
-              <input
-                type="text"
-                placeholder={searchPlaceholder}
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full px-5 py-4 text-base text-black bg-gray-50 border border-gray-200 rounded-2xl focus:outline-none focus:border-black focus:bg-white focus:ring-2 focus:ring-black/10 shadow-xs focus:shadow-soft transition-all duration-300"
-              />
             </div>
 
             {/* First-time User Welcome Tip */}

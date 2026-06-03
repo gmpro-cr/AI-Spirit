@@ -201,16 +201,16 @@ export default function HomePage() {
                 <Navbar />
 
                 {/* ─────────────────────────── HERO ─────────────────────────── */}
-                <section className="relative min-h-[100dvh] flex flex-col lg:flex-row items-center justify-center pt-24 pb-16 px-6 md:px-12 lg:px-20 max-w-[1400px] mx-auto gap-12 lg:gap-20">
+                <section className="relative h-[100dvh] lg:min-h-[100dvh] lg:h-auto flex flex-col lg:flex-row items-center justify-center pt-16 sm:pt-20 pb-16 px-5 sm:px-8 md:px-12 lg:px-20 max-w-[1400px] mx-auto gap-10 lg:gap-20 overflow-hidden lg:overflow-visible">
                     <div className="w-full lg:w-1/2 z-10 text-center lg:text-left">
                         <div className={rev(heroVisible, 0)}>
                             <Eyebrow>350+ AI Personas Available</Eyebrow>
                         </div>
-                        <h1 className={`${rev(heroVisible, 1)} font-display text-5xl sm:text-6xl md:text-7xl lg:text-[5.5rem] tracking-tight leading-[1.05] mb-7 text-black`}>
+                        <h1 className={`${rev(heroVisible, 1)} font-display text-[2.75rem] sm:text-6xl md:text-7xl lg:text-[5.5rem] tracking-tight leading-[1.05] mb-6 sm:mb-7 text-black`}>
                             Talk to anyone.
                             <span className="block text-black/25 italic">Anytime.</span>
                         </h1>
-                        <p className={`${rev(heroVisible, 2)} text-lg md:text-xl text-black/60 max-w-lg mx-auto lg:mx-0 mb-10 leading-relaxed`}>
+                        <p className={`${rev(heroVisible, 2)} text-base sm:text-lg md:text-xl text-black/55 max-w-lg mx-auto lg:mx-0 mb-8 sm:mb-10 leading-relaxed`}>
                             Spiritual guides, world leaders, celebrities, fictional characters — all ready for meaningful, private conversations.
                         </p>
                         <div className={rev(heroVisible, 3)}>
@@ -218,20 +218,20 @@ export default function HomePage() {
                                 {user ? 'Start Chatting' : 'Sign in to Chat'}
                             </PillButton>
                         </div>
-                        <div className={`${rev(heroVisible, 4)} mt-14 pt-8 border-t border-black/10 flex items-center justify-center lg:justify-start gap-10`}>
+                        <div className={`${rev(heroVisible, 4)} mt-10 sm:mt-14 pt-6 sm:pt-8 border-t border-black/[0.08] flex items-center justify-center lg:justify-start gap-8 sm:gap-10`}>
                             {[
                                 { value: '10K+', label: 'Conversations' },
                                 { value: '350+', label: 'Personas' },
-                                { value: '4.9', label: 'User Rating' },
+                                { value: '4.9★', label: 'User Rating' },
                             ].map((stat, i) => (
                                 <div key={i} className="text-center lg:text-left">
-                                    <div className="font-display text-2xl text-black">{stat.value}</div>
-                                    <div className="text-xs text-black/40 tracking-wide mt-0.5">{stat.label}</div>
+                                    <div className="font-display text-xl sm:text-2xl text-black">{stat.value}</div>
+                                    <div className="text-[11px] text-black/35 tracking-wide mt-0.5">{stat.label}</div>
                                 </div>
                             ))}
                         </div>
                     </div>
-                    <div className={`${rev(heroVisible, 2)} w-full lg:w-1/2 flex items-center justify-center lg:justify-end`}>
+                    <div className={`${rev(heroVisible, 2)} hidden lg:flex w-full lg:w-1/2 items-center justify-center lg:justify-end`}>
                         <div className="p-2 rounded-[3.5rem] ring-1 ring-black/5 bg-black/5">
                             <HeroAnimation />
                         </div>

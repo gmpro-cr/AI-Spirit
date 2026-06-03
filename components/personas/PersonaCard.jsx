@@ -1,7 +1,6 @@
 import { useRouter } from 'next/router'
 import Image from 'next/image'
 
-// Format large numbers (e.g., 1234 -> "1.2K", 1234567 -> "1.2M")
 function formatCount(num) {
   if (!num || num === 0) return null
   if (num >= 1000000) return (num / 1000000).toFixed(1).replace(/\.0$/, '') + 'M'
@@ -24,68 +23,74 @@ export default function PersonaCard({ persona, onEdit, messageCount, onClick }) 
 
   return (
     <div
-      className={`
-        group relative bg-white
-        border border-gray-100 rounded-2xl overflow-hidden
-        shadow-soft hover:shadow-lift hover:border-gray-200
-        hover:-translate-y-1
-        transition-all duration-300 ease-out
-        cursor-pointer
-      `}
+      className="group relative rounded-2xl overflow-hidden cursor-pointer bg-gray-50"
+      style={{
+        boxShadow: '0 1px 3px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.04)',
+        transition: 'box-shadow 0.25s ease, transform 0.25s ease',
+      }}
       onClick={handleClick}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.10), 0 0 0 1px rgba(0,0,0,0.06)'
+        e.currentTarget.style.transform = 'translateY(-2px)'
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.04)'
+        e.currentTarget.style.transform = 'translateY(0)'
+      }}
     >
-      {/* Image Container */}
-      <div className="relative w-full h-36 md:h-44 overflow-hidden bg-gray-50">
+      {/* Image */}
+      <div className="relative w-full overflow-hidden" style={{ paddingTop: '115%' }}>
         <Image
           src={persona.image_url || persona.avatar_url || '/default-persona.png'}
           alt={persona.name}
           fill
-          className="object-cover object-[center_25%] group-hover:scale-110 transition-transform duration-500 ease-out"
+          className="object-cover object-[center_20%] transition-transform duration-500 ease-out group-hover:scale-105"
+          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 16vw"
         />
-        {/* Subtle gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
-      </div>
+        {/* Bottom gradient — always visible for name legibility */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background: 'linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.28) 40%, transparent 70%)',
+          }}
+        />
 
-      {/* Info Section */}
-      <div className="p-3 space-y-1">
-        <div className="flex items-start justify-between gap-2">
-          {/* Name */}
-          <h3 className="font-display text-base md:text-lg font-bold text-gray-900 flex-1 min-w-0 line-clamp-2 leading-tight group-hover:text-black transition-colors duration-300">
+        {/* Chat count badge — top right */}
+        {formattedCount && (
+          <div className="absolute top-2 right-2 flex items-center gap-1 bg-black/50 backdrop-blur-sm rounded-full px-2 py-0.5">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-white/70" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+            </svg>
+            <span className="text-[10px] font-medium text-white/80">{formattedCount}</span>
+          </div>
+        )}
+
+        {/* Name + description overlaid at bottom */}
+        <div className="absolute bottom-0 left-0 right-0 px-3 pb-3 pt-6">
+          <h3 className="font-display text-[15px] font-semibold text-white leading-snug line-clamp-1">
             {persona.name}
           </h3>
-
-          {/* Chat Count */}
-          {formattedCount && (
-            <div className="flex items-center gap-1 text-gray-400 flex-shrink-0">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-              </svg>
-              <span className="text-xs font-medium">{formattedCount}</span>
-            </div>
-          )}
+          <p className="text-white/60 text-[11px] leading-snug line-clamp-1 mt-0.5">
+            {persona.description || persona.bio}
+          </p>
         </div>
-
-        {/* Description */}
-        <p className="text-gray-500 text-xs md:text-sm line-clamp-2 leading-relaxed">
-          {persona.description || persona.bio}
-        </p>
       </div>
 
-      {/* Edit Button for Custom Personas */}
+      {/* Edit button for custom personas */}
       {onEdit && (
         <button
           onClick={(e) => {
             e.stopPropagation()
             onEdit(persona)
           }}
-          className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm hover:bg-white p-2 rounded-xl border border-gray-100 shadow-soft hover:shadow-lift transition-all duration-300"
+          className="absolute top-2 left-2 bg-white/90 backdrop-blur-sm p-1.5 rounded-xl border border-black/[0.06] shadow-soft hover:bg-white transition-all duration-200 active:scale-90"
           title="Edit persona"
           aria-label="Edit persona"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-4 w-4 text-gray-600"
+            className="h-3.5 w-3.5 text-gray-600"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -102,4 +107,3 @@ export default function PersonaCard({ persona, onEdit, messageCount, onClick }) 
     </div>
   )
 }
-
