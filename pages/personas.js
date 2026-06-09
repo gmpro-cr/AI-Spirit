@@ -283,7 +283,7 @@ function Personas() {
 
             {/* Category Filter */}
             <div className="mb-6 overflow-x-auto scrollbar-hide -mx-4 sm:mx-0 px-4 sm:px-0">
-              <div className="flex gap-1.5 pb-1 w-max sm:w-auto sm:flex-wrap">
+              <div className="flex gap-1.5 pb-1 w-max">
                 {categories.map(category => (
                   <button
                     key={category}

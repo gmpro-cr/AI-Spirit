@@ -41,7 +41,7 @@ export default function SidePanel({ onBack, backButtonText, showPastChats = true
 
         {/* Brand header (shown when there is no top navbar) */}
         {!hasNavbar && (
-          <div className="px-5 h-16 flex items-center border-b border-black/[0.06] flex-shrink-0">
+          <div className="px-5 h-[72px] flex items-center border-b border-black/[0.06] flex-shrink-0">
             <Link href="/" className="flex items-center group">
               <div className="w-12 h-12 bg-black rounded-[0.75rem] overflow-hidden flex-shrink-0 group-hover:opacity-80 transition-opacity">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
