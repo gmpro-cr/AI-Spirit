@@ -386,7 +386,7 @@ ${relationshipContext}`
           ])
 
           // Extract memories
-          extractAndSaveMemories(userId, persona.slug, finalConversationId, message, fullResponse, supabaseAdmin)
+          extractAndSaveMemories(userId, persona.slug, finalConversationId, message, fullResponse, memories, supabaseAdmin)
             .catch(err => console.error('[Memory Extraction Error]:', err))
         }
 
@@ -471,7 +471,7 @@ ${relationshipContext}`
       ])
 
       // Extract and save memories from this conversation (use finalConversationId)
-      extractAndSaveMemories(userId, persona.slug, finalConversationId, message, result.response, supabaseAdmin)
+      extractAndSaveMemories(userId, persona.slug, finalConversationId, message, result.response, memories, supabaseAdmin)
         .catch(err => console.error('[Memory Extraction Error]:', err))
 
       // Increment persona message count
@@ -487,7 +487,7 @@ ${relationshipContext}`
 
     // For guest users, still try to extract memories if they somehow have userId
     if (userId && isGuest && conversationId) {
-      extractAndSaveMemories(userId, persona.slug, conversationId, message, result.response, supabaseAdmin)
+      extractAndSaveMemories(userId, persona.slug, conversationId, message, result.response, memories, supabaseAdmin)
         .catch(err => console.error('[Memory Extraction Error]:', err))
     }
 
