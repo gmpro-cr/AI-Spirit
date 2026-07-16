@@ -8,7 +8,7 @@ import { moderateContent } from '@/lib/moderation'
 // import { chatRateLimiter, getClientIdentifier } from '@/lib/rate-limit'
 import { logApiCall, checkCostThreshold } from '@/lib/cost-tracking'
 import { getContextIfNeeded } from '@/lib/contextProvider'
-import { extractAndSaveMemories, getUserMemories, formatMemoriesForContext } from '@/lib/memorySystem'
+import { extractAndSaveMemories, getUserMemories, formatMemoriesForContext, updateConversationSummary, getConversationSummaries, formatSummariesForContext } from '@/lib/memorySystem'
 
 // Fallback chain: Ollama (self-hosted) → OpenRouter (free API) → Groq (free API)
 
@@ -249,9 +249,10 @@ CRITICAL RULES:
     const relationshipMod = await import('@/lib/relationshipSystem')
     const { getRelationshipContext } = relationshipMod
 
-    const [contextString, memories, relationship] = await Promise.all([
+    const [contextString, memories, pastSummaries, relationship] = await Promise.all([
       isFirstMessage ? getContextIfNeeded(null, personaLanguage, true) : Promise.resolve(null),
       userId && !isGuest ? getUserMemories(userId, persona.slug, supabaseAdmin) : Promise.resolve([]),
+      userId && !isGuest ? getConversationSummaries(userId, persona.slug, conversationId, supabaseAdmin) : Promise.resolve([]),
       userId && !isGuest
         ? relationshipMod.getPersonaRelationship(userId, persona.slug, supabaseAdmin)
             .catch(err => { console.error('[Relationship] Failed to load:', err.message); return null })
@@ -259,6 +260,7 @@ CRITICAL RULES:
     ])
 
     const memoryContext = memories.length ? formatMemoriesForContext(memories, userProfile) : ''
+    const summaryContext = pastSummaries.length ? formatSummariesForContext(pastSummaries) : ''
     const relationshipContext = relationship
       ? getRelationshipContext(relationship.relationship_level, relationship.conversation_count)
       : ''
@@ -272,6 +274,15 @@ IMPORTANT - WHAT YOU KNOW ABOUT THIS USER:
 ${memoryContext}
 
 Remember these details. Address the user by name ONLY when natural or for emphasis (not in every message). Reference their interests/goals when relevant.`
+    }
+
+    if (summaryContext) {
+      finalSystemPrompt = `${finalSystemPrompt}
+
+YOUR PREVIOUS CONVERSATIONS WITH THIS USER (most recent first):
+${summaryContext}
+
+You genuinely remember these past conversations. Bring them up naturally when relevant (e.g. follow up on open threads), but don't recite them unprompted.`
     }
 
     if (relationshipContext) {
@@ -385,9 +396,14 @@ ${relationshipContext}`
             { conversation_id: finalConversationId, role: 'assistant', content: fullResponse }
           ])
 
-          // Extract memories
-          extractAndSaveMemories(userId, persona.slug, finalConversationId, message, fullResponse, memories, supabaseAdmin)
+          // Extract memories + refresh conversation summary.
+          // MUST be awaited: the response is already sent (res.end above), but
+          // Vercel freezes the function once the handler returns, killing any
+          // un-awaited work — this was why personas never remembered anything.
+          await extractAndSaveMemories(userId, persona.slug, finalConversationId, message, fullResponse, memories, supabaseAdmin)
             .catch(err => console.error('[Memory Extraction Error]:', err))
+          await updateConversationSummary(userId, persona.slug, finalConversationId, supabaseAdmin)
+            .catch(err => console.error('[Summary Error]:', err))
         }
 
         // Increment persona message count for ALL users (guests and authenticated)
@@ -470,25 +486,35 @@ ${relationshipContext}`
         { conversation_id: finalConversationId, role: 'assistant', content: result.response }
       ])
 
-      // Extract and save memories from this conversation (use finalConversationId)
-      extractAndSaveMemories(userId, persona.slug, finalConversationId, message, result.response, memories, supabaseAdmin)
-        .catch(err => console.error('[Memory Extraction Error]:', err))
-
       // Increment persona message count
       incrementPersonaMessageCount(persona.slug)
 
-      // Return conversation ID to frontend
-      return res.status(200).json({
+      // Respond first (no user-visible latency), THEN do memory work.
+      // MUST be awaited: Vercel freezes the function once the handler returns,
+      // killing any un-awaited work — this was why personas never remembered.
+      res.status(200).json({
         response: result.response,
         success: true,
         conversationId: finalConversationId
       })
+
+      await extractAndSaveMemories(userId, persona.slug, finalConversationId, message, result.response, memories, supabaseAdmin)
+        .catch(err => console.error('[Memory Extraction Error]:', err))
+      await updateConversationSummary(userId, persona.slug, finalConversationId, supabaseAdmin)
+        .catch(err => console.error('[Summary Error]:', err))
+      return
     }
 
     // For guest users, still try to extract memories if they somehow have userId
     if (userId && isGuest && conversationId) {
-      extractAndSaveMemories(userId, persona.slug, conversationId, message, result.response, memories, supabaseAdmin)
+      incrementPersonaMessageCount(persona.slug)
+      res.status(200).json({
+        response: result.response,
+        success: true
+      })
+      await extractAndSaveMemories(userId, persona.slug, conversationId, message, result.response, memories, supabaseAdmin)
         .catch(err => console.error('[Memory Extraction Error]:', err))
+      return
     }
 
     // Increment persona message count for ALL users (guests and authenticated)
