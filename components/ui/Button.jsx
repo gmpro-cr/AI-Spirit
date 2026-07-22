@@ -42,10 +42,9 @@ export function SecondaryButton({ children, onClick, className = '', disabled = 
       onClick={onClick}
       disabled={disabled}
       className={`
-        bg-white text-spirit-primary
+        glass-matte !rounded-none text-spirit-primary
         px-6 py-2.5
-        border border-gray-300
-        hover:border-spirit-primary hover:bg-gray-50
+        hover:bg-white/85
         disabled:opacity-50 disabled:cursor-not-allowed
         transition-all duration-200
         font-medium text-sm
@@ -59,7 +58,8 @@ export function SecondaryButton({ children, onClick, className = '', disabled = 
 }
 
 /**
- * Accent Button - Gold/spiritual theme for premium/special actions
+ * Accent Button - inverted-monochrome emphasis for premium/special actions
+ * (kept within the black/white palette — no separate accent hue)
  */
 export function AccentButton({ children, onClick, className = '', disabled = false, type = 'button', ...props }) {
   return (
@@ -68,10 +68,10 @@ export function AccentButton({ children, onClick, className = '', disabled = fal
       onClick={onClick}
       disabled={disabled}
       className={`
-        bg-spirit-accent text-white
+        bg-spirit-primary text-white
         px-6 py-2.5
-        border border-spirit-accent
-        hover:bg-white hover:text-spirit-accent hover:border-spirit-accent
+        shadow-glass-dark
+        hover:bg-white hover:text-spirit-primary hover:shadow-none hover:border hover:border-spirit-primary
         disabled:opacity-50 disabled:cursor-not-allowed
         transition-all duration-200
         font-medium text-sm
@@ -96,9 +96,9 @@ export function GhostButton({ children, onClick, className = '', disabled = fals
       className={`
         bg-transparent text-gray-700
         px-4 py-2
-        hover:text-black hover:underline
+        hover:text-black hover:bg-white/50 hover:backdrop-blur-md
         disabled:opacity-50 disabled:cursor-not-allowed
-        transition-colors duration-200
+        transition-all duration-200
         font-medium text-sm
         ${className}
       `}
@@ -121,9 +121,9 @@ export function IconButton({ children, onClick, className = '', disabled = false
       className={`
         p-2
         text-gray-600 hover:text-black
-        hover:bg-gray-100
+        hover:bg-white/60 hover:backdrop-blur-md
         disabled:opacity-50 disabled:cursor-not-allowed
-        transition-colors duration-200
+        transition-all duration-200
         ${className}
       `}
       aria-label={label}

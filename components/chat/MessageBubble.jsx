@@ -45,8 +45,8 @@ export default function MessageBubble({ message, language, personaName }) {
         <div
           className={`px-4 sm:px-5 py-3 sm:py-3.5 rounded-3xl ${language === 'hi' ? 'font-hindi' : ''} ${
             isUser
-              ? 'bg-black text-white rounded-br-lg'
-              : 'bg-[#F4F4F2] border border-black/[0.06] text-black rounded-bl-lg'
+              ? 'bg-black text-white rounded-br-lg shadow-glass-dark'
+              : 'glass-matte rounded-bl-lg text-black'
           }`}
         >
           <p className="whitespace-pre-wrap leading-relaxed text-[15px] break-words">
@@ -63,10 +63,10 @@ export default function MessageBubble({ message, language, personaName }) {
             {/* Speak */}
             <button
               onClick={handleSpeak}
-              className={`flex items-center gap-1 px-2.5 py-1.5 rounded-full border text-[11px] font-medium transition-all duration-200 active:scale-90 ${
+              className={`flex items-center gap-1 px-2.5 py-1.5 text-[11px] font-medium transition-all duration-200 active:scale-90 ${
                 speaking
-                  ? 'bg-black text-white border-black'
-                  : 'bg-white text-black/50 border-black/[0.08] hover:border-black/20 hover:text-black'
+                  ? 'bg-black text-white rounded-full shadow-glass-dark'
+                  : 'glass-pill text-black/50 hover:text-black hover:bg-white/80'
               }`}
               title={speaking ? 'Stop' : 'Listen'}
             >
@@ -84,10 +84,10 @@ export default function MessageBubble({ message, language, personaName }) {
             {/* Like */}
             <button
               onClick={handleLike}
-              className={`flex items-center gap-1 px-2.5 py-1.5 rounded-full border text-[11px] font-medium transition-all duration-200 active:scale-90 ${
+              className={`flex items-center gap-1 px-2.5 py-1.5 text-[11px] font-medium transition-all duration-200 active:scale-90 ${
                 liked === 'like'
-                  ? 'bg-black text-white border-black'
-                  : 'bg-white text-black/50 border-black/[0.08] hover:border-black/20 hover:text-black'
+                  ? 'bg-black text-white rounded-full shadow-glass-dark'
+                  : 'glass-pill text-black/50 hover:text-black hover:bg-white/80'
               }`}
               title="Helpful"
             >
@@ -99,10 +99,10 @@ export default function MessageBubble({ message, language, personaName }) {
             {/* Dislike */}
             <button
               onClick={handleDislike}
-              className={`flex items-center gap-1 px-2.5 py-1.5 rounded-full border text-[11px] font-medium transition-all duration-200 active:scale-90 ${
+              className={`flex items-center gap-1 px-2.5 py-1.5 text-[11px] font-medium transition-all duration-200 active:scale-90 ${
                 liked === 'dislike'
-                  ? 'bg-black text-white border-black'
-                  : 'bg-white text-black/50 border-black/[0.08] hover:border-black/20 hover:text-black'
+                  ? 'bg-black text-white rounded-full shadow-glass-dark'
+                  : 'glass-pill text-black/50 hover:text-black hover:bg-white/80'
               }`}
               title="Not helpful"
             >
@@ -114,10 +114,10 @@ export default function MessageBubble({ message, language, personaName }) {
             {/* Copy */}
             <button
               onClick={handleCopy}
-              className={`flex items-center gap-1 px-2.5 py-1.5 rounded-full border text-[11px] font-medium transition-all duration-200 active:scale-90 ${
+              className={`flex items-center gap-1 px-2.5 py-1.5 text-[11px] font-medium transition-all duration-200 active:scale-90 ${
                 copied
-                  ? 'bg-black text-white border-black'
-                  : 'bg-white text-black/50 border-black/[0.08] hover:border-black/20 hover:text-black'
+                  ? 'bg-black text-white rounded-full shadow-glass-dark'
+                  : 'glass-pill text-black/50 hover:text-black hover:bg-white/80'
               }`}
               title={copied ? 'Copied' : 'Copy'}
             >

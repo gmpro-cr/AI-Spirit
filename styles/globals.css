@@ -2,8 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Typography - Crimson Text for headings (spiritual, elegant), Inter for body */
-@import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+Devanagari:wght@300;400;500;600;700&display=swap');
+/* Typography - Crimson Text for headings (spiritual, elegant), Geist for body */
+@import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&family=Geist:wght@300;400;500;600;700;800&family=Noto+Sans+Devanagari:wght@300;400;500;600;700&display=swap');
 
 /* Custom font classes */
 .font-display {
@@ -11,7 +11,7 @@
 }
 
 .font-body {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Geist', sans-serif;
 }
 
 /* Apply display font to headings for spiritual minimalism */
@@ -124,20 +124,80 @@ p {
     @apply transition-all duration-300 ease-out;
   }
 
-  /* ===== GLASS EFFECTS ===== */
+  /* ===== GLASS EFFECTS =====
+     True glassmorphism, monochrome only: backdrop blur + semi-opaque white
+     + an inset top highlight (simulates a refracted light edge) + a soft
+     tinted-black outer shadow. No new hues — everything is white/black/alpha. */
+
   .glass-nav {
-    @apply bg-white/80 backdrop-blur-xl;
-    @apply border-b border-gray-100;
-    @apply shadow-xs;
+    @apply bg-white/70 backdrop-blur-2xl;
+    @apply border-b border-white/60;
+    box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.04), 0 1px 24px rgba(0, 0, 0, 0.04);
+  }
+
+  .glass-panel {
+    @apply bg-white/60 backdrop-blur-2xl rounded-3xl;
+    @apply shadow-glass;
+  }
+
+  .glass-panel-dark {
+    @apply bg-black/50 backdrop-blur-2xl rounded-3xl text-white;
+    @apply shadow-glass-dark;
+  }
+
+  .glass-pill {
+    @apply bg-white/55 backdrop-blur-xl rounded-full;
+    @apply shadow-glass-sm;
+  }
+
+  .glass-pill-dark {
+    @apply bg-black/45 backdrop-blur-xl rounded-full text-white;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 2px 12px rgba(0, 0, 0, 0.25);
   }
 
   .glass-modal {
-    @apply bg-white rounded-3xl;
-    @apply shadow-soft-xl;
+    @apply bg-white/80 backdrop-blur-2xl rounded-3xl;
+    @apply shadow-glass-lg;
+  }
+
+  /* Frosted "matte glass" — for surfaces sitting flush on the page background
+     rather than floating over other content. Same inset-highlight language as
+     the rest of the glass system, softer blur since there's little behind it. */
+  .glass-matte {
+    @apply bg-white/70 backdrop-blur-md rounded-2xl;
+    @apply shadow-glass-sm;
   }
 
   .glass-backdrop {
     @apply bg-black/40 backdrop-blur-sm;
+  }
+
+  /* Cursor-tracked highlight for glass cards. Pair with a mousemove handler
+     that sets --spot-x / --spot-y (percentages) on the element; the glow
+     fades in via the spotlight-active class toggled on mouseenter/leave. */
+  .spotlight {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .spotlight::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    border-radius: inherit;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+    background: radial-gradient(
+      280px circle at var(--spot-x, 50%) var(--spot-y, 50%),
+      rgba(255, 255, 255, 0.35),
+      transparent 70%
+    );
+  }
+
+  .spotlight.spotlight-active::before {
+    opacity: 1;
   }
 
   /* ===== SKELETON LOADING ===== */

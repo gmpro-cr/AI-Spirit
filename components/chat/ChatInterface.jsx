@@ -32,12 +32,12 @@ export default function ChatInterface({ persona, onSendMessage, onNewChat, onMen
       <div className="flex-shrink-0">
         {/* Mobile header */}
         <div
-          className="lg:hidden flex items-center gap-3 px-4 py-3 border-b border-black/[0.06] bg-white/98 backdrop-blur-xl animate-fadeIn"
+          className="lg:hidden flex items-center gap-3 px-4 py-3 glass-nav animate-fadeIn"
           style={{ paddingTop: 'calc(12px + env(safe-area-inset-top, 0px))' }}
         >
           <button
             onClick={onMenuToggle}
-            className="w-9 h-9 flex flex-col items-center justify-center gap-[5px] rounded-xl bg-black/[0.04] active:bg-black/[0.08] active:scale-95 transition-all duration-150 flex-shrink-0"
+            className="glass-pill w-9 h-9 flex flex-col items-center justify-center gap-[5px] active:scale-95 transition-all duration-150 flex-shrink-0"
             aria-label="Toggle menu"
           >
             <span className="w-4 h-[1.5px] bg-black rounded-full" />
@@ -61,15 +61,15 @@ export default function ChatInterface({ persona, onSendMessage, onNewChat, onMen
           {messages.length > 0 && (
             <button
               onClick={handleNewChat}
-              className="flex-shrink-0 text-[12px] font-medium px-3 py-1.5 rounded-full bg-black/[0.05] text-black/60 hover:bg-black hover:text-white active:scale-95 transition-all duration-200 whitespace-nowrap"
+              className="glass-pill flex-shrink-0 text-[12px] font-medium px-3 py-1.5 text-black/60 hover:bg-black hover:text-white active:scale-95 transition-all duration-200 whitespace-nowrap"
             >
               New chat
             </button>
           )}
         </div>
 
-        {/* Desktop header — floating card */}
-        <div className="hidden lg:flex relative bg-white/80 backdrop-blur-xl border border-gray-100 rounded-3xl p-5 mx-4 mt-3 mb-3 items-center space-x-4 shadow-soft animate-fadeIn">
+        {/* Desktop header — floating glass card */}
+        <div className="hidden lg:flex relative glass-panel p-5 mx-4 mt-3 mb-3 items-center space-x-4 animate-fadeIn">
           <div className="w-14 h-14 rounded-2xl bg-gray-50 border border-gray-100 flex items-center justify-center overflow-hidden text-xl text-black font-bold shadow-soft flex-shrink-0">
             {persona.avatar_url ? (
               <Image src={persona.avatar_url} alt={persona.name} width={56} height={56} className="w-full h-full object-cover" />
@@ -84,7 +84,7 @@ export default function ChatInterface({ persona, onSendMessage, onNewChat, onMen
           {messages.length > 0 && (
             <button
               onClick={handleNewChat}
-              className="bg-black text-white text-sm font-medium px-5 py-2.5 rounded-xl shadow-soft hover:shadow-lift hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-300 whitespace-nowrap"
+              className="bg-black text-white text-sm font-medium px-5 py-2.5 rounded-xl shadow-glass-dark hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-300 whitespace-nowrap"
             >
               New chat
             </button>
@@ -102,7 +102,7 @@ export default function ChatInterface({ persona, onSendMessage, onNewChat, onMen
                 <button
                   key={idx}
                   onClick={() => onSendMessage(starter)}
-                  className="group relative block w-full bg-gray-50 border border-gray-100 rounded-2xl p-4 hover:bg-white hover:border-gray-200 shadow-xs hover:shadow-soft transition-all duration-300 text-left text-black text-sm sm:text-base overflow-hidden hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.99] animate-fadeIn"
+                  className="group relative block w-full glass-matte p-4 hover:bg-white/85 transition-all duration-300 text-left text-black text-sm sm:text-base overflow-hidden hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.99] animate-fadeIn"
                   style={{ animationDelay: `${idx * 100}ms`, animationFillMode: 'both' }}
                 >
                   <span className="relative z-10">{starter}</span>
@@ -123,7 +123,7 @@ export default function ChatInterface({ persona, onSendMessage, onNewChat, onMen
 
         {isLoading && (
           <div className="flex justify-start mb-4 animate-fadeIn">
-            <div className="relative bg-gray-50 border border-gray-100 px-5 py-4 rounded-2xl shadow-soft">
+            <div className="relative glass-matte px-5 py-4">
               <div className="relative z-10 flex space-x-1.5">
                 <div className="w-2 h-2 bg-gray-400 rounded-full animate-wave" style={{ animationDelay: '0ms' }} />
                 <div className="w-2 h-2 bg-gray-400 rounded-full animate-wave" style={{ animationDelay: '150ms' }} />

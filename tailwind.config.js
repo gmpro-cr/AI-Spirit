@@ -42,6 +42,13 @@ module.exports = {
         // Lifted shadows for hover states
         'lift': '0 4px 20px rgba(0, 0, 0, 0.08)',
         'lift-lg': '0 8px 40px rgba(0, 0, 0, 0.12)',
+        // Glass elevation — inset top highlight simulates edge refraction,
+        // outer shadow stays tinted black (no new hues) but softer/wider
+        // than the flat soft-* scale so glass reads as floating, not flat.
+        'glass-sm': 'inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 2px 12px rgba(0, 0, 0, 0.06)',
+        'glass': 'inset 0 1px 0 rgba(255, 255, 255, 0.6), inset 0 0 0 1px rgba(255, 255, 255, 0.4), 0 8px 32px rgba(0, 0, 0, 0.08)',
+        'glass-lg': 'inset 0 1px 0 rgba(255, 255, 255, 0.65), inset 0 0 0 1px rgba(255, 255, 255, 0.45), 0 16px 48px rgba(0, 0, 0, 0.12)',
+        'glass-dark': 'inset 0 1px 0 rgba(255, 255, 255, 0.12), inset 0 0 0 1px rgba(255, 255, 255, 0.08), 0 8px 32px rgba(0, 0, 0, 0.3)',
       },
       backgroundImage: {
         'gradient-subtle': 'linear-gradient(180deg, #FFFFFF 0%, #FAFAFA 100%)',
@@ -52,7 +59,7 @@ module.exports = {
         '3xl': '64px',
       },
       fontFamily: {
-        sans: ['Inter', 'sans-serif'],
+        sans: ['Geist', 'sans-serif'],
         display: ['"Crimson Text"', 'serif'],
         hindi: ['Noto Sans Devanagari', 'sans-serif'],
       },

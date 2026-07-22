@@ -45,8 +45,11 @@ export default function InputBox({ onSend, disabled }) {
   const canSend = !disabled && input.trim().length > 0
 
   return (
-    <div className="bg-white/95 backdrop-blur-xl border-t border-black/[0.06] px-3 sm:px-4 pt-3 pb-3 sm:pb-4"
-      style={{ paddingBottom: 'max(12px, calc(env(safe-area-inset-bottom, 0px) + 12px))' }}>
+    <div className="bg-white/75 backdrop-blur-2xl px-3 sm:px-4 pt-3 pb-3 sm:pb-4"
+      style={{
+        paddingBottom: 'max(12px, calc(env(safe-area-inset-bottom, 0px) + 12px))',
+        boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.7), 0 -4px 24px rgba(0, 0, 0, 0.04)',
+      }}>
       {error && (
         <div className="mb-2.5 text-red-700 text-xs bg-red-50 border border-red-100 rounded-xl px-4 py-2.5 animate-fadeIn">
           {error}
@@ -65,7 +68,7 @@ export default function InputBox({ onSend, disabled }) {
             disabled={disabled}
             maxLength={MAX_CHARS}
             placeholder="Type your message…"
-            className="w-full bg-black/[0.04] border border-black/[0.08] rounded-2xl px-4 py-3 text-[15px] text-black placeholder:text-black/30 focus:border-black/25 focus:bg-white focus:ring-2 focus:ring-black/[0.07] transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed outline-none resize-none overflow-hidden leading-[1.5]"
+            className="w-full glass-matte px-4 py-3 text-[15px] text-black placeholder:text-black/30 focus:bg-white/90 focus:ring-2 focus:ring-black/[0.07] transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed outline-none resize-none overflow-hidden leading-[1.5]"
             style={{ minHeight: '48px' }}
           />
           {input.length > MAX_CHARS * 0.8 && (
@@ -85,8 +88,10 @@ export default function InputBox({ onSend, disabled }) {
           disabled={!canSend}
           className="flex-shrink-0 w-12 h-12 rounded-2xl flex items-center justify-center transition-all duration-200 active:scale-90"
           style={{
-            background: canSend ? '#000' : 'rgba(0,0,0,0.07)',
-            boxShadow: canSend ? '0 2px 10px rgba(0,0,0,0.18)' : 'none',
+            background: canSend ? '#000' : 'rgba(0,0,0,0.06)',
+            boxShadow: canSend
+              ? 'inset 0 1px 0 rgba(255, 255, 255, 0.16), 0 2px 12px rgba(0, 0, 0, 0.2)'
+              : 'none',
             cursor: canSend ? 'pointer' : 'not-allowed',
           }}
           aria-label="Send message"

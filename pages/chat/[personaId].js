@@ -703,7 +703,7 @@ function ChatPage() {
         {/* Chat Area */}
         <div className="flex flex-col flex-1 min-h-0 md:ml-64">
           {/* Header */}
-          <header className="flex items-center justify-between px-5 h-[72px] border-b border-gray-100 flex-shrink-0 bg-white/90 backdrop-blur-md z-10">
+          <header className="flex items-center justify-between px-5 h-[72px] flex-shrink-0 glass-nav z-10">
             <div className="flex items-center flex-1">
               <button
                 onClick={handleBack}
@@ -757,7 +757,7 @@ function ChatPage() {
                   router.replace(`/chat/${personaId}`, undefined, { shallow: true })
                 }
               }}
-              className="flex items-center gap-2 px-4 py-2 bg-black text-white rounded-xl hover:bg-gray-900 transition-all duration-200 hover:shadow-soft group text-sm font-medium"
+              className="flex items-center gap-2 px-4 py-2 bg-black text-white rounded-xl shadow-glass-dark hover:bg-gray-900 transition-all duration-200 group text-sm font-medium"
               title="Start a new chat"
             >
               <svg
@@ -837,7 +837,7 @@ function ChatPage() {
                         setCurrentInput(question)
                         document.querySelector('input[type="text"]')?.focus()
                       }}
-                      className="w-full p-4 text-left border border-gray-100 rounded-2xl hover:bg-gray-50 hover:border-gray-200 hover:shadow-soft transition-all duration-200 text-black text-sm"
+                      className="w-full p-4 text-left glass-matte hover:bg-white/85 transition-all duration-200 text-black text-sm"
                     >
                       {question}
                     </button>
@@ -894,8 +894,8 @@ function ChatPage() {
                       // Normal display
                       <div
                         className={`max-w-md lg:max-w-lg px-4 py-3 rounded-2xl text-sm leading-relaxed ${msg.role === 'user'
-                          ? 'bg-black text-white rounded-br-sm'
-                          : 'bg-gray-50 border border-gray-100 text-black rounded-bl-sm'
+                          ? 'bg-black text-white rounded-br-sm shadow-glass-dark'
+                          : 'glass-matte rounded-bl-sm text-black'
                           }`}
                       >
                         <p
@@ -1004,7 +1004,7 @@ function ChatPage() {
                     e.target.src = '/default-persona.png'
                   }}
                 />
-                <div className="px-4 py-3 rounded-2xl rounded-bl-sm bg-gray-50 border border-gray-100">
+                <div className="px-4 py-3 rounded-2xl rounded-bl-sm glass-matte">
                   <div className="flex items-center gap-2">
                     <span className="text-xs text-gray-400">{persona.name} is thinking</span>
                     <div className="flex items-center space-x-1">
@@ -1019,14 +1019,14 @@ function ChatPage() {
           </main>
 
           {/* Input Box */}
-          <footer className="px-5 py-4 flex-shrink-0 bg-white/90 backdrop-blur-md border-t border-gray-100">
+          <footer className="px-5 py-4 flex-shrink-0 bg-white/75 backdrop-blur-2xl" style={{ boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.7), 0 -4px 24px rgba(0, 0, 0, 0.04)' }}>
             <form onSubmit={handleSendMessage} className="flex items-center gap-2">
               <input
                 type="text"
                 value={currentInput}
                 onChange={(e) => setCurrentInput(e.target.value)}
                 placeholder={`Message ${persona.name}...`}
-                className="flex-1 px-5 py-3 border border-gray-200 rounded-2xl focus:outline-none focus:border-black focus:ring-2 focus:ring-black/10 text-black text-sm placeholder:text-gray-400 bg-gray-50 focus:bg-white transition-all duration-200 disabled:opacity-50"
+                className="flex-1 px-5 py-3 glass-matte focus:outline-none focus:ring-2 focus:ring-black/10 text-black text-sm placeholder:text-gray-400 focus:bg-white/90 transition-all duration-200 disabled:opacity-50"
                 disabled={isLoading}
               />
 
@@ -1060,7 +1060,7 @@ function ChatPage() {
               {/* Send Button */}
               <button
                 type="submit"
-                className="bg-black text-white p-2.5 rounded-xl hover:bg-gray-900 transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
+                className="bg-black text-white p-2.5 rounded-xl shadow-glass-dark hover:bg-gray-900 transition-all duration-200 disabled:opacity-40 disabled:shadow-none disabled:cursor-not-allowed"
                 disabled={isLoading || !currentInput.trim()}
               >
                 <svg

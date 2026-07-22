@@ -19,7 +19,7 @@ function buildFaqs(persona) {
     },
     {
       question: `How do I chat with ${name}?`,
-      answer: `Click the "Start chatting" button on this page, sign in, and start a conversation. ${name} will reply in real time. Conversations are private to you.`,
+      answer: `Click "Start chatting" on this page, create a free account, and start talking. ${name} replies in real time, remembers your previous conversations, and everything you say stays private to you.`,
     },
     {
       question: `Is chatting with ${name} free?`,

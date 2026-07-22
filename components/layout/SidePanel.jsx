@@ -36,7 +36,10 @@ export default function SidePanel({ onBack, backButtonText, showPastChats = true
 
 
   return (
-    <aside className={`w-64 bg-white border-r border-black/[0.06] flex flex-col hidden md:flex fixed left-0 transition-colors ${hasNavbar ? 'h-[calc(100vh-5rem)] top-20' : 'h-screen top-0'}`}>
+    <aside
+      className={`w-64 bg-white/80 backdrop-blur-xl flex flex-col hidden md:flex fixed left-0 transition-colors ${hasNavbar ? 'h-[calc(100vh-5rem)] top-20' : 'h-screen top-0'}`}
+      style={{ boxShadow: 'inset -1px 0 0 rgba(0, 0, 0, 0.04), inset 1px 0 0 rgba(255, 255, 255, 0.7)' }}
+    >
       <div className="flex flex-col flex-1 overflow-hidden">
 
         {/* Brand header (shown when there is no top navbar) */}

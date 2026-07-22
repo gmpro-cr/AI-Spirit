@@ -276,7 +276,7 @@ function Personas() {
                   placeholder={searchPlaceholder}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-11 pr-4 py-3.5 text-[15px] text-black bg-black/[0.04] border border-black/[0.07] rounded-2xl focus:outline-none focus:border-black/25 focus:bg-white focus:ring-2 focus:ring-black/[0.07] transition-all duration-200"
+                  className="w-full pl-11 pr-4 py-3.5 text-[15px] text-black glass-matte focus:outline-none focus:bg-white/90 focus:ring-2 focus:ring-black/[0.07] transition-all duration-200"
                 />
               </div>
             </div>
@@ -290,8 +290,8 @@ function Personas() {
                     onClick={() => setSelectedCategory(category)}
                     className={`px-4 py-2 rounded-full text-[13px] font-medium transition-all duration-200 whitespace-nowrap flex-shrink-0 active:scale-95 ${
                       selectedCategory === category
-                        ? 'bg-black text-white'
-                        : 'bg-black/[0.05] text-black/60 hover:bg-black/[0.08] hover:text-black'
+                        ? 'bg-black text-white shadow-glass-dark'
+                        : 'glass-pill text-black/60 hover:bg-white/80 hover:text-black'
                     }`}
                   >
                     {category}
@@ -302,7 +302,7 @@ function Personas() {
 
             {/* First-time User Welcome Tip */}
             {showWelcomeTip && (
-              <div className="mb-8 bg-black text-white rounded-2xl p-6 relative animate-fadeIn shadow-soft-lg">
+              <div className="mb-8 bg-black text-white rounded-2xl p-6 relative animate-fadeIn shadow-glass-dark">
                 <button
                   onClick={dismissWelcomeTip}
                   className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-xl text-gray-400 hover:text-white hover:bg-white/10 transition-all duration-300"

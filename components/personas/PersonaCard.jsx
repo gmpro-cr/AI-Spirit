@@ -58,7 +58,7 @@ export default function PersonaCard({ persona, onEdit, messageCount, onClick }) 
 
         {/* Chat count badge — top right */}
         {formattedCount && (
-          <div className="absolute top-2 right-2 flex items-center gap-1 bg-black/50 backdrop-blur-sm rounded-full px-2 py-0.5">
+          <div className="absolute top-2 right-2 flex items-center gap-1 glass-pill-dark px-2 py-0.5">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-white/70" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
             </svg>
@@ -84,7 +84,7 @@ export default function PersonaCard({ persona, onEdit, messageCount, onClick }) 
             e.stopPropagation()
             onEdit(persona)
           }}
-          className="absolute top-2 left-2 bg-white/90 backdrop-blur-sm p-1.5 rounded-xl border border-black/[0.06] shadow-soft hover:bg-white transition-all duration-200 active:scale-90"
+          className="absolute top-2 left-2 glass-pill !rounded-xl p-1.5 hover:bg-white/80 transition-all duration-200 active:scale-90"
           title="Edit persona"
           aria-label="Edit persona"
         >
