@@ -24,21 +24,37 @@ Disallow: /api/
 Disallow: /auth/
 Crawl-delay: 2
 
-# Block AI scrapers that don't respect robots.txt properly
+# AI assistants are a discovery channel — allow them to read and cite persona pages.
+# (Previously blocked GPTBot/ChatGPT-User/CCBot/anthropic-ai/Claude-Web.)
 User-agent: GPTBot
-Disallow: /
+Allow: /
+Disallow: /api/
+Disallow: /auth/
+Disallow: /admin/
 
 User-agent: ChatGPT-User
-Disallow: /
+Allow: /
+Disallow: /api/
+Disallow: /auth/
+Disallow: /admin/
 
-User-agent: CCBot
-Disallow: /
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /api/
+Disallow: /auth/
+Disallow: /admin/
 
-User-agent: anthropic-ai
-Disallow: /
+User-agent: ClaudeBot
+Allow: /
+Disallow: /api/
+Disallow: /auth/
+Disallow: /admin/
 
-User-agent: Claude-Web
-Disallow: /
+User-agent: PerplexityBot
+Allow: /
+Disallow: /api/
+Disallow: /auth/
+Disallow: /admin/
 
 # Sitemap location
 Sitemap: https://ai-spirit.in/sitemap.xml
