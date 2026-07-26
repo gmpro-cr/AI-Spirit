@@ -300,7 +300,6 @@ export default async function handler(req, res) {
       // ═══════════════════════════════════════
       // CELEBRITIES - FEMALE
       // ═══════════════════════════════════════
-      'Oprah Winfrey': { speaker: 'ishita', pace: 0.95 },
       'Kim Kardashian': { speaker: 'amelia', pace: 0.95 },
       'PV Sindhu': { speaker: 'priya', pace: 1.0 },
 
