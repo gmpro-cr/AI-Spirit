@@ -99,7 +99,7 @@ export default function AccountSettingsModal({ isOpen, onClose }) {
                                 ? 'bg-black text-white'
                                 : 'bg-gray-100 text-gray-700'
                             }`}>
-                            {loading ? '...' : subscriptionStatus === 'premium' ? '⭐ Premium' : 'Free'}
+                            {loading ? '...' : subscriptionStatus === 'premium' ? 'Premium' : 'Free'}
                         </span>
                     </div>
 

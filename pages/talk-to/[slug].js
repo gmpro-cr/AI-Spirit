@@ -111,7 +111,7 @@ export default function TalkToPersonaPage({ persona, related }) {
       <main className="pt-24 pb-16 bg-white">
         {/* Hero */}
         <section className="max-w-5xl mx-auto px-6">
-          <nav className="text-xs text-black/40 mb-6 flex items-center gap-2">
+          <nav className="text-xs text-black/60 mb-6 flex items-center gap-2">
             <Link href="/" className="hover:text-black transition-colors">Home</Link>
             <span>/</span>
             <Link href="/personas" className="hover:text-black transition-colors">Personas</Link>
@@ -129,7 +129,7 @@ export default function TalkToPersonaPage({ persona, related }) {
                   className="w-full h-full object-cover"
                 />
               ) : (
-                <div className="w-full h-full flex items-center justify-center text-5xl font-display text-black/30">
+                <div className="w-full h-full flex items-center justify-center text-5xl font-display text-black/60">
                   {persona.name[0]}
                 </div>
               )}
@@ -163,7 +163,7 @@ export default function TalkToPersonaPage({ persona, related }) {
                 </Link>
                 <Link
                   href="/personas"
-                  className="inline-flex items-center text-sm text-black/50 hover:text-black px-4 py-3 transition-colors"
+                  className="inline-flex items-center text-sm text-black/60 hover:text-black px-4 py-3 transition-colors"
                 >
                   Browse all personas →
                 </Link>
@@ -187,7 +187,7 @@ export default function TalkToPersonaPage({ persona, related }) {
             <h2 className="font-display text-2xl md:text-3xl text-black mb-2">
               What to ask {persona.name}
             </h2>
-            <p className="text-sm text-black/40 mb-8">A few openers to get the conversation going.</p>
+            <p className="text-sm text-black/60 mb-8">A few openers to get the conversation going.</p>
             <ul className="space-y-3">
               {persona.conversation_starters.map((q, i) => (
                 <li key={i}>
@@ -211,7 +211,7 @@ export default function TalkToPersonaPage({ persona, related }) {
             <h2 className="font-display text-2xl md:text-3xl text-black mb-2">
               You might also like
             </h2>
-            <p className="text-sm text-black/40 mb-8">Other personas worth talking to.</p>
+            <p className="text-sm text-black/60 mb-8">Other personas worth talking to.</p>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
               {related.map((p) => (
                 <Link
@@ -220,7 +220,7 @@ export default function TalkToPersonaPage({ persona, related }) {
                   className="group block p-1.5 rounded-2xl ring-1 ring-black/[0.06] bg-black/[0.02] hover:-translate-y-0.5 transition-transform"
                 >
                   <div className="bg-white rounded-[calc(1rem-0.375rem)] border border-black/[0.05] px-4 py-4">
-                    <div className="text-[10px] uppercase tracking-widest text-black/30 mb-1">
+                    <div className="text-[10px] uppercase tracking-widest text-black/60 mb-1">
                       {p.category || 'Persona'}
                     </div>
                     <div className="font-display text-base text-black mb-1 group-hover:opacity-70 transition-opacity">
@@ -249,7 +249,7 @@ export default function TalkToPersonaPage({ persona, related }) {
               >
                 <summary className="cursor-pointer list-none bg-white rounded-[calc(1rem-0.375rem)] border border-black/[0.05] px-5 py-4 flex items-center justify-between text-black font-medium text-base">
                   <span>{faq.question}</span>
-                  <span className="text-black/30 group-open:rotate-45 transition-transform">+</span>
+                  <span className="text-black/60 group-open:rotate-45 transition-transform">+</span>
                 </summary>
                 <div className="px-5 pt-3 pb-4 text-black/60 leading-relaxed text-sm">
                   {faq.answer}
@@ -264,7 +264,7 @@ export default function TalkToPersonaPage({ persona, related }) {
           <h2 className="font-display text-3xl md:text-4xl text-black mb-4">
             Ready when you are.
           </h2>
-          <p className="text-black/50 mb-8">
+          <p className="text-black/60 mb-8">
             Start your first conversation with {persona.name} — it&apos;s free.
           </p>
           <Link

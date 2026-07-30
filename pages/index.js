@@ -34,7 +34,7 @@ function Eyebrow({ children, dark = false }) {
         <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full border mb-6 ${
             dark ? 'border-white/20 bg-white/5' : 'border-black/10 bg-black/5'
         }`}>
-            <span className={`text-[10px] font-medium tracking-[0.2em] uppercase ${dark ? 'text-white/40' : 'text-black/40'}`}>
+            <span className={`text-[10px] font-medium tracking-[0.2em] uppercase ${dark ? 'text-white/70' : 'text-black/60'}`}>
                 {children}
             </span>
         </div>
@@ -114,7 +114,7 @@ function PersonaCategoryCard({ cat, index, visible, href }) {
                     <div className="flex items-center justify-between mb-4">
                         <span className={`w-2 h-2 rounded-full ${cat.dot}`} />
                         <svg
-                            className="w-3.5 h-3.5 text-black/20 group-hover:text-black/60 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300"
+                            className="w-3.5 h-3.5 text-black/40 group-hover:text-black/60 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300"
                             fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}
                         >
                             <path strokeLinecap="round" strokeLinejoin="round" d="M7 17L17 7M17 7H7M17 7v10" />
@@ -123,7 +123,7 @@ function PersonaCategoryCard({ cat, index, visible, href }) {
                     {/* Text */}
                     <div>
                         <h3 className="font-display text-lg text-black leading-tight mb-1">{cat.title}</h3>
-                        <p className="text-xs text-black/35 leading-relaxed">{cat.description}</p>
+                        <p className="text-xs text-black/60 leading-relaxed">{cat.description}</p>
                     </div>
                 </div>
             </div>
@@ -208,9 +208,9 @@ export default function HomePage() {
                         </div>
                         <h1 className={`${rev(heroVisible, 1)} font-display text-[2.75rem] sm:text-6xl md:text-7xl lg:text-[5.5rem] tracking-tight leading-[1.05] mb-6 sm:mb-7 text-black`}>
                             Talk to anyone.
-                            <span className="block text-black/25 italic">Anytime.</span>
+                            <span className="block text-black/45 italic">Anytime.</span>
                         </h1>
-                        <p className={`${rev(heroVisible, 2)} text-base sm:text-lg md:text-xl text-black/55 max-w-lg mx-auto lg:mx-0 mb-8 sm:mb-10 leading-relaxed`}>
+                        <p className={`${rev(heroVisible, 2)} text-base sm:text-lg md:text-xl text-black/65 max-w-lg mx-auto lg:mx-0 mb-8 sm:mb-10 leading-relaxed`}>
                             Spiritual guides, world leaders, celebrities, fictional characters — all ready for meaningful, private conversations.
                         </p>
                         <div className={rev(heroVisible, 3)}>
@@ -226,7 +226,7 @@ export default function HomePage() {
                             ].map((stat, i) => (
                                 <div key={i} className="text-center lg:text-left">
                                     <div className="font-display text-xl sm:text-2xl text-black">{stat.value}</div>
-                                    <div className="text-[11px] text-black/35 tracking-wide mt-0.5">{stat.label}</div>
+                                    <div className="text-[11px] text-black/60 tracking-wide mt-0.5">{stat.label}</div>
                                 </div>
                             ))}
                         </div>
@@ -249,7 +249,7 @@ export default function HomePage() {
                             <h2 className="font-display text-4xl sm:text-5xl md:text-6xl text-black leading-tight mb-5">
                                 Who do you want to talk to?
                             </h2>
-                            <p className="text-lg text-black/50 max-w-xl mx-auto leading-relaxed">
+                            <p className="text-lg text-black/60 max-w-xl mx-auto leading-relaxed">
                                 Every persona has a distinct voice, knowledge, and personality. Find yours.
                             </p>
                         </div>
@@ -274,7 +274,7 @@ export default function HomePage() {
                             <h2 className="font-display text-4xl sm:text-5xl md:text-6xl text-black leading-tight mb-5">
                                 More than just AI chat.
                             </h2>
-                            <p className="text-lg text-black/50 max-w-xl mx-auto leading-relaxed">
+                            <p className="text-lg text-black/60 max-w-xl mx-auto leading-relaxed">
                                 A sanctuary for conversations that matter.
                             </p>
                         </div>
@@ -293,7 +293,7 @@ export default function HomePage() {
                                             <h3 className="font-display text-3xl md:text-4xl text-white leading-tight mb-4">
                                                 350+ Unique<br />Personas
                                             </h3>
-                                            <p className="text-white/50 leading-relaxed max-w-sm text-[15px]">
+                                            <p className="text-white/70 leading-relaxed max-w-sm text-[15px]">
                                                 From spiritual guides to celebrities, fictional characters to world leaders. Each persona has its own personality, knowledge, and voice.
                                             </p>
                                         </div>
@@ -306,23 +306,23 @@ export default function HomePage() {
                                 <div className={`${rev(featuresVisible, 2)} flex-1`}>
                                     <Bezel className="h-full" innerClass="p-8">
                                         <div className="w-10 h-10 rounded-full border border-black/10 flex items-center justify-center mb-5">
-                                            <svg className="w-4 h-4 text-black/50" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                                            <svg className="w-4 h-4 text-black/60" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                                                 <path strokeLinecap="round" strokeLinejoin="round" d="M8.625 9.75a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 01.778-.332 48.294 48.294 0 005.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
                                             </svg>
                                         </div>
                                         <h3 className="font-display text-2xl text-black mb-2">Judgment-Free Space</h3>
-                                        <p className="text-black/50 text-sm leading-relaxed">Ask anything, explore any topic. Our AI personas provide wisdom without judgment, creating a safe space for growth.</p>
+                                        <p className="text-black/60 text-sm leading-relaxed">Ask anything, explore any topic. Our AI personas provide wisdom without judgment, creating a safe space for growth.</p>
                                     </Bezel>
                                 </div>
                                 <div className={`${rev(featuresVisible, 3)} flex-1`}>
                                     <Bezel className="h-full" innerClass="p-8">
                                         <div className="w-10 h-10 rounded-full border border-black/10 flex items-center justify-center mb-5">
-                                            <svg className="w-4 h-4 text-black/50" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                                            <svg className="w-4 h-4 text-black/60" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                                                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.383a14.406 14.406 0 01-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 10-7.517 0c.85.493 1.509 1.333 1.509 2.316V18" />
                                             </svg>
                                         </div>
                                         <h3 className="font-display text-2xl text-black mb-2">Learn & Grow</h3>
-                                        <p className="text-black/50 text-sm leading-relaxed">Gain insights from the greatest minds in history. Perfect for learning, reflection, or meaningful conversation.</p>
+                                        <p className="text-black/60 text-sm leading-relaxed">Gain insights from the greatest minds in history. Perfect for learning, reflection, or meaningful conversation.</p>
                                     </Bezel>
                                 </div>
                             </div>
@@ -338,7 +338,7 @@ export default function HomePage() {
                             <h2 className="font-display text-4xl sm:text-5xl md:text-6xl text-black leading-tight mb-5">
                                 Your sanctuary is safe.
                             </h2>
-                            <p className="text-lg text-black/50 max-w-xl mx-auto leading-relaxed">
+                            <p className="text-lg text-black/60 max-w-xl mx-auto leading-relaxed">
                                 We built AI Spirit so you can have the conversations you can&apos;t have anywhere else. That requires absolute trust.
                             </p>
                         </div>
@@ -380,7 +380,7 @@ export default function HomePage() {
                                         </div>
                                         <div>
                                             <h3 className="font-display text-xl text-black mb-2">{item.title}</h3>
-                                            <p className="text-black/50 text-sm leading-relaxed">{item.body}</p>
+                                            <p className="text-black/60 text-sm leading-relaxed">{item.body}</p>
                                         </div>
                                     </Bezel>
                                 </div>
@@ -388,7 +388,7 @@ export default function HomePage() {
                         </div>
 
                         <div className={`${rev(privacyVisible, 4)} text-center mt-10`}>
-                            <Link href="/privacy" className="inline-flex items-center gap-2 text-sm text-black/40 hover:text-black transition-colors duration-300 border-b border-black/15 pb-0.5 hover:border-black/40">
+                            <Link href="/privacy" className="inline-flex items-center gap-2 text-sm text-black/60 hover:text-black transition-colors duration-300 border-b border-black/15 pb-0.5 hover:border-black/40">
                                 Read our full Privacy Policy
                                 <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -429,10 +429,10 @@ export default function HomePage() {
                                 <div key={i} className={rev(stepsVisible, i + 1)}>
                                     <div className="p-1.5 rounded-[2rem] ring-1 ring-white/10 bg-white/5 h-full">
                                         <div className="rounded-[calc(2rem-0.375rem)] p-8 h-full min-h-[240px] flex flex-col justify-between border border-white/10 shadow-[inset_0_1px_1px_rgba(255,255,255,0.04)]">
-                                            <span className="font-display text-5xl text-white/10 leading-none select-none">{item.step}</span>
+                                            <span className="font-display text-5xl text-white/35 leading-none select-none">{item.step}</span>
                                             <div>
                                                 <h3 className="font-display text-2xl text-white mb-3">{item.title}</h3>
-                                                <p className="text-white/40 leading-relaxed text-[15px]">{item.description}</p>
+                                                <p className="text-white/70 leading-relaxed text-[15px]">{item.description}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -464,7 +464,7 @@ export default function HomePage() {
                                         {/* Stars */}
                                         <div className="flex items-center gap-1">
                                             {[...Array(5)].map((_, j) => (
-                                                <svg key={j} className="w-3.5 h-3.5 text-black/40" fill="currentColor" viewBox="0 0 20 20">
+                                                <svg key={j} className="w-3.5 h-3.5 text-black/60" fill="currentColor" viewBox="0 0 20 20">
                                                     <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                                                 </svg>
                                             ))}
@@ -475,9 +475,9 @@ export default function HomePage() {
                                         <div className="flex items-center justify-between">
                                             <div>
                                                 <p className="text-sm font-medium text-black">{t.author}</p>
-                                                <p className="text-xs text-black/40">{t.location}</p>
+                                                <p className="text-xs text-black/60">{t.location}</p>
                                             </div>
-                                            <span className="text-[10px] font-medium tracking-wide uppercase px-3 py-1.5 rounded-full bg-black/5 text-black/40">
+                                            <span className="text-[10px] font-medium tracking-wide uppercase px-3 py-1.5 rounded-full bg-black/5 text-black/60">
                                                 {t.tag}
                                             </span>
                                         </div>
@@ -496,7 +496,7 @@ export default function HomePage() {
                             <h2 className="font-display text-4xl sm:text-5xl text-black mb-4 leading-tight">
                                 We&apos;d love to hear from you.
                             </h2>
-                            <p className="text-black/50">Questions, feedback, or just want to say hello.</p>
+                            <p className="text-black/60">Questions, feedback, or just want to say hello.</p>
                         </div>
 
                         {status.message && (
@@ -517,22 +517,22 @@ export default function HomePage() {
                                         { id: 'email', label: 'Email', type: 'email', placeholder: 'you@example.com' },
                                     ].map(({ id, label, type, placeholder }) => (
                                         <div key={id}>
-                                            <label htmlFor={id} className="block text-[10px] font-medium tracking-[0.15em] uppercase text-black/40 mb-2">{label}</label>
+                                            <label htmlFor={id} className="block text-[10px] font-medium tracking-[0.15em] uppercase text-black/60 mb-2">{label}</label>
                                             <input
                                                 type={type} id={id} name={id}
                                                 value={formData[id]} onChange={handleChange}
                                                 required placeholder={placeholder}
-                                                className="w-full bg-black/5 border border-black/10 rounded-xl py-3 px-4 text-black text-sm focus:outline-none focus:border-black/30 focus:ring-1 focus:ring-black/10 transition-all duration-300 placeholder:text-black/25"
+                                                className="w-full bg-black/5 border border-black/10 rounded-xl py-3 px-4 text-black text-sm focus:outline-none focus:border-black/30 focus:ring-1 focus:ring-black/10 transition-all duration-300 placeholder:text-black/45"
                                             />
                                         </div>
                                     ))}
                                     <div>
-                                        <label htmlFor="message" className="block text-[10px] font-medium tracking-[0.15em] uppercase text-black/40 mb-2">Message</label>
+                                        <label htmlFor="message" className="block text-[10px] font-medium tracking-[0.15em] uppercase text-black/60 mb-2">Message</label>
                                         <textarea
                                             id="message" name="message"
                                             value={formData.message} onChange={handleChange}
                                             required rows={4} placeholder="Your message..."
-                                            className="w-full bg-black/5 border border-black/10 rounded-xl py-3 px-4 text-black text-sm focus:outline-none focus:border-black/30 focus:ring-1 focus:ring-black/10 transition-all duration-300 resize-none placeholder:text-black/25"
+                                            className="w-full bg-black/5 border border-black/10 rounded-xl py-3 px-4 text-black text-sm focus:outline-none focus:border-black/30 focus:ring-1 focus:ring-black/10 transition-all duration-300 resize-none placeholder:text-black/45"
                                         />
                                     </div>
                                     <button
@@ -577,7 +577,7 @@ export default function HomePage() {
                                     label: '24/7 Available'
                                 },
                             ].map((item, i) => (
-                                <div key={i} className="flex items-center gap-2 text-white/30">
+                                <div key={i} className="flex items-center gap-2 text-white/65">
                                     {item.icon}
                                     <span className="text-xs font-medium tracking-wide">{item.label}</span>
                                 </div>
@@ -592,7 +592,7 @@ export default function HomePage() {
                                 <img src="/logo.png" alt="AI Spirit" className="w-full h-full object-cover" />
                             </div>
                         </div>
-                        <p className="text-xs text-white/20">
+                        <p className="text-xs text-white/60">
                             &copy; {new Date().getFullYear()} AI Spirit. All rights reserved.
                         </p>
                         <div className="flex items-center gap-5">
@@ -601,7 +601,7 @@ export default function HomePage() {
                                 { label: 'Terms', href: '/terms' },
                                 { label: 'Contact', href: '/contact' },
                             ].map(link => (
-                                <Link key={link.href} href={link.href} className="text-xs text-white/30 hover:text-white/70 transition-colors duration-300">
+                                <Link key={link.href} href={link.href} className="text-xs text-white/65 hover:text-white/70 transition-colors duration-300">
                                     {link.label}
                                 </Link>
                             ))}

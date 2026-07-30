@@ -57,7 +57,7 @@ const mdxComponents = {
     ),
     thead: (props) => <thead className="border-b border-black/[0.06]" {...props} />,
     th: (props) => (
-        <th className="px-5 py-3 text-left text-[10px] font-semibold uppercase tracking-widest text-black/40" {...props} />
+        <th className="px-5 py-3 text-left text-[10px] font-semibold uppercase tracking-widest text-black/60" {...props} />
     ),
     td: (props) => <td className="px-5 py-3 text-black/70 text-sm border-b border-black/[0.04]" {...props} />,
     strong: (props) => <strong className="font-semibold text-black" {...props} />,
@@ -117,7 +117,7 @@ export default function BlogPost({ post, mdxSource, related }) {
             <main className="bg-white pt-24 pb-16">
                 <article className="max-w-3xl mx-auto px-6">
                     {/* Breadcrumb */}
-                    <nav className="text-xs text-black/40 mb-6 flex items-center gap-2">
+                    <nav className="text-xs text-black/60 mb-6 flex items-center gap-2">
                         <Link href="/" className="hover:text-black transition-colors">Home</Link>
                         <span>/</span>
                         <Link href="/blog" className="hover:text-black transition-colors">Blog</Link>
@@ -125,17 +125,17 @@ export default function BlogPost({ post, mdxSource, related }) {
 
                     {/* Header */}
                     <header className="mb-12 pb-8 border-b border-black/[0.06]">
-                        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mb-5 text-[10px] uppercase tracking-widest text-black/40">
+                        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mb-5 text-[10px] uppercase tracking-widest text-black/60">
                             <span>{post.category}</span>
                             {formattedDate && (
                                 <>
-                                    <span className="text-black/20">·</span>
+                                    <span className="text-black/45">·</span>
                                     <span>{formattedDate}</span>
                                 </>
                             )}
                             {post.readTime && (
                                 <>
-                                    <span className="text-black/20">·</span>
+                                    <span className="text-black/45">·</span>
                                     <span>{post.readTime}</span>
                                 </>
                             )}
@@ -144,7 +144,7 @@ export default function BlogPost({ post, mdxSource, related }) {
                             {post.title}
                         </h1>
                         {post.excerpt && (
-                            <p className="text-lg text-black/55 leading-relaxed">{post.excerpt}</p>
+                            <p className="text-lg text-black/65 leading-relaxed">{post.excerpt}</p>
                         )}
                     </header>
 
@@ -188,7 +188,7 @@ export default function BlogPost({ post, mdxSource, related }) {
                                         className="group block p-1.5 rounded-2xl ring-1 ring-black/[0.06] bg-black/[0.02] hover:-translate-y-0.5 transition-transform"
                                     >
                                         <div className="bg-white rounded-[calc(1rem-0.375rem)] border border-black/[0.05] px-5 py-4">
-                                            <div className="text-[10px] uppercase tracking-widest text-black/40 mb-1">{r.category}</div>
+                                            <div className="text-[10px] uppercase tracking-widest text-black/60 mb-1">{r.category}</div>
                                             <div className="font-display text-base text-black group-hover:opacity-70 transition-opacity">
                                                 {r.title}
                                             </div>

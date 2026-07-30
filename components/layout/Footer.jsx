@@ -5,9 +5,9 @@ export default function Footer() {
 
   const footerLinks = {
     product: [
-      { name: 'Browse Personas', href: '/' },
+      { name: 'Browse Personas', href: '/personas' },
       { name: 'Premium', href: '/premium' },
-      { name: 'Create Persona', href: '/?create=true' },
+      { name: 'Create Persona', href: '/personas?create=true' },
     ],
     company: [
       { name: 'About', href: '/about' },
@@ -61,7 +61,7 @@ export default function Footer() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-2">
             {trustItems.map((item) => (
-              <div key={item.label} className="flex items-center gap-2 text-white/40">
+              <div key={item.label} className="flex items-center gap-2 text-white/70">
                 {item.icon}
                 <span className="text-xs font-medium tracking-wide">{item.label}</span>
               </div>
@@ -80,20 +80,20 @@ export default function Footer() {
                 <img src="/logo.png" alt="AI Spirit" className="w-full h-full object-cover" />
               </div>
             </Link>
-            <p className="mt-3 text-sm text-white/40 max-w-xs leading-relaxed">
+            <p className="mt-3 text-sm text-white/70 max-w-xs leading-relaxed">
               Meaningful AI conversations with personas that truly listen — always private, always present.
             </p>
           </div>
 
           {/* Product */}
           <div>
-            <h3 className="text-[10px] font-semibold uppercase tracking-widest text-white/30 mb-4">
+            <h3 className="text-[10px] font-semibold uppercase tracking-widest text-white/65 mb-4">
               Product
             </h3>
             <ul className="space-y-3">
               {footerLinks.product.map((link) => (
                 <li key={link.name}>
-                  <Link href={link.href} className="text-sm text-white/50 hover:text-white transition-colors">
+                  <Link href={link.href} className="text-sm text-white/70 hover:text-white transition-colors">
                     {link.name}
                   </Link>
                 </li>
@@ -103,13 +103,13 @@ export default function Footer() {
 
           {/* Company */}
           <div>
-            <h3 className="text-[10px] font-semibold uppercase tracking-widest text-white/30 mb-4">
+            <h3 className="text-[10px] font-semibold uppercase tracking-widest text-white/65 mb-4">
               Company
             </h3>
             <ul className="space-y-3">
               {footerLinks.company.map((link) => (
                 <li key={link.name}>
-                  <Link href={link.href} className="text-sm text-white/50 hover:text-white transition-colors">
+                  <Link href={link.href} className="text-sm text-white/70 hover:text-white transition-colors">
                     {link.name}
                   </Link>
                 </li>
@@ -119,13 +119,13 @@ export default function Footer() {
 
           {/* Legal */}
           <div>
-            <h3 className="text-[10px] font-semibold uppercase tracking-widest text-white/30 mb-4">
+            <h3 className="text-[10px] font-semibold uppercase tracking-widest text-white/65 mb-4">
               Legal
             </h3>
             <ul className="space-y-3">
               {footerLinks.legal.map((link) => (
                 <li key={link.name}>
-                  <Link href={link.href} className="text-sm text-white/50 hover:text-white transition-colors">
+                  <Link href={link.href} className="text-sm text-white/70 hover:text-white transition-colors">
                     {link.name}
                   </Link>
                 </li>
@@ -136,7 +136,7 @@ export default function Footer() {
 
         {/* Bottom bar */}
         <div className="mt-12 pt-8 border-t border-white/5">
-          <p className="text-sm text-white/30 text-center">
+          <p className="text-sm text-white/65 text-center">
             © {currentYear} AI Spirit. All rights reserved.
           </p>
         </div>

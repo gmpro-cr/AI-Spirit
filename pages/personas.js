@@ -11,7 +11,6 @@ import EditPersonaModal from '@/components/personas/EditPersonaModal'
 import PremiumPromptModal from '@/components/modals/PremiumPromptModal'
 import { INITIAL_PERSONAS } from '@/data/personas'
 import { supabase } from '@/lib/supabase'
-import { withAuth } from '@/middleware/withAuth'
 import { useAuth } from '@/context/AuthContext'
 import { WebsiteSchema, SoftwareApplicationSchema, ServiceSchema } from '@/components/seo/StructuredData'
 
@@ -108,55 +107,44 @@ function Personas() {
   }, [router.query, router])
 
   const loadAllPersonas = async () => {
-    console.log('=== LOADING ALL PERSONAS ===')
-    setLoadingPersonas(true)
+    // The built-in catalogue is a static import and needs no network, so paint it
+    // immediately. Previously the grid was only revealed after BOTH the Supabase
+    // query and the stats fetch resolved, so a slow or unreachable backend left
+    // 370+ locally-available personas stuck behind skeletons indefinitely.
+    const staticPersonas = INITIAL_PERSONAS.filter(p => !p.hidden)
 
-    // Filter out hidden personas
-    let allPersonas = INITIAL_PERSONAS.filter(p => !p.hidden)
-    console.log('Initial personas (non-hidden):', allPersonas.length)
-
-    // Load custom personas from localStorage (for guests)
-    const localCustom = JSON.parse(localStorage.getItem('esperit_custom_personas') || '[]')
-    console.log('Custom personas from localStorage:', localCustom.length)
-    allPersonas = [...allPersonas, ...localCustom]
-
-    // Load custom personas from database
+    let localCustom = []
     try {
-      console.log('Fetching custom personas from database...')
+      localCustom = JSON.parse(localStorage.getItem('esperit_custom_personas') || '[]')
+    } catch {
+      localCustom = []
+    }
+
+    const basePersonas = [...staticPersonas, ...localCustom]
+    setPersonas(basePersonas)
+    setFilteredPersonas(basePersonas)
+    setLoadingPersonas(false)
+
+    // Custom personas from the database — merged in when they arrive.
+    // Order is preserved: built-ins first, then local, then remote.
+    try {
       const { data, error } = await supabase
         .from('personas')
         .select('*')
         .eq('is_custom', true)
         .order('created_at', { ascending: false })
 
-      if (error) {
-        console.error('❌ Error loading custom personas from database:', error)
-        console.error('Error details:', {
-          message: error.message,
-          details: error.details,
-          hint: error.hint,
-          code: error.code
-        })
-      } else {
-        console.log('✅ Custom personas from database:', data?.length || 0)
-        if (data && data.length > 0) {
-          console.log('Database personas:', data.map(p => ({ name: p.name, slug: p.slug })))
-        }
-        if (data) {
-          allPersonas = [...allPersonas, ...data]
-        }
+      if (!error && data?.length) {
+        const seen = new Set(basePersonas.map(p => p.slug))
+        const remote = data.filter(p => !seen.has(p.slug))
+        if (remote.length) setPersonas([...basePersonas, ...remote])
       }
-    } catch (error) {
-      console.error('❌ Exception loading custom personas:', error)
-      console.error('Error stack:', error.stack)
+    } catch {
+      // Non-fatal: the built-in catalogue is already on screen.
     }
 
-    console.log('Total personas loaded:', allPersonas.length)
-    // Preserve the order from INITIAL_PERSONAS (priority personas first)
-    // Custom personas from localStorage and database are appended after
-    setPersonas(allPersonas)
-
-    // Fetch persona stats (message counts) BEFORE showing content
+    // Stats drive the popularity sort and the message-count badge. Both are
+    // enhancements, so they must never block the grid.
     try {
       const statsRes = await fetch('/api/persona-views')
       if (statsRes.ok) {
@@ -169,16 +157,10 @@ function Personas() {
           }
         })
         setPersonaStats(statsMap)
-        console.log('[Persona Stats] Loaded stats for', Object.keys(statsMap).length, 'personas')
       }
-    } catch (error) {
-      console.error('[Persona Stats] Error fetching:', error)
+    } catch {
+      // Non-fatal: cards simply render without a message-count badge.
     }
-
-    // Now that both personas AND stats are loaded, show content
-    setFilteredPersonas(allPersonas)
-    setLoadingPersonas(false)
-    console.log('=== PERSONAS LOADING COMPLETE ===')
   }
 
   const handlePersonaCreated = () => {
@@ -266,7 +248,7 @@ function Personas() {
             <div className="mb-4">
               <div className="relative">
                 <svg
-                  className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-black/25 pointer-events-none"
+                  className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-black/45 pointer-events-none"
                   fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}
                 >
                   <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -388,4 +370,4 @@ function Personas() {
   )
 }
 
-export default withAuth(Personas)
+export default Personas

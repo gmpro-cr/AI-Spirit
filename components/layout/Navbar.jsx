@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useAuth } from '@/context/AuthContext'
 import { useRouter } from 'next/router'
@@ -7,6 +7,21 @@ export default function Navbar({ onMenuToggle, showMenuButton = false }) {
   const { user, loading, signOut } = useAuth()
   const router = useRouter()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+
+  // Escape closes the menu, and the page behind it must not scroll while it is open.
+  useEffect(() => {
+    if (!mobileMenuOpen) return
+    const onKeyDown = (e) => {
+      if (e.key === 'Escape') setMobileMenuOpen(false)
+    }
+    document.addEventListener('keydown', onKeyDown)
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.removeEventListener('keydown', onKeyDown)
+      document.body.style.overflow = previousOverflow
+    }
+  }, [mobileMenuOpen])
 
   const handleSignOut = async () => {
     await signOut()
@@ -17,6 +32,8 @@ export default function Navbar({ onMenuToggle, showMenuButton = false }) {
   const navLinks = [
     { href: '/', label: 'Home' },
     { href: '/personas', label: 'Personas' },
+    // /chats had no link anywhere in the app; surface it once signed in.
+    ...(user ? [{ href: '/chats', label: 'Chats' }] : []),
     { href: '/premium', label: 'Premium' },
     { href: '/contact', label: 'Contact' },
   ]
@@ -42,10 +59,11 @@ export default function Navbar({ onMenuToggle, showMenuButton = false }) {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`text-sm font-medium tracking-widest uppercase hover:text-black transition-colors relative ${
+                aria-current={router.pathname === link.href ? 'page' : undefined}
+                className={`text-sm font-medium tracking-widest uppercase transition-colors relative rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 ${
                   router.pathname === link.href
                     ? 'text-black after:absolute after:bottom-[-4px] after:left-0 after:w-full after:h-0.5 after:bg-black'
-                    : 'text-black/50 hover:text-black/80'
+                    : 'text-black/65 hover:text-black'
                 }`}
               >
                 {link.label}
@@ -56,7 +74,7 @@ export default function Navbar({ onMenuToggle, showMenuButton = false }) {
               user ? (
                 <button
                   onClick={handleSignOut}
-                  className="glass-pill text-sm font-medium tracking-widest uppercase px-4 py-2 text-black/70 hover:text-black hover:bg-white/70 transition-all duration-300"
+                  className="glass-pill text-sm font-medium tracking-widest uppercase px-4 py-2 text-black/75 hover:text-black hover:bg-white/70 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2"
                 >
                   Sign Out
                 </button>
@@ -73,9 +91,10 @@ export default function Navbar({ onMenuToggle, showMenuButton = false }) {
 
           <button
             onClick={toggleMobileMenu}
-            className="md:hidden w-10 h-10 flex flex-col items-center justify-center gap-1.5 rounded-lg hover:bg-black/5 transition-colors"
-            aria-label="Toggle menu"
+            className="md:hidden w-11 h-11 flex flex-col items-center justify-center gap-1.5 rounded-lg hover:bg-black/5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black"
+            aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
             aria-expanded={mobileMenuOpen}
+            aria-controls="mobile-menu"
           >
             <span className={`w-5 h-0.5 bg-black transition-all duration-300 ${mobileMenuOpen ? 'rotate-45 translate-y-2' : ''}`} />
             <span className={`w-5 h-0.5 bg-black transition-all duration-300 ${mobileMenuOpen ? 'opacity-0' : ''}`} />
@@ -91,21 +110,25 @@ export default function Navbar({ onMenuToggle, showMenuButton = false }) {
         onClick={closeMobileMenu}
       />
 
+      {/* top-16 matches the h-16 navbar under sm; top-20 was leaving a 15px strip of
+          page content showing between the navbar and this panel. */}
       <div
-        className={`fixed top-20 left-0 right-0 bg-white/75 backdrop-blur-2xl rounded-b-[2rem] z-40 md:hidden transition-all duration-300 shadow-glass-lg ${
+        id="mobile-menu"
+        className={`fixed top-16 sm:top-20 left-0 right-0 bg-white/95 backdrop-blur-2xl rounded-b-[2rem] z-40 md:hidden transition-all duration-300 shadow-glass-lg ${
           mobileMenuOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4 pointer-events-none'
         }`}
       >
-        <div className="px-6 py-6 space-y-2">
+        <div className="px-6 py-6 space-y-1">
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
               onClick={closeMobileMenu}
+              aria-current={router.pathname === link.href ? 'page' : undefined}
               className={`block py-3 px-4 text-lg font-medium rounded-2xl transition-all duration-300 ${
                 router.pathname === link.href
-                  ? 'bg-black text-white'
-                  : 'text-black/70 hover:bg-white/60 hover:backdrop-blur-xl hover:text-black'
+                  ? 'bg-black/[0.06] text-black'
+                  : 'text-black/75 hover:bg-black/[0.04] hover:text-black'
               }`}
             >
               {link.label}
@@ -116,7 +139,7 @@ export default function Navbar({ onMenuToggle, showMenuButton = false }) {
             user ? (
               <button
                 onClick={handleSignOut}
-                className="w-full text-left py-3 px-4 text-lg font-medium rounded-lg text-black/70 hover:bg-black/5 hover:text-black transition-colors"
+                className="w-full text-left py-3 px-4 text-lg font-medium rounded-2xl text-black/75 hover:bg-black/[0.04] hover:text-black transition-colors"
               >
                 Sign Out
               </button>
@@ -124,7 +147,7 @@ export default function Navbar({ onMenuToggle, showMenuButton = false }) {
               <Link
                 href={`/auth/signin?returnTo=${encodeURIComponent(router.asPath || '/')}`}
                 onClick={closeMobileMenu}
-                className="block py-3 px-4 text-lg font-medium rounded-lg bg-black text-white hover:bg-black/90 transition-colors"
+                className="mt-3 block py-3 px-4 text-lg font-medium rounded-2xl bg-black text-white text-center hover:bg-black/90 transition-colors"
               >
                 Sign In
               </Link>

@@ -32,6 +32,25 @@ function ChatPage() {
   const [shareLinkCopied, setShareLinkCopied] = useState(false)
   const [speakingIndex, setSpeakingIndex] = useState(null)
   const chatContainerRef = useRef(null)
+  const composerRef = useRef(null)
+
+  // Auto-grow the composer with its content, up to the max-h-40 cap set in the class.
+  useEffect(() => {
+    const el = composerRef.current
+    if (!el) return
+    el.style.height = 'auto'
+    el.style.height = `${el.scrollHeight}px`
+  }, [currentInput])
+
+  // Enter sends, Shift+Enter inserts a newline (standard chat behaviour).
+  const handleComposerKeyDown = (e) => {
+    if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing) {
+      e.preventDefault()
+      if (!isLoading && currentInput.trim()) handleSendMessage(e)
+    }
+  }
+
+  const focusComposer = () => composerRef.current?.focus()
 
   // Index of the last user message — used to decide which user bubble shows the Edit button.
   // Memoize so the lookup runs once per messages change instead of O(n) per rendered bubble.
@@ -758,7 +777,7 @@ function ChatPage() {
                 }
               }}
               className="flex items-center gap-2 px-4 py-2 bg-black text-white rounded-xl shadow-glass-dark hover:bg-gray-900 transition-all duration-200 group text-sm font-medium"
-              title="Start a new chat"
+              aria-label="Start a new chat"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -805,7 +824,7 @@ function ChatPage() {
                   ? 'bg-green-600 text-white'
                   : 'bg-gray-100 text-black hover:bg-gray-200'
                   }`}
-                title="Share conversation"
+                aria-label="Copy share link for this conversation"
               >
                 {shareLinkCopied ? (
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -835,7 +854,7 @@ function ChatPage() {
                       key={index}
                       onClick={() => {
                         setCurrentInput(question)
-                        document.querySelector('input[type="text"]')?.focus()
+                        focusComposer()
                       }}
                       className="w-full p-4 text-left glass-matte hover:bg-white/85 transition-all duration-200 text-black text-sm"
                     >
@@ -912,7 +931,7 @@ function ChatPage() {
                         <button
                           onClick={() => handleCopyMessage(msg.content, index)}
                           className="p-1.5 hover:bg-gray-100 rounded-lg transition-colors group"
-                          title="Copy message"
+                          aria-label={copiedMessageIndex === index ? 'Copied' : 'Copy message'}
                         >
                           {copiedMessageIndex === index ? (
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-green-600" viewBox="0 0 20 20" fill="currentColor">
@@ -931,7 +950,7 @@ function ChatPage() {
                             onClick={() => handleStartEdit(index, msg.content)}
                             disabled={isLoading}
                             className="p-1.5 hover:bg-gray-100 rounded-lg transition-colors group disabled:opacity-50 disabled:cursor-not-allowed"
-                            title="Edit message"
+                            aria-label="Edit message"
                           >
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-500 group-hover:text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -946,7 +965,7 @@ function ChatPage() {
                             <button
                               onClick={() => handleSpeak(msg.content, index)}
                               className={`p-1.5 rounded-lg transition-colors group ${speakingIndex === index ? 'bg-blue-100' : 'hover:bg-gray-100'}`}
-                              title={speakingIndex === index ? 'Stop speaking' : 'Listen'}
+                              aria-label={speakingIndex === index ? 'Stop reading aloud' : 'Read aloud'}
                             >
                               {speakingIndex === index ? (
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-blue-600" viewBox="0 0 24 24" fill="currentColor">
@@ -961,7 +980,8 @@ function ChatPage() {
                             <button
                               onClick={() => handleFeedback(index, 'like')}
                               className="p-1.5 hover:bg-gray-100 rounded-lg transition-colors group"
-                              title="Like response"
+                              aria-label="Good response"
+                              aria-pressed={messageFeedback[index] === 'like'}
                             >
                               <svg xmlns="http://www.w3.org/2000/svg" className={`h-4 w-4 ${messageFeedback[index] === 'like' ? 'text-green-600 fill-current' : 'text-gray-500 group-hover:text-gray-700'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" />
@@ -970,7 +990,8 @@ function ChatPage() {
                             <button
                               onClick={() => handleFeedback(index, 'dislike')}
                               className="p-1.5 hover:bg-gray-100 rounded-lg transition-colors group"
-                              title="Dislike response"
+                              aria-label="Bad response"
+                              aria-pressed={messageFeedback[index] === 'dislike'}
                             >
                               <svg xmlns="http://www.w3.org/2000/svg" className={`h-4 w-4 ${messageFeedback[index] === 'dislike' ? 'text-red-600 fill-current' : 'text-gray-500 group-hover:text-gray-700'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 14H5.236a2 2 0 01-1.789-2.894l3.5-7A2 2 0 018.736 3h4.018a2 2 0 01.485.06l3.76.94m-7 10v5a2 2 0 002 2h.096c.5 0 .905-.405.905-.904 0-.715.211-1.413.608-2.008L17 13V4m-7 10h2m5-10h2a2 2 0 012 2v6a2 2 0 01-2 2h-2.5" />
@@ -1020,13 +1041,19 @@ function ChatPage() {
 
           {/* Input Box */}
           <footer className="px-5 py-4 flex-shrink-0 bg-white/75 backdrop-blur-2xl" style={{ boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.7), 0 -4px 24px rgba(0, 0, 0, 0.04)' }}>
-            <form onSubmit={handleSendMessage} className="flex items-center gap-2">
-              <input
-                type="text"
+            <form onSubmit={handleSendMessage} className="flex items-end gap-2">
+              <label htmlFor="chat-composer" className="sr-only">
+                {`Message ${persona.name}`}
+              </label>
+              <textarea
+                id="chat-composer"
+                ref={composerRef}
+                rows={1}
                 value={currentInput}
                 onChange={(e) => setCurrentInput(e.target.value)}
+                onKeyDown={handleComposerKeyDown}
                 placeholder={`Message ${persona.name}...`}
-                className="flex-1 px-5 py-3 glass-matte focus:outline-none focus:ring-2 focus:ring-black/10 text-black text-sm placeholder:text-gray-400 focus:bg-white/90 transition-all duration-200 disabled:opacity-50"
+                className="flex-1 px-5 py-3 glass-matte focus:outline-none focus:ring-2 focus:ring-black/10 text-black text-sm placeholder:text-gray-500 focus:bg-white/90 transition-colors duration-200 disabled:opacity-50 resize-none overflow-y-auto max-h-40 leading-relaxed"
                 disabled={isLoading}
               />
 
@@ -1034,12 +1061,13 @@ function ChatPage() {
               <button
                 type="button"
                 onClick={toggleSpeechRecognition}
-                className={`p-2.5 rounded-xl transition-all duration-200 ${isListening
-                  ? 'bg-red-500 text-white animate-pulse'
+                className={`p-2.5 rounded-xl transition-all duration-200 flex-shrink-0 ${isListening
+                  ? 'bg-black text-white ring-2 ring-black/20 animate-pulse'
                   : 'bg-gray-100 text-black hover:bg-gray-200'
                   }`}
                 disabled={isLoading}
-                title={isListening ? 'Stop recording' : 'Start voice input'}
+                aria-label={isListening ? 'Stop voice input' : 'Start voice input'}
+                aria-pressed={isListening}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -1048,6 +1076,7 @@ function ChatPage() {
                   fill="none"
                   stroke="currentColor"
                   strokeWidth={2}
+                  aria-hidden="true"
                 >
                   <path
                     strokeLinecap="round"
@@ -1060,14 +1089,16 @@ function ChatPage() {
               {/* Send Button */}
               <button
                 type="submit"
-                className="bg-black text-white p-2.5 rounded-xl shadow-glass-dark hover:bg-gray-900 transition-all duration-200 disabled:opacity-40 disabled:shadow-none disabled:cursor-not-allowed"
+                className="bg-black text-white p-2.5 rounded-xl shadow-glass-dark hover:bg-gray-900 transition-all duration-200 disabled:opacity-40 disabled:shadow-none disabled:cursor-not-allowed flex-shrink-0"
                 disabled={isLoading || !currentInput.trim()}
+                aria-label="Send message"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-6 w-6"
                   viewBox="0 0 20 20"
                   fill="currentColor"
+                  aria-hidden="true"
                 >
                   <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
                 </svg>

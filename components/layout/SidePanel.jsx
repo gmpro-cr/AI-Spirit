@@ -59,7 +59,7 @@ export default function SidePanel({ onBack, backButtonText, showPastChats = true
           <div className="flex items-center h-[72px] px-5 border-b border-black/[0.06] flex-shrink-0">
             <button
               onClick={onBack}
-              className="flex items-center gap-2 text-sm font-medium text-black/40 hover:text-black transition-colors group"
+              className="flex items-center gap-2 text-sm font-medium text-black/60 hover:text-black transition-colors group"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 group-hover:text-black transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 19l-7-7 7-7" />
@@ -95,7 +95,7 @@ export default function SidePanel({ onBack, backButtonText, showPastChats = true
         {showPastChats && (
           <>
             <div className="px-5 pt-4 pb-2 flex-shrink-0">
-              <p className="text-[10px] font-semibold text-black/30 uppercase tracking-widest">Recent Chats</p>
+              <p className="text-[10px] font-semibold text-black/60 uppercase tracking-widest">Recent Chats</p>
             </div>
             <div className="flex-1 overflow-y-auto px-3 scrollbar-hide">
               {loading ? (
@@ -110,7 +110,7 @@ export default function SidePanel({ onBack, backButtonText, showPastChats = true
                     <li key={chat.id}>
                       <button
                         onClick={() => router.push(`/chat/${chat.personaSlug}?conversationId=${chat.id}`)}
-                        className="flex items-center gap-3 w-full text-left px-3 py-3 rounded-xl text-sm text-black/50 hover:bg-black/[0.04] hover:text-black transition-all duration-200 group"
+                        className="flex items-center gap-3 w-full text-left px-3 py-3 rounded-xl text-sm text-black/60 hover:bg-black/[0.04] hover:text-black transition-all duration-200 group"
                       >
                         {chat.personaImage && (
                           <Image
@@ -122,7 +122,7 @@ export default function SidePanel({ onBack, backButtonText, showPastChats = true
                           />
                         )}
                         <div className="flex-1 min-w-0">
-                          <p className="text-[10px] font-medium text-black/30 group-hover:text-black/50 truncate mb-0.5 uppercase tracking-wide">{chat.personaName}</p>
+                          <p className="text-[10px] font-medium text-black/60 group-hover:text-black/60 truncate mb-0.5 uppercase tracking-wide">{chat.personaName}</p>
                           <p className="text-xs truncate text-black/70 group-hover:text-black">{chat.title}</p>
                         </div>
                       </button>
@@ -130,7 +130,7 @@ export default function SidePanel({ onBack, backButtonText, showPastChats = true
                   ))}
                 </ul>
               ) : (
-                <p className="text-xs text-black/30 px-2">No recent chats yet</p>
+                <p className="text-xs text-black/60 px-2">No recent chats yet</p>
               )}
             </div>
           </>
@@ -166,12 +166,12 @@ export default function SidePanel({ onBack, backButtonText, showPastChats = true
                 <p className="text-sm font-medium text-black/80 truncate group-hover:text-black transition-colors leading-tight">
                   {user.user_metadata?.full_name || user.email?.split('@')[0] || 'User'}
                 </p>
-                <p className="text-[10px] text-black/30 mt-0.5">Account settings</p>
+                <p className="text-[10px] text-black/60 mt-0.5">Account settings</p>
               </div>
             </div>
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-3.5 w-3.5 text-black/20 group-hover:text-black/40 ml-2 flex-shrink-0 transition-colors"
+              className="h-3.5 w-3.5 text-black/45 group-hover:text-black/60 ml-2 flex-shrink-0 transition-colors"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"

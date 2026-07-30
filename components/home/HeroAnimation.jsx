@@ -174,7 +174,7 @@ function PhoneMockup({ persona, isActive }) {
                         <PersonaAvatar persona={persona} size="sm" />
                         <div>
                             <div className="font-semibold text-black text-sm">{persona.name}</div>
-                            <div className="text-xs text-black/40">{persona.category}</div>
+                            <div className="text-xs text-black/60">{persona.category}</div>
                         </div>
                     </div>
 
@@ -203,7 +203,7 @@ function PhoneMockup({ persona, isActive }) {
                             <input
                                 type="text"
                                 placeholder="Type a message..."
-                                className="flex-1 bg-transparent text-sm outline-none text-black placeholder:text-gray-400"
+                                className="flex-1 bg-transparent text-sm outline-none text-black placeholder:text-gray-500"
                                 disabled
                             />
                             <button className="w-8 h-8 bg-black rounded-full flex items-center justify-center">

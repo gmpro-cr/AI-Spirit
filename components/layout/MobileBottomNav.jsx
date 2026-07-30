@@ -15,7 +15,8 @@ export default function MobileBottomNav({ onCreatePersona }) {
     if (onCreatePersona) {
       onCreatePersona()
     } else {
-      router.push('/?create=true')
+      // Only /personas handles the ?create=true param — sending it to / silently did nothing.
+      router.push('/personas?create=true')
     }
   }
 
@@ -24,17 +25,18 @@ export default function MobileBottomNav({ onCreatePersona }) {
   const NavItem = ({ href, label, active, children }) => (
     <Link
       href={href}
-      className="flex flex-col items-center gap-[3px] flex-1 py-2 min-h-[52px] justify-center"
+      aria-current={active ? 'page' : undefined}
+      className="flex flex-col items-center gap-[3px] flex-1 py-2 min-h-[52px] justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black rounded-2xl"
     >
       <span
-        className={`flex flex-col items-center gap-[3px] px-3 py-1.5 rounded-2xl transition-all duration-200 ${
+        className={`flex flex-col items-center gap-[3px] px-2.5 py-1.5 rounded-2xl transition-all duration-200 ${
           active ? 'bg-black/[0.06]' : ''
         }`}
       >
         {children}
         <span
-          className={`text-[9.5px] font-medium tracking-wide transition-colors duration-200 ${
-            active ? 'text-black' : 'text-black/30'
+          className={`text-[11px] font-medium tracking-wide transition-colors duration-200 ${
+            active ? 'text-black' : 'text-black/60'
           }`}
         >
           {label}
@@ -61,7 +63,8 @@ export default function MobileBottomNav({ onCreatePersona }) {
             {/* Home */}
             <NavItem href="/" label="Home" active={isActive('/')}>
               <svg
-                className={`h-[22px] w-[22px] transition-all duration-200 ${isActive('/') ? 'text-black' : 'text-black/30'}`}
+                aria-hidden="true"
+                className={`h-[22px] w-[22px] transition-all duration-200 ${isActive('/') ? 'text-black' : 'text-black/60'}`}
                 fill={isActive('/') ? 'currentColor' : 'none'}
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -74,7 +77,8 @@ export default function MobileBottomNav({ onCreatePersona }) {
             {/* Personas */}
             <NavItem href="/personas" label="Personas" active={isActive('/personas')}>
               <svg
-                className={`h-[22px] w-[22px] transition-all duration-200 ${isActive('/personas') ? 'text-black' : 'text-black/30'}`}
+                aria-hidden="true"
+                className={`h-[22px] w-[22px] transition-all duration-200 ${isActive('/personas') ? 'text-black' : 'text-black/60'}`}
                 fill={isActive('/personas') ? 'currentColor' : 'none'}
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -104,24 +108,42 @@ export default function MobileBottomNav({ onCreatePersona }) {
                   viewBox="0 0 24 24"
                   stroke="currentColor"
                   strokeWidth={2.5}
+                  aria-hidden="true"
                 >
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
                 </svg>
               </div>
             </button>
 
-            {/* Premium */}
-            <NavItem href="/premium" label="Premium" active={isActive('/premium')}>
-              <svg
-                className={`h-[22px] w-[22px] transition-all duration-200 ${isActive('/premium') ? 'text-black' : 'text-black/30'}`}
-                fill={isActive('/premium') ? 'currentColor' : 'none'}
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={isActive('/premium') ? 0 : 1.5}
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
-              </svg>
-            </NavItem>
+            {/* Chats for signed-in users (nothing else in the app links to /chats),
+                Premium for guests — Premium stays reachable via the navbar menu. */}
+            {user ? (
+              <NavItem href="/chats" label="Chats" active={isActive('/chats')}>
+                <svg
+                  aria-hidden="true"
+                  className={`h-[22px] w-[22px] transition-all duration-200 ${isActive('/chats') ? 'text-black' : 'text-black/60'}`}
+                  fill={isActive('/chats') ? 'currentColor' : 'none'}
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={isActive('/chats') ? 0 : 1.5}
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                </svg>
+              </NavItem>
+            ) : (
+              <NavItem href="/premium" label="Premium" active={isActive('/premium')}>
+                <svg
+                  aria-hidden="true"
+                  className={`h-[22px] w-[22px] transition-all duration-200 ${isActive('/premium') ? 'text-black' : 'text-black/60'}`}
+                  fill={isActive('/premium') ? 'currentColor' : 'none'}
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={isActive('/premium') ? 0 : 1.5}
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                </svg>
+              </NavItem>
+            )}
 
             {/* Account */}
             {user ? (
@@ -147,13 +169,14 @@ export default function MobileBottomNav({ onCreatePersona }) {
                       </span>
                     </div>
                   )}
-                  <span className="text-[9.5px] font-medium text-black/30 tracking-wide">Account</span>
+                  <span className="text-[11px] font-medium text-black/60 tracking-wide">Account</span>
                 </span>
               </button>
             ) : (
               <NavItem href="/auth/signin" label="Sign in" active={isActive('/auth/signin')}>
                 <svg
-                  className={`h-[22px] w-[22px] transition-all duration-200 ${isActive('/auth/signin') ? 'text-black' : 'text-black/30'}`}
+                  aria-hidden="true"
+                  className={`h-[22px] w-[22px] transition-all duration-200 ${isActive('/auth/signin') ? 'text-black' : 'text-black/60'}`}
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"

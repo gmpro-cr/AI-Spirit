@@ -110,14 +110,14 @@ export default function Premium() {
 
     // Check icon component
     const CheckIcon = () => (
-        <svg className="w-5 h-5 text-green-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <svg className="w-5 h-5 text-black flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
         </svg>
     )
 
     // X icon component  
     const XIcon = () => (
-        <svg className="w-5 h-5 text-gray-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <svg className="w-5 h-5 text-gray-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
         </svg>
     )
@@ -145,7 +145,6 @@ export default function Premium() {
                 {/* Hero Section */}
                 <div className="pt-28 pb-12 px-6 text-center">
                     <div className="inline-flex items-center gap-2 bg-gray-100 text-gray-700 text-sm font-semibold px-5 py-2.5 rounded-full mb-8 shadow-sm border border-gray-200">
-                        <span>✨</span>
                         <span>Unlock the full experience</span>
                     </div>
                     <h1 className="font-display text-5xl md:text-7xl font-bold mb-6 tracking-tight bg-gradient-to-r from-black via-gray-800 to-black bg-clip-text text-transparent">
@@ -179,7 +178,7 @@ export default function Premium() {
                                     <CheckIcon />
                                     <span>Access to all personas</span>
                                 </li>
-                                <li className="flex items-center gap-3 text-gray-400">
+                                <li className="flex items-center gap-3 text-gray-600">
                                     <XIcon />
                                     <span>Create custom personas</span>
                                 </li>
@@ -195,8 +194,8 @@ export default function Premium() {
 
                         {/* Premium Plan */}
                         <div className="relative p-8 rounded-3xl border-2 border-black bg-gradient-to-b from-white to-gray-50 text-black shadow-2xl hover:shadow-3xl flex flex-col transition-all duration-300 hover:scale-[1.02] group">
-                            <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs font-bold px-5 py-2 rounded-full shadow-lg">
-                                ⭐ BEST VALUE
+                            <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-black text-white text-[11px] font-semibold tracking-[0.12em] uppercase px-5 py-2 rounded-full shadow-lg">
+                                Best value
                             </div>
 
                             <div className="mb-6">
@@ -241,7 +240,7 @@ export default function Premium() {
                                         Processing...
                                     </span>
                                 ) : (
-                                    'Get Premium ✨'
+                                    'Get Premium'
                                 )}
                             </button>
                         </div>
@@ -273,13 +272,13 @@ export default function Premium() {
                                 </tr>
                                 <tr>
                                     <td className="p-4">Create custom personas</td>
-                                    <td className="p-4 text-center text-gray-400">✗</td>
-                                    <td className="p-4 text-center bg-gray-100">✓</td>
+                                    <td className="p-4 text-center text-gray-600" aria-label="Not included">—</td>
+                                    <td className="p-4 text-center bg-gray-100" aria-label="Included">Yes</td>
                                 </tr>
                                 <tr>
                                     <td className="p-4">Priority AI responses</td>
-                                    <td className="p-4 text-center text-gray-400">✗</td>
-                                    <td className="p-4 text-center bg-gray-100">✓</td>
+                                    <td className="p-4 text-center text-gray-600" aria-label="Not included">—</td>
+                                    <td className="p-4 text-center bg-gray-100" aria-label="Included">Yes</td>
                                 </tr>
                             </tbody>
                         </table>

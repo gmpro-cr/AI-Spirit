@@ -41,7 +41,7 @@ export default function SharedConversation({ persona, messages, conversationId, 
         <Navbar />
         <main className="min-h-[80vh] bg-white pt-24 pb-16 flex flex-col items-center justify-center text-center px-6">
           <h1 className="font-display text-3xl md:text-4xl text-black mb-4">Conversation not available</h1>
-          <p className="text-black/50 max-w-md mb-8">
+          <p className="text-black/60 max-w-md mb-8">
             This conversation isn&apos;t public, or the link is no longer valid.
           </p>
           <Link
@@ -85,14 +85,14 @@ export default function SharedConversation({ persona, messages, conversationId, 
         <div className="max-w-2xl mx-auto px-6">
           {/* Header */}
           <header className="mb-10 pb-8 border-b border-black/[0.06]">
-            <p className="text-[10px] uppercase tracking-[0.2em] text-black/40 mb-3">Shared conversation</p>
+            <p className="text-[10px] uppercase tracking-[0.2em] text-black/60 mb-3">Shared conversation</p>
             <div className="flex items-start gap-4 mb-4">
               <div className="w-16 h-16 rounded-2xl overflow-hidden ring-1 ring-black/[0.06] bg-black/[0.02] flex-shrink-0">
                 {persona.image_url ? (
                   /* eslint-disable-next-line @next/next/no-img-element */
                   <img src={persona.image_url} alt={persona.name} className="w-full h-full object-cover" />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center text-2xl font-display text-black/30">
+                  <div className="w-full h-full flex items-center justify-center text-2xl font-display text-black/60">
                     {persona.name[0]}
                   </div>
                 )}
@@ -102,7 +102,7 @@ export default function SharedConversation({ persona, messages, conversationId, 
                   Conversation with {persona.name}
                 </h1>
                 {persona.description && (
-                  <p className="text-sm text-black/50 mt-1 line-clamp-2">{persona.description}</p>
+                  <p className="text-sm text-black/60 mt-1 line-clamp-2">{persona.description}</p>
                 )}
               </div>
             </div>
@@ -121,7 +121,7 @@ export default function SharedConversation({ persona, messages, conversationId, 
                       /* eslint-disable-next-line @next/next/no-img-element */
                       <img src={persona.image_url} alt={persona.name} className="w-full h-full object-cover" />
                     ) : (
-                      <div className="w-full h-full flex items-center justify-center text-xs font-display text-black/40">
+                      <div className="w-full h-full flex items-center justify-center text-xs font-display text-black/60">
                         {persona.name[0]}
                       </div>
                     )}
@@ -158,7 +158,7 @@ export default function SharedConversation({ persona, messages, conversationId, 
               <h2 className="font-display text-2xl md:text-3xl text-black mb-3">
                 Start your own conversation with {persona.name}
               </h2>
-              <p className="text-black/50 mb-7 max-w-md mx-auto">
+              <p className="text-black/60 mb-7 max-w-md mx-auto">
                 Pick up where this conversation left off, or ask {persona.name} something new. It&apos;s free to try.
               </p>
               <Link
@@ -172,7 +172,7 @@ export default function SharedConversation({ persona, messages, conversationId, 
                   </svg>
                 </span>
               </Link>
-              <p className="text-xs text-black/30 mt-5">
+              <p className="text-xs text-black/60 mt-5">
                 <Link href="/personas" className="hover:text-black/60 transition-colors underline underline-offset-2">
                   Or browse all personas
                 </Link>
