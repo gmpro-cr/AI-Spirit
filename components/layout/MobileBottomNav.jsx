@@ -48,8 +48,8 @@ export default function MobileBottomNav({ onCreatePersona }) {
   return (
     <>
       <nav
-        className="md:hidden fixed bottom-0 left-0 right-0 z-[99999]"
-        style={{ touchAction: 'manipulation' }}
+        className="md:hidden fixed bottom-0 left-0 right-0"
+        style={{ zIndex: 'var(--z-bottom-nav)', touchAction: 'manipulation' }}
       >
         <div
           className="bg-white/98 dark:bg-[#0B0B0C]/98 backdrop-blur-2xl border-t border-black/[0.07] dark:border-white/[0.07]"

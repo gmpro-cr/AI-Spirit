@@ -31,6 +31,28 @@ p {
 }
 
 @layer base {
+  /* One width token for the side panel, so the panel, the page offset and
+     anything anchored to the panel's edge can never drift apart. */
+  :root {
+    --sidebar-w: 16rem;
+
+    /* Semantic stacking order. Everything that layers reads from this scale
+       rather than inventing a number — the account panel used to sit at 9999
+       and still render *under* the mobile nav at 99999. */
+    --z-sticky: 20;
+    --z-sidebar: 30;
+    --z-bottom-nav: 40;
+    --z-overlay: 50;
+    --z-popover: 60;
+    --z-toast: 70;
+  }
+
+  @media (min-width: 768px) {
+    html[data-sidebar='collapsed'] {
+      --sidebar-w: 3.5rem;
+    }
+  }
+
   html {
     @apply bg-white text-spirit-primary antialiased;
     -webkit-font-smoothing: antialiased;
@@ -194,7 +216,7 @@ p {
      would paint expanded and snap to the rail a frame later, and the content
      would never reflow into the space the rail gives back. */
   .app-sidebar {
-    width: 16rem;
+    width: var(--sidebar-w);
   }
 
   .app-sidebar-rail-only {
@@ -203,15 +225,7 @@ p {
 
   @media (min-width: 768px) {
     .app-shell-offset {
-      margin-left: 16rem;
-    }
-
-    html[data-sidebar='collapsed'] .app-sidebar {
-      width: 3.5rem;
-    }
-
-    html[data-sidebar='collapsed'] .app-shell-offset {
-      margin-left: 3.5rem;
+      margin-left: var(--sidebar-w);
     }
 
     html[data-sidebar='collapsed'] .app-sidebar-body {

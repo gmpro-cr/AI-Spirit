@@ -101,7 +101,7 @@ export default function SidePanel({ onBack, backButtonText, showPastChats = true
 
   return (
     <aside
-      className={`app-sidebar bg-white/80 dark:bg-[#0B0B0C]/80 backdrop-blur-xl flex flex-col hidden md:flex fixed left-0 z-20 transition-colors ${hasNavbar ? 'h-[calc(100vh-5rem)] top-20' : 'h-screen top-0'}`}
+      className={`app-sidebar bg-white/80 dark:bg-[#0B0B0C]/80 backdrop-blur-xl flex flex-col hidden md:flex fixed left-0 z-[30] transition-colors ${hasNavbar ? 'h-[calc(100vh-5rem)] top-20' : 'h-screen top-0'}`}
       style={{ boxShadow: 'inset -1px 0 0 rgba(0, 0, 0, 0.04), inset 1px 0 0 rgba(255, 255, 255, 0.7)' }}
     >
       {railButton}
