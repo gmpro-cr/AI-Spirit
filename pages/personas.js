@@ -234,7 +234,7 @@ function Personas() {
       {/* Navbar */}
       <Navbar />
 
-      <div className="flex h-screen bg-white pt-16 pb-16 md:pb-0 transition-colors">
+      <div className="flex h-screen bg-white dark:bg-[#0B0B0C] pt-16 pb-16 md:pb-0 transition-colors">
         {/* Side Panel */}
         <SidePanelNew
           showPastChats={true}
@@ -242,13 +242,13 @@ function Personas() {
         />
 
         {/* Main Content */}
-        <main className="flex-1 overflow-y-auto scrollbar-visible md:ml-64 flex flex-col bg-white">
+        <main className="app-shell-offset flex-1 overflow-y-auto scrollbar-visible flex flex-col bg-white dark:bg-[#0B0B0C]">
           <div className="flex-1 px-4 sm:px-6 lg:px-8 py-8 md:py-12 max-w-7xl mx-auto w-full">
             {/* Search Bar — moved above filters for mobile priority */}
             <div className="mb-4">
               <div className="relative">
                 <svg
-                  className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-black/45 pointer-events-none"
+                  className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-black/45 dark:text-white/45 pointer-events-none"
                   fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}
                 >
                   <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -258,7 +258,7 @@ function Personas() {
                   placeholder={searchPlaceholder}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-11 pr-4 py-3.5 text-[15px] text-black glass-matte focus:outline-none focus:bg-white/90 focus:ring-2 focus:ring-black/[0.07] transition-all duration-200"
+                  className="w-full pl-11 pr-4 py-3.5 text-[15px] text-black dark:text-white glass-matte focus:outline-none focus:bg-white/90 dark:focus:bg-[#0B0B0C]/90 focus:ring-2 focus:ring-black/[0.07] dark:focus:ring-white/[0.07] transition-all duration-200"
                 />
               </div>
             </div>
@@ -272,8 +272,8 @@ function Personas() {
                     onClick={() => setSelectedCategory(category)}
                     className={`px-4 py-2 rounded-full text-[13px] font-medium transition-all duration-200 whitespace-nowrap flex-shrink-0 active:scale-95 ${
                       selectedCategory === category
-                        ? 'bg-black text-white shadow-glass-dark'
-                        : 'glass-pill text-black/60 hover:bg-white/80 hover:text-black'
+                        ? 'bg-black text-white dark:bg-white dark:text-black shadow-glass-dark'
+                        : 'glass-pill text-black/60 dark:text-white/60 hover:bg-white/80 dark:hover:bg-[#0B0B0C]/80 hover:text-black'
                     }`}
                   >
                     {category}
@@ -284,10 +284,10 @@ function Personas() {
 
             {/* First-time User Welcome Tip */}
             {showWelcomeTip && (
-              <div className="mb-8 bg-black text-white rounded-2xl p-6 relative animate-fadeIn shadow-glass-dark">
+              <div className="mb-8 bg-black text-white dark:bg-white/[0.08] dark:text-white rounded-2xl p-6 relative animate-fadeIn shadow-glass-dark">
                 <button
                   onClick={dismissWelcomeTip}
-                  className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-xl text-gray-400 hover:text-white hover:bg-white/10 transition-all duration-300"
+                  className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-xl text-gray-400 dark:text-white/40 hover:text-white hover:bg-white/10 dark:hover:bg-[#0B0B0C]/10 transition-all duration-300"
                   aria-label="Dismiss"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -295,7 +295,7 @@ function Personas() {
                   </svg>
                 </button>
                 <h3 className="font-display font-bold text-xl mb-2">Hey there.</h3>
-                <p className="text-gray-300 text-sm leading-relaxed">
+                <p className="text-gray-300 dark:text-white/30 text-sm leading-relaxed">
                   You&apos;re about to chat with AI personalities who actually get you. Pick anyone below—they&apos;re here 24/7, judgment-free.
                 </p>
               </div>
@@ -309,7 +309,7 @@ function Personas() {
               <>
                 {/* Personas Grid */}
                 <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 md:gap-6">
-                  {filteredPersonas.map((persona) => (
+                  {filteredPersonas.map((persona, index) => (
                     <PersonaCardNew
                       key={persona.slug}
                       persona={persona}
@@ -317,6 +317,9 @@ function Personas() {
                       onEdit={persona.is_custom ? handleEditPersona : undefined}
                       onLikeChange={handleLikeChange}
                       messageCount={personaStats[persona.slug]?.message_count}
+                      // The first row is the LCP candidate — fetch it eagerly
+                      // instead of letting it lazy-load into a grey block.
+                      priority={index < 6}
                     />
                   ))}
                 </div>
@@ -324,13 +327,13 @@ function Personas() {
                 {/* No Results - Clean Empty State */}
                 {filteredPersonas.length === 0 && (
                   <div className="text-center py-24">
-                    <div className="w-20 h-20 mx-auto mb-6 bg-gray-100 rounded-2xl flex items-center justify-center">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="w-10 h-10 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <div className="w-20 h-20 mx-auto mb-6 bg-gray-100 dark:bg-white/[0.08] rounded-2xl flex items-center justify-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="w-10 h-10 text-gray-400 dark:text-white/40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                       </svg>
                     </div>
-                    <p className="font-display text-black text-xl font-semibold">Hmm, couldn&apos;t find that one</p>
-                    <p className="text-gray-500 text-sm mt-2">Did you spell it right? Or try a different category</p>
+                    <p className="font-display text-black dark:text-white text-xl font-semibold">Hmm, couldn&apos;t find that one</p>
+                    <p className="text-gray-500 dark:text-white/50 text-sm mt-2">Did you spell it right? Or try a different category</p>
                   </div>
                 )}
               </>

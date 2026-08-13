@@ -1,7 +1,7 @@
 export default function PersonaCardSkeleton() {
   return (
-    <div className="rounded-2xl overflow-hidden animate-pulse bg-gray-100" style={{ paddingTop: '115%', position: 'relative' }}>
-      <div className="absolute inset-0 bg-gradient-to-br from-gray-100 to-gray-200" />
+    <div className="rounded-2xl overflow-hidden animate-pulse bg-gray-100 dark:bg-white/[0.05]" style={{ paddingTop: '115%', position: 'relative' }}>
+      <div className="absolute inset-0 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-white/[0.04] dark:to-white/[0.09]" />
       {/* Shimmer overlay */}
       <div
         className="absolute inset-0"

@@ -18,13 +18,20 @@ export default function Document() {
             __html: `
               (function() {
                 try {
-                  var theme = localStorage.getItem('theme');
+                  var stored = localStorage.getItem('theme');
+                  var theme = (stored === 'light' || stored === 'dark') ? stored : null;
                   if (!theme) {
                     theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
                   }
                   if (theme === 'dark') {
                     document.documentElement.classList.add('dark');
                   }
+                  document.documentElement.style.colorScheme = theme;
+                  // Sidebar width and the matching content offset are CSS-driven
+                  // off this attribute, so the shell never paints at the wrong
+                  // width and then snap-resizes.
+                  document.documentElement.dataset.sidebar =
+                    localStorage.getItem('aispirit_sidebar_collapsed') === '1' ? 'collapsed' : 'expanded';
                 } catch (e) {}
               })();
             `,

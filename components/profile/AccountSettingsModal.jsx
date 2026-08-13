@@ -1,10 +1,12 @@
 import { useState, useEffect, useCallback } from 'react'
 import { createPortal } from 'react-dom'
 import { useAuth } from '@/context/AuthContext'
+import { useTheme } from '@/context/ThemeContext'
 import Image from 'next/image'
 
 export default function AccountSettingsModal({ isOpen, onClose }) {
     const { user, userProfile, signOut } = useAuth()
+    const { theme, setTheme } = useTheme()
     const [subscriptionStatus, setSubscriptionStatus] = useState('free')
     const [messagesUsedToday, setMessagesUsedToday] = useState(0)
     const [loading, setLoading] = useState(true)
@@ -54,9 +56,9 @@ export default function AccountSettingsModal({ isOpen, onClose }) {
             />
 
             {/* Modal */}
-            <div className="fixed bottom-20 right-2 md:left-72 md:right-auto w-80 bg-white rounded-xl shadow-2xl z-[9999] overflow-hidden border border-gray-200">
+            <div className="fixed bottom-20 right-2 md:left-72 md:right-auto w-80 bg-white dark:bg-[#141416] rounded-xl shadow-2xl z-[9999] overflow-hidden border border-gray-200 dark:border-white/[0.12]">
                 {/* Header */}
-                <div className="p-4 border-b border-gray-200 bg-gray-50">
+                <div className="p-4 border-b border-gray-200 dark:border-white/[0.10] bg-gray-50 dark:bg-white/[0.03]">
                     <div className="flex items-center gap-3">
                         {user?.user_metadata?.avatar_url ? (
                             <Image
@@ -74,16 +76,16 @@ export default function AccountSettingsModal({ isOpen, onClose }) {
                             </div>
                         )}
                         <div className="flex-1 min-w-0">
-                            <p className="font-semibold text-black truncate">
+                            <p className="font-semibold text-black dark:text-white truncate">
                                 {user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'User'}
                             </p>
-                            <p className="text-xs text-gray-500 truncate">{user?.email}</p>
+                            <p className="text-xs text-gray-500 dark:text-white/50 truncate">{user?.email}</p>
                         </div>
                         <button
                             onClick={onClose}
-                            className="p-1 hover:bg-gray-200 rounded-full transition-colors"
+                            className="p-1 hover:bg-gray-200 dark:hover:bg-white/[0.14] rounded-full transition-colors"
                         >
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-500 dark:text-white/50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                             </svg>
                         </button>
@@ -94,10 +96,10 @@ export default function AccountSettingsModal({ isOpen, onClose }) {
                 <div className="p-4 space-y-4">
                     {/* Subscription Status */}
                     <div className="flex items-center justify-between">
-                        <span className="text-sm text-gray-600">Subscription</span>
+                        <span className="text-sm text-gray-600 dark:text-white/60">Subscription</span>
                         <span className={`text-sm font-medium px-2 py-1 rounded-full ${subscriptionStatus === 'premium'
-                                ? 'bg-black text-white'
-                                : 'bg-gray-100 text-gray-700'
+                                ? 'bg-black text-white dark:bg-white dark:text-black'
+                                : 'bg-gray-100 text-gray-700 dark:bg-white/[0.08] dark:text-white/80'
                             }`}>
                             {loading ? '...' : subscriptionStatus === 'premium' ? 'Premium' : 'Free'}
                         </span>
@@ -106,8 +108,8 @@ export default function AccountSettingsModal({ isOpen, onClose }) {
                     {/* Messages Used */}
                     {subscriptionStatus !== 'premium' && (
                         <div className="flex items-center justify-between">
-                            <span className="text-sm text-gray-600">Messages Today</span>
-                            <span className="text-sm font-medium text-gray-900">
+                            <span className="text-sm text-gray-600 dark:text-white/60">Messages Today</span>
+                            <span className="text-sm font-medium text-gray-900 dark:text-white">
                                 {loading ? '...' : `${messagesUsedToday}/100`}
                             </span>
                         </div>
@@ -120,19 +122,50 @@ export default function AccountSettingsModal({ isOpen, onClose }) {
                                 onClose()
                                 window.location.href = '/premium'
                             }}
-                            className="w-full py-2 bg-black text-white rounded-lg font-medium hover:bg-gray-800 transition-colors"
+                            className="w-full py-2 bg-black text-white dark:bg-white dark:text-black rounded-lg font-medium hover:bg-gray-800 dark:hover:bg-white/90 transition-colors"
                         >
                             Upgrade to Premium
                         </button>
                     )}
 
                     {/* Divider */}
-                    <div className="border-t border-gray-200" />
+                    <div className="border-t border-gray-200 dark:border-white/[0.12]" />
+
+                    {/* Appearance */}
+                    <div className="flex items-center justify-between gap-3">
+                        <span className="text-sm text-gray-600 dark:text-white/60">Appearance</span>
+                        <div
+                            className="flex items-center gap-0.5 rounded-lg bg-gray-100 dark:bg-white/[0.08] p-0.5"
+                            role="group"
+                            aria-label="Colour theme"
+                        >
+                            {[
+                                { value: 'light', label: 'Light' },
+                                { value: 'dark', label: 'Dark' },
+                                { value: 'system', label: 'Auto' },
+                            ].map((option) => (
+                                <button
+                                    key={option.value}
+                                    onClick={() => setTheme(option.value)}
+                                    aria-pressed={theme === option.value}
+                                    className={`rounded-md px-2.5 py-1 text-xs font-medium transition-colors ${theme === option.value
+                                        ? 'bg-white dark:bg-white/[0.16] text-black dark:text-white shadow-xs'
+                                        : 'text-gray-500 dark:text-white/50 hover:text-black dark:hover:text-white'
+                                        }`}
+                                >
+                                    {option.label}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Divider */}
+                    <div className="border-t border-gray-200 dark:border-white/[0.12]" />
 
                     {/* Sign Out */}
                     <button
                         onClick={handleSignOut}
-                        className="w-full py-2 text-red-600 hover:bg-red-50 rounded-lg font-medium transition-colors flex items-center justify-center gap-2"
+                        className="w-full py-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-lg font-medium transition-colors flex items-center justify-center gap-2"
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />

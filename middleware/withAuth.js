@@ -29,10 +29,10 @@ export function withAuth(Component) {
         // Show loading state while checking authentication
         if (loading) {
             return (
-                <div className="min-h-screen bg-white flex items-center justify-center">
+                <div className="min-h-screen bg-white dark:bg-[#0B0B0C] flex items-center justify-center">
                     <div className="text-center">
-                        <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-black mb-4"></div>
-                        <p className="text-gray-600 text-lg">Loading...</p>
+                        <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-black dark:border-white mb-4"></div>
+                        <p className="text-gray-600 dark:text-white/60 text-lg">Loading...</p>
                     </div>
                 </div>
             )

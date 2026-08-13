@@ -9,23 +9,19 @@
 
 import Link from 'next/link'
 import { NextSeo } from 'next-seo'
-import DOMPurify from 'isomorphic-dompurify'
 import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
+import MessageContent from '@/components/chat/MessageContent'
+import { toPlainText } from '@/lib/plainText'
 import { supabaseAdmin } from '@/lib/supabase'
 import { INITIAL_PERSONAS } from '@/data/personas'
 
 const SITE_URL = 'https://ai-spirit.in'
 const MAX_PREVIEW_LENGTH = 240
 
-function formatContent(content) {
-  if (!content) return ''
-  const formatted = content.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-  return DOMPurify.sanitize(formatted)
-}
-
 function firstMeaningfulLine(messages) {
-  const first = messages?.[0]?.content || ''
+  // Social previews get prose, not markdown syntax.
+  const first = toPlainText(messages?.[0]?.content || '')
   return first.replace(/\s+/g, ' ').slice(0, MAX_PREVIEW_LENGTH)
 }
 
@@ -135,9 +131,9 @@ export default function SharedConversation({ persona, messages, conversationId, 
                       : 'bg-black/[0.03] text-black rounded-bl-sm border border-black/[0.05]'
                   }`}
                 >
-                  <p
-                    className="whitespace-pre-wrap"
-                    dangerouslySetInnerHTML={{ __html: formatContent(msg.content) }}
+                  <MessageContent
+                    content={msg.content}
+                    tone={msg.role === 'user' ? 'dark' : 'light'}
                   />
                 </div>
 

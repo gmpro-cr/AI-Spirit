@@ -62,8 +62,8 @@ export default function Navbar({ onMenuToggle, showMenuButton = false }) {
                 aria-current={router.pathname === link.href ? 'page' : undefined}
                 className={`text-sm font-medium tracking-widest uppercase transition-colors relative rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 ${
                   router.pathname === link.href
-                    ? 'text-black after:absolute after:bottom-[-4px] after:left-0 after:w-full after:h-0.5 after:bg-black'
-                    : 'text-black/65 hover:text-black'
+                    ? 'text-black dark:text-white after:absolute after:bottom-[-4px] after:left-0 after:w-full after:h-0.5 after:bg-black dark:after:bg-white'
+                    : 'text-black/65 dark:text-white/65 hover:text-black dark:hover:text-white'
                 }`}
               >
                 {link.label}
@@ -74,14 +74,14 @@ export default function Navbar({ onMenuToggle, showMenuButton = false }) {
               user ? (
                 <button
                   onClick={handleSignOut}
-                  className="glass-pill text-sm font-medium tracking-widest uppercase px-4 py-2 text-black/75 hover:text-black hover:bg-white/70 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2"
+                  className="glass-pill text-sm font-medium tracking-widest uppercase px-4 py-2 text-black/75 dark:text-white/75 hover:text-black dark:hover:text-white hover:bg-white/70 dark:hover:bg-[#0B0B0C]/70 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2"
                 >
                   Sign Out
                 </button>
               ) : (
                 <Link
                   href={`/auth/signin?returnTo=${encodeURIComponent(router.asPath || '/')}`}
-                  className="text-sm font-medium tracking-widest uppercase px-4 py-2 rounded-full bg-black text-white hover:bg-black/90 transition-colors"
+                  className="text-sm font-medium tracking-widest uppercase px-4 py-2 rounded-full bg-black text-white dark:bg-white dark:text-black hover:bg-black/90 dark:hover:bg-white/90 transition-colors"
                 >
                   Sign In
                 </Link>
@@ -91,14 +91,14 @@ export default function Navbar({ onMenuToggle, showMenuButton = false }) {
 
           <button
             onClick={toggleMobileMenu}
-            className="md:hidden w-11 h-11 flex flex-col items-center justify-center gap-1.5 rounded-lg hover:bg-black/5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black"
+            className="md:hidden w-11 h-11 flex flex-col items-center justify-center gap-1.5 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black"
             aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
             aria-expanded={mobileMenuOpen}
             aria-controls="mobile-menu"
           >
-            <span className={`w-5 h-0.5 bg-black transition-all duration-300 ${mobileMenuOpen ? 'rotate-45 translate-y-2' : ''}`} />
-            <span className={`w-5 h-0.5 bg-black transition-all duration-300 ${mobileMenuOpen ? 'opacity-0' : ''}`} />
-            <span className={`w-5 h-0.5 bg-black transition-all duration-300 ${mobileMenuOpen ? '-rotate-45 -translate-y-2' : ''}`} />
+            <span className={`w-5 h-0.5 bg-black dark:bg-white transition-all duration-300 ${mobileMenuOpen ? 'rotate-45 translate-y-2' : ''}`} />
+            <span className={`w-5 h-0.5 bg-black dark:bg-white transition-all duration-300 ${mobileMenuOpen ? 'opacity-0' : ''}`} />
+            <span className={`w-5 h-0.5 bg-black dark:bg-white transition-all duration-300 ${mobileMenuOpen ? '-rotate-45 -translate-y-2' : ''}`} />
           </button>
         </div>
       </nav>
@@ -114,7 +114,7 @@ export default function Navbar({ onMenuToggle, showMenuButton = false }) {
           page content showing between the navbar and this panel. */}
       <div
         id="mobile-menu"
-        className={`fixed top-16 sm:top-20 left-0 right-0 bg-white/95 backdrop-blur-2xl rounded-b-[2rem] z-40 md:hidden transition-all duration-300 shadow-glass-lg ${
+        className={`fixed top-16 sm:top-20 left-0 right-0 bg-white/95 dark:bg-[#0B0B0C]/95 backdrop-blur-2xl rounded-b-[2rem] z-40 md:hidden transition-all duration-300 shadow-glass-lg ${
           mobileMenuOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4 pointer-events-none'
         }`}
       >
@@ -127,8 +127,8 @@ export default function Navbar({ onMenuToggle, showMenuButton = false }) {
               aria-current={router.pathname === link.href ? 'page' : undefined}
               className={`block py-3 px-4 text-lg font-medium rounded-2xl transition-all duration-300 ${
                 router.pathname === link.href
-                  ? 'bg-black/[0.06] text-black'
-                  : 'text-black/75 hover:bg-black/[0.04] hover:text-black'
+                  ? 'bg-black/[0.06] dark:bg-white/[0.06] text-black dark:text-white'
+                  : 'text-black/75 hover:bg-black/[0.04] dark:hover:bg-white/[0.04] hover:text-black'
               }`}
             >
               {link.label}
@@ -139,7 +139,7 @@ export default function Navbar({ onMenuToggle, showMenuButton = false }) {
             user ? (
               <button
                 onClick={handleSignOut}
-                className="w-full text-left py-3 px-4 text-lg font-medium rounded-2xl text-black/75 hover:bg-black/[0.04] hover:text-black transition-colors"
+                className="w-full text-left py-3 px-4 text-lg font-medium rounded-2xl text-black/75 dark:text-white/75 hover:bg-black/[0.04] dark:hover:bg-white/[0.04] hover:text-black transition-colors"
               >
                 Sign Out
               </button>
@@ -147,7 +147,7 @@ export default function Navbar({ onMenuToggle, showMenuButton = false }) {
               <Link
                 href={`/auth/signin?returnTo=${encodeURIComponent(router.asPath || '/')}`}
                 onClick={closeMobileMenu}
-                className="mt-3 block py-3 px-4 text-lg font-medium rounded-2xl bg-black text-white text-center hover:bg-black/90 transition-colors"
+                className="mt-3 block py-3 px-4 text-lg font-medium rounded-2xl bg-black text-white dark:bg-white dark:text-black text-center hover:bg-black/90 dark:hover:bg-white/90 transition-colors"
               >
                 Sign In
               </Link>

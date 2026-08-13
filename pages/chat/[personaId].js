@@ -1,8 +1,11 @@
 import { useRouter } from 'next/router'
-import { useState, useEffect, useRef, useMemo } from 'react'
+import { useState, useEffect, useRef, useMemo, useCallback } from 'react'
 import Head from 'next/head'
-import DOMPurify from 'isomorphic-dompurify'
 import SidePanelNew from '@/components/layout/SidePanel'
+import MessageContent from '@/components/chat/MessageContent'
+import { toPlainText } from '@/lib/plainText'
+import { relativeTime, absoluteTime } from '@/lib/relativeTime'
+import { saveConversation, loadConversation } from '@/lib/conversationStore'
 import { useChat } from '@/context/ChatContext'
 import { INITIAL_PERSONAS } from '@/data/personas'
 import { useAuth } from '@/context/AuthContext'
@@ -31,8 +34,13 @@ function ChatPage() {
   const [recognition, setRecognition] = useState(null)
   const [shareLinkCopied, setShareLinkCopied] = useState(false)
   const [speakingIndex, setSpeakingIndex] = useState(null)
+  const [showScrollToBottom, setShowScrollToBottom] = useState(false)
   const chatContainerRef = useRef(null)
   const composerRef = useRef(null)
+  // Lets the send button double as a stop control mid-stream.
+  const abortControllerRef = useRef(null)
+  // While the user is reading further up, new tokens must not yank them down.
+  const isPinnedToBottomRef = useRef(true)
 
   // Auto-grow the composer with its content, up to the max-h-40 cap set in the class.
   useEffect(() => {
@@ -61,23 +69,19 @@ function ChatPage() {
     return -1
   }, [messages])
 
-  // Format message content with bold text
-  const formatMessage = (content) => {
-    // Replace **text** with <strong>text</strong>
-    const formatted = content.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-    // Sanitize HTML to prevent XSS attacks
-    return DOMPurify.sanitize(formatted)
-  }
+  // Only the newest reply offers Regenerate — retrying an earlier one would
+  // orphan every turn that came after it.
+  const lastAssistantMessageIndex = useMemo(() => {
+    for (let i = messages.length - 1; i >= 0; i--) {
+      if (messages[i].role === 'assistant') return i
+    }
+    return -1
+  }, [messages])
 
-  // Copy message to clipboard
+  // Copy message to clipboard — markdown syntax stripped, not the text inside it
   const handleCopyMessage = async (content, index) => {
     try {
-      // Strip HTML tags before copying
-      const tempDiv = document.createElement('div')
-      tempDiv.innerHTML = formatMessage(content)
-      const plainText = tempDiv.textContent || tempDiv.innerText || ''
-
-      await navigator.clipboard.writeText(plainText)
+      await navigator.clipboard.writeText(toPlainText(content))
       setCopiedMessageIndex(index)
       setTimeout(() => setCopiedMessageIndex(null), 2000)
     } catch (error) {
@@ -85,12 +89,30 @@ function ChatPage() {
     }
   }
 
-  // Handle like/dislike feedback
-  const handleFeedback = (index, type) => {
-    setMessageFeedback(prev => ({
-      ...prev,
-      [index]: prev[index] === type ? null : type // Toggle if same, set if different
-    }))
+  // Like/dislike. Optimistic locally, then persisted — this is the only
+  // response-quality signal the product collects, so it should outlive the tab.
+  const handleFeedback = async (index, type) => {
+    const next = messageFeedback[index] === type ? null : type
+    setMessageFeedback(prev => ({ ...prev, [index]: next }))
+
+    if (!user || !conversationId) return
+
+    try {
+      const headers = await getAuthHeaders()
+      await fetch('/api/feedback', {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({
+          conversationId,
+          messageIndex: index,
+          personaSlug: persona?.slug,
+          rating: next,
+        }),
+      })
+    } catch (error) {
+      // Feedback is a side signal — never interrupt the conversation for it.
+      console.error('Failed to record feedback:', error)
+    }
   }
 
   // Handle speak button for assistant messages
@@ -104,10 +126,8 @@ function ChatPage() {
     stopSpeaking()
     setSpeakingIndex(index)
     try {
-      // Strip HTML tags for clean TTS
-      const tempDiv = document.createElement('div')
-      tempDiv.innerHTML = formatMessage(content)
-      const plainText = tempDiv.textContent || tempDiv.innerText || ''
+      // Read the words, not the markdown
+      const plainText = toPlainText(content)
       await speak(plainText, persona?.name, persona?.language || 'en', () => {
         setSpeakingIndex(null)
       })
@@ -133,11 +153,11 @@ function ChatPage() {
   const handleSaveEdit = async (index) => {
     if (!editedMessageText.trim() || isLoading) return
 
-    const newMessages = [...messages]
-    newMessages[index].content = editedMessageText.trim()
-
-    // Remove all messages after the edited one (including assistant response)
-    const messagesToKeep = newMessages.slice(0, index + 1)
+    // Replace the edited message rather than mutating it in place, and drop
+    // everything after it — the reply it produced no longer applies.
+    const messagesToKeep = messages
+      .slice(0, index + 1)
+      .map((m, i) => (i === index ? { ...m, content: editedMessageText.trim() } : m))
     setMessages(messagesToKeep)
 
     setEditingMessageIndex(null)
@@ -173,19 +193,16 @@ function ChatPage() {
       }
 
       // Add new assistant response
-      const assistantMessage = { role: 'assistant', content: data.response || "I'm having trouble responding right now. Please try again." }
+      const assistantMessage = {
+        role: 'assistant',
+        content: data.response || "I'm having trouble responding right now. Please try again.",
+        createdAt: new Date().toISOString(),
+      }
       addMessage(assistantMessage)
 
-      // Update localStorage
       const allMessages = [...messagesToKeep, assistantMessage]
       if (conversationId) {
-        localStorage.setItem(`esperit_conversation_${conversationId}`, JSON.stringify({
-          id: conversationId,
-          personaSlug: persona.slug,
-          personaName: persona.name,
-          messages: allMessages,
-          updatedAt: new Date().toISOString()
-        }))
+        saveConversation({ id: conversationId, persona, messages: allMessages })
       }
     } catch (error) {
       console.error('Error regenerating response:', error)
@@ -310,17 +327,10 @@ function ChatPage() {
 
     // If conversation ID is in URL, load that conversation
     if (urlConversationId) {
-      const savedConv = localStorage.getItem(`esperit_conversation_${urlConversationId}`)
+      const savedConv = loadConversation(urlConversationId)
       if (savedConv) {
-        try {
-          const { messages: savedMessages } = JSON.parse(savedConv)
-          setMessages(savedMessages || [])
-          setConversationId(urlConversationId)
-        } catch (error) {
-          console.error('Error loading conversation:', error)
-          clearMessages()
-          setConversationId(null)
-        }
+        setMessages(savedConv.messages || [])
+        setConversationId(urlConversationId)
       } else {
         // Conversation ID in URL but not found in localStorage
         clearMessages()
@@ -355,11 +365,37 @@ function ChatPage() {
     }
   }, [])
 
-  // Auto-scroll to bottom
+  const scrollToBottom = useCallback((behavior = 'smooth') => {
+    const el = chatContainerRef.current
+    if (!el) return
+    el.scrollTo({ top: el.scrollHeight, behavior })
+    isPinnedToBottomRef.current = true
+    setShowScrollToBottom(false)
+  }, [])
+
+  // Track whether the reader is at the bottom. Anything above that threshold
+  // means they scrolled up deliberately and streaming must not drag them back.
   useEffect(() => {
-    if (chatContainerRef.current) {
-      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight
+    const el = chatContainerRef.current
+    if (!el) return
+
+    const handleScroll = () => {
+      const distanceFromBottom = el.scrollHeight - el.scrollTop - el.clientHeight
+      const pinned = distanceFromBottom < 80
+      isPinnedToBottomRef.current = pinned
+      setShowScrollToBottom(!pinned && el.scrollHeight > el.clientHeight + 240)
     }
+
+    handleScroll()
+    el.addEventListener('scroll', handleScroll, { passive: true })
+    return () => el.removeEventListener('scroll', handleScroll)
+  }, [persona?.slug])
+
+  // Follow new content only while pinned to the bottom
+  useEffect(() => {
+    if (!isPinnedToBottomRef.current) return
+    const el = chatContainerRef.current
+    if (el) el.scrollTop = el.scrollHeight
   }, [messages])
 
 
@@ -375,12 +411,32 @@ function ChatPage() {
     }
   }
 
-  const handleSendMessage = async (e) => {
-    e.preventDefault()
-    if (!currentInput.trim() || isLoading || !persona) return
+  // Abort an in-flight reply. Whatever streamed in so far stays on screen —
+  // stopping is an edit, not an undo.
+  const handleStopGeneration = () => {
+    abortControllerRef.current?.abort()
+  }
 
-    const messageText = currentInput.trim()
+  /**
+   * Send a turn to the model.
+   *
+   * `options.retryOf` re-runs an existing user message instead of taking the
+   * composer's contents: the trailing assistant reply has already been dropped
+   * by the caller, so the request is identical to the original send.
+   */
+  const handleSendMessage = async (e, options = {}) => {
+    e?.preventDefault?.()
+
+    const { retryOf } = options
+    const isRetry = typeof retryOf === 'string'
+    const messageText = isRetry ? retryOf : currentInput.trim()
+
+    if (!messageText || isLoading || !persona) return
+
     let addedAssistantMessagePlaceholder = false
+    // Hoisted so the abort handler can persist whatever arrived before the stop.
+    let streamedContent = ''
+    let assistantStartedAt = null
 
     // Guest message tracking - check if guest can send message
     if (!user) {
@@ -391,11 +447,22 @@ function ChatPage() {
       }
     }
 
-    // Add user message
-    const userMessage = { role: 'user', content: messageText }
-    addMessage(userMessage)
-    setCurrentInput('')
+    // On a retry the user message is already in the thread. The caller passes
+    // the trimmed history explicitly, because its setMessages has not flushed
+    // by the time we read state here.
+    const userMessage = { role: 'user', content: messageText, createdAt: new Date().toISOString() }
+    const historyBase = options.history || (isRetry ? messages : [...messages, userMessage])
+
+    if (!isRetry) {
+      addMessage(userMessage)
+      setCurrentInput('')
+    }
+    // A new turn always means the reader wants to see the answer.
+    isPinnedToBottomRef.current = true
     setIsLoading(true)
+
+    const controller = new AbortController()
+    abortControllerRef.current = controller
 
     try {
       const headers = await getAuthHeaders()
@@ -403,11 +470,12 @@ function ChatPage() {
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers,
+        signal: controller.signal,
         body: JSON.stringify({
           persona: persona,
           personaId: persona.id || persona.slug,
           message: messageText,
-          conversationHistory: [...messages, userMessage],
+          conversationHistory: historyBase,
           conversationId: conversationId,
           isGuest: !user,
           userId: user?.id || null,
@@ -420,10 +488,10 @@ function ChatPage() {
       if (response.headers.get('Content-Type')?.includes('text/event-stream')) {
         const reader = response.body.getReader()
         const decoder = new TextDecoder()
-        let streamedContent = ''
 
         // Add empty assistant message that we'll update as chunks arrive
-        const assistantMessage = { role: 'assistant', content: '' }
+        assistantStartedAt = new Date().toISOString()
+        const assistantMessage = { role: 'assistant', content: '', createdAt: assistantStartedAt }
         addMessage(assistantMessage)
         addedAssistantMessagePlaceholder = true
 
@@ -467,7 +535,11 @@ function ChatPage() {
               streamedContent += data.chunk
               setMessages(prev => {
                 const updated = [...prev]
-                updated[updated.length - 1] = { role: 'assistant', content: streamedContent }
+                updated[updated.length - 1] = {
+                  role: 'assistant',
+                  content: streamedContent,
+                  createdAt: assistantStartedAt,
+                }
                 return updated
               })
             }
@@ -477,12 +549,18 @@ function ChatPage() {
         }
 
         if (!streamedContent) {
-          // Nothing arrived — replace the empty placeholder with an error
+          // Nothing arrived. If the user hit stop before the first token there
+          // is nothing to report — just drop the empty placeholder.
           setMessages(prev => {
             const updated = [...prev]
+            if (controller.signal.aborted) {
+              updated.pop()
+              return updated
+            }
             updated[updated.length - 1] = {
               role: 'assistant',
               content: streamError || 'Sorry, something went wrong. Please try again.',
+              createdAt: assistantStartedAt,
             }
             return updated
           })
@@ -511,42 +589,20 @@ function ChatPage() {
           router.replace(`/chat/${personaId}?conversationId=${convId}`, undefined, { shallow: true })
         }
 
-        const allMessages = [...messages, userMessage, { role: 'assistant', content: finalResponse }]
+        const allMessages = [
+          ...historyBase,
+          { role: 'assistant', content: finalResponse, createdAt: assistantStartedAt },
+        ]
 
-        // Save conversation metadata to localStorage so past-chats list stays current
-        // (auth users: convId comes from server; guest users: local ID generated above)
+        // Persist + notify the past-chats readers (auth users: convId comes
+        // from the server; guests: local ID generated above)
         if (convId) {
-          localStorage.setItem(`esperit_conversation_${convId}`, JSON.stringify({
+          saveConversation({
             id: convId,
-            personaSlug: persona.slug,
-            personaName: persona.name,
+            persona,
             messages: allMessages,
-            updatedAt: new Date().toISOString()
-          }))
-
-          // Update conversations list
-          const conversationsList = JSON.parse(localStorage.getItem('esperit_conversations') || '[]')
-          const existingIndex = conversationsList.findIndex(c => c.id === convId)
-
-          const chatTitle = messageText.slice(0, 50) + (messageText.length > 50 ? '...' : '')
-
-          const conversationMeta = {
-            id: convId,
-            personaSlug: persona.slug,
-            personaName: persona.name,
-            personaImage: persona.image_url,
-            title: chatTitle,
-            updatedAt: new Date().toISOString()
-          }
-
-          if (existingIndex >= 0) {
-            conversationsList[existingIndex] = conversationMeta
-          } else {
-            conversationsList.unshift(conversationMeta)
-          }
-
-          const trimmedList = conversationsList.slice(0, 50)
-          localStorage.setItem('esperit_conversations', JSON.stringify(trimmedList))
+            firstUserMessage: historyBase.find((m) => m.role === 'user')?.content || messageText,
+          })
         }
       } else {
         // Fallback to non-streaming (shouldn't happen normally)
@@ -567,7 +623,11 @@ function ChatPage() {
           throw new Error(data.error || 'Failed to send message')
         }
 
-        const assistantMessage = { role: 'assistant', content: data.response || "I'm having trouble responding right now. Please try again." }
+        const assistantMessage = {
+          role: 'assistant',
+          content: data.response || "I'm having trouble responding right now. Please try again.",
+          createdAt: new Date().toISOString(),
+        }
         addMessage(assistantMessage)
 
         let convId = conversationId
@@ -584,38 +644,14 @@ function ChatPage() {
           router.replace(`/chat/${personaId}?conversationId=${convId}`, undefined, { shallow: true })
         }
 
-        const allMessages = [...messages, userMessage, assistantMessage]
+        const allMessages = [...historyBase, assistantMessage]
 
-        localStorage.setItem(`esperit_conversation_${convId}`, JSON.stringify({
+        saveConversation({
           id: convId,
-          personaSlug: persona.slug,
-          personaName: persona.name,
+          persona,
           messages: allMessages,
-          updatedAt: new Date().toISOString()
-        }))
-
-        const conversationsList = JSON.parse(localStorage.getItem('esperit_conversations') || '[]')
-        const existingIndex = conversationsList.findIndex(c => c.id === convId)
-
-        const chatTitle = messageText.slice(0, 50) + (messageText.length > 50 ? '...' : '')
-
-        const conversationMeta = {
-          id: convId,
-          personaSlug: persona.slug,
-          personaName: persona.name,
-          personaImage: persona.image_url,
-          title: chatTitle,
-          updatedAt: new Date().toISOString()
-        }
-
-        if (existingIndex >= 0) {
-          conversationsList[existingIndex] = conversationMeta
-        } else {
-          conversationsList.unshift(conversationMeta)
-        }
-
-        const trimmedList = conversationsList.slice(0, 50)
-        localStorage.setItem('esperit_conversations', JSON.stringify(trimmedList))
+          firstUserMessage: historyBase.find((m) => m.role === 'user')?.content || messageText,
+        })
       }
 
       // Guest message tracking - increment counter after successful send
@@ -631,6 +667,38 @@ function ChatPage() {
       }
 
     } catch (error) {
+      // A user-initiated stop is not a failure. Keep whatever streamed in, and
+      // discard the placeholder only if nothing did.
+      if (error?.name === 'AbortError' || controller.signal.aborted) {
+        const partial = streamedContent.trim()
+
+        if (addedAssistantMessagePlaceholder && !partial) {
+          setMessages(prev => {
+            const updated = [...prev]
+            const last = updated[updated.length - 1]
+            if (last?.role === 'assistant' && !last.content?.trim()) updated.pop()
+            return updated
+          })
+        }
+
+        // Persist the stopped turn, or the on-screen thread and storage drift
+        // apart and a reload silently drops the user's own message too. Only
+        // possible once a conversation exists — an abort on the very first
+        // message has no id to write under (the server never sent one), and
+        // inventing one would desync the server-side conversation.
+        if (conversationId) {
+          saveConversation({
+            id: conversationId,
+            persona,
+            messages: partial
+              ? [...historyBase, { role: 'assistant', content: partial, createdAt: assistantStartedAt }]
+              : historyBase,
+            firstUserMessage: historyBase.find((m) => m.role === 'user')?.content || messageText,
+          })
+        }
+        return
+      }
+
       console.error('Error sending message:', error)
       // Don't add error message if we redirected to signin
       if (!error.message?.includes('Session expired') && !error.message?.includes('Sign in required')) {
@@ -660,14 +728,48 @@ function ChatPage() {
         }
       }
     } finally {
+      abortControllerRef.current = null
       setIsLoading(false)
     }
   }
 
+  /**
+   * Ask the persona for a different answer: drop the trailing assistant turn
+   * and replay the user message that produced it.
+   */
+  const handleRegenerate = () => {
+    if (isLoading || !persona) return
+
+    const lastUser = messages[lastUserMessageIndex]
+    if (!lastUser) return
+
+    // Everything after that user message is what we are replacing.
+    const trimmed = messages.slice(0, lastUserMessageIndex + 1)
+    setMessages(trimmed)
+    handleSendMessage(null, { retryOf: lastUser.content, history: trimmed })
+  }
+
+  // Esc backs out of whatever is in progress — editing first, then generation.
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key !== 'Escape') return
+      if (editingMessageIndex !== null) {
+        handleCancelEdit()
+      } else if (isLoading) {
+        handleStopGeneration()
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [editingMessageIndex, isLoading])
+
+  // Never leave a request running behind a navigation.
+  useEffect(() => () => abortControllerRef.current?.abort(), [])
+
   if (!persona) {
     return (
-      <div className="flex h-screen items-center justify-center bg-white">
-        <p className="text-black">Loading persona...</p>
+      <div className="flex h-screen items-center justify-center bg-white dark:bg-[#0B0B0C]">
+        <p className="text-black dark:text-white">Loading persona...</p>
       </div>
     )
   }
@@ -715,22 +817,22 @@ function ChatPage() {
         { name: persona.name, url: `https://ai-spirit.in/chat/${persona.slug}` }
       ]} />
 
-      <div className="fixed inset-0 flex bg-white overflow-hidden">
+      <div className="fixed inset-0 flex bg-white dark:bg-[#0B0B0C] overflow-hidden">
         {/* Side Panel */}
         <SidePanelNew onBack={handleBack} backButtonText="Back to Personas" hasNavbar={false} />
 
-        {/* Chat Area */}
-        <div className="flex flex-col flex-1 min-h-0 md:ml-64">
+        {/* Chat Area — relative so the scroll-to-bottom control can float over it */}
+        <div className="app-shell-offset relative flex flex-col flex-1 min-h-0">
           {/* Header */}
           <header className="flex items-center justify-between px-5 h-[72px] flex-shrink-0 glass-nav z-10">
             <div className="flex items-center flex-1">
               <button
                 onClick={handleBack}
-                className="mr-4 p-2 rounded-full hover:bg-gray-100 md:hidden"
+                className="mr-4 p-2 rounded-full hover:bg-gray-100 dark:hover:bg-white/[0.08] md:hidden"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6 text-black"
+                  className="h-6 w-6 text-black dark:text-white"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -746,15 +848,15 @@ function ChatPage() {
               <img
                 src={persona.image_url || '/default-persona.png'}
                 alt={persona.name}
-                className="w-9 h-9 rounded-full mr-3 object-cover border border-gray-100"
+                className="w-9 h-9 rounded-full mr-3 object-cover border border-gray-100 dark:border-white/[0.08]"
                 onError={(e) => {
                   e.target.src = '/default-persona.png'
                 }}
               />
               <div>
-                <h2 className="text-base font-semibold text-black leading-tight">{persona.name}</h2>
+                <h2 className="text-base font-semibold text-black dark:text-white leading-tight">{persona.name}</h2>
                 {persona.description && (
-                  <p className="text-xs text-gray-400 truncate max-w-[200px]">{persona.description}</p>
+                  <p className="text-xs text-gray-400 dark:text-white/40 truncate max-w-[200px]">{persona.description}</p>
                 )}
               </div>
             </div>
@@ -776,7 +878,7 @@ function ChatPage() {
                   router.replace(`/chat/${personaId}`, undefined, { shallow: true })
                 }
               }}
-              className="flex items-center gap-2 px-4 py-2 bg-black text-white rounded-xl shadow-glass-dark hover:bg-gray-900 transition-all duration-200 group text-sm font-medium"
+              className="flex items-center gap-2 px-4 py-2 bg-black text-white dark:bg-white dark:text-black rounded-xl shadow-glass-dark hover:bg-gray-900 dark:hover:bg-white/90 transition-all duration-200 group text-sm font-medium"
               aria-label="Start a new chat"
             >
               <svg
@@ -822,7 +924,7 @@ function ChatPage() {
                 }}
                 className={`flex items-center gap-2 px-4 py-2 rounded-xl transition-all duration-200 text-sm font-medium ${shareLinkCopied
                   ? 'bg-green-600 text-white'
-                  : 'bg-gray-100 text-black hover:bg-gray-200'
+                  : 'bg-gray-100 text-black dark:text-white hover:bg-gray-200'
                   }`}
                 aria-label="Copy share link for this conversation"
               >
@@ -842,288 +944,350 @@ function ChatPage() {
             )}
           </header>
 
-          {/* Messages */}
-          <main ref={chatContainerRef} className="flex-1 overflow-y-auto px-5 py-6 space-y-5 scrollbar-hide">
-            {/* Suggested Questions - shown only when no messages */}
-            {messages.length === 0 && !isLoading && persona.conversation_starters && (
-              <div className="flex items-center justify-center h-full">
-                <div className="max-w-2xl w-full space-y-3">
-                  <p className="text-center text-gray-600 mb-6">Start a conversation with {persona.name}</p>
-                  {persona.conversation_starters.slice(0, 3).map((question, index) => (
-                    <button
-                      key={index}
-                      onClick={() => {
-                        setCurrentInput(question)
-                        focusComposer()
-                      }}
-                      className="w-full p-4 text-left glass-matte hover:bg-white/85 transition-all duration-200 text-black text-sm"
-                    >
-                      {question}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {messages.map((msg, index) => (
-              msg.role === 'assistant' && !msg.content.trim() ? null : (
-                <div key={index} className="space-y-2">
-                <div
-                  className={`flex items-start gap-4 ${msg.role === 'user' ? 'justify-end' : ''}`}
-                >
-                  {msg.role === 'assistant' && (
-                    <img
-                      src={persona.image_url || '/default-persona.png'}
-                      alt={persona.name}
-                      className="w-8 h-8 rounded-full object-cover object-top flex-shrink-0"
-                      onError={(e) => {
-                        e.target.src = '/default-persona.png'
-                      }}
-                    />
-                  )}
-
-                  <div className="flex flex-col gap-2">
-                    {/* Message Bubble */}
-                    {editingMessageIndex === index && msg.role === 'user' ? (
-                      // Edit mode for user message
-                      <div className="flex flex-col gap-2">
-                        <textarea
-                          value={editedMessageText}
-                          onChange={(e) => setEditedMessageText(e.target.value)}
-                          className="p-3 border border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-black text-black resize-none min-h-[60px]"
-                          autoFocus
-                        />
-                        <div className="flex gap-2 justify-end">
-                          <button
-                            onClick={handleCancelEdit}
-                            className="px-3 py-1 text-sm bg-gray-200 hover:bg-gray-300 rounded-lg transition-colors"
-                          >
-                            Cancel
-                          </button>
-                          <button
-                            onClick={() => handleSaveEdit(index)}
-                            disabled={!editedMessageText.trim() || isLoading}
-                            className="px-3 py-1 text-sm bg-black text-white hover:bg-gray-800 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                          >
-                            Save & Regenerate
-                          </button>
-                        </div>
-                      </div>
-                    ) : (
-                      // Normal display
-                      <div
-                        className={`max-w-md lg:max-w-lg px-4 py-3 rounded-2xl text-sm leading-relaxed ${msg.role === 'user'
-                          ? 'bg-black text-white rounded-br-sm shadow-glass-dark'
-                          : 'glass-matte rounded-bl-sm text-black'
-                          }`}
+          {/* Messages — held to a reading column so the eye is not thrown
+              across the full width of a desktop display */}
+          <main ref={chatContainerRef} className="flex-1 overflow-y-auto scrollbar-hide">
+            <div className="mx-auto w-full max-w-3xl px-5 py-6 space-y-5">
+              {/* Suggested Questions - shown only when no messages */}
+              {messages.length === 0 && !isLoading && persona.conversation_starters && (
+                <div className="flex items-center justify-center min-h-[60vh]">
+                  <div className="w-full space-y-3">
+                    <p className="text-center text-gray-600 dark:text-white/60 mb-6">Start a conversation with {persona.name}</p>
+                    {persona.conversation_starters.slice(0, 3).map((question, index) => (
+                      <button
+                        key={index}
+                        onClick={() => {
+                          setCurrentInput(question)
+                          focusComposer()
+                        }}
+                        className="group flex w-full items-center gap-3 p-4 text-left glass-matte hover:bg-white/85 dark:hover:bg-[#0B0B0C]/85 transition-all duration-200 text-black dark:text-white text-sm"
                       >
-                        <p
-                          className="whitespace-pre-wrap"
-                          dangerouslySetInnerHTML={{ __html: formatMessage(msg.content) }}
+                        <svg className="h-4 w-4 flex-shrink-0 text-black/30 dark:text-white/30 group-hover:text-black/60 dark:group-hover:text-white/60 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} aria-hidden="true">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9L12 3z" />
+                        </svg>
+                        <span className="flex-1">{question}</span>
+                        <svg className="h-4 w-4 flex-shrink-0 text-black/20 dark:text-white/20 group-hover:text-black/50 dark:group-hover:text-white/50 group-hover:translate-x-0.5 transition-all duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                        </svg>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {messages.map((msg, index) => {
+                if (msg.role === 'assistant' && !msg.content.trim()) return null
+
+                const isUser = msg.role === 'user'
+                const isEditing = editingMessageIndex === index
+                const canRetry = !isUser && index === lastAssistantMessageIndex && !isLoading
+                const stamp = msg.createdAt ? relativeTime(msg.createdAt) : ''
+
+                return (
+                  <div key={index} className="space-y-2">
+                    <div className={`flex items-start gap-3 ${isUser ? 'justify-end' : ''}`}>
+                      {!isUser && (
+                        <img
+                          src={persona.image_url || '/default-persona.png'}
+                          alt={persona.name}
+                          className="w-8 h-8 rounded-full object-cover object-top flex-shrink-0"
+                          onError={(e) => {
+                            e.target.src = '/default-persona.png'
+                          }}
                         />
-                      </div>
-                    )}
+                      )}
 
-                    {/* Action Buttons */}
-                    {editingMessageIndex !== index && (
-                      <div className={`flex items-center gap-2 ${msg.role === 'user' ? 'justify-end' : ''}`}>
-                        {/* Copy Button */}
-                        <button
-                          onClick={() => handleCopyMessage(msg.content, index)}
-                          className="p-1.5 hover:bg-gray-100 rounded-lg transition-colors group"
-                          aria-label={copiedMessageIndex === index ? 'Copied' : 'Copy message'}
-                        >
-                          {copiedMessageIndex === index ? (
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-green-600" viewBox="0 0 20 20" fill="currentColor">
-                              <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                            </svg>
-                          ) : (
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-500 group-hover:text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                            </svg>
-                          )}
-                        </button>
-
-                        {/* Edit Button - Only for last user message */}
-                        {msg.role === 'user' && index === lastUserMessageIndex && (
-                          <button
-                            onClick={() => handleStartEdit(index, msg.content)}
-                            disabled={isLoading}
-                            className="p-1.5 hover:bg-gray-100 rounded-lg transition-colors group disabled:opacity-50 disabled:cursor-not-allowed"
-                            aria-label="Edit message"
+                      <div className={`flex min-w-0 flex-col gap-1.5 ${isUser ? 'items-end' : 'items-start'}`}>
+                        {isEditing && isUser ? (
+                          // Edit mode for user message
+                          <div className="flex w-full flex-col gap-2">
+                            <textarea
+                              value={editedMessageText}
+                              onChange={(e) => setEditedMessageText(e.target.value)}
+                              className="min-w-[16rem] p-3 border border-gray-300 dark:border-white/20 rounded-2xl focus:outline-none focus:ring-2 focus:ring-black text-black dark:text-white resize-none min-h-[60px] text-sm"
+                              autoFocus
+                            />
+                            <div className="flex gap-2 justify-end">
+                              <button
+                                onClick={handleCancelEdit}
+                                className="px-3 py-1 text-sm bg-gray-200 dark:bg-white/[0.14] hover:bg-gray-300 dark:hover:bg-white/20 rounded-lg transition-colors"
+                              >
+                                Cancel
+                              </button>
+                              <button
+                                onClick={() => handleSaveEdit(index)}
+                                disabled={!editedMessageText.trim() || isLoading}
+                                className="px-3 py-1 text-sm bg-black text-white dark:bg-white dark:text-black hover:bg-gray-800 dark:hover:bg-white/90 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                              >
+                                Save &amp; Regenerate
+                              </button>
+                            </div>
+                          </div>
+                        ) : (
+                          <div
+                            className={`px-4 py-3 rounded-2xl text-sm leading-relaxed ${isUser
+                              ? 'max-w-[85%] bg-black text-white dark:bg-white/[0.14] dark:text-white rounded-br-sm shadow-glass-dark'
+                              : 'max-w-full glass-matte rounded-bl-sm text-black dark:text-white'
+                              }`}
                           >
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-500 group-hover:text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                            </svg>
-                          </button>
+                            <MessageContent content={msg.content} tone={isUser ? 'dark' : 'light'} />
+                          </div>
                         )}
 
-                        {/* Speak / Like / Dislike - Only for assistant messages */}
-                        {msg.role === 'assistant' && (
-                          <>
-                            {/* Speaker Button */}
+                        {/* Action Buttons */}
+                        {!isEditing && (
+                          <div className={`flex items-center gap-1 ${isUser ? 'justify-end' : ''}`}>
+                            {/* Copy Button */}
                             <button
-                              onClick={() => handleSpeak(msg.content, index)}
-                              className={`p-1.5 rounded-lg transition-colors group ${speakingIndex === index ? 'bg-blue-100' : 'hover:bg-gray-100'}`}
-                              aria-label={speakingIndex === index ? 'Stop reading aloud' : 'Read aloud'}
+                              onClick={() => handleCopyMessage(msg.content, index)}
+                              className="p-1.5 hover:bg-gray-100 dark:hover:bg-white/[0.08] rounded-lg transition-colors group"
+                              aria-label={copiedMessageIndex === index ? 'Copied' : 'Copy message'}
                             >
-                              {speakingIndex === index ? (
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-blue-600" viewBox="0 0 24 24" fill="currentColor">
-                                  <rect x="6" y="6" width="12" height="12" rx="2" />
+                              {copiedMessageIndex === index ? (
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-green-600" viewBox="0 0 20 20" fill="currentColor">
+                                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                                 </svg>
                               ) : (
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-500 group-hover:text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-500 dark:text-white/50 group-hover:text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
                                 </svg>
                               )}
                             </button>
-                            <button
-                              onClick={() => handleFeedback(index, 'like')}
-                              className="p-1.5 hover:bg-gray-100 rounded-lg transition-colors group"
-                              aria-label="Good response"
-                              aria-pressed={messageFeedback[index] === 'like'}
-                            >
-                              <svg xmlns="http://www.w3.org/2000/svg" className={`h-4 w-4 ${messageFeedback[index] === 'like' ? 'text-green-600 fill-current' : 'text-gray-500 group-hover:text-gray-700'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" />
-                              </svg>
-                            </button>
-                            <button
-                              onClick={() => handleFeedback(index, 'dislike')}
-                              className="p-1.5 hover:bg-gray-100 rounded-lg transition-colors group"
-                              aria-label="Bad response"
-                              aria-pressed={messageFeedback[index] === 'dislike'}
-                            >
-                              <svg xmlns="http://www.w3.org/2000/svg" className={`h-4 w-4 ${messageFeedback[index] === 'dislike' ? 'text-red-600 fill-current' : 'text-gray-500 group-hover:text-gray-700'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 14H5.236a2 2 0 01-1.789-2.894l3.5-7A2 2 0 018.736 3h4.018a2 2 0 01.485.06l3.76.94m-7 10v5a2 2 0 002 2h.096c.5 0 .905-.405.905-.904 0-.715.211-1.413.608-2.008L17 13V4m-7 10h2m5-10h2a2 2 0 012 2v6a2 2 0 01-2 2h-2.5" />
-                              </svg>
-                            </button>
-                          </>
+
+                            {/* Edit Button - Only for last user message */}
+                            {isUser && index === lastUserMessageIndex && (
+                              <button
+                                onClick={() => handleStartEdit(index, msg.content)}
+                                disabled={isLoading}
+                                className="p-1.5 hover:bg-gray-100 dark:hover:bg-white/[0.08] rounded-lg transition-colors group disabled:opacity-50 disabled:cursor-not-allowed"
+                                aria-label="Edit message"
+                              >
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-500 dark:text-white/50 group-hover:text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                </svg>
+                              </button>
+                            )}
+
+                            {/* Speak / Like / Dislike / Retry - assistant only */}
+                            {!isUser && (
+                              <>
+                                <button
+                                  onClick={() => handleSpeak(msg.content, index)}
+                                  className={`p-1.5 rounded-lg transition-colors group ${speakingIndex === index ? 'bg-blue-100' : 'hover:bg-gray-100 dark:hover:bg-white/[0.08]'}`}
+                                  aria-label={speakingIndex === index ? 'Stop reading aloud' : 'Read aloud'}
+                                >
+                                  {speakingIndex === index ? (
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-blue-600" viewBox="0 0 24 24" fill="currentColor">
+                                      <rect x="6" y="6" width="12" height="12" rx="2" />
+                                    </svg>
+                                  ) : (
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-500 dark:text-white/50 group-hover:text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                                    </svg>
+                                  )}
+                                </button>
+
+                                {/* Regenerate — only on the newest reply, since
+                                    retrying an earlier one would orphan the turns after it */}
+                                {canRetry && (
+                                  <button
+                                    onClick={handleRegenerate}
+                                    className="p-1.5 hover:bg-gray-100 dark:hover:bg-white/[0.08] rounded-lg transition-colors group"
+                                    aria-label="Regenerate response"
+                                    title="Regenerate response"
+                                  >
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-500 dark:text-white/50 group-hover:text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                                    </svg>
+                                  </button>
+                                )}
+
+                                <button
+                                  onClick={() => handleFeedback(index, 'like')}
+                                  className="p-1.5 hover:bg-gray-100 dark:hover:bg-white/[0.08] rounded-lg transition-colors group"
+                                  aria-label="Good response"
+                                  aria-pressed={messageFeedback[index] === 'like'}
+                                >
+                                  <svg xmlns="http://www.w3.org/2000/svg" className={`h-4 w-4 ${messageFeedback[index] === 'like' ? 'text-green-600 fill-current' : 'text-gray-500 dark:text-white/50 group-hover:text-gray-700'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" />
+                                  </svg>
+                                </button>
+                                <button
+                                  onClick={() => handleFeedback(index, 'dislike')}
+                                  className="p-1.5 hover:bg-gray-100 dark:hover:bg-white/[0.08] rounded-lg transition-colors group"
+                                  aria-label="Bad response"
+                                  aria-pressed={messageFeedback[index] === 'dislike'}
+                                >
+                                  <svg xmlns="http://www.w3.org/2000/svg" className={`h-4 w-4 ${messageFeedback[index] === 'dislike' ? 'text-red-600 fill-current' : 'text-gray-500 dark:text-white/50 group-hover:text-gray-700'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 14H5.236a2 2 0 01-1.789-2.894l3.5-7A2 2 0 018.736 3h4.018a2 2 0 01.485.06l3.76.94m-7 10v5a2 2 0 002 2h.096c.5 0 .905-.405.905-.904 0-.715.211-1.413.608-2.008L17 13V4m-7 10h2m5-10h2a2 2 0 012 2v6a2 2 0 01-2 2h-2.5" />
+                                  </svg>
+                                </button>
+                              </>
+                            )}
+
+                            {stamp && (
+                              <span
+                                className="px-1 text-[11px] text-black/30 dark:text-white/30 select-none"
+                                title={absoluteTime(msg.createdAt)}
+                              >
+                                {stamp}
+                              </span>
+                            )}
+                          </div>
                         )}
                       </div>
-                    )}
-                  </div>
 
-                  {msg.role === 'user' && (
-                    <div className="w-8 h-8 rounded-full bg-black border border-gray-200 flex items-center justify-center flex-shrink-0">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-white" viewBox="0 0 24 24" fill="currentColor">
-                        <path fillRule="evenodd" d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z" clipRule="evenodd" />
-                      </svg>
-                    </div>
-                  )}
-                </div>
-              </div>
-              )
-            ))}
-
-            {isLoading && (messages.length === 0 || messages[messages.length - 1].role !== 'assistant' || !messages[messages.length - 1].content.trim()) && (
-              <div className="flex items-center gap-4">
-                <img
-                  src={persona.image_url || '/default-persona.png'}
-                  alt={persona.name}
-                  className="w-8 h-8 rounded-full object-cover object-top"
-                  onError={(e) => {
-                    e.target.src = '/default-persona.png'
-                  }}
-                />
-                <div className="px-4 py-3 rounded-2xl rounded-bl-sm glass-matte">
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs text-gray-400">{persona.name} is thinking</span>
-                    <div className="flex items-center space-x-1">
-                      <div className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
-                      <div className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
-                      <div className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+                      {isUser && (
+                        <div className="w-8 h-8 rounded-full bg-black dark:bg-white/[0.14] border border-gray-200 dark:border-white/[0.12] flex items-center justify-center flex-shrink-0">
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-white" viewBox="0 0 24 24" fill="currentColor">
+                            <path fillRule="evenodd" d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z" clipRule="evenodd" />
+                          </svg>
+                        </div>
+                      )}
                     </div>
                   </div>
+                )
+              })}
+
+              {isLoading && (messages.length === 0 || messages[messages.length - 1].role !== 'assistant' || !messages[messages.length - 1].content.trim()) && (
+                <div className="flex items-center gap-3">
+                  <img
+                    src={persona.image_url || '/default-persona.png'}
+                    alt={persona.name}
+                    className="w-8 h-8 rounded-full object-cover object-top"
+                    onError={(e) => {
+                      e.target.src = '/default-persona.png'
+                    }}
+                  />
+                  <div className="px-4 py-3 rounded-2xl rounded-bl-sm glass-matte">
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs text-gray-400 dark:text-white/40">{persona.name} is thinking</span>
+                      <div className="flex items-center space-x-1">
+                        <div className="w-1.5 h-1.5 bg-gray-400 dark:bg-white/40 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+                        <div className="w-1.5 h-1.5 bg-gray-400 dark:bg-white/40 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
+                        <div className="w-1.5 h-1.5 bg-gray-400 dark:bg-white/40 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
           </main>
 
-          {/* Input Box */}
-          <footer className="px-5 py-4 flex-shrink-0 bg-white/75 backdrop-blur-2xl" style={{ boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.7), 0 -4px 24px rgba(0, 0, 0, 0.04)' }}>
-            <form onSubmit={handleSendMessage} className="flex items-end gap-2">
-              <label htmlFor="chat-composer" className="sr-only">
-                {`Message ${persona.name}`}
-              </label>
-              <textarea
-                id="chat-composer"
-                ref={composerRef}
-                rows={1}
-                value={currentInput}
-                onChange={(e) => setCurrentInput(e.target.value)}
-                onKeyDown={handleComposerKeyDown}
-                placeholder={`Message ${persona.name}...`}
-                className="flex-1 px-5 py-3 glass-matte focus:outline-none focus:ring-2 focus:ring-black/10 text-black text-sm placeholder:text-gray-500 focus:bg-white/90 transition-colors duration-200 disabled:opacity-50 resize-none overflow-y-auto max-h-40 leading-relaxed"
-                disabled={isLoading}
-              />
+          {/* Jump back to the live end of the thread after scrolling up */}
+          {showScrollToBottom && (
+            <button
+              onClick={() => scrollToBottom()}
+              className="absolute bottom-28 left-1/2 -translate-x-1/2 z-20 flex h-9 w-9 items-center justify-center rounded-full bg-white/90 dark:bg-[#0B0B0C]/90 text-black dark:text-white shadow-soft-md backdrop-blur-xl ring-1 ring-black/[0.06] dark:ring-white/[0.06] hover:bg-white transition-all duration-200 animate-fadeIn"
+              aria-label="Scroll to latest message"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+              </svg>
+            </button>
+          )}
 
-              {/* Microphone Button */}
-              <button
-                type="button"
-                onClick={toggleSpeechRecognition}
-                className={`p-2.5 rounded-xl transition-all duration-200 flex-shrink-0 ${isListening
-                  ? 'bg-black text-white ring-2 ring-black/20 animate-pulse'
-                  : 'bg-gray-100 text-black hover:bg-gray-200'
-                  }`}
-                disabled={isLoading}
-                aria-label={isListening ? 'Stop voice input' : 'Start voice input'}
-                aria-pressed={isListening}
+          {/* Composer — one container, controls inside it */}
+          <footer className="px-5 pb-4 pt-2 flex-shrink-0 bg-white/75 dark:bg-[#0B0B0C]/75 backdrop-blur-2xl" style={{ boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.7), 0 -4px 24px rgba(0, 0, 0, 0.04)' }}>
+            <div className="mx-auto w-full max-w-3xl">
+              <form
+                onSubmit={handleSendMessage}
+                className="flex items-end gap-1.5 rounded-3xl glass-matte py-2 pl-4 pr-2 transition-colors duration-200 focus-within:bg-white/90 dark:focus-within:bg-[#0B0B0C]/90 focus-within:ring-2 focus-within:ring-black/10 dark:focus-within:ring-white/10"
               >
+                <label htmlFor="chat-composer" className="sr-only">
+                  {`Message ${persona.name}`}
+                </label>
+                <textarea
+                  id="chat-composer"
+                  ref={composerRef}
+                  rows={1}
+                  value={currentInput}
+                  onChange={(e) => setCurrentInput(e.target.value)}
+                  onKeyDown={handleComposerKeyDown}
+                  placeholder={`Message ${persona.name}...`}
+                  className="flex-1 min-w-0 bg-transparent border-0 py-2 text-black dark:text-white text-sm placeholder:text-gray-500 dark:placeholder:text-white/40 focus:outline-none resize-none overflow-y-auto max-h-40 leading-relaxed"
+                />
+
+                {/* Microphone Button */}
+                <button
+                  type="button"
+                  onClick={toggleSpeechRecognition}
+                  className={`flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full transition-all duration-200 ${isListening
+                    ? 'bg-black text-white dark:bg-white dark:text-black ring-2 ring-black/20 dark:ring-white/20 animate-pulse'
+                    : 'text-black/50 hover:bg-black/[0.06] dark:hover:bg-white/[0.06] hover:text-black'
+                    }`}
+                  aria-label={isListening ? 'Stop voice input' : 'Start voice input'}
+                  aria-pressed={isListening}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                    aria-hidden="true"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"
+                    />
+                  </svg>
+                </button>
+
+                {/* Send, or stop while a reply is streaming */}
+                {isLoading ? (
+                  <button
+                    type="button"
+                    onClick={handleStopGeneration}
+                    className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-black text-white dark:bg-white dark:text-black shadow-glass-dark hover:bg-gray-900 dark:hover:bg-white/90 transition-all duration-200"
+                    aria-label="Stop generating"
+                    title="Stop generating (Esc)"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                      <rect x="6" y="6" width="12" height="12" rx="2.5" />
+                    </svg>
+                  </button>
+                ) : (
+                  <button
+                    type="submit"
+                    className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-black text-white dark:bg-white dark:text-black shadow-glass-dark hover:bg-gray-900 dark:hover:bg-white/90 transition-all duration-200 disabled:opacity-30 disabled:shadow-none disabled:cursor-not-allowed"
+                    disabled={!currentInput.trim()}
+                    aria-label="Send message"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-5 w-5"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                      aria-hidden="true"
+                    >
+                      <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
+                    </svg>
+                  </button>
+                )}
+              </form>
+
+              {/* Disclaimer */}
+              <div className="text-center text-[10px] md:text-xs text-gray-500 dark:text-white/50 mt-2.5 px-2">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6"
-                  viewBox="0 0 24 24"
+                  className="h-3 w-3 md:h-3.5 md:w-3.5 inline-block mr-1"
                   fill="none"
+                  viewBox="0 0 24 24"
                   stroke="currentColor"
-                  strokeWidth={2}
-                  aria-hidden="true"
                 >
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"
+                    strokeWidth={2}
+                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                   />
                 </svg>
-              </button>
-
-              {/* Send Button */}
-              <button
-                type="submit"
-                className="bg-black text-white p-2.5 rounded-xl shadow-glass-dark hover:bg-gray-900 transition-all duration-200 disabled:opacity-40 disabled:shadow-none disabled:cursor-not-allowed flex-shrink-0"
-                disabled={isLoading || !currentInput.trim()}
-                aria-label="Send message"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
-                </svg>
-              </button>
-            </form>
-
-            {/* Disclaimer */}
-            <div className="text-center text-[10px] md:text-xs text-gray-500 mt-3 px-2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-3 w-3 md:h-3.5 md:w-3.5 inline-block mr-1"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
-              These are AI generated responses and not from real person
+                These are AI generated responses and not from real person
+              </div>
             </div>
-
           </footer>
         </div>
       </div>

@@ -65,6 +65,25 @@ p {
   * {
     @apply border-gray-200;
   }
+
+  /* ===== DARK THEME =====
+     A near-black ground rather than pure black, so the glass surfaces layered
+     on top still read as lifted. The bootstrap script in _document.js puts
+     .dark on <html> before paint; ThemeContext keeps it in sync afterwards. */
+  html.dark {
+    @apply bg-[#0B0B0C] text-white;
+  }
+
+  html.dark body {
+    @apply bg-[#0B0B0C];
+    /* The grain overlay is tuned for a white ground and turns to mud on a
+       dark one. */
+    background-image: none;
+  }
+
+  html.dark * {
+    @apply border-white/10;
+  }
 }
 
 @layer components {
@@ -166,6 +185,100 @@ p {
   .glass-matte {
     @apply bg-white/70 backdrop-blur-md rounded-2xl;
     @apply shadow-glass-sm;
+  }
+
+  /* ===== APP SHELL =====
+     The side panel is fixed, so page content carries a matching left offset.
+     Both are driven by a data attribute on <html> that the bootstrap script in
+     _document.js sets before first paint — if this were React state the panel
+     would paint expanded and snap to the rail a frame later, and the content
+     would never reflow into the space the rail gives back. */
+  .app-sidebar {
+    width: 16rem;
+  }
+
+  .app-sidebar-rail-only {
+    display: none;
+  }
+
+  @media (min-width: 768px) {
+    .app-shell-offset {
+      margin-left: 16rem;
+    }
+
+    html[data-sidebar='collapsed'] .app-sidebar {
+      width: 3.5rem;
+    }
+
+    html[data-sidebar='collapsed'] .app-shell-offset {
+      margin-left: 3.5rem;
+    }
+
+    html[data-sidebar='collapsed'] .app-sidebar-body {
+      display: none;
+    }
+
+    html[data-sidebar='collapsed'] .app-sidebar-rail-only {
+      display: flex;
+    }
+  }
+
+  /* ===== GLASS, DARK GROUND =====
+     Same language inverted: the surface becomes a light film over the dark
+     ground and the inset highlight drops to a tenth of its strength, since a
+     bright edge on a dark surface reads far louder. */
+  .dark .glass-nav {
+    @apply bg-[#0B0B0C]/70 border-white/[0.06];
+    box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.06), 0 1px 24px rgba(0, 0, 0, 0.5);
+  }
+
+  .dark .glass-panel {
+    @apply bg-white/[0.06];
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 8px 32px rgba(0, 0, 0, 0.5);
+  }
+
+  .dark .glass-pill {
+    @apply bg-white/[0.08];
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 2px 12px rgba(0, 0, 0, 0.4);
+  }
+
+  .dark .glass-modal {
+    @apply bg-[#141416]/90;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 16px 48px rgba(0, 0, 0, 0.6);
+  }
+
+  .dark .glass-matte {
+    @apply bg-white/[0.055];
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 2px 12px rgba(0, 0, 0, 0.35);
+  }
+
+  .dark .glass-backdrop {
+    @apply bg-black/60;
+  }
+
+  .dark .card,
+  .dark .card-elevated {
+    @apply bg-[#141416] border-white/[0.08];
+    background-image: none;
+  }
+
+  /* Black-on-white primary inverts wholesale — a black button on a near-black
+     ground has no edge to read. */
+  .dark .btn-primary {
+    @apply bg-white text-black hover:bg-white/90;
+  }
+
+  .dark .btn-secondary {
+    @apply bg-white/[0.06] text-white border-white/[0.12] hover:border-white/20;
+  }
+
+  .dark .btn-ghost {
+    @apply text-white hover:bg-white/[0.08];
+  }
+
+  .dark .input-field {
+    @apply bg-white/[0.05] border-white/[0.12] text-white placeholder:text-white/35;
+    @apply focus:border-white/40 focus:ring-white/10;
   }
 
   .glass-backdrop {

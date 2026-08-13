@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
+import { useState } from 'react'
 
 function formatCount(num) {
   if (!num || num === 0) return null
@@ -8,9 +9,15 @@ function formatCount(num) {
   return num.toString()
 }
 
-export default function PersonaCard({ persona, onEdit, messageCount, onClick }) {
+export default function PersonaCard({ persona, onEdit, messageCount, onClick, priority = false }) {
   const formattedCount = formatCount(messageCount)
   const href = `/chat/${persona.slug}`
+  // Portraits are the whole point of the grid; until one arrives, show a
+  // shimmering placeholder rather than a dead grey rectangle.
+  const [imageLoaded, setImageLoaded] = useState(false)
+  const [imageSrc, setImageSrc] = useState(
+    persona.image_url || persona.avatar_url || '/default-persona.png'
+  )
 
   // A real anchor, so the card is keyboard-operable, cmd/middle-clickable and
   // crawlable. onClick still runs for callers that want to intercept (analytics,
@@ -29,15 +36,29 @@ export default function PersonaCard({ persona, onEdit, messageCount, onClick }) 
         href={href}
         onClick={handleClick}
         aria-label={`Chat with ${persona.name}`}
-        className="block rounded-2xl overflow-hidden bg-gray-50 shadow-[0_1px_3px_rgba(0,0,0,0.06),0_0_0_1px_rgba(0,0,0,0.04)] transition-[box-shadow,transform] duration-[250ms] ease-out hover:shadow-[0_8px_24px_rgba(0,0,0,0.10),0_0_0_1px_rgba(0,0,0,0.06)] hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2"
+        className="block rounded-2xl overflow-hidden bg-gray-50 dark:bg-white/[0.05] shadow-[0_1px_3px_rgba(0,0,0,0.06),0_0_0_1px_rgba(0,0,0,0.04)] transition-[box-shadow,transform] duration-[250ms] ease-out hover:shadow-[0_8px_24px_rgba(0,0,0,0.10),0_0_0_1px_rgba(0,0,0,0.06)] hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2"
       >
         {/* Image */}
         <div className="relative w-full overflow-hidden" style={{ paddingTop: '115%' }}>
+          {!imageLoaded && (
+            <div
+              className="absolute inset-0 animate-shimmer bg-shimmer"
+              style={{ backgroundSize: '200% 100%' }}
+              aria-hidden="true"
+            />
+          )}
+
           <Image
-            src={persona.image_url || persona.avatar_url || '/default-persona.png'}
+            src={imageSrc}
             alt=""
             fill
-            className="object-cover object-[center_20%] transition-transform duration-500 ease-out group-hover:scale-105"
+            priority={priority}
+            onLoad={() => setImageLoaded(true)}
+            onError={() => {
+              setImageSrc('/default-persona.png')
+              setImageLoaded(true)
+            }}
+            className={`object-cover object-[center_20%] transition-[transform,opacity] duration-500 ease-out group-hover:scale-105 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 16vw"
           />
 
@@ -83,7 +104,7 @@ export default function PersonaCard({ persona, onEdit, messageCount, onClick }) 
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-3.5 w-3.5 text-gray-700"
+            className="h-3.5 w-3.5 text-gray-700 dark:text-white/80"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"

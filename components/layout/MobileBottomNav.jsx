@@ -30,13 +30,13 @@ export default function MobileBottomNav({ onCreatePersona }) {
     >
       <span
         className={`flex flex-col items-center gap-[3px] px-2.5 py-1.5 rounded-2xl transition-all duration-200 ${
-          active ? 'bg-black/[0.06]' : ''
+          active ? 'bg-black/[0.06] dark:bg-white/[0.06]' : ''
         }`}
       >
         {children}
         <span
           className={`text-[11px] font-medium tracking-wide transition-colors duration-200 ${
-            active ? 'text-black' : 'text-black/60'
+            active ? 'text-black dark:text-white' : 'text-black/60 dark:text-white/60'
           }`}
         >
           {label}
@@ -52,7 +52,7 @@ export default function MobileBottomNav({ onCreatePersona }) {
         style={{ touchAction: 'manipulation' }}
       >
         <div
-          className="bg-white/98 backdrop-blur-2xl border-t border-black/[0.07]"
+          className="bg-white/98 dark:bg-[#0B0B0C]/98 backdrop-blur-2xl border-t border-black/[0.07] dark:border-white/[0.07]"
           style={{
             boxShadow: '0 -4px 24px rgba(0,0,0,0.06)',
             paddingBottom: 'max(6px, env(safe-area-inset-bottom, 6px))',
@@ -64,7 +64,7 @@ export default function MobileBottomNav({ onCreatePersona }) {
             <NavItem href="/" label="Home" active={isActive('/')}>
               <svg
                 aria-hidden="true"
-                className={`h-[22px] w-[22px] transition-all duration-200 ${isActive('/') ? 'text-black' : 'text-black/60'}`}
+                className={`h-[22px] w-[22px] transition-all duration-200 ${isActive('/') ? 'text-black dark:text-white' : 'text-black/60 dark:text-white/60'}`}
                 fill={isActive('/') ? 'currentColor' : 'none'}
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -78,7 +78,7 @@ export default function MobileBottomNav({ onCreatePersona }) {
             <NavItem href="/personas" label="Personas" active={isActive('/personas')}>
               <svg
                 aria-hidden="true"
-                className={`h-[22px] w-[22px] transition-all duration-200 ${isActive('/personas') ? 'text-black' : 'text-black/60'}`}
+                className={`h-[22px] w-[22px] transition-all duration-200 ${isActive('/personas') ? 'text-black dark:text-white' : 'text-black/60 dark:text-white/60'}`}
                 fill={isActive('/personas') ? 'currentColor' : 'none'}
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -96,7 +96,7 @@ export default function MobileBottomNav({ onCreatePersona }) {
               aria-label="Create persona"
             >
               <div
-                className="w-12 h-12 rounded-[18px] bg-black flex items-center justify-center"
+                className="w-12 h-12 rounded-[18px] bg-black dark:bg-white flex items-center justify-center"
                 style={{
                   boxShadow: '0 4px 14px rgba(0,0,0,0.22), 0 1px 3px rgba(0,0,0,0.12)',
                 }}
@@ -121,7 +121,7 @@ export default function MobileBottomNav({ onCreatePersona }) {
               <NavItem href="/chats" label="Chats" active={isActive('/chats')}>
                 <svg
                   aria-hidden="true"
-                  className={`h-[22px] w-[22px] transition-all duration-200 ${isActive('/chats') ? 'text-black' : 'text-black/60'}`}
+                  className={`h-[22px] w-[22px] transition-all duration-200 ${isActive('/chats') ? 'text-black dark:text-white' : 'text-black/60 dark:text-white/60'}`}
                   fill={isActive('/chats') ? 'currentColor' : 'none'}
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -134,7 +134,7 @@ export default function MobileBottomNav({ onCreatePersona }) {
               <NavItem href="/premium" label="Premium" active={isActive('/premium')}>
                 <svg
                   aria-hidden="true"
-                  className={`h-[22px] w-[22px] transition-all duration-200 ${isActive('/premium') ? 'text-black' : 'text-black/60'}`}
+                  className={`h-[22px] w-[22px] transition-all duration-200 ${isActive('/premium') ? 'text-black dark:text-white' : 'text-black/60 dark:text-white/60'}`}
                   fill={isActive('/premium') ? 'currentColor' : 'none'}
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -159,24 +159,24 @@ export default function MobileBottomNav({ onCreatePersona }) {
                     <img
                       src={user.user_metadata.avatar_url}
                       alt="Account"
-                      className="w-[22px] h-[22px] rounded-full object-cover ring-1 ring-black/10"
+                      className="w-[22px] h-[22px] rounded-full object-cover ring-1 ring-black/10 dark:ring-white/10"
                       onError={() => setAvatarError(true)}
                     />
                   ) : (
-                    <div className="w-[22px] h-[22px] rounded-full bg-black/[0.08] border border-black/10 flex items-center justify-center">
-                      <span className="text-[8px] font-bold text-black/60">
+                    <div className="w-[22px] h-[22px] rounded-full bg-black/[0.08] dark:bg-white/[0.08] border border-black/10 dark:border-white/10 flex items-center justify-center">
+                      <span className="text-[8px] font-bold text-black/60 dark:text-white/60">
                         {user.email?.[0]?.toUpperCase() || '?'}
                       </span>
                     </div>
                   )}
-                  <span className="text-[11px] font-medium text-black/60 tracking-wide">Account</span>
+                  <span className="text-[11px] font-medium text-black/60 dark:text-white/60 tracking-wide">Account</span>
                 </span>
               </button>
             ) : (
               <NavItem href="/auth/signin" label="Sign in" active={isActive('/auth/signin')}>
                 <svg
                   aria-hidden="true"
-                  className={`h-[22px] w-[22px] transition-all duration-200 ${isActive('/auth/signin') ? 'text-black' : 'text-black/60'}`}
+                  className={`h-[22px] w-[22px] transition-all duration-200 ${isActive('/auth/signin') ? 'text-black dark:text-white' : 'text-black/60 dark:text-white/60'}`}
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
