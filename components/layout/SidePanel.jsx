@@ -119,7 +119,7 @@ export default function SidePanel({ onBack, backButtonText, showPastChats = true
             </Link>
             <button
               onClick={toggleCollapsed}
-              className="flex h-8 w-8 items-center justify-center rounded-lg text-black/40 dark:text-white/40 hover:bg-black/[0.05] dark:hover:bg-white/[0.05] hover:text-black transition-colors"
+              className="flex h-8 w-8 items-center justify-center rounded-lg text-black/40 dark:text-white/40 hover:bg-black/[0.05] dark:hover:bg-white/[0.05] hover:text-black dark:hover:text-white transition-colors"
               aria-label="Collapse sidebar"
               title="Collapse sidebar"
             >
@@ -135,9 +135,9 @@ export default function SidePanel({ onBack, backButtonText, showPastChats = true
           <div className="flex items-center justify-between h-[72px] px-5 border-b border-black/[0.06] dark:border-white/[0.06] flex-shrink-0">
             <button
               onClick={onBack}
-              className="flex items-center gap-2 text-sm font-medium text-black/60 dark:text-white/60 hover:text-black transition-colors group"
+              className="flex items-center gap-2 text-sm font-medium text-black/60 dark:text-white/60 hover:text-black dark:hover:text-white transition-colors group"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 group-hover:text-black transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 group-hover:text-black dark:group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 19l-7-7 7-7" />
               </svg>
               {backButtonText || 'Back'}
@@ -145,7 +145,7 @@ export default function SidePanel({ onBack, backButtonText, showPastChats = true
             {hasNavbar && (
               <button
                 onClick={toggleCollapsed}
-                className="flex h-8 w-8 items-center justify-center rounded-lg text-black/40 dark:text-white/40 hover:bg-black/[0.05] dark:hover:bg-white/[0.05] hover:text-black transition-colors"
+                className="flex h-8 w-8 items-center justify-center rounded-lg text-black/40 dark:text-white/40 hover:bg-black/[0.05] dark:hover:bg-white/[0.05] hover:text-black dark:hover:text-white transition-colors"
                 aria-label="Collapse sidebar"
                 title="Collapse sidebar"
               >
@@ -242,7 +242,7 @@ export default function SidePanel({ onBack, backButtonText, showPastChats = true
                           onClick={() => router.push(`/chat/${chat.personaSlug}?conversationId=${chat.id}`)}
                           className={`flex items-center gap-3 w-full text-left px-3 py-3 rounded-xl text-sm transition-all duration-200 group ${isActive
                             ? 'bg-black/[0.06] dark:bg-white/[0.06] text-black dark:text-white'
-                            : 'text-black/60 hover:bg-black/[0.04] dark:hover:bg-white/[0.04] hover:text-black'
+                            : 'text-black/60 dark:text-white/60 hover:bg-black/[0.04] dark:hover:bg-white/[0.04] hover:text-black dark:hover:text-white'
                             }`}
                           aria-current={isActive ? 'true' : undefined}
                         >
@@ -271,7 +271,7 @@ export default function SidePanel({ onBack, backButtonText, showPastChats = true
                             </div>
                             {/* The title is the opening message, kept stable — it
                                 is what tells two chats with one persona apart. */}
-                            <p className="text-xs truncate text-black/70 dark:text-white/70 group-hover:text-black">{chat.title}</p>
+                            <p className="text-xs truncate text-black/70 dark:text-white/70 group-hover:text-black dark:group-hover:text-white">{chat.title}</p>
                           </div>
                         </button>
                       </li>
@@ -314,7 +314,7 @@ export default function SidePanel({ onBack, backButtonText, showPastChats = true
                 </div>
               )}
               <div className="min-w-0 flex-1">
-                <p className="text-sm font-medium text-black/80 dark:text-white/80 truncate group-hover:text-black transition-colors leading-tight">
+                <p className="text-sm font-medium text-black/80 dark:text-white/80 truncate group-hover:text-black dark:group-hover:text-white transition-colors leading-tight">
                   {user.user_metadata?.full_name || user.email?.split('@')[0] || 'User'}
                 </p>
                 <p className="text-[10px] text-black/60 dark:text-white/60 mt-0.5">Account settings</p>

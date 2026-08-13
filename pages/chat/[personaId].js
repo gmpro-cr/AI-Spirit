@@ -924,7 +924,7 @@ function ChatPage() {
                 }}
                 className={`flex items-center gap-2 px-4 py-2 rounded-xl transition-all duration-200 text-sm font-medium ${shareLinkCopied
                   ? 'bg-green-600 text-white'
-                  : 'bg-gray-100 text-black dark:text-white hover:bg-gray-200'
+                  : 'bg-gray-100 dark:bg-white/[0.08] text-black dark:text-white hover:bg-gray-200 dark:hover:bg-white/[0.14]'
                   }`}
                 aria-label="Copy share link for this conversation"
               >
@@ -1214,7 +1214,7 @@ function ChatPage() {
                   onClick={toggleSpeechRecognition}
                   className={`flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full transition-all duration-200 ${isListening
                     ? 'bg-black text-white dark:bg-white dark:text-black ring-2 ring-black/20 dark:ring-white/20 animate-pulse'
-                    : 'text-black/50 hover:bg-black/[0.06] dark:hover:bg-white/[0.06] hover:text-black'
+                    : 'text-black/50 dark:text-white/50 hover:bg-black/[0.06] dark:hover:bg-white/[0.06] hover:text-black dark:hover:text-white'
                     }`}
                   aria-label={isListening ? 'Stop voice input' : 'Start voice input'}
                   aria-pressed={isListening}

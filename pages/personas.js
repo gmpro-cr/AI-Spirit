@@ -273,7 +273,7 @@ function Personas() {
                     className={`px-4 py-2 rounded-full text-[13px] font-medium transition-all duration-200 whitespace-nowrap flex-shrink-0 active:scale-95 ${
                       selectedCategory === category
                         ? 'bg-black text-white dark:bg-white dark:text-black shadow-glass-dark'
-                        : 'glass-pill text-black/60 dark:text-white/60 hover:bg-white/80 dark:hover:bg-[#0B0B0C]/80 hover:text-black'
+                        : 'glass-pill text-black/60 dark:text-white/60 hover:bg-white/80 dark:hover:bg-[#0B0B0C]/80 hover:text-black dark:hover:text-white'
                     }`}
                   >
                     {category}

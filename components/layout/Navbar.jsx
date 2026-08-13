@@ -128,7 +128,7 @@ export default function Navbar({ onMenuToggle, showMenuButton = false }) {
               className={`block py-3 px-4 text-lg font-medium rounded-2xl transition-all duration-300 ${
                 router.pathname === link.href
                   ? 'bg-black/[0.06] dark:bg-white/[0.06] text-black dark:text-white'
-                  : 'text-black/75 hover:bg-black/[0.04] dark:hover:bg-white/[0.04] hover:text-black'
+                  : 'text-black/75 dark:text-white/75 hover:bg-black/[0.04] dark:hover:bg-white/[0.04] hover:text-black dark:hover:text-white'
               }`}
             >
               {link.label}
@@ -139,7 +139,7 @@ export default function Navbar({ onMenuToggle, showMenuButton = false }) {
             user ? (
               <button
                 onClick={handleSignOut}
-                className="w-full text-left py-3 px-4 text-lg font-medium rounded-2xl text-black/75 dark:text-white/75 hover:bg-black/[0.04] dark:hover:bg-white/[0.04] hover:text-black transition-colors"
+                className="w-full text-left py-3 px-4 text-lg font-medium rounded-2xl text-black/75 dark:text-white/75 hover:bg-black/[0.04] dark:hover:bg-white/[0.04] hover:text-black dark:hover:text-white transition-colors"
               >
                 Sign Out
               </button>
