@@ -60,22 +60,11 @@ export default function MobileBottomNav({ onCreatePersona }) {
         >
           <div className="flex items-center justify-around px-1 pt-1">
 
-            {/* Home */}
-            <NavItem href="/" label="Home" active={isActive('/')}>
-              <svg
-                aria-hidden="true"
-                className={`h-[22px] w-[22px] transition-all duration-200 ${isActive('/') ? 'text-black dark:text-white' : 'text-black/60 dark:text-white/60'}`}
-                fill={isActive('/') ? 'currentColor' : 'none'}
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={isActive('/') ? 0 : 1.5}
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-              </svg>
-            </NavItem>
-
-            {/* Personas */}
-            <NavItem href="/personas" label="Personas" active={isActive('/personas')}>
+            {/* Home goes to the persona catalogue, not the marketing page:
+                on mobile this bar only shows inside the app, where "home" is
+                the place you pick someone to talk to. The separate Personas
+                item pointed at the same destination and is gone. */}
+            <NavItem href="/personas" label="Home" active={isActive('/personas')}>
               <svg
                 aria-hidden="true"
                 className={`h-[22px] w-[22px] transition-all duration-200 ${isActive('/personas') ? 'text-black dark:text-white' : 'text-black/60 dark:text-white/60'}`}
@@ -84,7 +73,7 @@ export default function MobileBottomNav({ onCreatePersona }) {
                 stroke="currentColor"
                 strokeWidth={isActive('/personas') ? 0 : 1.5}
               >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
               </svg>
             </NavItem>
 

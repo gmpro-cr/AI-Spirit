@@ -253,15 +253,15 @@ export default function AccountSettingsModal({ isOpen, onClose }) {
 
                 <div className="h-px bg-black/[0.06] dark:bg-white/[0.08]" />
 
-                {/* Sign out */}
+                {/* Sign out — no leading icon, so the label starts on the same
+                    16px column as Plan, Messages today and Appearance. The red
+                    already carries the destructive meaning; an icon here only
+                    pushed the one row out of the column. */}
                 <div className="p-2">
                     <button
                         onClick={handleSignOut}
-                        className="flex w-full items-center gap-2.5 rounded-xl px-2 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-500/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/30 transition-colors"
+                        className="flex w-full items-center rounded-xl px-2 py-2.5 text-left text-sm font-medium text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-500/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/30 transition-colors"
                     >
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                        </svg>
                         Sign out
                     </button>
                 </div>
