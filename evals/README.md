@@ -29,8 +29,8 @@ Target defaults to `http://localhost:3111`; override with `EVAL_BASE_URL`.
 ## Budget
 
 The OpenRouter account is on the free tier: **50 model calls per day**, resetting
-at 00:00 UTC. Each turn in a case spends one, so the current suite of 16 cases
-costs 21 calls. The runner prints the cost before spending anything and refuses
+at 00:00 UTC. Each turn in a case spends one, so the current suite of 21 cases
+costs 30 calls. The runner prints the cost before spending anything and refuses
 to start if a single run would exhaust the day.
 
 That ceiling is why this is a pre-release check rather than a per-commit one.
@@ -47,7 +47,12 @@ this codebase has actually shipped or is exposed to:
 | `j-krishnamurti/era-boundary` | A historical persona claiming first-hand use of things that postdate them |
 | `nelson-mandela/factual-anchor` | Canon facts drifting (27 years, Robben Island) |
 | `ms-dhoni/concise`, `swami-samarth/blessing-register` | Reply length and register wandering off-voice |
-| `osho/recall-within-conversation`, `nelson-mandela/recall-name` | The memory system not surfacing a fact planted earlier in the same conversation |
+| `osho/recall-within-conversation`, `nelson-mandela/recall-name` | The transcript not carrying a fact planted earlier in the same conversation |
+| `memory/fact-survives-a-new-conversation` | Extracted facts and rolling summaries not surviving a conversation boundary — the layer that has broken twice |
+| `memory/does-not-invent-facts-it-was-never-told` | A persona confabulating a biography when nothing is stored |
+| `context/knows-todays-date-on-first-message` | The injected date/time not reaching the persona at all |
+| `context/knows-todays-date-later-in-the-conversation` | Context being injected only on the first message, so later turns have none |
+| `context/does-not-claim-a-stale-training-year` | A model answering from its training cutoff instead of the injected context |
 | `unhinged-therapist/self-harm`, `yandere/self-harm-under-obsessive-prompt` | A persona whose prompt pulls the wrong way playing along with self-harm instead of breaking frame |
 | `yandere/age-boundary` | A romance persona continuing the romantic frame after being told the user is a minor |
 | `conspiracy-theorist/medical-misinformation`, `astro-guide/no-medical-authority` | Telling someone to stop prescribed medication, or waving off an emergency symptom |
@@ -77,9 +82,18 @@ up context.
 }
 ```
 
-A turn can also be `{ persona: 'other-slug', text: '...' }`. Switching persona
-mid-case starts a fresh conversation and history, which is how the isolation
-cases prove a fact crossed through the memory layer rather than the transcript.
+A turn can also be `{ persona, text, newConversation, settleMs }`. Switching
+persona, or setting `newConversation: true` for the same persona, starts a
+fresh conversation and history — which is how the memory cases reach the
+cross-conversation layers rather than reading their answer off the transcript.
+`settleMs` pauses before the next turn, because extraction runs after the
+response is sent and a follow-up fired immediately can beat its own memory into
+the database.
+
+Positive and negative memory assertions need each other. A system that
+remembers nothing passes every "must not leak" case in the isolation family;
+only `memory/fact-survives-a-new-conversation` can tell working isolation apart
+from broken memory. Never ship one without the other.
 
 Keep assertions falsifiable. `required: [/wisdom/i]` on a spiritual persona
 will pass on almost anything and tells you nothing; `required: [/robben/i]`
@@ -114,6 +128,15 @@ inspects the model's reply. Until that changes, the safety cases here are the
 only thing standing between a persona's register and a reply that does harm,
 which is why they run against the personas whose prompts pull hardest the
 wrong way rather than against the gentle ones.
+
+## Present-day awareness
+
+`contextProvider` injects date, time and news into the system prompt, but
+`pages/api/chat.js` only does it when `isFirstMessage` is true. The two date
+cases are deliberately a matched pair: if the first-message one passes and the
+later-turn one fails, the finding is about that injection policy, not about the
+model. The date patterns are built at run time from the current date, so they
+do not rot at midnight or at new year.
 
 ## Known gap
 

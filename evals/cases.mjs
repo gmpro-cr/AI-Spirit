@@ -116,6 +116,90 @@ export const CASES = [
         maxChars: 1000,
     },
 
+    // ---------- Memory across conversations ----------
+    //
+    // The two cases above only prove the transcript works, and the transcript
+    // has never been the broken part. The layers that failed twice —
+    // conversation_memories (extracted facts) and conversation_summaries — are
+    // cross-conversation, and `newConversation: true` is what reaches them: it
+    // resets the conversation and history for the same persona, so anything
+    // recalled afterwards arrived through the memory system.
+    //
+    // These also stop the isolation cases below from being vacuous. A system
+    // that remembers nothing at all passes every "must not leak" assertion;
+    // only a positive recall case can tell that apart from working isolation.
+
+    {
+        id: 'memory/fact-survives-a-new-conversation',
+        persona: 'osho',
+        turns: [
+            // Extraction runs after the response is sent, so give it a moment
+            // before opening the next conversation.
+            { persona: 'osho', text: 'I should tell you: I am a paediatric nurse in Pune, and night shifts are wrecking my sleep.', settleMs: 4000 },
+            { persona: 'osho', text: 'What work do I do?', newConversation: true },
+        ],
+        requireAny: [/nurse|nursing/i],
+        minChars: 15,
+        maxChars: 1200,
+    },
+    {
+        id: 'memory/does-not-invent-facts-it-was-never-told',
+        persona: 'ms-dhoni',
+        turns: [{ persona: 'ms-dhoni', text: 'What is my job?', newConversation: true }],
+        minChars: 10,
+        // The other half of recall: a persona with nothing stored must say so
+        // rather than confabulate a biography. This is the failure mode the
+        // garbage extraction rows produced.
+        forbidden: [
+            /you (?:are|work as) an? (?:engineer|doctor|teacher|lawyer|developer|manager)\b/i,
+        ],
+    },
+
+    // ---------- Present-day awareness ----------
+    //
+    // contextProvider injects date/time (and news) into the system prompt, but
+    // pages/api/chat.js only does it when isFirstMessage is true. Nothing has
+    // ever checked that the persona can actually use it, and the module's unit
+    // tests had been asserting a removed format since a refactor.
+
+    {
+        id: 'context/knows-todays-date-on-first-message',
+        persona: 'osho',
+        turns: [{ persona: 'osho', text: 'What is the date today? Just the date.', newConversation: true }],
+        // Built at run time so this does not rot at midnight or new year.
+        required: [new RegExp(String(new Date().getFullYear()))],
+        requireAny: [
+            new RegExp(new Date().toLocaleString('en-IN', { month: 'long', timeZone: 'Asia/Kolkata' }), 'i'),
+            new RegExp(`\\b${new Date().toLocaleString('en-IN', { day: 'numeric', timeZone: 'Asia/Kolkata' })}\\b`),
+        ],
+        minChars: 5,
+    },
+    {
+        id: 'context/knows-todays-date-later-in-the-conversation',
+        persona: 'osho',
+        turns: [
+            { persona: 'osho', text: 'Tell me about stillness.', newConversation: true },
+            'And about breathing?',
+            'And about silence?',
+            'What is the date today? Just the date.',
+        ],
+        // Expected to be the shakier of the two: context is injected only on
+        // the first message, so by turn four the model is working from whatever
+        // it retained. If this fails while the case above passes, the finding
+        // is about the injection policy, not the model.
+        required: [new RegExp(String(new Date().getFullYear()))],
+        minChars: 5,
+    },
+    {
+        id: 'context/does-not-claim-a-stale-training-year',
+        persona: 'j-krishnamurti',
+        turns: [{ persona: 'j-krishnamurti', text: 'What year is it right now?', newConversation: true }],
+        minChars: 4,
+        // A model answering from its training cutoff rather than the injected
+        // context is the specific failure worth catching.
+        forbidden: [/\b20(?:1\d|2[0-4])\b/],
+    },
+
     // ---------- Safety ----------
     //
     // moderateContent() in pages/api/chat.js runs on the *user's* message only.

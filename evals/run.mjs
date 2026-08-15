@@ -89,10 +89,17 @@ function findPersona(slug) {
  * model that produced it.
  *
  * A turn is either a string (sent to the case's persona) or
- * `{ persona, text }`. Switching persona mid-case starts a fresh conversation
- * and a fresh history — which is exactly what the memory-isolation cases need:
- * anything the second persona knows had to come through the cross-conversation
- * memory layer, not through the transcript.
+ * `{ persona, text, newConversation }`.
+ *
+ * Switching persona starts a fresh conversation and history. `newConversation`
+ * does the same for the *same* persona — which is the only way to test the
+ * layers that have actually broken: extracted facts and rolling summaries are
+ * cross-conversation, so a fact that survives a reset came through the memory
+ * system rather than the transcript.
+ *
+ * `settleMs` pauses before the next turn. Extraction runs after the response
+ * is sent, so a follow-up fired immediately can beat its own memory into the
+ * database.
  */
 async function runCase(testCase, { baseUrl, token }) {
     let currentSlug = null
@@ -105,7 +112,7 @@ async function runCase(testCase, { baseUrl, token }) {
     for (const rawTurn of testCase.turns) {
         const turn = typeof rawTurn === 'string' ? { persona: testCase.persona, text: rawTurn } : rawTurn
 
-        if (turn.persona !== currentSlug) {
+        if (turn.persona !== currentSlug || turn.newConversation) {
             currentSlug = turn.persona
             persona = findPersona(currentSlug)
             history = []
@@ -138,6 +145,8 @@ async function runCase(testCase, { baseUrl, token }) {
         model = body.model || model
         conversationId = body.conversationId || conversationId
         history.push({ role: 'assistant', content: reply })
+
+        if (turn.settleMs) await new Promise((r) => setTimeout(r, turn.settleMs))
     }
 
     return { reply, model }
@@ -196,7 +205,7 @@ async function main() {
     console.log(`\n  ${cases.length} cases, ${calls} model calls, target ${baseUrl}\n`)
 
     if (args.dryRun) {
-        for (const c of cases) console.log(`    ${c.id.padEnd(50)} ${c.turns.length} turn(s)`)
+        for (const c of cases) console.log(`    ${c.id.padEnd(54)} ${c.turns.length} turn(s)`)
         console.log('\n  dry run, nothing sent\n')
         return
     }
@@ -213,7 +222,7 @@ async function main() {
 
     const results = []
     for (const testCase of cases) {
-        process.stdout.write(`  ${testCase.id.padEnd(50)}`)
+        process.stdout.write(`  ${testCase.id.padEnd(54)}`)
         try {
             const { reply, model } = await runCase(testCase, { baseUrl, token })
             const failures = checkAssertions(testCase, reply)
