@@ -495,7 +495,8 @@ ${relationshipContext}`
       res.status(200).json({
         response: result.response,
         success: true,
-        conversationId: finalConversationId
+        conversationId: finalConversationId,
+        model: result.metadata?.model || null
       })
 
       await extractAndSaveMemories(userId, persona.slug, finalConversationId, message, result.response, memories, supabaseAdmin)
@@ -510,7 +511,8 @@ ${relationshipContext}`
       incrementPersonaMessageCount(persona.slug)
       res.status(200).json({
         response: result.response,
-        success: true
+        success: true,
+        model: result.metadata?.model || null
       })
       await extractAndSaveMemories(userId, persona.slug, conversationId, message, result.response, memories, supabaseAdmin)
         .catch(err => console.error('[Memory Extraction Error]:', err))
@@ -522,7 +524,8 @@ ${relationshipContext}`
 
     return res.status(200).json({
       response: result.response,
-      success: true
+      success: true,
+      model: result.metadata?.model || null
     })
 
   } catch (error) {

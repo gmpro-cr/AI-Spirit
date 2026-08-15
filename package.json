@@ -16,7 +16,8 @@
     "backup": "node scripts/backup-database.js",
     "load-test": "node scripts/load-test.js",
     "cleanup": "node scripts/cleanup-database.js --dry-run",
-    "cleanup:execute": "node scripts/cleanup-database.js --execute"
+    "cleanup:execute": "node scripts/cleanup-database.js --execute",
+    "eval": "node evals/run.mjs"
   },
   "dependencies": {
     "@capacitor/cli": "^8.0.0",
