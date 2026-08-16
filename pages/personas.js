@@ -14,6 +14,32 @@ import { supabase } from '@/lib/supabase'
 import { useAuth } from '@/context/AuthContext'
 import { WebsiteSchema, SoftwareApplicationSchema, ServiceSchema } from '@/components/seo/StructuredData'
 
+const PERSONA_STATS_CACHE_KEY = 'esperit_persona_stats'
+
+/**
+ * Last-known popularity counts, read synchronously so the first paint is already
+ * in the right order.
+ *
+ * The grid is painted from the static catalogue before any network call resolves,
+ * but the popularity sort needs /api/persona-views. Until that lands every count
+ * reads as 0, the comparator is a no-op, and the grid sits in catalogue order —
+ * then visibly reshuffles when the stats arrive. Seeding from the last visit means
+ * the incoming stats usually reorder nothing the user can see.
+ *
+ * Returns {} during SSR. Safe because the first render shows skeletons
+ * (filteredPersonas is empty), so this never feeds server/client markup.
+ */
+function readCachedPersonaStats() {
+  if (typeof window === 'undefined') return {}
+  try {
+    const raw = window.localStorage.getItem(PERSONA_STATS_CACHE_KEY)
+    const parsed = raw ? JSON.parse(raw) : null
+    return parsed && typeof parsed === 'object' ? parsed : {}
+  } catch {
+    return {}
+  }
+}
+
 function Personas() {
   const router = useRouter()
   const { user, userProfile, isPremium } = useAuth()
@@ -27,7 +53,7 @@ function Personas() {
   const [loadingPersonas, setLoadingPersonas] = useState(true)
   const [likedPersonaSlugs, setLikedPersonaSlugs] = useState([])
   const [showWelcomeTip, setShowWelcomeTip] = useState(false)
-  const [personaStats, setPersonaStats] = useState({})
+  const [personaStats, setPersonaStats] = useState(readCachedPersonaStats)
   const [premiumModal, setPremiumModal] = useState({ open: false, reason: 'personas' })
 
   const handlePersonaClick = (persona) => {
@@ -157,6 +183,14 @@ function Personas() {
           }
         })
         setPersonaStats(statsMap)
+
+        // Seed the next visit so it can paint in popularity order immediately.
+        try {
+          window.localStorage.setItem(PERSONA_STATS_CACHE_KEY, JSON.stringify(statsMap))
+        } catch {
+          // Quota exceeded or private mode — this session still has the stats
+          // in memory, only the head start on the next visit is lost.
+        }
       }
     } catch {
       // Non-fatal: cards simply render without a message-count badge.

@@ -9,6 +9,10 @@ import { moderateContent } from '@/lib/moderation'
 import { logApiCall, checkCostThreshold } from '@/lib/cost-tracking'
 import { getContextIfNeeded } from '@/lib/contextProvider'
 import { extractAndSaveMemories, getUserMemories, formatMemoriesForContext, updateConversationSummary, getConversationSummaries, formatSummariesForContext } from '@/lib/memorySystem'
+// Static import: this module has no imports of its own, so there is no cycle to
+// dodge. It used to be a dynamic import() awaited on the request path, which
+// bought nothing and cost a round of module resolution before every reply.
+import { getRelationshipContext, getPersonaRelationship } from '@/lib/relationshipSystem'
 
 // Fallback chain: Ollama (self-hosted) → OpenRouter (free API) → Groq (free API)
 
@@ -46,6 +50,94 @@ async function incrementPersonaMessageCount(personaSlug) {
   } catch (error) {
     console.error('[Message Count] Error incrementing:', error)
   }
+}
+
+const DAILY_MESSAGE_LIMIT = 100
+
+/**
+ * Resolves whether this user is allowed to send another message.
+ *
+ * The subscription lookup and the daily-usage count are independent, so they run
+ * together — previously the count only started once the subscription resolved,
+ * which cost a full extra round trip on every message for every free user.
+ *
+ * The count itself used to be two queries: fetch every conversation id for the
+ * user, then count messages with `.in(<those ids>)`. That list is unbounded (a
+ * real account here has 244) and had to be serialized over the wire both ways.
+ * The `messages.conversation_id -> conversations(id)` foreign key lets Postgres
+ * do the join instead, in one round trip.
+ *
+ * Fails open on error, matching the previous behaviour: a broken usage check
+ * must never stop someone from talking.
+ */
+async function checkMessageAllowance(userId) {
+  const nowIso = new Date().toISOString()
+
+  const istOffset = 5.5 * 60 * 60 * 1000
+  const nowIST = new Date(Date.now() + istOffset)
+  const todayISTinUTC = new Date(Date.UTC(nowIST.getUTCFullYear(), nowIST.getUTCMonth(), nowIST.getUTCDate()) - istOffset)
+
+  const [subResult, countResult] = await Promise.all([
+    supabaseAdmin
+      .from('subscriptions')
+      .select('status')
+      .eq('user_id', userId)
+      .eq('status', 'active')
+      .gt('current_period_end', nowIso)
+      .maybeSingle(),
+    supabaseAdmin
+      .from('messages')
+      .select('id, conversations!inner(user_id)', { count: 'exact', head: true })
+      .eq('conversations.user_id', userId)
+      .eq('role', 'user')
+      .gte('created_at', todayISTinUTC.toISOString()),
+  ])
+
+  const isPremium = !!subResult.data
+  if (isPremium) return { isPremium: true, blocked: false }
+
+  if (countResult.error) {
+    console.error('[Rate Limit] Failed to count today\'s messages:', countResult.error.message)
+    return { isPremium: false, blocked: false }
+  }
+
+  return {
+    isPremium: false,
+    blocked: (countResult.count || 0) >= DAILY_MESSAGE_LIMIT,
+  }
+}
+
+/**
+ * Built-in personas arrive in the request body; custom ones need a lookup.
+ */
+async function resolvePersona(personaObj, personaId) {
+  if (personaObj) return { persona: personaObj }
+
+  const { data, error } = await supabaseAdmin
+    .from('personas')
+    .select('*')
+    .eq('slug', personaId)
+    .single()
+
+  if (error || !data) return { error: 'Persona not found in database' }
+  return { persona: data }
+}
+
+async function loadStoredHistory(conversationId) {
+  if (!conversationId) return []
+
+  const { data, error } = await supabaseAdmin
+    .from('messages')
+    .select('role, content')
+    .eq('conversation_id', conversationId)
+    .order('created_at', { ascending: true })
+    .limit(20)
+
+  if (error) {
+    console.error('[Chat API] Failed to load conversation history:', error.message)
+    return []
+  }
+  return data || []
 }
 
 export default async function handler(req, res) {
@@ -112,51 +204,7 @@ export default async function handler(req, res) {
       })
     }
 
-    // Check Premium Status & Message Limits
-    // Run subscription check in parallel with other setup work below
-    let isPremium = false
-    if (userId) {
-      const { data: subscription } = await supabaseAdmin
-        .from('subscriptions')
-        .select('status')
-        .eq('user_id', userId)
-        .eq('status', 'active')
-        .gt('current_period_end', new Date().toISOString())
-        .single()
-      isPremium = !!subscription
-
-      if (!isPremium) {
-        const istOffset = 5.5 * 60 * 60 * 1000
-        const nowIST = new Date(Date.now() + istOffset)
-        const todayISTinUTC = new Date(Date.UTC(nowIST.getUTCFullYear(), nowIST.getUTCMonth(), nowIST.getUTCDate()) - istOffset)
-
-        const { data: conversations, error: convFetchError } = await supabaseAdmin
-          .from('conversations')
-          .select('id')
-          .eq('user_id', userId)
-
-        if (convFetchError) {
-          console.error('[Rate Limit] Failed to fetch conversations:', convFetchError.message)
-        } else if (conversations?.length) {
-          const { count, error: countError } = await supabaseAdmin
-            .from('messages')
-            .select('*', { count: 'exact', head: true })
-            .in('conversation_id', conversations.map(c => c.id))
-            .eq('role', 'user')
-            .gte('created_at', todayISTinUTC.toISOString())
-
-          if (!countError && count >= 100) {
-            return res.status(403).json({
-              error: 'Daily message limit reached (100 messages). Upgrade to Premium for unlimited access.',
-              isLimitReached: true,
-              limit: 100,
-            })
-          }
-        }
-      }
-    }
-
-    // Content moderation
+    // Content moderation — synchronous, so do it before spending any round trips
     const moderationResult = moderateContent(message)
     if (moderationResult.blocked) {
       return res.status(400).json({
@@ -164,44 +212,35 @@ export default async function handler(req, res) {
       })
     }
 
-    // Get persona: either from request body OR query database
-    let persona
-    if (personaObj) {
-      // Use persona object directly (for INITIAL_PERSONAS)
-      persona = personaObj
-    } else {
-      // Query database (for custom personas)
-      const { data, error: personaError } = await supabaseAdmin
-        .from('personas')
-        .select('*')
-        .eq('slug', personaId)
-        .single()
+    // ---- Preflight phase A ----
+    // The usage check, the persona lookup and the stored history are mutually
+    // independent. They used to run one after another; against a database a
+    // hemisphere away that serialization was the bulk of the wait before the
+    // model was even asked for a token.
+    const needsStoredHistory = !isGuest && !!conversationId
 
-      if (personaError || !data) {
-        return res.status(404).json({ error: 'Persona not found in database' })
-      }
-      persona = data
+    const [allowance, personaResult, storedHistory] = await Promise.all([
+      userId ? checkMessageAllowance(userId) : Promise.resolve({ isPremium: false, blocked: false }),
+      resolvePersona(personaObj, personaId),
+      needsStoredHistory ? loadStoredHistory(conversationId) : Promise.resolve([]),
+    ])
+
+    if (allowance.blocked) {
+      return res.status(403).json({
+        error: `Daily message limit reached (${DAILY_MESSAGE_LIMIT} messages). Upgrade to Premium for unlimited access.`,
+        isLimitReached: true,
+        limit: DAILY_MESSAGE_LIMIT,
+      })
     }
 
-    let messageHistory = []
-
-    if (isGuest) {
-      messageHistory = [...(conversationHistory || []), { role: 'user', content: message }].slice(-20)
-    } else if (conversationId) {
-      const { data: history, error: historyError } = await supabaseAdmin
-        .from('messages')
-        .select('role, content')
-        .eq('conversation_id', conversationId)
-        .order('created_at', { ascending: true })
-        .limit(20)
-
-      if (historyError) {
-        console.error('[Chat API] Failed to load conversation history:', historyError.message)
-      }
-      messageHistory = [...(history || []), { role: 'user', content: message }]
-    } else {
-      messageHistory = [...(conversationHistory || []), { role: 'user', content: message }].slice(-20)
+    if (personaResult.error) {
+      return res.status(404).json({ error: personaResult.error })
     }
+    const persona = personaResult.persona
+
+    const messageHistory = needsStoredHistory
+      ? [...storedHistory, { role: 'user', content: message }]
+      : [...(conversationHistory || []), { role: 'user', content: message }].slice(-20)
 
     // Validate persona has system_prompt
     if (!persona.system_prompt) {
@@ -244,17 +283,17 @@ CRITICAL RULES:
 
     const personaLanguage = persona.language || 'en'
 
-    // Fetch context, memories, and relationship in parallel — only inject context on first message
+    // ---- Preflight phase B ----
+    // Everything here needs persona.slug, so it can't be folded into phase A.
+    // Context is only injected on the first message of a conversation.
     const isFirstMessage = !conversationId
-    const relationshipMod = await import('@/lib/relationshipSystem')
-    const { getRelationshipContext } = relationshipMod
 
     const [contextString, memories, pastSummaries, relationship] = await Promise.all([
       isFirstMessage ? getContextIfNeeded(null, personaLanguage, true) : Promise.resolve(null),
       userId && !isGuest ? getUserMemories(userId, persona.slug, supabaseAdmin) : Promise.resolve([]),
       userId && !isGuest ? getConversationSummaries(userId, persona.slug, conversationId, supabaseAdmin) : Promise.resolve([]),
       userId && !isGuest
-        ? relationshipMod.getPersonaRelationship(userId, persona.slug, supabaseAdmin)
+        ? getPersonaRelationship(userId, persona.slug, supabaseAdmin)
             .catch(err => { console.error('[Relationship] Failed to load:', err.message); return null })
         : Promise.resolve(null),
     ])
@@ -336,9 +375,23 @@ ${relationshipContext}`
           ? generateOllamaResponseStream(finalSystemPrompt, messageHistory, contextString)
           : generatePersonaResponseStream(finalSystemPrompt, messageHistory, contextString)
 
-        for await (const chunk of streamGenerator) {
-          fullResponse += chunk
-          res.write(`data: ${JSON.stringify({ chunk, done: false })}\n\n`)
+        // The primary generator *throws* when every OpenRouter free model is rate
+        // limited (RATE_LIMIT_EXCEEDED) — which is routine on the free tier, since a
+        // single message can spend three OpenRouter calls once memory extraction and
+        // summarization are counted. That throw used to escape to the outer catch,
+        // so the Groq fallback below never ran and the user waited through four
+        // failed attempts only to be shown an error. Swallow it here instead and
+        // leave fullResponse empty so the fallback path takes over.
+        try {
+          for await (const chunk of streamGenerator) {
+            fullResponse += chunk
+            res.write(`data: ${JSON.stringify({ chunk, done: false })}\n\n`)
+          }
+        } catch (primaryError) {
+          console.warn('[Streaming] Primary stream failed:', primaryError.message)
+          // If tokens already reached the client we cannot restart cleanly — the
+          // user would see two different replies spliced together. Keep what landed.
+          if (fullResponse) throw primaryError
         }
 
         // If streaming produced no content, fall back to Groq streaming

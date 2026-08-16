@@ -82,6 +82,15 @@ export default async function handler(req, res) {
 
             if (error) throw error
 
+            // These counts are identical for every visitor — nothing here is
+            // personalized — but the route was previously uncacheable, so each
+            // pageview paid a function invocation plus a Supabase round trip
+            // (~530ms). That delay is exactly the window in which the personas
+            // grid sits in catalogue order before re-sorting by popularity.
+            // Serving it from the edge collapses that window. Counts going up to
+            // 5 minutes stale is irrelevant to a popularity sort.
+            res.setHeader('Cache-Control', 'public, s-maxage=300, stale-while-revalidate=3600')
+
             return res.status(200).json({ views: data })
         } catch (error) {
             console.error('Error fetching persona stats:', error)
