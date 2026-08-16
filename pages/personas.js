@@ -16,6 +16,13 @@ import { WebsiteSchema, SoftwareApplicationSchema, ServiceSchema } from '@/compo
 
 const PERSONA_STATS_CACHE_KEY = 'esperit_persona_stats'
 
+const SEARCH_PROMPTS = [
+  'Who do you need to talk to today?',
+  'Find your perfect advisor...',
+  'Looking for some guidance?',
+  'Search for a conversation partner...'
+]
+
 /**
  * Last-known popularity counts, read synchronously so the first paint is already
  * in the right order.
@@ -69,14 +76,20 @@ function Personas() {
     setIsModalOpen(true)
   }
 
-  // Rotating search placeholders
-  const searchPrompts = [
-    'Who do you need to talk to today?',
-    'Find your perfect advisor...',
-    'Looking for some guidance?',
-    'Search for a conversation partner...'
-  ]
-  const [searchPlaceholder] = useState(() => searchPrompts[Math.floor(Math.random() * searchPrompts.length)])
+  // Rotating search placeholders.
+  //
+  // The pick has to happen *after* mount. Choosing randomly during render made
+  // the server emit one prompt and the client another, so hydration failed on
+  // roughly three loads in four — and a failed hydration makes React throw away
+  // the server-rendered HTML and re-render the whole page on the client, which
+  // is precisely the first-paint cost this page can least afford. Rendering a
+  // fixed prompt first keeps server and client markup identical; the swap lands
+  // a frame later and is invisible in an empty input.
+  const [searchPlaceholder, setSearchPlaceholder] = useState(SEARCH_PROMPTS[0])
+
+  useEffect(() => {
+    setSearchPlaceholder(SEARCH_PROMPTS[Math.floor(Math.random() * SEARCH_PROMPTS.length)])
+  }, [])
 
   // Default featured personas for "For You" section - balanced mix for engagement
   const FEATURED_PERSONAS = [
