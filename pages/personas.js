@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import SidePanelNew from '@/components/layout/SidePanel'
@@ -10,6 +10,7 @@ import CreatePersonaModal from '@/components/personas/CreatePersonaModal'
 import EditPersonaModal from '@/components/personas/EditPersonaModal'
 import PremiumPromptModal from '@/components/modals/PremiumPromptModal'
 import { INITIAL_PERSONAS } from '@/data/personas'
+import POPULARITY_SNAPSHOT from '@/data/popularity.json'
 import { supabase } from '@/lib/supabase'
 import { useAuth } from '@/context/AuthContext'
 import { WebsiteSchema, SoftwareApplicationSchema, ServiceSchema } from '@/components/seo/StructuredData'
@@ -24,27 +25,48 @@ const SEARCH_PROMPTS = [
 ]
 
 /**
- * Last-known popularity counts, read synchronously so the first paint is already
- * in the right order.
+ * Popularity counts available at first paint, in increasing order of freshness:
+ * the snapshot committed with the build, then this browser's last visit.
  *
  * The grid is painted from the static catalogue before any network call resolves,
  * but the popularity sort needs /api/persona-views. Until that lands every count
  * reads as 0, the comparator is a no-op, and the grid sits in catalogue order —
- * then visibly reshuffles when the stats arrive. Seeding from the last visit means
- * the incoming stats usually reorder nothing the user can see.
+ * then visibly reshuffles when the stats arrive.
  *
- * Returns {} during SSR. Safe because the first render shows skeletons
- * (filteredPersonas is empty), so this never feeds server/client markup.
+ * POPULARITY_SNAPSHOT is what makes that true for a first-time visitor too. The
+ * localStorage cache alone only helped people who had been here before, which is
+ * the wrong half of the audience for a discovery page. Regenerate the snapshot
+ * with `npm run popularity`; it is allowed to be stale, because catalogue order
+ * is arbitrary and any real ranking beats it.
+ *
+ * Returns the snapshot alone during SSR. Safe because the first render shows
+ * skeletons (filteredPersonas is empty), so this never feeds server/client markup.
  */
 function readCachedPersonaStats() {
-  if (typeof window === 'undefined') return {}
+  if (typeof window === 'undefined') return POPULARITY_SNAPSHOT
   try {
     const raw = window.localStorage.getItem(PERSONA_STATS_CACHE_KEY)
     const parsed = raw ? JSON.parse(raw) : null
-    return parsed && typeof parsed === 'object' ? parsed : {}
+    return parsed && typeof parsed === 'object'
+      ? { ...POPULARITY_SNAPSHOT, ...parsed }
+      : POPULARITY_SNAPSHOT
   } catch {
-    return {}
+    return POPULARITY_SNAPSHOT
   }
+}
+
+/**
+ * The one place the grid's order is decided. Used both for the very first
+ * paint and for every re-sort afterwards — if only the effect sorted, the
+ * initial setFilteredPersonas below would paint one unsorted frame before the
+ * effect ran, which is the reshuffle this whole snapshot exists to remove.
+ */
+function sortByPopularity(list, stats) {
+  return [...list].sort((a, b) => {
+    const countA = stats[a.slug]?.message_count || 0
+    const countB = stats[b.slug]?.message_count || 0
+    return countB - countA
+  })
 }
 
 function Personas() {
@@ -61,6 +83,10 @@ function Personas() {
   const [likedPersonaSlugs, setLikedPersonaSlugs] = useState([])
   const [showWelcomeTip, setShowWelcomeTip] = useState(false)
   const [personaStats, setPersonaStats] = useState(readCachedPersonaStats)
+  // loadAllPersonas is defined on first render and closes over that render's
+  // personaStats; the ref keeps its first-paint sort reading the live value.
+  const personaStatsRef = useRef(personaStats)
+  useEffect(() => { personaStatsRef.current = personaStats }, [personaStats])
   const [premiumModal, setPremiumModal] = useState({ open: false, reason: 'personas' })
 
   const handlePersonaClick = (persona) => {
@@ -134,7 +160,7 @@ function Personas() {
   }
 
   useEffect(() => {
-    loadAllPersonas()
+    loadAllPersonas().catch(e => console.error('[loadAllPersonas]', e))
   }, [])
 
   // Check for ?create=true query parameter
@@ -161,7 +187,7 @@ function Personas() {
 
     const basePersonas = [...staticPersonas, ...localCustom]
     setPersonas(basePersonas)
-    setFilteredPersonas(basePersonas)
+    setFilteredPersonas(sortByPopularity(basePersonas, personaStatsRef.current))
     setLoadingPersonas(false)
 
     // Custom personas from the database — merged in when they arrive.
@@ -251,14 +277,7 @@ function Personas() {
       )
     }
 
-    // Sort by message count (highest first)
-    filtered = [...filtered].sort((a, b) => {
-      const countA = personaStats[a.slug]?.message_count || 0
-      const countB = personaStats[b.slug]?.message_count || 0
-      return countB - countA
-    })
-
-    setFilteredPersonas(filtered)
+    setFilteredPersonas(sortByPopularity(filtered, personaStats))
   }, [searchQuery, selectedCategory, personas, likedPersonaSlugs, personaStats])
 
   return (

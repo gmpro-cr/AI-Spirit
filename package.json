@@ -17,7 +17,8 @@
     "load-test": "node scripts/load-test.js",
     "cleanup": "node scripts/cleanup-database.js --dry-run",
     "cleanup:execute": "node scripts/cleanup-database.js --execute",
-    "eval": "node evals/run.mjs"
+    "eval": "node evals/run.mjs",
+    "popularity": "node scripts/generate-popularity.mjs"
   },
   "dependencies": {
     "@capacitor/cli": "^8.0.0",
