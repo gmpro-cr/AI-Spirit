@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import Link from 'next/link'
 import { Fraunces } from 'next/font/google'
 import { useEffect } from 'react'
 
@@ -101,12 +102,12 @@ export default function DevPage() {
               AI-Spirit is a persona chat platform — Osho, Nelson Mandela, an unhinged
               therapist, a yandere romance character, and others, each holding a
               conversation and a memory of you. This is the engineering walkthrough:
-              the request pipeline, what's actually enforced versus just asked for,
-              and what's tested rather than assumed.
+              the request pipeline, what&apos;s actually enforced versus just asked for,
+              and what&apos;s tested rather than assumed.
             </p>
-            <a className="dev-back-link" href="/">
+            <Link className="dev-back-link" href="/">
               &larr; Back to AI-Spirit
-            </a>
+            </Link>
           </div>
         </header>
 
@@ -148,7 +149,7 @@ export default function DevPage() {
                 </pre>
                 <div className="dev-diagram-caption">
                   The write-back step runs after the response is already on its way to
-                  the browser — it's <code>await</code>ed, not fired-and-forgotten,
+                  the browser — it&apos;s <code>await</code>ed, not fired-and-forgotten,
                   because a serverless function is frozen the instant the handler
                   returns. An earlier version of this skipped that and personas simply
                   never remembered anything.
@@ -160,7 +161,7 @@ export default function DevPage() {
               <h2>Guardrails</h2>
               <p>
                 <code>moderateContent()</code> in <code>lib/moderation.js</code> runs
-                on every incoming message before it reaches a model. It's a set of
+                on every incoming message before it reaches a model. It&apos;s a set of
                 deterministic checks, not a call to another API:
               </p>
               <div className="dev-diagram">
@@ -174,16 +175,16 @@ export default function DevPage() {
                 </pre>
                 <div className="dev-diagram-caption">
                   Profanity filtering is deliberately off — personas need to speak
-                  in-character, and the models' own safety layers are the backstop for
+                  in-character, and the models&apos; own safety layers are the backstop for
                   that, not this filter. On the way back out,{' '}
-                  <code>sanitizeForDisplay()</code> HTML-escapes a reply before it's
+                  <code>sanitizeForDisplay()</code> HTML-escapes a reply before it&apos;s
                   rendered, closing the obvious XSS path.
                 </div>
               </div>
               <p>
-                What this list does <em>not</em> cover: the model's own reply.
+                What this list does <em>not</em> cover: the model&apos;s own reply.
                 Nothing in production inspects what a persona actually says back —
-                that's caught, if at all, by the eval suite's safety cases (below),
+                that&apos;s caught, if at all, by the eval suite&apos;s safety cases (below),
                 not by a live check on every message.
               </p>
             </section>
@@ -210,7 +211,7 @@ export default function DevPage() {
     out -.->|OpenRouter chain empty| groq["Groq fallback"]`}
                 </pre>
                 <div className="dev-diagram-caption">
-                  <code>looksLikeLeakedReasoning()</code> is what decides "leaked" —
+                  <code>looksLikeLeakedReasoning()</code> is what decides &quot;leaked&quot; —
                   the same function runs in production and in every eval case, so a
                   model that leaks scratchpad text fails the eval before it ever
                   reaches a user. Streaming and non-streaming requests pick a
@@ -224,7 +225,7 @@ export default function DevPage() {
             <section className="dev-doc" id="memory">
               <h2>Memory</h2>
               <p>
-                "Remembering you" is two separate systems, not one, and both are
+                &quot;Remembering you&quot; is two separate systems, not one, and both are
                 scoped to a <code>(user, persona)</code> pair — a fact told to Osho
                 does not surface when you talk to Mandela.
               </p>
@@ -240,9 +241,9 @@ export default function DevPage() {
                 </pre>
                 <div className="dev-diagram-caption">
                   Both layers write independently after every turn and both feed the
-                  next reply's system prompt. This is the layer with the worst track
+                  next reply&apos;s system prompt. This is the layer with the worst track
                   record in this codebase — it has broken twice before (memories not
-                  surviving a new conversation) — which is why it's the most
+                  surviving a new conversation) — which is why it&apos;s the most
                   eval-covered system on this page.
                 </div>
               </div>
@@ -269,7 +270,7 @@ export default function DevPage() {
                   Constrained by the OpenRouter free tier: 50 model calls/day, and the
                   current suite spends 30 of them. The runner prints the cost before
                   spending anything and refuses to start if a run would exceed the
-                  day's budget — which is why this is a pre-release check, not a
+                  day&apos;s budget — which is why this is a pre-release check, not a
                   per-commit one.
                 </div>
               </div>
@@ -328,9 +329,9 @@ export default function DevPage() {
               <p>Listed here on purpose, not swept into the stack section:</p>
               <ul className="dev-gap-list">
                 <li>
-                  <strong>Reply content isn't screened live.</strong> Guardrails run on
+                  <strong>Reply content isn&apos;t screened live.</strong> Guardrails run on
                   what the user sends, not on what a persona sends back — the eval
-                  safety cases are the only thing standing between a persona's
+                  safety cases are the only thing standing between a persona&apos;s
                   register and a harmful reply today.
                 </li>
                 <li>
@@ -340,14 +341,14 @@ export default function DevPage() {
                 </li>
                 <li>
                   <strong>Rate limiting is dormant.</strong> The module exists and is
-                  tested in isolation, but the chat API doesn't call it — a
+                  tested in isolation, but the chat API doesn&apos;t call it — a
                   deliberate, temporary tradeoff, not an oversight.
                 </li>
                 <li>
                   <strong>The in-repo safety audit is stale.</strong>{' '}
                   <code>SAFETY-RELIABILITY-AUDIT.md</code> dates to 2025-11-15 and
                   describes moderation as far weaker than the current{' '}
-                  <code>lib/moderation.js</code> — it hasn't been refreshed since.
+                  <code>lib/moderation.js</code> — it hasn&apos;t been refreshed since.
                 </li>
               </ul>
             </section>
@@ -388,7 +389,7 @@ export default function DevPage() {
           This page documents AI-Spirit&apos;s own engineering systems, generated
           from the current codebase rather than a fixed spec — it will drift out of
           date the day a system changes and nobody updates it.{' '}
-          <a href="/">Back to AI-Spirit.</a>
+          <Link href="/">Back to AI-Spirit.</Link>
         </footer>
       </div>
 
