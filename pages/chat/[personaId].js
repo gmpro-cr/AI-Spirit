@@ -829,7 +829,7 @@ function ChatPage() {
             phone screen. */}
         <div className="app-shell-offset relative flex flex-col flex-1 min-h-0 min-w-0">
           {/* Header */}
-          <header className="flex items-center justify-between px-5 h-[72px] flex-shrink-0 glass-nav z-10">
+          <header className="flex items-center justify-between px-5 h-[var(--chrome-header-h)] flex-shrink-0 z-10 bg-white/80 dark:bg-[#0B0B0C]/80 backdrop-blur-xl border-b border-black/[0.06] dark:border-white/[0.06]">
             <div className="flex items-center flex-1">
               <button
                 onClick={handleBack}
@@ -1193,7 +1193,7 @@ function ChatPage() {
           )}
 
           {/* Composer — one container, controls inside it */}
-          <footer className="pb-4 pt-2 flex-shrink-0 bg-white/75 dark:bg-[#0B0B0C]/75 backdrop-blur-2xl" style={{ boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.7), 0 -4px 24px rgba(0, 0, 0, 0.04)' }}>
+          <footer className="min-h-[var(--chrome-dock-h)] flex flex-col justify-center pb-4 pt-2 flex-shrink-0 bg-white/80 dark:bg-[#0B0B0C]/80 backdrop-blur-xl border-t border-black/[0.06] dark:border-white/[0.06]">
             <div className="mx-auto w-full max-w-3xl px-5">
               <form
                 onSubmit={handleSendMessage}

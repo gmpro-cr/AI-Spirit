@@ -101,8 +101,7 @@ export default function SidePanel({ onBack, backButtonText, showPastChats = true
 
   return (
     <aside
-      className={`app-sidebar bg-white/80 dark:bg-[#0B0B0C]/80 backdrop-blur-xl flex flex-col hidden md:flex fixed left-0 z-[30] transition-colors ${hasNavbar ? 'h-[calc(100vh-5rem)] top-20' : 'h-screen top-0'}`}
-      style={{ boxShadow: 'inset -1px 0 0 rgba(0, 0, 0, 0.04), inset 1px 0 0 rgba(255, 255, 255, 0.7)' }}
+      className={`app-sidebar bg-white/80 dark:bg-[#0B0B0C]/80 backdrop-blur-xl border-r border-black/[0.06] dark:border-white/[0.06] flex flex-col hidden md:flex fixed left-0 z-[30] transition-colors ${hasNavbar ? 'h-[calc(100vh-5rem)] top-20' : 'h-screen top-0'}`}
     >
       {railButton}
 
@@ -110,7 +109,7 @@ export default function SidePanel({ onBack, backButtonText, showPastChats = true
 
         {/* Brand header (shown when there is no top navbar) */}
         {!hasNavbar && (
-          <div className="px-5 h-[72px] flex items-center justify-between border-b border-black/[0.06] dark:border-white/[0.06] flex-shrink-0">
+          <div className="px-5 h-[var(--chrome-header-h)] flex items-center justify-between border-b border-black/[0.06] dark:border-white/[0.06] flex-shrink-0">
             <Link href="/" className="flex items-center group">
               <div className="w-12 h-12 bg-black rounded-[0.75rem] overflow-hidden flex-shrink-0 group-hover:opacity-80 transition-opacity">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -132,7 +131,7 @@ export default function SidePanel({ onBack, backButtonText, showPastChats = true
 
         {/* Back navigation */}
         {onBack && (
-          <div className="flex items-center justify-between h-[72px] px-5 border-b border-black/[0.06] dark:border-white/[0.06] flex-shrink-0">
+          <div className="flex items-center justify-between h-[var(--chrome-header-h)] px-5 border-b border-black/[0.06] dark:border-white/[0.06] flex-shrink-0">
             <button
               onClick={onBack}
               className="flex items-center gap-2 text-sm font-medium text-black/60 dark:text-white/60 hover:text-black dark:hover:text-white transition-colors group"
@@ -291,7 +290,7 @@ export default function SidePanel({ onBack, backButtonText, showPastChats = true
       </div>
 
       {/* User section */}
-      <div className="app-sidebar-body border-t border-black/[0.06] dark:border-white/[0.06] px-4 py-4 flex-shrink-0">
+      <div className="app-sidebar-body min-h-[var(--chrome-dock-h)] flex flex-col justify-start border-t border-black/[0.06] dark:border-white/[0.06] px-4 py-4 flex-shrink-0">
         {user ? (
           <button
             onClick={() => setIsSettingsOpen(true)}

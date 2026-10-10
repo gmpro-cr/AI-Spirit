@@ -36,6 +36,12 @@ p {
   :root {
     --sidebar-w: 16rem;
 
+    /* Shared chrome bands: the side panel's top and bottom sections and the
+       chat page's header and composer dock use these, so their dividers sit
+       on the same horizontal lines. */
+    --chrome-header-h: 72px;
+    --chrome-dock-h: 104px;
+
     /* Semantic stacking order. Everything that layers reads from this scale
        rather than inventing a number — the account panel used to sit at 9999
        and still render *under* the mobile nav at 99999. */
