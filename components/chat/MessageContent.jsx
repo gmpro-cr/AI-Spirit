@@ -71,7 +71,8 @@ export default function MessageContent({ content, tone = 'light', className = ''
   }
 
   return (
-    <div className={className}>
+    // overflow-wrap:anywhere breaks long unspaced tokens (URLs) inside the bubble.
+    <div className={`[overflow-wrap:anywhere] ${className}`}>
       <ReactMarkdown remarkPlugins={[remarkGfm]} components={components}>
         {content}
       </ReactMarkdown>

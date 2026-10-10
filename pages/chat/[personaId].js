@@ -781,7 +781,9 @@ function ChatPage() {
         <title>{`Chat with ${persona.name} - ${persona.category || 'AI'} Companion | AI Spirit`}</title>
         <meta name="description" content={persona.description ? `${persona.description}. Chat with ${persona.name} on AI Spirit - your 24/7 AI companion for engaging conversations.` : `Talk to ${persona.name} on AI Spirit. Get instant, judgment-free conversations 24/7 with this ${persona.category || 'AI'} persona.`} />
         <meta name="keywords" content={`chat with ${persona.name}, ${persona.name} AI, ${persona.category || 'AI'} AI chat, talk to ${persona.name}, AI Spirit, AI persona chat, ${persona.name?.toLowerCase()} chatbot`} />
-        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content" />
+        {/* Same key as the DefaultSeo viewport tag, so this one replaces it
+            instead of rendering a second, conflicting viewport meta. */}
+        <meta key="meta:viewport" name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content" />
         <link rel="canonical" href={`https://ai-spirit.in/chat/${personaId}`} />
 
         {/* Open Graph / Social Media Preview Tags */}
@@ -821,8 +823,11 @@ function ChatPage() {
         {/* Side Panel */}
         <SidePanelNew onBack={handleBack} backButtonText="Back to Personas" hasNavbar={false} />
 
-        {/* Chat Area — relative so the scroll-to-bottom control can float over it */}
-        <div className="app-shell-offset relative flex flex-col flex-1 min-h-0">
+        {/* Chat Area — relative so the scroll-to-bottom control can float over it.
+            min-w-0: as a flex item it would otherwise refuse to shrink below its
+            content's width, so one long URL widened the whole column past the
+            phone screen. */}
+        <div className="app-shell-offset relative flex flex-col flex-1 min-h-0 min-w-0">
           {/* Header */}
           <header className="flex items-center justify-between px-5 h-[72px] flex-shrink-0 glass-nav z-10">
             <div className="flex items-center flex-1">
@@ -1004,7 +1009,7 @@ function ChatPage() {
                             <textarea
                               value={editedMessageText}
                               onChange={(e) => setEditedMessageText(e.target.value)}
-                              className="min-w-[16rem] p-3 border border-gray-300 dark:border-white/20 rounded-2xl focus:outline-none focus:ring-2 focus:ring-black text-black dark:text-white resize-none min-h-[60px] text-sm"
+                              className="min-w-[16rem] p-3 border border-gray-300 dark:border-white/20 rounded-2xl focus:outline-none focus:ring-2 focus:ring-black text-black dark:text-white resize-none min-h-[60px] text-base md:text-sm"
                               autoFocus
                             />
                             <div className="flex gap-2 justify-end">
@@ -1188,8 +1193,8 @@ function ChatPage() {
           )}
 
           {/* Composer — one container, controls inside it */}
-          <footer className="px-5 pb-4 pt-2 flex-shrink-0 bg-white/75 dark:bg-[#0B0B0C]/75 backdrop-blur-2xl" style={{ boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.7), 0 -4px 24px rgba(0, 0, 0, 0.04)' }}>
-            <div className="mx-auto w-full max-w-3xl">
+          <footer className="pb-4 pt-2 flex-shrink-0 bg-white/75 dark:bg-[#0B0B0C]/75 backdrop-blur-2xl" style={{ boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.7), 0 -4px 24px rgba(0, 0, 0, 0.04)' }}>
+            <div className="mx-auto w-full max-w-3xl px-5">
               <form
                 onSubmit={handleSendMessage}
                 className="flex items-end gap-1.5 rounded-3xl glass-matte py-2 pl-4 pr-2 transition-colors duration-200 focus-within:bg-white/90 dark:focus-within:bg-[#0B0B0C]/90 focus-within:ring-2 focus-within:ring-black/10 dark:focus-within:ring-white/10"
@@ -1205,7 +1210,7 @@ function ChatPage() {
                   onChange={(e) => setCurrentInput(e.target.value)}
                   onKeyDown={handleComposerKeyDown}
                   placeholder={`Message ${persona.name}...`}
-                  className="flex-1 min-w-0 bg-transparent border-0 py-2 text-black dark:text-white text-sm placeholder:text-gray-500 dark:placeholder:text-white/40 focus:outline-none resize-none overflow-y-auto max-h-40 leading-relaxed"
+                  className="flex-1 min-w-0 bg-transparent border-0 py-2 text-black dark:text-white text-base md:text-sm placeholder:text-gray-500 dark:placeholder:text-white/40 focus:outline-none resize-none overflow-y-auto max-h-40 leading-relaxed"
                 />
 
                 {/* Microphone Button */}
