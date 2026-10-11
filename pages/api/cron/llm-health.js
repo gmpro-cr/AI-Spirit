@@ -86,9 +86,9 @@ async function sendAlert(report) {
     .join('\n')
   const resend = new Resend(process.env.RESEND_API_KEY)
   const { error } = await resend.emails.send({
-    from: 'AI - Spirit <onboarding@resend.dev>',
+    from: 'AI Spirit <onboarding@resend.dev>',
     to: ALERT_TO,
-    subject: `AI-Spirit LLM health: ${report.reasons.join('; ')}`,
+    subject: `AI Spirit LLM health: ${report.reasons.join('; ')}`,
     text: `The daily LLM health check failed for ai-spirit.in.
 
 ${report.reasons.map((r) => `- ${r}`).join('\n')}

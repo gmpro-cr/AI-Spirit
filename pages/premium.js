@@ -5,6 +5,7 @@ import { useRouter } from 'next/router'
 import { useAuth } from '@/context/AuthContext'
 import { supabase } from '@/lib/supabase'
 import Navbar from '@/components/layout/Navbar'
+import Footer from '@/components/layout/Footer'
 import MobileBottomNav from '@/components/layout/MobileBottomNav'
 import ContactModal from '@/components/ContactModal'
 import { FAQSchema } from '@/components/seo/StructuredData'
@@ -12,19 +13,19 @@ import { FAQSchema } from '@/components/seo/StructuredData'
 // FAQ data for structured data
 const premiumFaqs = [
     {
-        question: 'What is included in AI-Spirit Premium?',
-        answer: 'AI-Spirit Premium gives you more messages each day and the ability to create your own custom AI personas.'
+        question: 'What is included in AI Spirit Premium?',
+        answer: 'AI Spirit Premium gives you more messages each day and the ability to create your own custom AI personas.'
     },
     {
-        question: 'How much does AI-Spirit Premium cost?',
-        answer: 'AI-Spirit Premium costs ₹249 per month.'
+        question: 'How much does AI Spirit Premium cost?',
+        answer: 'AI Spirit Premium costs ₹249 per month.'
     },
     {
         question: 'What is the difference between Free and Premium plans?',
         answer: 'Free plan gives you a daily message allowance and access to all personas. Premium gives you more messages each day and the ability to create custom personas.'
     },
     {
-        question: 'Can I cancel my AI-Spirit Premium subscription?',
+        question: 'Can I cancel my AI Spirit Premium subscription?',
         answer: 'Yes, you can cancel your Premium subscription anytime. There are no long-term commitments or cancellation fees.'
     },
     {
@@ -32,7 +33,7 @@ const premiumFaqs = [
         answer: 'Custom persona creation is a Premium feature. Upgrade to design your own AI characters with unique personalities and conversation styles.'
     },
     {
-        question: 'Is the payment for AI-Spirit Premium secure?',
+        question: 'Is the payment for AI Spirit Premium secure?',
         answer: 'Yes, all payments are processed securely through Razorpay, India\'s leading payment gateway. Your payment information is encrypted and protected.'
     }
 ]
@@ -83,7 +84,7 @@ export default function Premium() {
             const options = {
                 key: data.subscription.razorpay_key,
                 subscription_id: data.subscription.id,
-                name: 'AI - Spirit Premium',
+                name: 'AI Spirit Premium',
                 description: 'Monthly Subscription - ₹249/month',
                 prefill: {
                     email: user.email,
@@ -110,14 +111,14 @@ export default function Premium() {
 
     // Check icon component
     const CheckIcon = () => (
-        <svg className="w-5 h-5 text-black flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <svg className="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
         </svg>
     )
 
     // X icon component  
     const XIcon = () => (
-        <svg className="w-5 h-5 text-gray-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <svg className="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
         </svg>
     )
@@ -125,11 +126,11 @@ export default function Premium() {
     return (
         <>
             <Head>
-                <title>Premium Membership - More Messages & Custom Personas | AI - Spirit</title>
+                <title>Premium Membership - More Messages & Custom Personas | AI Spirit</title>
                 <meta name="description" content="Get more daily conversations with AI personas and create your own custom AI characters. Premium membership at ₹249/month." />
-                <meta name="keywords" content="premium membership, AI chat, custom AI personas, AI - Spirit premium" />
+                <meta name="keywords" content="premium membership, AI chat, custom AI personas, AI Spirit premium" />
                 <link rel="canonical" href="https://ai-spirit.in/premium" />
-                <meta property="og:title" content="Premium Membership | AI - Spirit" />
+                <meta property="og:title" content="Premium Membership | AI Spirit" />
                 <meta property="og:description" content="More daily messages + create custom personas for ₹249/month." />
                 <meta property="og:url" content="https://ai-spirit.in/premium" />
             </Head>
@@ -138,106 +139,66 @@ export default function Premium() {
                 src="https://checkout.razorpay.com/v1/checkout.js"
                 strategy="beforeInteractive"
             />
-            <div className="min-h-screen bg-white text-black font-sans pb-24 md:pb-0 transition-colors">
+            <div className="min-h-screen bg-white text-black font-sans">
                 {/* Navbar */}
                 <Navbar />
 
-                {/* Hero Section */}
-                <div className="pt-28 pb-12 px-6 text-center">
-                    <div className="inline-flex items-center gap-2 bg-gray-100 text-gray-700 text-sm font-semibold px-5 py-2.5 rounded-full mb-8 shadow-sm border border-gray-200">
-                        <span>Unlock the full experience</span>
-                    </div>
-                    <h1 className="font-display text-5xl md:text-7xl font-bold mb-6 tracking-tight bg-gradient-to-r from-black via-gray-800 to-black bg-clip-text text-transparent">
+                <section className="pt-32 sm:pt-36 pb-12 px-5 text-center">
+                    <h1 className="font-display text-5xl md:text-7xl text-black tracking-tight leading-[1.05] mb-5">
                         Go Premium
                     </h1>
-                    <p className="text-xl md:text-2xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
-                        More daily messages, plus your own custom AI personas.
+                    <p className="text-lg md:text-xl text-black/70 max-w-xl mx-auto leading-relaxed">
+                        More messages each day, plus personas you design yourself.
                     </p>
-                </div>
+                </section>
 
-                {/* Pricing Cards */}
-                <div className="max-w-5xl mx-auto px-6 pb-16">
-                    <div className="grid md:grid-cols-2 gap-8 items-stretch">
-                        {/* Free Plan */}
-                        <div className="relative p-8 rounded-3xl border-2 border-gray-200 bg-white hover:border-gray-300 hover:shadow-xl transition-all duration-300 flex flex-col group">
-                            <div className="mb-6">
-                                <h3 className="text-lg font-semibold text-gray-600 mb-2 uppercase tracking-wide">Free</h3>
-                                <div className="flex items-baseline gap-2">
-                                    <span className="text-5xl font-bold text-black">₹0</span>
-                                    <span className="text-gray-500 font-medium">/forever</span>
-                                </div>
-                                <p className="text-sm text-gray-500 mt-3">Great for trying out AI-Spirit</p>
-                            </div>
-
-                            <ul className="space-y-4 mb-8 flex-grow">
-                                <li className="flex items-center gap-3 text-black">
-                                    <CheckIcon />
-                                    <span>Daily message allowance</span>
-                                </li>
-                                <li className="flex items-center gap-3 text-black">
-                                    <CheckIcon />
-                                    <span>Access to all personas</span>
-                                </li>
-                                <li className="flex items-center gap-3 text-gray-600">
-                                    <XIcon />
-                                    <span>Create custom personas</span>
-                                </li>
+                <section className="max-w-4xl mx-auto px-5 pb-16">
+                    <div className="grid md:grid-cols-2 gap-4 items-stretch">
+                        {/* Free plan */}
+                        <div className="p-8 rounded-2xl border border-black/10 bg-white flex flex-col">
+                            <h2 className="text-sm font-medium text-black/60 mb-3">Free</h2>
+                            <p className="flex items-baseline gap-2 mb-1">
+                                <span className="font-display text-5xl text-black">₹0</span>
+                            </p>
+                            <p className="text-sm text-black/60 mb-6">For getting to know AI Spirit</p>
+                            <ul className="space-y-3.5 mb-8 flex-grow text-[15px]">
+                                <li className="flex items-center gap-3 text-black"><CheckIcon /><span>Daily message allowance</span></li>
+                                <li className="flex items-center gap-3 text-black"><CheckIcon /><span>All 350+ personas</span></li>
+                                <li className="flex items-center gap-3 text-black/55"><XIcon /><span>Create custom personas</span></li>
                             </ul>
-
                             <button
-                                onClick={() => router.push('/')}
-                                className="w-full py-4 rounded-xl border-2 border-gray-300 text-gray-700 font-semibold hover:bg-gray-50 hover:border-gray-400 transition-all mt-auto shadow-sm hover:shadow"
+                                onClick={() => router.push('/personas')}
+                                className="w-full py-3.5 rounded-full border border-black/15 text-black font-medium hover:bg-black/[0.04] transition-colors mt-auto focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2"
                             >
-                                Continue Free
+                                Continue free
                             </button>
                         </div>
 
-                        {/* Premium Plan */}
-                        <div className="relative p-8 rounded-3xl border-2 border-black bg-gradient-to-b from-white to-gray-50 text-black shadow-2xl hover:shadow-3xl flex flex-col transition-all duration-300 hover:scale-[1.02] group">
-                            <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-black text-white text-[11px] font-semibold tracking-[0.12em] uppercase px-5 py-2 rounded-full shadow-lg">
-                                Best value
-                            </div>
-
-                            <div className="mb-6">
-                                <h3 className="text-lg font-semibold text-gray-600 mb-2 uppercase tracking-wide">Premium</h3>
-                                <div className="flex items-baseline gap-2">
-                                    <span className="text-6xl font-bold bg-gradient-to-r from-black to-gray-700 bg-clip-text text-transparent">₹249</span>
-                                    <span className="text-gray-500 font-medium">/month</span>
-                                </div>
-                                <p className="text-sm text-gray-500 mt-3 font-medium">Less than ₹9 a day</p>
-                            </div>
-
-                            <ul className="space-y-4 mb-8 flex-grow">
-                                <li className="flex items-center gap-3 font-medium">
-                                    <CheckIcon />
-                                    <span className="text-black">More daily messages</span>
-                                </li>
-                                <li className="flex items-center gap-3 font-medium">
-                                    <CheckIcon />
-                                    <span className="text-black">Access to all personas</span>
-                                </li>
-                                <li className="flex items-center gap-3 font-medium">
-                                    <CheckIcon />
-                                    <span className="text-black">Create custom personas</span>
-                                </li>
-                                <li className="flex items-center gap-3 font-medium">
-                                    <CheckIcon />
-                                    <span className="text-black">Priority AI responses</span>
-                                </li>
+                        {/* Premium plan */}
+                        <div className="p-8 rounded-2xl bg-black text-white flex flex-col">
+                            <h2 className="text-sm font-medium text-white/70 mb-3">Premium</h2>
+                            <p className="flex items-baseline gap-2 mb-1">
+                                <span className="font-display text-5xl">₹249</span>
+                                <span className="text-white/65">/month</span>
+                            </p>
+                            <p className="text-sm text-white/65 mb-6">Less than ₹9 a day. Cancel any time.</p>
+                            <ul className="space-y-3.5 mb-8 flex-grow text-[15px]">
+                                <li className="flex items-center gap-3"><CheckIcon /><span>More messages each day</span></li>
+                                <li className="flex items-center gap-3"><CheckIcon /><span>All 350+ personas</span></li>
+                                <li className="flex items-center gap-3"><CheckIcon /><span>Create custom personas</span></li>
                             </ul>
-
                             <button
                                 onClick={handleSubscribe}
                                 disabled={loading}
-                                className="w-full py-5 rounded-xl bg-gradient-to-r from-black via-gray-800 to-black text-white font-bold text-lg hover:from-gray-800 hover:via-gray-700 hover:to-gray-800 transition-all duration-300 shadow-xl hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed mt-auto hover:scale-[1.02] active:scale-[0.98]"
+                                className="w-full py-3.5 rounded-full bg-white text-black font-medium hover:bg-white/90 transition-all duration-300 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed mt-auto focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
                             >
                                 {loading ? (
                                     <span className="flex items-center justify-center gap-2">
-                                        <svg className="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <svg className="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
                                             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                                             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                         </svg>
-                                        Processing...
+                                        Processing…
                                     </span>
                                 ) : (
                                     'Get Premium'
@@ -245,71 +206,18 @@ export default function Premium() {
                             </button>
                         </div>
                     </div>
-                </div>
 
-                {/* Feature Comparison Table */}
-                <div className="max-w-3xl mx-auto px-6 pb-16">
-                    <h2 className="text-2xl font-bold text-center mb-8">Compare Plans</h2>
-                    <div className="bg-gray-50 rounded-2xl overflow-hidden border border-gray-200">
-                        <table className="w-full">
-                            <thead>
-                                <tr className="border-b border-gray-200">
-                                    <th className="text-left p-4 font-medium text-gray-600">Feature</th>
-                                    <th className="text-center p-4 font-medium text-gray-600">Free</th>
-                                    <th className="text-center p-4 font-medium text-black bg-gray-100">Premium</th>
-                                </tr>
-                            </thead>
-                            <tbody className="divide-y divide-gray-200">
-                                <tr>
-                                    <td className="p-4">Daily messages</td>
-                                    <td className="p-4 text-center">Standard</td>
-                                    <td className="p-4 text-center bg-gray-100 font-medium">More</td>
-                                </tr>
-                                <tr>
-                                    <td className="p-4">Persona access</td>
-                                    <td className="p-4 text-center">All personas</td>
-                                    <td className="p-4 text-center bg-gray-100 font-medium">All personas</td>
-                                </tr>
-                                <tr>
-                                    <td className="p-4">Create custom personas</td>
-                                    <td className="p-4 text-center text-gray-600" aria-label="Not included">—</td>
-                                    <td className="p-4 text-center bg-gray-100" aria-label="Included">Yes</td>
-                                </tr>
-                                <tr>
-                                    <td className="p-4">Priority AI responses</td>
-                                    <td className="p-4 text-center text-gray-600" aria-label="Not included">—</td>
-                                    <td className="p-4 text-center bg-gray-100" aria-label="Included">Yes</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                {/* Trust Badges */}
-                <div className="max-w-3xl mx-auto px-6 pb-20">
-                    <div className="flex flex-wrap justify-center gap-6 text-gray-500 text-sm">
-                        <div className="flex items-center gap-2">
-                            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                            </svg>
-                            <span>Secure payment via Razorpay</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                            </svg>
-                            <span>Cancel anytime</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                            </svg>
-                            <span>support@ai-spirit.in</span>
-                        </div>
-                    </div>
-                </div>
-
+                    <ul className="mt-8 flex flex-wrap justify-center gap-x-8 gap-y-2 text-sm text-black/60">
+                        <li>Secure payment via Razorpay</li>
+                        <li>Cancel any time</li>
+                        <li><a href="mailto:support@ai-spirit.in" className="hover:text-black underline-offset-2 hover:underline">support@ai-spirit.in</a></li>
+                    </ul>
+                </section>
             </div>
+
+            <Footer />
+            {/* Keeps the footer clear of the fixed mobile nav */}
+            <div className="h-16 md:hidden" aria-hidden="true" />
 
             {/* Mobile Bottom Navigation */}
             <MobileBottomNav />

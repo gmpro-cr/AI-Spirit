@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import Link from 'next/link'
+import PortraitCard from '@/components/personas/PortraitCard'
 import { NextSeo } from 'next-seo'
 import { INITIAL_PERSONAS } from '@/data/personas'
 import { createClient } from '@supabase/supabase-js'
@@ -31,7 +32,7 @@ function buildFaqs(persona) {
     },
     {
       question: `Will ${name} remember our previous conversations?`,
-      answer: `Yes — when you are signed in, ${name} remembers what you've talked about before and picks up where you left off. Guest conversations are stored only on your device.`,
+      answer: `Yes. When you are signed in, ${name} remembers what you've talked about before and picks up where you left off. Guest conversations are stored only on your device.`,
     },
   ]
 }
@@ -51,10 +52,10 @@ function getRelatedPersonas(currentSlug, currentCategory, all, count = 6) {
 export default function TalkToPersonaPage({ persona, related }) {
   if (!persona) return null
 
-  const title = `Talk to ${persona.name} AI — Chat Online | AI Spirit`
+  const title = `Talk to ${persona.name} AI, chat online`
   const description = persona.description
     ? `Chat with ${persona.name} on AI Spirit. ${persona.description}. Free, private, available anytime.`
-    : `Have a real conversation with ${persona.name} on AI Spirit — free, private, and available 24/7.`
+    : `Have a real conversation with ${persona.name} on AI Spirit: free, private and available any time.`
   const canonical = `${SITE_URL}/talk-to/${persona.slug}`
   const chatHref = `/chat/${persona.slug}`
   const faqs = buildFaqs(persona)
@@ -176,7 +177,9 @@ export default function TalkToPersonaPage({ persona, related }) {
         <section className="max-w-3xl mx-auto px-6 py-12 border-t border-black/[0.06]">
           <h2 className="font-display text-2xl md:text-3xl text-black mb-4">About {persona.name}</h2>
           <p className="text-black/60 leading-relaxed text-base md:text-lg">
-            {persona.description || `${persona.name} is one of the personas on AI Spirit — an AI character you can have real, ongoing conversations with.`}{' '}
+            {persona.description
+              ? `${persona.name}: ${persona.description.replace(/\.$/, '')}.`
+              : `${persona.name} is one of the personas on AI Spirit, an AI character you can have real, ongoing conversations with.`}{' '}
             On AI Spirit, every conversation with {persona.name} is private to you, runs in real time, and {persona.name} remembers your context across chats when you&apos;re signed in. Whether you&apos;re looking for advice, curiosity, comfort, or just a great conversation, {persona.name} is ready when you are.
           </p>
         </section>
@@ -205,32 +208,23 @@ export default function TalkToPersonaPage({ persona, related }) {
           </section>
         )}
 
-        {/* Related personas — internal linking is SEO gold */}
+        {/* Related personas: internal links help discovery and SEO */}
         {related.length > 0 && (
           <section className="max-w-5xl mx-auto px-6 py-12 border-t border-black/[0.06]">
             <h2 className="font-display text-2xl md:text-3xl text-black mb-2">
               You might also like
             </h2>
             <p className="text-sm text-black/60 mb-8">Other personas worth talking to.</p>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+            <div className="grid grid-cols-3 md:grid-cols-6 gap-3">
               {related.map((p) => (
-                <Link
+                <PortraitCard
                   key={p.slug}
                   href={`/talk-to/${p.slug}`}
-                  className="group block p-1.5 rounded-2xl ring-1 ring-black/[0.06] bg-black/[0.02] hover:-translate-y-0.5 transition-transform"
-                >
-                  <div className="bg-white rounded-[calc(1rem-0.375rem)] border border-black/[0.05] px-4 py-4">
-                    <div className="text-[10px] uppercase tracking-widest text-black/60 mb-1">
-                      {p.category || 'Persona'}
-                    </div>
-                    <div className="font-display text-base text-black mb-1 group-hover:opacity-70 transition-opacity">
-                      {p.name}
-                    </div>
-                    {p.description && (
-                      <div className="text-xs text-black/45 line-clamp-2">{p.description}</div>
-                    )}
-                  </div>
-                </Link>
+                  name={p.name}
+                  subtitle={p.description}
+                  image={p.image}
+                  sizes="(min-width: 768px) 160px, 30vw"
+                />
               ))}
             </div>
           </section>
@@ -265,7 +259,7 @@ export default function TalkToPersonaPage({ persona, related }) {
             Ready when you are.
           </h2>
           <p className="text-black/60 mb-8">
-            Start your first conversation with {persona.name} — it&apos;s free.
+            Start your first conversation with {persona.name}. It&apos;s free.
           </p>
           <Link
             href={chatHref}
@@ -329,6 +323,8 @@ export async function getStaticProps({ params }) {
     slug: p.slug,
     category: p.category || null,
     description: p.description || null,
+    // Only bundled portraits; remote avatars aren't on the next/image allowlist.
+    image: [p.image_url, p.avatar_url].find((src) => typeof src === 'string' && src.startsWith('/')) || null,
   }))
 
   return {

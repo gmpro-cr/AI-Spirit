@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Head from 'next/head'
 import Navbar from '@/components/layout/Navbar'
+import Footer from '@/components/layout/Footer'
 
 export default function ContactPage() {
     const [formData, setFormData] = useState({
@@ -50,68 +51,66 @@ export default function ContactPage() {
     return (
         <>
             <Head>
-                <title>Contact Us - AI - Spirit</title>
-                <meta name="description" content="Get in touch with AI - Spirit. We'd love to hear from you!" />
+                <title>Contact Us - AI Spirit</title>
+                <meta name="description" content="Get in touch with AI Spirit. We'd love to hear from you!" />
             </Head>
 
             <Navbar />
 
-            <div className="min-h-screen bg-white pt-24 pb-12 px-4 transition-colors">
+            <main className="min-h-screen bg-white pt-32 sm:pt-36 pb-24 px-5">
                 <div className="max-w-md mx-auto">
-                    {/* Header */}
-                    <div className="text-center mb-8">
-                        <h1 className="text-3xl font-bold text-black mb-2">Contact Us</h1>
-                        <p className="text-gray-600">We&apos;d love to hear from you. Send us a message!</p>
+                    <div className="text-center mb-10">
+                        <h1 className="font-display text-4xl sm:text-5xl text-black leading-tight mb-3">Contact us</h1>
+                        <p className="text-black/65 leading-relaxed">
+                            Questions, feedback, or a persona you&apos;d like us to add.
+                        </p>
                     </div>
 
-                    {/* Status Message */}
                     {status.message && (
-                        <div className={`mb-6 p-4 rounded-lg ${status.type === 'success'
-                            ? 'bg-green-100 text-green-800'
-                            : 'bg-red-100 text-red-800'
-                            }`}>
+                        <div
+                            role="status"
+                            className={`mb-6 p-4 rounded-xl text-sm text-center ${status.type === 'success'
+                                ? 'bg-black/[0.04] text-black border border-black/10'
+                                : 'bg-red-50 text-red-800 border border-red-200'
+                                }`}
+                        >
                             {status.message}
                         </div>
                     )}
 
-                    {/* Form */}
                     <form onSubmit={handleSubmit} className="space-y-5">
                         <div>
-                            <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-                                Name *
-                            </label>
+                            <label htmlFor="name" className="block text-sm font-medium text-black/75 mb-2">Name</label>
                             <input
                                 type="text"
                                 id="name"
                                 name="name"
                                 required
+                                autoComplete="name"
                                 value={formData.name}
                                 onChange={handleChange}
-                                className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black text-black transition-colors"
+                                className="w-full bg-black/[0.04] border border-black/10 rounded-xl py-3 px-4 text-base md:text-sm text-black placeholder:text-black/45 focus:outline-none focus-visible:border-black/40 focus-visible:ring-2 focus-visible:ring-black/20 transition-colors"
                                 placeholder="Your name"
                             />
                         </div>
 
                         <div>
-                            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                                Email *
-                            </label>
+                            <label htmlFor="email" className="block text-sm font-medium text-black/75 mb-2">Email</label>
                             <input
                                 type="email"
                                 id="email"
                                 name="email"
                                 required
+                                autoComplete="email"
                                 value={formData.email}
                                 onChange={handleChange}
-                                className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black text-black transition-colors"
-                                placeholder="your@email.com"
+                                className="w-full bg-black/[0.04] border border-black/10 rounded-xl py-3 px-4 text-base md:text-sm text-black placeholder:text-black/45 focus:outline-none focus-visible:border-black/40 focus-visible:ring-2 focus-visible:ring-black/20 transition-colors"
+                                placeholder="you@example.com"
                             />
                         </div>
 
                         <div>
-                            <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
-                                Message *
-                            </label>
+                            <label htmlFor="message" className="block text-sm font-medium text-black/75 mb-2">Message</label>
                             <textarea
                                 id="message"
                                 name="message"
@@ -119,21 +118,23 @@ export default function ContactPage() {
                                 value={formData.message}
                                 onChange={handleChange}
                                 rows={5}
-                                className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black text-black resize-none transition-colors"
-                                placeholder="Your message..."
+                                className="w-full bg-black/[0.04] border border-black/10 rounded-xl py-3 px-4 text-base md:text-sm text-black placeholder:text-black/45 focus:outline-none focus-visible:border-black/40 focus-visible:ring-2 focus-visible:ring-black/20 transition-colors resize-none"
+                                placeholder="How can we help?"
                             />
                         </div>
 
                         <button
                             type="submit"
                             disabled={isSubmitting}
-                            className="w-full px-6 py-3 bg-black text-white font-medium rounded-lg hover:bg-gray-800 transition-all disabled:bg-gray-400 disabled:cursor-not-allowed"
+                            className="w-full rounded-full bg-black px-6 py-3.5 text-[15px] font-medium text-white transition-all duration-300 hover:bg-black/90 active:scale-[0.98] disabled:opacity-40 disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2"
                         >
-                            {isSubmitting ? 'Sending...' : 'Send Message'}
+                            {isSubmitting ? 'Sending…' : 'Send message'}
                         </button>
                     </form>
                 </div>
-            </div>
+            </main>
+
+            <Footer />
         </>
     )
 }

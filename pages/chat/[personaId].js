@@ -3,6 +3,7 @@ import { useState, useEffect, useRef, useMemo, useCallback } from 'react'
 import Head from 'next/head'
 import SidePanelNew from '@/components/layout/SidePanel'
 import MessageContent from '@/components/chat/MessageContent'
+import PremiumPromptModal from '@/components/modals/PremiumPromptModal'
 import { toPlainText } from '@/lib/plainText'
 import { relativeTime, absoluteTime } from '@/lib/relativeTime'
 import { saveConversation, loadConversation } from '@/lib/conversationStore'
@@ -28,6 +29,7 @@ function ChatPage() {
   const [conversationId, setConversationId] = useState(null)
   const [editingMessageIndex, setEditingMessageIndex] = useState(null)
   const [editedMessageText, setEditedMessageText] = useState('')
+  const [showLimitModal, setShowLimitModal] = useState(false)
   const [messageFeedback, setMessageFeedback] = useState({}) // Store like/dislike per message index
   const [copiedMessageIndex, setCopiedMessageIndex] = useState(null)
   const [isListening, setIsListening] = useState(false)
@@ -615,9 +617,7 @@ function ChatPage() {
             throw new Error(data.error || 'Session expired')
           }
           if (response.status === 403 && data.isLimitReached) {
-            if (confirm('You have reached your daily message limit (100 messages). Upgrade to Premium for more messages?')) {
-              router.push('/premium')
-            }
+            setShowLimitModal(true)
             throw new Error(data.error)
           }
           throw new Error(data.error || 'Failed to send message')
@@ -791,7 +791,7 @@ function ChatPage() {
         <meta property="og:title" content={`Chat with ${persona.name} - ${persona.category || 'AI'} Companion | AI Spirit`} />
         <meta property="og:description" content={persona.description || `Talk to ${persona.name} on AI Spirit. Get instant guidance and support 24/7.`} />
         <meta property="og:url" content={`https://ai-spirit.in/chat/${personaId}`} />
-        <meta property="og:site_name" content="AI - Spirit" />
+        <meta property="og:site_name" content="AI Spirit" />
         <meta property="og:image" content={`https://ai-spirit.in/api/og?title=${encodeURIComponent(`Chat with ${persona.name}`)}&description=${encodeURIComponent(persona.description || `Talk to ${persona.name} on AI Spirit`)}&persona=${encodeURIComponent(persona.name)}&avatar=${encodeURIComponent(persona.avatar_url || '')}`} />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
@@ -1002,7 +1002,7 @@ function ChatPage() {
                         />
                       )}
 
-                      <div className={`flex min-w-0 flex-col gap-1.5 ${isUser ? 'items-end' : 'items-start'}`}>
+                      <div className={`flex min-w-0 flex-col gap-1.5 ${isUser ? 'max-w-[85%] items-end' : 'items-start'}`}>
                         {isEditing && isUser ? (
                           // Edit mode for user message
                           <div className="flex w-full flex-col gap-2">
@@ -1031,7 +1031,7 @@ function ChatPage() {
                         ) : (
                           <div
                             className={`px-4 py-3 rounded-2xl text-sm leading-relaxed ${isUser
-                              ? 'max-w-[85%] bg-black text-white dark:bg-white/[0.14] dark:text-white rounded-br-sm shadow-glass-dark'
+                              ? 'max-w-full bg-black text-white dark:bg-white/[0.14] dark:text-white rounded-br-sm shadow-glass-dark'
                               : 'max-w-full glass-matte rounded-bl-sm text-black dark:text-white'
                               }`}
                           >
@@ -1168,9 +1168,9 @@ function ChatPage() {
                     <div className="flex items-center gap-2">
                       <span className="text-xs text-gray-400 dark:text-white/40">{persona.name} is thinking</span>
                       <div className="flex items-center space-x-1">
-                        <div className="w-1.5 h-1.5 bg-gray-400 dark:bg-white/40 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
-                        <div className="w-1.5 h-1.5 bg-gray-400 dark:bg-white/40 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
-                        <div className="w-1.5 h-1.5 bg-gray-400 dark:bg-white/40 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+                        <div className="w-1.5 h-1.5 bg-gray-400 dark:bg-white/40 rounded-full animate-bounce motion-reduce:animate-none" style={{ animationDelay: '0ms' }}></div>
+                        <div className="w-1.5 h-1.5 bg-gray-400 dark:bg-white/40 rounded-full animate-bounce motion-reduce:animate-none" style={{ animationDelay: '150ms' }}></div>
+                        <div className="w-1.5 h-1.5 bg-gray-400 dark:bg-white/40 rounded-full animate-bounce motion-reduce:animate-none" style={{ animationDelay: '300ms' }}></div>
                       </div>
                     </div>
                   </div>
@@ -1297,6 +1297,7 @@ function ChatPage() {
         </div>
       </div>
 
+      <PremiumPromptModal isOpen={showLimitModal} onClose={() => setShowLimitModal(false)} reason="messages" />
     </>
   )
 }

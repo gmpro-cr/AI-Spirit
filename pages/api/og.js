@@ -9,7 +9,7 @@ export default async function handler(req) {
     const { searchParams } = new URL(req.url)
 
     // Get parameters from query string
-    const title = searchParams.get('title') || 'AI - Spirit'
+    const title = searchParams.get('title') || 'AI Spirit'
     const description = searchParams.get('description') || 'Chat with AI personas for guidance and support'
     const personaName = searchParams.get('persona') || ''
     const avatarUrl = searchParams.get('avatar') || ''

@@ -21,7 +21,7 @@ export default function Footer() {
 
   const trustItems = [
     {
-      label: 'Private & Encrypted',
+      label: 'Private to your account',
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
@@ -81,7 +81,7 @@ export default function Footer() {
               </div>
             </Link>
             <p className="mt-3 text-sm text-white/70 max-w-xs leading-relaxed">
-              Meaningful AI conversations with personas that truly listen — always private, always present.
+              Meaningful conversations with personas that listen. Private, and there whenever you need them.
             </p>
           </div>
 

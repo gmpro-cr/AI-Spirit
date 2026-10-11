@@ -3,152 +3,121 @@ import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
 import Link from 'next/link'
 
+const OFFERINGS = [
+    {
+        title: '350+ personas',
+        description: 'Spiritual teachers, figures from Indian mythology and history, thinkers, founders and characters from film, anime and games.',
+    },
+    {
+        title: 'Your language',
+        description: 'Write in Hindi, English or Hinglish. Most personas reply in the language you use.',
+    },
+    {
+        title: 'Memory',
+        description: 'When you are signed in, a persona remembers what you shared in earlier conversations.',
+    },
+    {
+        title: 'Your own personas',
+        description: 'Premium members can create a custom persona with its own personality and voice.',
+    },
+]
+
 export default function About() {
     return (
         <>
             <Head>
-                <title>About Us | AI - Spirit</title>
+                <title>About Us | AI Spirit</title>
                 <meta
                     name="description"
-                    content="Learn about AI - Spirit - your personal AI coach for parenting, wellness, relationships, and more. Discover our mission to make expert guidance accessible to everyone."
+                    content="AI Spirit lets you have private conversations with 350+ AI personas, from spiritual teachers to historical figures, in Hindi, English or Hinglish."
                 />
                 <link rel="canonical" href="https://ai-spirit.in/about" />
-                <meta property="og:title" content="About AI - Spirit" />
-                <meta property="og:description" content="Learn about AI - Spirit and our mission to make expert guidance accessible to everyone." />
+                <meta property="og:title" content="About AI Spirit" />
+                <meta property="og:description" content="Private conversations with 350+ AI personas, from spiritual teachers to historical figures." />
                 <meta property="og:url" content="https://ai-spirit.in/about" />
             </Head>
 
             <Navbar />
 
-            <main className="min-h-screen bg-white pt-16 transition-colors">
-                {/* Hero Section */}
-                <section className="py-20 md:py-32 px-4 sm:px-6 lg:px-8">
-                    <div className="max-w-3xl mx-auto text-center">
-                        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-black tracking-tight mb-6">
-                            About <span className="italic">AI</span> - Spirit
+            <main className="min-h-screen bg-white pt-16">
+                <section className="pt-20 pb-16 md:pt-28 md:pb-20 px-5 sm:px-8">
+                    <div className="max-w-2xl mx-auto">
+                        <h1 className="font-display text-5xl md:text-6xl text-black tracking-tight leading-[1.05] mb-6">
+                            About AI Spirit
                         </h1>
-                        <p className="text-xl text-gray-500 leading-relaxed">
-                            Making expert guidance accessible to everyone, anytime.
+                        <p className="text-xl text-black/70 leading-relaxed [text-wrap:pretty]">
+                            A place to sit with a question you can&apos;t easily ask anyone else, and talk it through with a teacher, a legend or a favourite character.
                         </p>
                     </div>
                 </section>
 
-                {/* Mission Section */}
-                <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50">
-                    <div className="max-w-3xl mx-auto">
-                        <h2 className="text-2xl md:text-3xl font-bold text-black mb-8">
-                            Our Mission
-                        </h2>
-                        <div className="prose prose-lg text-gray-600 space-y-6">
-                            <p className="leading-relaxed">
-                                AI - Spirit was created with a simple belief: everyone deserves access to
-                                thoughtful guidance and support, regardless of time, location, or budget.
-                            </p>
-                            <p className="leading-relaxed">
-                                We&apos;ve built a collection of AI personas—each designed to provide helpful,
-                                empathetic conversations on topics ranging from parenting and mental wellness
-                                to relationships, career guidance, and everyday life challenges.
-                            </p>
-                            <p className="leading-relaxed">
-                                Whether you&apos;re a first-time parent looking for advice at 2 AM, someone
-                                seeking wellness tips, or just want to explore new recipes, our AI personas
-                                are here to help—24/7, with no judgment.
-                            </p>
-                        </div>
+                <section className="py-16 px-5 sm:px-8 bg-[#F7F7F5]">
+                    <div className="max-w-2xl mx-auto space-y-5 text-lg text-black/75 leading-relaxed [text-wrap:pretty]">
+                        <h2 className="font-display text-3xl text-black mb-6">Why we built it</h2>
+                        <p>
+                            Guidance is easiest to find when you least need it. At 2 AM, in the middle of a hard week or before a big decision, most people have no one to ask.
+                        </p>
+                        <p>
+                            AI Spirit gives you someone to talk to at those moments. Each persona is written to stay in character, speak in its own voice and remember you, so the conversation feels like it is going somewhere.
+                        </p>
+                        <p>
+                            These are AI personas, not the real people they are inspired by, and they are not a replacement for a doctor, therapist or lawyer.
+                        </p>
                     </div>
                 </section>
 
-                {/* What We Offer Section */}
-                <section className="py-16 px-4 sm:px-6 lg:px-8">
-                    <div className="max-w-3xl mx-auto">
-                        <h2 className="text-2xl md:text-3xl font-bold text-black mb-10">
-                            What We Offer
-                        </h2>
-                        <div className="grid md:grid-cols-2 gap-6">
-                            {[
-                                {
-                                    title: '40+ AI Personas',
-                                    description: 'Expert-designed personas covering parenting, wellness, relationships, career, and more.'
-                                },
-                                {
-                                    title: '24/7 Availability',
-                                    description: 'Get guidance whenever you need it—day or night, weekday or weekend.'
-                                },
-                                {
-                                    title: 'Create Your Own',
-                                    description: 'Design custom personas tailored to your specific needs and preferences.'
-                                },
-                                {
-                                    title: 'Private & Secure',
-                                    description: 'Your conversations are private. We respect your data and privacy.'
-                                },
-                            ].map((feature) => (
-                                <div
-                                    key={feature.title}
-                                    className="bg-white rounded-2xl p-6 border border-gray-100 shadow-soft hover:shadow-lift hover:-translate-y-1 transition-all duration-300"
-                                >
-                                    <h3 className="text-lg font-semibold text-black mb-3">
-                                        {feature.title}
-                                    </h3>
-                                    <p className="text-gray-500 text-sm leading-relaxed">
-                                        {feature.description}
-                                    </p>
+                <section className="py-16 px-5 sm:px-8">
+                    <div className="max-w-2xl mx-auto">
+                        <h2 className="font-display text-3xl text-black mb-8">What you get</h2>
+                        <dl className="divide-y divide-black/[0.08] border-y border-black/[0.08]">
+                            {OFFERINGS.map((item) => (
+                                <div key={item.title} className="py-5 sm:grid sm:grid-cols-3 sm:gap-6">
+                                    <dt className="font-display text-xl text-black mb-1 sm:mb-0">{item.title}</dt>
+                                    <dd className="sm:col-span-2 text-black/70 leading-relaxed">{item.description}</dd>
                                 </div>
                             ))}
-                        </div>
+                        </dl>
                     </div>
                 </section>
 
-                {/* Founder Section */}
-                <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50">
-                    <div className="max-w-3xl mx-auto">
-                        <h2 className="text-2xl md:text-3xl font-bold text-black mb-8">
-                            Meet the Founder
-                        </h2>
-                        <div className="bg-white rounded-2xl p-8 border border-gray-100 shadow-soft">
-                            <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
-                                <div className="w-24 h-24 rounded-full bg-gradient-to-br from-gray-800 to-black flex items-center justify-center text-white text-3xl font-bold flex-shrink-0">
-                                    GM
-                                </div>
-                                <div className="text-center md:text-left">
-                                    <h3 className="text-xl font-bold text-black mb-2">Gaurav Mahale</h3>
-                                    <p className="text-gray-500 mb-4">Founder & Creator</p>
-                                    <p className="text-gray-600 leading-relaxed mb-4">
-                                        Passionate about making AI accessible and helpful for everyone.
-                                        Building AI - Spirit to provide thoughtful guidance and support
-                                        to people across India and beyond.
-                                    </p>
-                                    <a
-                                        href="https://x.com/mahalegauravk"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="inline-flex items-center gap-2 text-black hover:text-gray-600 transition-colors font-medium"
-                                    >
-                                        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-                                        </svg>
-                                        Follow on X
-                                    </a>
-                                </div>
+                <section className="py-16 px-5 sm:px-8 bg-[#F7F7F5]">
+                    <div className="max-w-2xl mx-auto">
+                        <h2 className="font-display text-3xl text-black mb-8">Who makes it</h2>
+                        <div className="flex flex-col sm:flex-row items-start gap-6">
+                            <div className="w-16 h-16 rounded-full bg-black flex items-center justify-center text-white font-display text-2xl flex-shrink-0" aria-hidden="true">
+                                GM
+                            </div>
+                            <div>
+                                <h3 className="font-display text-2xl text-black">Gaurav Mahale</h3>
+                                <p className="text-black/60 mb-3">Founder</p>
+                                <p className="text-black/75 leading-relaxed mb-4">
+                                    Gaurav designs and builds AI Spirit independently, for people across India and beyond.
+                                </p>
+                                <a
+                                    href="https://x.com/mahalegauravk"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-2 text-sm text-black/75 hover:text-black border-b border-black/20 hover:border-black/50 pb-0.5 transition-colors"
+                                >
+                                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                                    </svg>
+                                    Follow on X
+                                </a>
                             </div>
                         </div>
                     </div>
                 </section>
 
-                {/* CTA Section */}
-                <section className="py-20 px-4 sm:px-6 lg:px-8 bg-black text-white">
-                    <div className="max-w-3xl mx-auto text-center">
-                        <h2 className="text-2xl md:text-3xl font-bold mb-4">
-                            Ready to Get Started?
-                        </h2>
-                        <p className="text-gray-400 mb-10">
-                            Start chatting with our AI personas—it&apos;s free to try.
-                        </p>
+                <section className="py-20 px-5 sm:px-8">
+                    <div className="max-w-2xl mx-auto text-center">
+                        <h2 className="font-display text-4xl text-black mb-4">Ready when you are.</h2>
+                        <p className="text-black/65 mb-8">Browsing is free and doesn&apos;t need an account.</p>
                         <Link
-                            href="/"
-                            className="inline-block bg-white text-black font-medium px-8 py-4 rounded-2xl shadow-soft hover:shadow-lift hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] transition-all duration-300"
+                            href="/personas"
+                            className="inline-flex items-center rounded-full bg-black px-7 py-3.5 text-[15px] font-medium text-white transition-all duration-300 hover:bg-black/90 hover:-translate-y-0.5 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2"
                         >
-                            Browse Personas
+                            Browse personas
                         </Link>
                     </div>
                 </section>

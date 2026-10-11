@@ -75,7 +75,7 @@ export default function BlogPost({ post, mdxSource, related }) {
     return (
         <>
             <NextSeo
-                title={`${post.title} | AI Spirit`}
+                title={post.title}
                 description={post.excerpt}
                 canonical={canonical}
                 openGraph={{

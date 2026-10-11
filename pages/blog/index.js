@@ -10,7 +10,7 @@ export default function Blog({ posts }) {
     return (
         <>
             <NextSeo
-                title="Blog | AI Spirit"
+                title="Blog"
                 description="Honest writing on AI personas, conversation design, and what we're learning shipping AI Spirit."
                 canonical={`${SITE_URL}/blog`}
                 openGraph={{

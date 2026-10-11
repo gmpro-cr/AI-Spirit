@@ -2,7 +2,7 @@ export default {
     title: 'AI Spirit',
     titleTemplate: '%s | AI Spirit',
     defaultTitle: 'AI Spirit - Talk to Anyone, Anytime',
-    description: "Chat with 50+ AI personas - spiritual guides, world leaders, celebrities, and fictional characters. Your digital sanctuary for meaningful conversations.",
+    description: "Chat with 350+ AI personas - spiritual guides, world leaders, celebrities, and fictional characters. Your digital sanctuary for meaningful conversations.",
     canonical: 'https://ai-spirit.in/',
     additionalMetaTags: [
         {
@@ -11,7 +11,7 @@ export default {
         },
         {
             name: 'author',
-            content: 'AI - Spirit'
+            content: 'AI Spirit'
         },
         {
             name: 'robots',
@@ -47,7 +47,7 @@ export default {
         },
         {
             name: 'application-name',
-            content: 'AI - Spirit'
+            content: 'AI Spirit'
         },
         {
             name: 'msapplication-TileColor',
@@ -97,13 +97,13 @@ export default {
         url: 'https://ai-spirit.in/',
         siteName: 'AI Spirit',
         title: 'AI Spirit - Talk to Anyone, Anytime',
-        description: 'Chat with 50+ AI personas - spiritual guides, world leaders, celebrities, and fictional characters. Your digital sanctuary for meaningful conversations.',
+        description: 'Chat with 350+ AI personas - spiritual guides, world leaders, celebrities, and fictional characters. Your digital sanctuary for meaningful conversations.',
         images: [
             {
                 url: 'https://ai-spirit.in/og-image-v8.png',
                 width: 1200,
                 height: 630,
-                alt: 'AI Spirit - Chat with 50+ AI Personas',
+                alt: 'AI Spirit - Chat with 350+ AI Personas',
                 type: 'image/png',
             },
         ],

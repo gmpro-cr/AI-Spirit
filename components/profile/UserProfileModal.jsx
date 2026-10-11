@@ -147,7 +147,7 @@ export default function UserProfileModal({ isOpen, onClose, user }) {
                                 disabled={loading || !formData.preferredName}
                                 className="flex-1 px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold rounded-lg hover:from-indigo-700 hover:to-purple-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                             >
-                                {loading ? 'Creating Profile...' : 'Continue to AI - Spirit'}
+                                {loading ? 'Creating Profile...' : 'Continue to AI Spirit'}
                             </button>
                         </div>
                     </form>

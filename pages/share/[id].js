@@ -30,7 +30,7 @@ export default function SharedConversation({ persona, messages, conversationId, 
     return (
       <>
         <NextSeo
-          title="Conversation not available | AI Spirit"
+          title="Conversation not available"
           description="This conversation isn't available or hasn't been shared publicly."
           noindex
         />
@@ -52,7 +52,7 @@ export default function SharedConversation({ persona, messages, conversationId, 
     )
   }
 
-  const title = `Conversation with ${persona.name} | AI Spirit`
+  const title = `Conversation with ${persona.name}`
   const description = `A conversation with ${persona.name} on AI Spirit. ${firstMeaningfulLine(messages)}`
   const canonical = `${SITE_URL}/share/${conversationId}`
   const ogImage = `${SITE_URL}/api/og?title=${encodeURIComponent(`Talk to ${persona.name}`)}&description=${encodeURIComponent(persona.description || '')}&persona=${encodeURIComponent(persona.name)}&avatar=${encodeURIComponent(persona.avatar_url || '')}`

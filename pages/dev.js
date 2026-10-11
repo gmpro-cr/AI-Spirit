@@ -89,24 +89,24 @@ export default function DevPage() {
   return (
     <>
       <Head>
-        <title>How AI-Spirit works | Dev</title>
+        <title>How AI Spirit works | Dev</title>
         <meta name="robots" content="noindex, nofollow" />
       </Head>
 
       <div className={`dev-page ${fraunces.variable}`}>
         <header className="dev-topbar">
           <div className="dev-topbar-inner">
-            <div className="dev-eyebrow">AI-Spirit — behind the scenes</div>
+            <div className="dev-eyebrow">AI Spirit — behind the scenes</div>
             <h1>How this actually works</h1>
             <p>
-              AI-Spirit is a persona chat platform — Osho, Nelson Mandela, an unhinged
+              AI Spirit is a persona chat platform — Osho, Nelson Mandela, an unhinged
               therapist, a yandere romance character, and others, each holding a
               conversation and a memory of you. This is the engineering walkthrough:
               the request pipeline, what&apos;s actually enforced versus just asked for,
               and what&apos;s tested rather than assumed.
             </p>
             <Link className="dev-back-link" href="/">
-              &larr; Back to AI-Spirit
+              &larr; Back to AI Spirit
             </Link>
           </div>
         </header>
@@ -386,10 +386,10 @@ export default function DevPage() {
         </main>
 
         <footer className="dev-footer">
-          This page documents AI-Spirit&apos;s own engineering systems, generated
+          This page documents AI Spirit&apos;s own engineering systems, generated
           from the current codebase rather than a fixed spec — it will drift out of
           date the day a system changes and nobody updates it.{' '}
-          <Link href="/">Back to AI-Spirit.</Link>
+          <Link href="/">Back to AI Spirit.</Link>
         </footer>
       </div>
 

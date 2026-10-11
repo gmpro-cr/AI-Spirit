@@ -61,8 +61,19 @@ function readCachedPersonaStats() {
  * initial setFilteredPersonas below would paint one unsorted frame before the
  * effect ran, which is the reshuffle this whole snapshot exists to remove.
  */
+// Most visitors come looking for a spiritual guide (see PRODUCT.md), so those
+// categories lead the grid and the filter row; popularity orders within them.
+const FEATURED_CATEGORIES = ['Spiritual', 'Mythology', 'Historical']
+const featuredRank = (category) => {
+  const i = FEATURED_CATEGORIES.indexOf(category)
+  return i === -1 ? FEATURED_CATEGORIES.length : i
+}
+
 function sortByPopularity(list, stats) {
   return [...list].sort((a, b) => {
+    const rankA = featuredRank(a.category)
+    const rankB = featuredRank(b.category)
+    if (rankA !== rankB) return rankA - rankB
     const countA = stats[a.slug]?.message_count || 0
     const countB = stats[b.slug]?.message_count || 0
     return countB - countA
@@ -259,7 +270,17 @@ function Personas() {
   }
 
   // Get unique categories
-  const categories = ['All', ...new Set(personas.map(p => p.category).filter(Boolean))]
+  const categories = [
+    'All',
+    ...[...new Set(personas.map(p => p.category).filter(Boolean))]
+      .sort((a, b) => featuredRank(a) - featuredRank(b)),
+  ]
+
+  // Links such as /personas?category=Spiritual open the grid pre-filtered.
+  useEffect(() => {
+    const wanted = router.query.category
+    if (typeof wanted === 'string' && wanted) setSelectedCategory(wanted)
+  }, [router.query.category])
 
   useEffect(() => {
     let filtered = personas
@@ -283,11 +304,11 @@ function Personas() {
   return (
     <>
       <Head>
-        <title>Browse AI Personas - Parenting, Wellness, Relationships | AI - Spirit</title>
+        <title>Browse AI Personas - Parenting, Wellness, Relationships | AI Spirit</title>
         <meta name="description" content="Explore 40+ AI personas for parenting advice, mental wellness, relationship counseling, cooking tips, and more. Chat with expert AI coaches available 24/7." />
         <meta name="keywords" content="AI personas, parenting coach, wellness coach, relationship advisor, home chef, AI chat, expert advice" />
         <link rel="canonical" href="https://ai-spirit.in/personas" />
-        <meta property="og:title" content="Browse AI Personas | AI - Spirit" />
+        <meta property="og:title" content="Browse AI Personas | AI Spirit" />
         <meta property="og:description" content="Explore 40+ AI personas for parenting, wellness, relationships and more." />
         <meta property="og:url" content="https://ai-spirit.in/personas" />
       </Head>
@@ -310,21 +331,24 @@ function Personas() {
         {/* Main Content */}
         <main className="app-shell-offset flex-1 overflow-y-auto scrollbar-visible flex flex-col bg-white dark:bg-[#0B0B0C]">
           <div className="flex-1 px-4 sm:px-6 lg:px-8 py-8 md:py-12 max-w-7xl mx-auto w-full">
-            {/* Search Bar — moved above filters for mobile priority */}
+            <h1 className="sr-only">Browse AI personas</h1>
+
+            {/* Search bar sits above the filters so it is reachable first on mobile */}
             <div className="mb-4">
               <div className="relative">
                 <svg
-                  className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-black/45 dark:text-white/45 pointer-events-none"
+                  className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-4 h-4 text-black/50 dark:text-white/50 pointer-events-none"
                   fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}
                 >
                   <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
                 <input
-                  type="text"
+                  type="search"
+                  aria-label="Search personas"
                   placeholder={searchPlaceholder}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-11 pr-4 py-3.5 text-[15px] text-black dark:text-white glass-matte focus:outline-none focus:bg-white/90 dark:focus:bg-[#0B0B0C]/90 focus:ring-2 focus:ring-black/[0.07] dark:focus:ring-white/[0.07] transition-all duration-200"
+                  className="w-full pl-11 pr-4 py-3.5 text-[15px] text-black dark:text-white glass-matte focus:outline-none focus:bg-white/90 dark:focus:bg-[#0B0B0C]/90 focus-visible:ring-2 focus-visible:ring-black/40 dark:focus-visible:ring-white/40 transition-all duration-200"
                 />
               </div>
             </div>
@@ -362,7 +386,7 @@ function Personas() {
                 </button>
                 <h3 className="font-display font-bold text-xl mb-2">Hey there.</h3>
                 <p className="text-gray-300 dark:text-white/30 text-sm leading-relaxed">
-                  You&apos;re about to chat with AI personalities who actually get you. Pick anyone below—they&apos;re here 24/7, judgment-free.
+                  You&apos;re about to chat with AI personalities who actually get you. Pick anyone below; they&apos;re here any time, without judgment.
                 </p>
               </div>
             )}

@@ -8,7 +8,7 @@ export function OrganizationSchema() {
     const schema = {
         '@context': 'https://schema.org',
         '@type': 'Organization',
-        name: 'AI - Spirit',
+        name: 'AI Spirit',
         url: 'https://ai-spirit.in',
         logo: 'https://ai-spirit.in/logo.png',
         description: 'AI-powered personas for parenting, wellness, relationships, and more.',
@@ -34,7 +34,7 @@ export function WebsiteSchema() {
     const schema = {
         '@context': 'https://schema.org',
         '@type': 'WebSite',
-        name: 'AI - Spirit',
+        name: 'AI Spirit',
         url: 'https://ai-spirit.in',
         description: 'Chat with AI personas for guidance on parenting, mental wellness, relationships, and cooking.',
         potentialAction: {
@@ -61,7 +61,7 @@ export function SoftwareApplicationSchema() {
     const schema = {
         '@context': 'https://schema.org',
         '@type': 'SoftwareApplication',
-        name: 'AI - Spirit',
+        name: 'AI Spirit',
         applicationCategory: 'LifestyleApplication',
         operatingSystem: 'Web',
         offers: {
@@ -159,11 +159,11 @@ export function ServiceSchema() {
     const schema = {
         '@context': 'https://schema.org',
         '@type': 'Service',
-        name: 'AI - Spirit',
+        name: 'AI Spirit',
         description: 'AI-powered persona chat service for parenting advice, mental wellness coaching, relationship counseling, and career guidance available 24/7.',
         provider: {
             '@type': 'Organization',
-            name: 'AI - Spirit',
+            name: 'AI Spirit',
             url: 'https://ai-spirit.in',
         },
         serviceType: 'AI Coaching Service',

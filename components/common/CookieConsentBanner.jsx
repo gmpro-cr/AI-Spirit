@@ -50,44 +50,31 @@ export default function CookieConsentBanner() {
 
     return (
         <div
-            className={`fixed bottom-4 left-4 right-4 md:left-auto md:right-6 md:max-w-md z-50 transition-all duration-300 ${
+            role="region"
+            aria-label="Cookie preferences"
+            className={`fixed inset-x-3 bottom-3 md:inset-x-auto md:right-6 md:bottom-6 md:max-w-lg z-50 transition-all duration-300 motion-reduce:transition-none ${
                 isAnimating ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
             }`}
         >
-            <div className="bg-white rounded-2xl shadow-soft-xl border border-gray-200 p-5 md:p-6">
-                <div className="flex items-start gap-4">
-                    {/* Cookie Icon */}
-                    <div className="hidden sm:flex w-10 h-10 bg-black/5 rounded-full items-center justify-center flex-shrink-0">
-                        <svg className="w-5 h-5 text-black/60" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                    </div>
-
-                    <div className="flex-1">
-                        <h3 className="font-semibold text-black text-sm mb-1">Cookie Preferences</h3>
-                        <p className="text-black/60 text-sm leading-relaxed mb-4">
-                            We use cookies to enhance your experience. Learn more in our{' '}
-                            <Link href="/privacy" className="text-black underline underline-offset-2 hover:text-black/70 transition-colors">
-                                Privacy Policy
-                            </Link>.
-                        </p>
-
-                        <div className="flex items-center gap-3">
-                            <button
-                                onClick={handleDecline}
-                                className="px-4 py-2 text-sm font-medium text-black/60 hover:text-black hover:bg-black/5 rounded-lg transition-colors"
-                            >
-                                Decline
-                            </button>
-                            <button
-                                onClick={handleAccept}
-                                className="px-5 py-2 text-sm font-semibold bg-black text-white rounded-lg hover:bg-black/80 transition-colors"
-                            >
-                                Accept All
-                            </button>
-                        </div>
-                    </div>
-                </div>
+            <div className="flex items-center gap-3 rounded-2xl border border-black/10 bg-white/95 backdrop-blur px-4 py-3 shadow-[0_4px_16px_rgba(0,0,0,0.08)]">
+                <p className="flex-1 text-[13px] leading-snug text-black/70">
+                    We use cookies for analytics.{' '}
+                    <Link href="/privacy" className="text-black underline underline-offset-2 hover:text-black/70 transition-colors">
+                        Privacy policy
+                    </Link>
+                </p>
+                <button
+                    onClick={handleDecline}
+                    className="px-3 py-2 text-[13px] font-medium text-black/65 hover:text-black hover:bg-black/5 rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black"
+                >
+                    Decline
+                </button>
+                <button
+                    onClick={handleAccept}
+                    className="px-4 py-2 text-[13px] font-medium bg-black text-white rounded-full hover:bg-black/85 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2"
+                >
+                    Accept
+                </button>
             </div>
         </div>
     )
