@@ -81,27 +81,6 @@ const PERSONA_CATEGORIES = [
     { title: 'Companions & Romance', description: 'Always here, always present',          dot: 'bg-rose-400' },
 ]
 
-const TESTIMONIALS = [
-    {
-        quote: "Talking to the Osho persona got me through a rough patch I couldn't share with anyone. Completely private, non-judgmental, and genuinely insightful. It's part of my daily routine now.",
-        author: 'Priya S.',
-        location: 'Mumbai',
-        tag: 'Spiritual Guidance',
-    },
-    {
-        quote: "I 'talked to Elon Musk' to prep for a pitch. The first-principles pushback changed how I framed the whole problem. We got the deal. I'm not even joking.",
-        author: 'Arjun M.',
-        location: 'Bangalore',
-        tag: 'Business Strategy',
-    },
-    {
-        quote: "Einstein explaining quantum mechanics to my 12-year-old in a way she actually got? Alone, that's worth it. We use AI Spirit every week for her science homework now.",
-        author: 'Kavita R.',
-        location: 'Delhi',
-        tag: 'Education',
-    },
-]
-
 function PersonaCategoryCard({ cat, index, visible, href }) {
     return (
         <Link
@@ -144,7 +123,6 @@ export default function HomePage() {
     const [featuresRef, featuresVisible] = useScrollReveal()
     const [privacyRef, privacyVisible] = useScrollReveal()
     const [stepsRef, stepsVisible] = useScrollReveal()
-    const [testimonialsRef, testimonialsVisible] = useScrollReveal()
     const [contactRef, contactVisible] = useScrollReveal()
 
     useEffect(() => {
@@ -182,18 +160,18 @@ export default function HomePage() {
         <>
             <Head>
                 <title>AI Spirit - Talk to Anyone, Anytime</title>
-                <meta name="description" content="Chat with 350+ AI personas — spiritual guides, world leaders, celebrities, and fictional characters. Private, judgment-free conversations." />
+                <meta name="description" content="Chat with 50+ AI personas — spiritual guides, world leaders, celebrities, and fictional characters. Private, judgment-free conversations." />
                 <link rel="canonical" href="https://ai-spirit.in" />
                 <meta property="og:type" content="website" />
                 <meta property="og:url" content="https://ai-spirit.in" />
                 <meta property="og:title" content="AI Spirit - Talk to Anyone, Anytime" />
-                <meta property="og:description" content="Chat with 350+ AI personas — spiritual guides, world leaders, celebrities, and fictional characters." />
+                <meta property="og:description" content="Chat with 50+ AI personas — spiritual guides, world leaders, celebrities, and fictional characters." />
                 <meta property="og:image" content="https://ai-spirit.in/og-image-v7.png" />
                 <meta property="og:image:width" content="1200" />
                 <meta property="og:image:height" content="630" />
                 <meta name="twitter:card" content="summary_large_image" />
                 <meta name="twitter:title" content="AI Spirit - Talk to Anyone, Anytime" />
-                <meta name="twitter:description" content="Chat with 350+ AI personas — spiritual guides, world leaders, celebrities, and fictional characters." />
+                <meta name="twitter:description" content="Chat with 50+ AI personas — spiritual guides, world leaders, celebrities, and fictional characters." />
                 <meta name="twitter:image" content="https://ai-spirit.in/og-image-v7.png" />
             </Head>
 
@@ -204,7 +182,7 @@ export default function HomePage() {
                 <section className="relative h-[100dvh] lg:min-h-[100dvh] lg:h-auto flex flex-col lg:flex-row items-center justify-center pt-16 sm:pt-20 pb-16 px-5 sm:px-8 md:px-12 lg:px-20 max-w-[1400px] mx-auto gap-10 lg:gap-20 overflow-hidden lg:overflow-visible">
                     <div className="w-full lg:w-1/2 z-10 text-center lg:text-left">
                         <div className={rev(heroVisible, 0)}>
-                            <Eyebrow>350+ AI Personas Available</Eyebrow>
+                            <Eyebrow>50+ AI Personas Available</Eyebrow>
                         </div>
                         <h1 className={`${rev(heroVisible, 1)} font-display text-[2.75rem] sm:text-6xl md:text-7xl lg:text-[5.5rem] tracking-tight leading-[1.05] mb-6 sm:mb-7 text-black`}>
                             Talk to anyone.
@@ -217,18 +195,6 @@ export default function HomePage() {
                             <PillButton href={startHref}>
                                 {user ? 'Start Chatting' : 'Sign in to Chat'}
                             </PillButton>
-                        </div>
-                        <div className={`${rev(heroVisible, 4)} mt-10 sm:mt-14 pt-6 sm:pt-8 border-t border-black/[0.08] flex items-center justify-center lg:justify-start gap-8 sm:gap-10`}>
-                            {[
-                                { value: '10K+', label: 'Conversations' },
-                                { value: '350+', label: 'Personas' },
-                                { value: '4.9★', label: 'User Rating' },
-                            ].map((stat, i) => (
-                                <div key={i} className="text-center lg:text-left">
-                                    <div className="font-display text-xl sm:text-2xl text-black">{stat.value}</div>
-                                    <div className="text-[11px] text-black/60 tracking-wide mt-0.5">{stat.label}</div>
-                                </div>
-                            ))}
                         </div>
                     </div>
                     <div className={`${rev(heroVisible, 2)} hidden lg:flex w-full lg:w-1/2 items-center justify-center lg:justify-end`}>
@@ -260,7 +226,7 @@ export default function HomePage() {
                         </div>
                         <div className={`${rev(personasVisible, 4)} text-center mt-10`}>
                             <PillButton href={startHref}>
-                                Browse All 350+ Personas
+                                Browse All 50+ Personas
                             </PillButton>
                         </div>
                     </div>
@@ -291,7 +257,7 @@ export default function HomePage() {
                                         </div>
                                         <div>
                                             <h3 className="font-display text-3xl md:text-4xl text-white leading-tight mb-4">
-                                                350+ Unique<br />Personas
+                                                50+ Unique<br />Personas
                                             </h3>
                                             <p className="text-white/70 leading-relaxed max-w-sm text-[15px]">
                                                 From spiritual guides to celebrities, fictional characters to world leaders. Each persona has its own personality, knowledge, and voice.
@@ -413,7 +379,7 @@ export default function HomePage() {
                                 {
                                     step: '01',
                                     title: 'Pick a Persona',
-                                    description: 'Browse 350+ personalities — spiritual guides, visionaries, historical figures, and fictional characters.'
+                                    description: 'Browse 50+ personalities — spiritual guides, visionaries, historical figures, and fictional characters.'
                                 },
                                 {
                                     step: '02',
@@ -444,46 +410,6 @@ export default function HomePage() {
                             <PillButton href={startHref} dark>
                                 Explore All Personas
                             </PillButton>
-                        </div>
-                    </div>
-                </section>
-
-                {/* ─────────────────────────── TESTIMONIALS ─────────────────────────── */}
-                <section className="py-24 md:py-32 px-6 bg-[#F7F7F5]" ref={testimonialsRef}>
-                    <div className="max-w-6xl mx-auto">
-                        <div className={`${rev(testimonialsVisible)} text-center mb-16`}>
-                            <Eyebrow>Real Conversations</Eyebrow>
-                            <h2 className="font-display text-4xl sm:text-5xl md:text-6xl text-black leading-tight mb-5">
-                                What people are saying.
-                            </h2>
-                        </div>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            {TESTIMONIALS.map((t, i) => (
-                                <div key={i} className={rev(testimonialsVisible, i + 1)}>
-                                    <Bezel className="h-full" innerClass="p-8 flex flex-col gap-6 h-full">
-                                        {/* Stars */}
-                                        <div className="flex items-center gap-1">
-                                            {[...Array(5)].map((_, j) => (
-                                                <svg key={j} className="w-3.5 h-3.5 text-black/60" fill="currentColor" viewBox="0 0 20 20">
-                                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                                </svg>
-                                            ))}
-                                        </div>
-                                        <blockquote className="font-display text-lg text-black/80 leading-relaxed flex-1">
-                                            &ldquo;{t.quote}&rdquo;
-                                        </blockquote>
-                                        <div className="flex items-center justify-between">
-                                            <div>
-                                                <p className="text-sm font-medium text-black">{t.author}</p>
-                                                <p className="text-xs text-black/60">{t.location}</p>
-                                            </div>
-                                            <span className="text-[10px] font-medium tracking-wide uppercase px-3 py-1.5 rounded-full bg-black/5 text-black/60">
-                                                {t.tag}
-                                            </span>
-                                        </div>
-                                    </Bezel>
-                                </div>
-                            ))}
                         </div>
                     </div>
                 </section>

@@ -13,15 +13,15 @@ import { FAQSchema } from '@/components/seo/StructuredData'
 const premiumFaqs = [
     {
         question: 'What is included in AI-Spirit Premium?',
-        answer: 'AI-Spirit Premium gives you unlimited messages per day and the ability to create your own custom AI personas.'
+        answer: 'AI-Spirit Premium gives you more messages each day and the ability to create your own custom AI personas.'
     },
     {
         question: 'How much does AI-Spirit Premium cost?',
-        answer: 'AI-Spirit Premium costs ₹249 per month for unlimited AI conversations.'
+        answer: 'AI-Spirit Premium costs ₹249 per month.'
     },
     {
         question: 'What is the difference between Free and Premium plans?',
-        answer: 'Free plan gives you 100 messages per day and access to all personas. Premium gives you unlimited messages and the ability to create custom personas.'
+        answer: 'Free plan gives you a daily message allowance and access to all personas. Premium gives you more messages each day and the ability to create custom personas.'
     },
     {
         question: 'Can I cancel my AI-Spirit Premium subscription?',
@@ -125,12 +125,12 @@ export default function Premium() {
     return (
         <>
             <Head>
-                <title>Premium Membership - Unlimited Messages & Custom Personas | AI - Spirit</title>
-                <meta name="description" content="Get unlimited conversations with AI personas and create your own custom AI characters. Premium membership at ₹249/month." />
-                <meta name="keywords" content="premium membership, unlimited AI chat, custom AI personas, AI - Spirit premium" />
+                <title>Premium Membership - More Messages & Custom Personas | AI - Spirit</title>
+                <meta name="description" content="Get more daily conversations with AI personas and create your own custom AI characters. Premium membership at ₹249/month." />
+                <meta name="keywords" content="premium membership, AI chat, custom AI personas, AI - Spirit premium" />
                 <link rel="canonical" href="https://ai-spirit.in/premium" />
                 <meta property="og:title" content="Premium Membership | AI - Spirit" />
-                <meta property="og:description" content="Unlimited messages + Create custom personas for just ₹249/month." />
+                <meta property="og:description" content="More daily messages + create custom personas for ₹249/month." />
                 <meta property="og:url" content="https://ai-spirit.in/premium" />
             </Head>
             <FAQSchema faqs={premiumFaqs} />
@@ -151,7 +151,7 @@ export default function Premium() {
                         Go Premium
                     </h1>
                     <p className="text-xl md:text-2xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
-                        Unlimited messages + Create your own AI personas. No limits, just conversations.
+                        More daily messages, plus your own custom AI personas.
                     </p>
                 </div>
 
@@ -172,7 +172,7 @@ export default function Premium() {
                             <ul className="space-y-4 mb-8 flex-grow">
                                 <li className="flex items-center gap-3 text-black">
                                     <CheckIcon />
-                                    <span>100 messages per day</span>
+                                    <span>Daily message allowance</span>
                                 </li>
                                 <li className="flex items-center gap-3 text-black">
                                     <CheckIcon />
@@ -204,13 +204,13 @@ export default function Premium() {
                                     <span className="text-6xl font-bold bg-gradient-to-r from-black to-gray-700 bg-clip-text text-transparent">₹249</span>
                                     <span className="text-gray-500 font-medium">/month</span>
                                 </div>
-                                <p className="text-sm text-gray-500 mt-3 font-medium">Less than ₹9/day for unlimited AI</p>
+                                <p className="text-sm text-gray-500 mt-3 font-medium">Less than ₹9 a day</p>
                             </div>
 
                             <ul className="space-y-4 mb-8 flex-grow">
                                 <li className="flex items-center gap-3 font-medium">
                                     <CheckIcon />
-                                    <span className="text-black">Unlimited messages</span>
+                                    <span className="text-black">More daily messages</span>
                                 </li>
                                 <li className="flex items-center gap-3 font-medium">
                                     <CheckIcon />
@@ -262,8 +262,8 @@ export default function Premium() {
                             <tbody className="divide-y divide-gray-200">
                                 <tr>
                                     <td className="p-4">Daily messages</td>
-                                    <td className="p-4 text-center">100</td>
-                                    <td className="p-4 text-center bg-gray-100 font-medium">Unlimited</td>
+                                    <td className="p-4 text-center">Standard</td>
+                                    <td className="p-4 text-center bg-gray-100 font-medium">More</td>
                                 </tr>
                                 <tr>
                                     <td className="p-4">Persona access</td>

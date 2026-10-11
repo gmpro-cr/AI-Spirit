@@ -23,7 +23,7 @@ function buildFaqs(persona) {
     },
     {
       question: `Is chatting with ${name} free?`,
-      answer: `Yes. AI Spirit is free to use. You can chat with ${name} and any other persona without paying. Premium plans are available for unlimited messages and advanced features.`,
+      answer: `Yes. AI Spirit is free to use. You can chat with ${name} and any other persona without paying. Premium plans add more daily messages and custom personas.`,
     },
     {
       question: `What language can I talk to ${name} in?`,

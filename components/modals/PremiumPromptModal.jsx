@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 const REASONS = {
   messages: {
     title: "You've reached your 100 message limit!",
-    subtitle: 'Upgrade for unlimited conversations',
+    subtitle: 'Upgrade for more daily conversations',
   },
   personas: {
     title: "You've unlocked 5 personas — that's the free limit!",
@@ -48,7 +48,7 @@ export default function PremiumPromptModal({ isOpen, onClose, reason = 'messages
           <h3 className="font-semibold text-black mb-4 text-center">Premium Benefits</h3>
           <ul className="space-y-3 text-sm">
             {[
-              ['Unlimited messages', 'with all personas'],
+              ['More daily messages', 'with all personas'],
               ['Access to all personas', 'no restrictions'],
               ['Create custom personas', 'tailored to your needs'],
               ['Priority AI responses', 'faster processing'],

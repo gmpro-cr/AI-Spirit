@@ -227,7 +227,7 @@ export default async function handler(req, res) {
 
     if (allowance.blocked) {
       return res.status(403).json({
-        error: `Daily message limit reached (${DAILY_MESSAGE_LIMIT} messages). Upgrade to Premium for unlimited access.`,
+        error: `Daily message limit reached (${DAILY_MESSAGE_LIMIT} messages). Upgrade to Premium for more messages.`,
         isLimitReached: true,
         limit: DAILY_MESSAGE_LIMIT,
       })

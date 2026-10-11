@@ -69,12 +69,7 @@ export function SoftwareApplicationSchema() {
             price: '0',
             priceCurrency: 'INR',
             description: 'Free tier available with premium options',
-        },
-        aggregateRating: {
-            '@type': 'AggregateRating',
-            ratingValue: '4.5',
-            ratingCount: '100',
-        },
+        }
     }
 
     return (
@@ -188,15 +183,14 @@ export function ServiceSchema() {
                 name: 'Free Plan',
                 price: '0',
                 priceCurrency: 'INR',
-                description: '100 messages per day, access to all personas, create custom personas',
+                description: 'Daily message allowance, access to all personas',
             },
             {
                 '@type': 'Offer',
                 name: 'Premium Plan',
                 price: '249',
                 priceCurrency: 'INR',
-                description: 'Unlimited messages, create custom personas',
-                priceValidUntil: '2025-12-31',
+                description: 'More daily messages, create custom personas',
             },
         ],
         hasOfferCatalog: {

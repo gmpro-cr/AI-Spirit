@@ -615,7 +615,7 @@ function ChatPage() {
             throw new Error(data.error || 'Session expired')
           }
           if (response.status === 403 && data.isLimitReached) {
-            if (confirm('You have reached your daily message limit (100 messages). Upgrade to Premium for unlimited access?')) {
+            if (confirm('You have reached your daily message limit (100 messages). Upgrade to Premium for more messages?')) {
               router.push('/premium')
             }
             throw new Error(data.error)
