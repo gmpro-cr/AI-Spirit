@@ -94,7 +94,7 @@ export default function BlogPost({ post, mdxSource, related }) {
                 <ArticleJsonLd
                     url={canonical}
                     title={post.title}
-                    images={[`${SITE_URL}/og-image-v7.png`]}
+                    images={[`${SITE_URL}/og-image-v8.png`]}
                     datePublished={post.date}
                     dateModified={post.date}
                     authorName="AI Spirit"
